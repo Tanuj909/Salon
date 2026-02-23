@@ -53,13 +53,13 @@ function Reveal({ children, delay = 0, className = "", threshold = 0.12 }) {
   );
 }
 
-function SectionHeading({ subtitle, title, description, align = "left" }) {
+function SectionHeading({ subtitle, title, description, align = "left", mb = "mb-12" }) {
   const words = title.split(" ");
   const lastWord = words.pop();
   const mainTitle = words.join(" ");
 
   return (
-    <div className={`mb-12 ${align === "center" ? "text-center mx-auto" : ""}`}>
+    <div className={`${mb} ${align === "center" ? "text-center mx-auto" : ""}`}>
       <span className="block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-4 opacity-90">
         {subtitle}
       </span>
@@ -267,66 +267,44 @@ export default function SalonDetails({ params }) {
           ABOUT SECTION
       ═══════════════════════════════════════════ */}
       <section className="py-12 px-8 max-w-7xl mx-auto" id="about">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Image Grid */}
-          <Reveal>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="rounded-2xl overflow-hidden aspect-[3/4]">
-                  <img
-                    src={salon.image}
-                    alt={salon.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-                <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                  <img
-                    src={detail.gallery[2] || salon.image}
-                    alt={salon.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </div>
-              <div className="space-y-4 mt-8">
-                <div className="rounded-2xl overflow-hidden aspect-[3/4]">
-                  <img
-                    src={detail.gallery[0] || salon.image}
-                    alt={salon.name}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </div>
-            </div>
-          </Reveal>
-
-          {/* About Content */}
-          <Reveal delay={150}>
-            <SectionHeading
-              subtitle="Our Story"
-              title="Where Craft Meets Elegance"
-              description={detail.about}
-            />
-
-            <div className="grid grid-cols-2 gap-6 mb-8">
-              <StatCard
-                number={salon.rating}
-                label="Rating"
-                icon="★"
-                extra={<Stars rating={salon.rating} size={12} />}
-              />
-              <StatCard number={salon.reviews} label="Reviews" icon="🗣️" />
-              <StatCard number="10+" label="Years Experience" icon="⏳" />
-              <StatCard number={detail.staff.length} label="Expert Stylists" icon="✂️" />
+        <Reveal>
+          <div className="grid lg:grid-cols-4 border border-[#C8A951]/20 rounded-2xl overflow-hidden bg-white shadow-[0_20px_50px_-20px_rgba(200,169,81,0.1)]">
+            {/* Cell 1: Branding/Heading */}
+            <div className="lg:col-span-1 p-8 bg-[#FDFAF6] border-b lg:border-b-0 lg:border-r border-[#C8A951]/10 flex flex-col justify-center">
+              <span className="text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-2">Our Story</span>
+              <h2 className="font-[Cormorant_Garamond] text-3xl text-[#1C1C1C] leading-tight">
+                Crafting <em className="italic text-[#C8A951]">Beauty</em> Since 2014
+              </h2>
             </div>
 
-            <Badge variant="gold">
-              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Verified & Certified Business
-            </Badge>
-          </Reveal>
-        </div>
+            {/* Cell 2: Description */}
+            <div className="lg:col-span-2 p-8 border-b lg:border-b-0 lg:border-r border-[#C8A951]/10 flex items-center">
+              <p className="text-[#7a7065] text-[13px] leading-relaxed font-light italic">
+                "{detail.about}"
+              </p>
+            </div>
+
+            {/* Cell 3: Compact Stats Grid */}
+            <div className="lg:col-span-1 grid grid-cols-2">
+              <div className="p-6 border-r border-b border-[#C8A951]/10 flex flex-col items-center justify-center text-center">
+                <span className="text-[9px] uppercase tracking-widest text-[#C8A951] mb-1">Rating</span>
+                <span className="font-[Cormorant_Garamond] text-2xl text-[#1C1C1C] leading-none">{salon.rating}</span>
+              </div>
+              <div className="p-6 border-b border-[#C8A951]/10 flex flex-col items-center justify-center text-center">
+                <span className="text-[9px] uppercase tracking-widest text-[#C8A951] mb-1">Reviews</span>
+                <span className="font-[Cormorant_Garamond] text-2xl text-[#1C1C1C] leading-none">{salon.reviews}</span>
+              </div>
+              <div className="p-6 border-r border-[#C8A951]/10 flex flex-col items-center justify-center text-center">
+                <span className="text-[9px] uppercase tracking-widest text-[#C8A951] mb-1">Team</span>
+                <span className="font-[Cormorant_Garamond] text-2xl text-[#1C1C1C] leading-none">{detail.staff.length}</span>
+              </div>
+              <div className="p-6 flex flex-col items-center justify-center text-center">
+                <span className="text-[9px] uppercase tracking-widest text-[#C8A951] mb-1">Years</span>
+                <span className="font-[Cormorant_Garamond] text-2xl text-[#1C1C1C] leading-none">10+</span>
+              </div>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* ═══════════════════════════════════════════
