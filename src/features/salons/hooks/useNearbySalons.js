@@ -46,7 +46,7 @@ import { useUserLocation } from "./useUserLocation";
 import { salons as fallbackSalons } from "../data/salons";
 
 export const useNearbySalons = () => {
-  const { location, error: locationError } = useUserLocation();
+  const { location } = useUserLocation();
 
   const [salons, setSalons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +55,7 @@ export const useNearbySalons = () => {
   useEffect(() => {
     async function loadSalons() {
       try {
-        if (!location) {
-          throw new Error("No location");
-        }
+        if (!location) throw new Error("No location");
 
         const data = await fetchNearbySalons(
           location.latitude,
