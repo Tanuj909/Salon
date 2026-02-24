@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { salons, badgeStyles } from "@/features/salons/data/salonsData";
+import { salons, badgeStyles } from "@/features/salons/data/salons";
 
 // Show only badged (top-rated) salons as recommendations — up to 4
 const recommendedSalons = salons.filter((s) => s.badge).slice(0, 4);

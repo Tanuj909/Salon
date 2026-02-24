@@ -2,10 +2,21 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Scissors, Search, Menu, X } from 'lucide-react';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { logoutUser } from '@/features/auth/services/authService';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logoutUser();
+    setIsProfileOpen(false);
+    window.location.href = '/login'; // Use window.location to refresh the app state
+  };
 
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1200px]">
@@ -43,36 +54,45 @@ export default function Navbar() {
           </div>
 
           <div className="relative">
-            <button
-              onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/40 text-earthy-brown hover:bg-white/60 transition-all border border-terracotta/20"
-              aria-label="User profile"
-            >
-              <span className="material-symbols-outlined text-xl">person</span>
-            </button>
+            {!loading && (
+              user ? (
+                <>
+                  <button
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-white/40 text-earthy-brown hover:bg-white/60 transition-all border border-terracotta/20"
+                    aria-label="User profile"
+                  >
+                    <span className="material-symbols-outlined text-xl">person</span>
+                  </button>
 
-            {isProfileOpen && (
-              <div className="absolute right-0 mt-3 w-48 glass-nav rounded-2xl overflow-hidden py-2 shadow-xl animate-fade-in border border-terracotta/10">
+                  {isProfileOpen && (
+                    <div className="absolute right-0 mt-3 w-48 glass-nav rounded-2xl overflow-hidden py-2 shadow-xl animate-fade-in border border-terracotta/10">
+                      <Link
+                        href="/profile"
+                        className="flex items-center gap-3 px-4 py-2 text-sm font-medium text-earthy-brown hover:bg-terracotta/10 hover:text-terracotta transition-colors"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <span className="material-symbols-outlined text-lg">account_circle</span>
+                        Profile
+                      </Link>
+                      <button
+                        className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-earthy-brown hover:bg-terracotta/10 hover:text-terracotta transition-colors"
+                        onClick={handleLogout}
+                      >
+                        <span className="material-symbols-outlined text-lg">logout</span>
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
                 <Link
-                  href="/profile"
-                  className="flex items-center gap-3 px-4 py-2 text-sm font-medium text-earthy-brown hover:bg-terracotta/10 hover:text-terracotta transition-colors"
-                  onClick={() => setIsProfileOpen(false)}
+                  href="/login"
+                  className="px-6 py-2 bg-terracotta text-white rounded-full text-sm font-semibold hover:bg-terracotta-dark transition-all shadow-lg hover:shadow-terracotta/20 active:scale-95"
                 >
-                  <span className="material-symbols-outlined text-lg">account_circle</span>
-                  Profile
+                  Login
                 </Link>
-                <button
-                  className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-earthy-brown hover:bg-terracotta/10 hover:text-terracotta transition-colors"
-                  onClick={() => {
-                    setIsProfileOpen(false);
-                    // Add logout logic here later if needed
-                    console.log("Logging out...");
-                  }}
-                >
-                  <span className="material-symbols-outlined text-lg">logout</span>
-                  Logout
-                </button>
-              </div>
+              )
             )}
           </div>
 
@@ -87,7 +107,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="absolute top-full mt-4 w-full p-4 glass-nav rounded-2xl md:hidden flex flex-col gap-4 animate-fade-in">
+        <div className="absolute top-full mt-4 w-full p-4 glass-nav rounded-2xl md:hidden flex flex-col gap-2 animate-fade-in">
           {['Home', 'Salons', 'About', 'Contact'].map((item) => (
             <Link
               key={item}
@@ -96,12 +116,21 @@ export default function Navbar() {
                   item === 'About' ? '/#about' :
                     `/${item.toLowerCase()}`
               }
-              className="text-earthy-brown font-semibold hover:text-terracotta transition-colors px-4 py-2"
+              className="text-earthy-brown font-semibold hover:text-terracotta transition-colors px-4 py-2 rounded-xl hover:bg-white/40"
               onClick={() => setIsMenuOpen(false)}
             >
               {item}
             </Link>
           ))}
+          {!loading && !user && (
+            <Link
+              href="/login"
+              className="mt-2 text-center py-3 bg-terracotta text-white rounded-xl font-bold shadow-lg"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Login
+            </Link>
+          )}
         </div>
       )}
     </nav>

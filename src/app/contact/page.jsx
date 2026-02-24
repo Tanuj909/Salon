@@ -1,8 +1,19 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 const ContactPage = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,6 +32,16 @@ const ContactPage = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  if (loading) {
+    return (
+      <div className="bg-creamy/30 min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-terracotta/20 border-t-terracotta rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   return (
     <div className="bg-creamy/30 min-h-screen">

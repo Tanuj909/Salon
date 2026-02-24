@@ -1,6 +1,9 @@
-export const getSalons = async () => {
-  return [
-    { id: 1, name: "Royal Look Salon", slug: "royal-look" },
-    { id: 2, name: "Luxury Hair Studio", slug: "luxury-hair" },
-  ];
+import apiClient from "@/services/apiClient";
+import { ENDPOINTS } from "@/services/endpoints";
+
+export const fetchNearbySalons = async (lat, lng, radius = 20) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SALON.NEARBY(lat, lng, radius)
+  );
+  return response.data;
 };

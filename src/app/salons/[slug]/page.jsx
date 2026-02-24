@@ -2,8 +2,8 @@
 
 import { use, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { salons } from "@/features/salons/data/salonsData";
-import { getDetailOrDefault } from "@/features/salons/data/salonDetailData";
+import { salons } from "@/features/salons/data/salons";
+import { getDetailOrDefault } from "@/features/salons/data/salonDetailsData";
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 function useReveal() {
