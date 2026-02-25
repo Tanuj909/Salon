@@ -39,16 +39,16 @@ export const useNearbySalons = () => {
   // Handle location errors
   useEffect(() => {
     if (locationError && !searchParams.lat && !initialized.current) {
-        // If we don't have a location and there's an error, but we haven't manually searched
-        // We can set a default location or show the error
-        // Let's not set error yet to allow manual typing
+      // If we don't have a location and there's an error, but we haven't manually searched
+      // We can set a default location or show the error
+      // Let's not set error yet to allow manual typing
     }
   }, [locationError, searchParams.lat]);
 
   const loadSalons = useCallback(async (params) => {
     if (!params.lat || !params.lng) {
-        setLoading(false);
-        return;
+      setLoading(false);
+      return;
     }
 
     try {
@@ -59,7 +59,7 @@ export const useNearbySalons = () => {
         params.lng,
         params.radius
       );
-      
+
       setSalons(data || []);
       // If we got an empty array, it's not exactly an error but a state we should handle
       setIsFallback(data && data.length === 0);
@@ -84,34 +84,34 @@ export const useNearbySalons = () => {
 
   const useCurrentLocation = () => {
     if (browserLocation) {
-        updateParams({
-            lat: browserLocation.latitude,
-            lng: browserLocation.longitude,
-            address: "Current Location"
-        });
+      updateParams({
+        lat: browserLocation.latitude,
+        lng: browserLocation.longitude,
+        address: "Current Location"
+      });
     } else {
-        // Re-trigger location detection if possible
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                updateParams({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                    address: "Current Location"
-                });
-            },
-            () => {
-                setError("Could not access your location. Please select manually.");
-            }
-        );
+      // Re-trigger location detection if possible
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          updateParams({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            address: "Current Location"
+          });
+        },
+        () => {
+          setError("Could not access your location. Please select manually.");
+        }
+      );
     }
   };
 
-  return { 
-    salons, 
-    loading, 
-    error, 
-    isFallback, 
-    searchParams, 
+  return {
+    salons,
+    loading,
+    error,
+    isFallback,
+    searchParams,
     updateParams,
     useCurrentLocation,
     retry: () => loadSalons(searchParams)

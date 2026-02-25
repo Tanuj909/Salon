@@ -41,37 +41,37 @@ const FavoriteSalons = ({ salons }) => {
 
     return (
         <div className="px-8 mt-16">
-            <h2 className="text-2xl font-bold text-slate-900 mb-8">Favorite Salons</h2>
+            <h2 className="text-2xl font-bold text-[#1e0a18] mb-8 font-[Cormorant_Garamond]">Favorite Creations</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {displaySalons.map((salon) => (
-                    <div key={salon.id} className="bg-white rounded-xl overflow-hidden border border-slate-100 shadow-sm group hover:shadow-xl transition-all">
+                    <div key={salon.id} className="bg-white rounded-2xl overflow-hidden border border-[#3c143208] shadow-sm group hover:shadow-xl transition-all">
                         <div className="h-56 overflow-hidden relative">
                             <img
                                 src={salon.image}
                                 alt={salon.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                             />
-                            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 text-primary shadow-sm">
-                                <Star size={14} fill="currentColor" />
-                                <span className="text-xs font-black">{salon.rating}</span>
+                            <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1 text-white border border-white/20 shadow-sm">
+                                <Star size={10} fill="#c4956a" color="#c4956a" />
+                                <span className="text-[10px] font-black">{salon.rating}</span>
                             </div>
                             <div className="absolute top-4 left-4">
-                                <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-red-500 shadow-sm hover:bg-red-500 hover:text-white transition-all">
-                                    <Heart size={16} fill="currentColor" />
+                                <button className="p-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white shadow-sm hover:bg-[#7a2860] hover:text-white transition-all">
+                                    <Heart size={14} fill="currentColor" />
                                 </button>
                             </div>
                         </div>
 
                         <div className="p-6">
-                            <h4 className="font-bold text-xl mb-1 text-slate-900 group-hover:text-primary transition-colors">
+                            <h4 className="font-bold text-xl mb-1 text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond]">
                                 {salon.name}
                             </h4>
-                            <div className="flex items-center gap-1 text-slate-400 text-sm mb-6 font-medium">
-                                <MapPin size={14} />
+                            <div className="flex items-center gap-1.5 text-[#3c143240] text-[0.7rem] mb-6 font-bold uppercase tracking-wider">
+                                <MapPin size={12} className="text-[#7a2860]/40" />
                                 {salon.location}
                             </div>
-                            <button className="w-full py-3.5 bg-slate-50 hover:bg-primary hover:text-white transition-all rounded-full font-bold text-xs uppercase tracking-widest text-slate-900">
-                                View Salon
+                            <button className="w-full py-3.5 bg-[#1e0a18]/5 hover:bg-[#1e0a18] hover:text-white transition-all rounded-xl font-black text-[9px] uppercase tracking-[0.2em] text-[#1e0a18]">
+                                Visit Portfolio
                             </button>
                         </div>
                     </div>

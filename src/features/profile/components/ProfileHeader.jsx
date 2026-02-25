@@ -37,25 +37,25 @@ const ProfileHeader = ({ user }) => {
               />
             </div>
             {user?.user?.verificationStatus === "VERIFIED" && (
-                <div className="absolute bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full border-4 border-white shadow-lg">
-                    <ShieldCheck size={20} />
-                </div>
+              <div className="absolute bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full border-4 border-white shadow-lg">
+                <ShieldCheck size={20} />
+              </div>
             )}
           </div>
-          
+
           <div className="mb-6 flex-1 min-w-[300px]">
-            <div className="flex items-center gap-3 mb-1">
-                <h1 className="text-4xl font-bold text-white drop-shadow-md">{user?.user?.fullName}</h1>
-                {user?.user?.isEmailVerified && (
-                    <div className="flex items-center gap-1 bg-white/20 backdrop-blur-md px-2 py-1 rounded-full text-white text-[10px] font-bold uppercase tracking-wider">
-                        <CheckCircle size={12} className="text-green-400" />
-                        Verified
-                    </div>
-                )}
+            <div className="flex items-center gap-3 mb-1.5">
+              <h1 className="text-4xl font-bold text-white drop-shadow-md font-[Cormorant_Garamond]">{user?.user?.fullName}</h1>
+              {user?.user?.isEmailVerified && (
+                <div className="flex items-center gap-1 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full text-white text-[9px] font-black uppercase tracking-[0.15em] border border-white/20">
+                  <CheckCircle size={10} className="text-[#c4956a]" />
+                  Verified
+                </div>
+              )}
             </div>
-            <p className="text-primary font-medium capitalize text-lg">{user?.membershipLevel || 'Bronze'} Member</p>
+            <p className="text-[#e0d0c8] font-bold uppercase tracking-widest text-xs opacity-90">{user?.membershipLevel || 'Bronze'} Member</p>
           </div>
-         
+
         </div>
       </div>
     </div>

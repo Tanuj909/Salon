@@ -5,19 +5,19 @@ const BookingHistory = ({ bookings }) => {
     const displayBookings = bookings || [];
 
     const getStatusStyle = (status) => {
-        if (!status) return "bg-slate-50 text-slate-600 border-slate-100";
+        if (!status) return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
         switch (status.toLowerCase()) {
             case 'upcoming':
             case 'confirmed':
             case 'pending':
-                return "bg-blue-50 text-blue-600 border-blue-100";
+                return "bg-[#7a286010] text-[#7a2860] border-[#7a286020]";
             case 'completed':
-                return "bg-green-50 text-green-600 border-green-100";
+                return "bg-[#10b98110] text-[#10b981] border-[#10b98120]";
             case 'cancelled':
             case 'rejected':
-                return "bg-red-50 text-red-600 border-red-100";
+                return "bg-[#ef444410] text-[#ef4444] border-[#ef444420]";
             default:
-                return "bg-slate-50 text-slate-600 border-slate-100";
+                return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
         }
     };
 
@@ -40,9 +40,9 @@ const BookingHistory = ({ bookings }) => {
     return (
         <div className="px-8 mt-16">
             <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Booking History</h2>
-                <button className="text-primary font-bold text-sm hover:underline flex items-center gap-1">
-                    View All Records <ChevronRight size={14} />
+                <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
+                <button className="text-[#7a2860] font-black text-[10px] uppercase tracking-widest hover:underline flex items-center gap-1">
+                    Full Records <ChevronRight size={12} />
                 </button>
             </div>
 
@@ -50,33 +50,33 @@ const BookingHistory = ({ bookings }) => {
                 {displayBookings.map((booking) => (
                     <div
                         key={booking.id}
-                        className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-6 group"
+                        className="bg-white p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-6 group"
                     >
                         <div className="flex items-center gap-6">
-                            <div className="w-14 h-14 rounded-xl bg-slate-50 flex items-center justify-center text-primary border border-slate-100">
-                                <Calendar size={24} strokeWidth={1.5} />
+                            <div className="w-14 h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center text-[#7a2860]/40 border border-[#3c143205]">
+                                <Calendar size={22} strokeWidth={1.5} />
                             </div>
                             <div>
-                                <h4 className="font-bold text-lg text-slate-900 group-hover:text-primary transition-colors">
+                                <h4 className="font-bold text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond]">
                                     {booking.businessName || booking.salon || 'Premium Salon'}
                                 </h4>
                                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
-                                    <span className="text-slate-500 text-sm font-medium">{booking.service || booking.serviceName || 'Professional Service'}</span>
-                                    <span className="flex items-center gap-1.5 text-slate-400 text-xs">
+                                    <span className="text-[#3c143280] text-[0.8rem] font-medium">{booking.service || booking.serviceName || 'Professional Service'}</span>
+                                    <span className="flex items-center gap-1.5 text-[#3c143240] text-xs font-medium">
                                         <Clock size={12} /> {booking.bookingDate || booking.date} • {booking.bookingTime || booking.time}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center justify-between md:justify-end gap-8">
+                        <div className="flex items-center justify-between md:justify-end gap-10">
                             <div className="text-right">
-                                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-0.5">Price</p>
-                                <p className="font-bold text-lg text-slate-900">
+                                <p className="text-[#3c143230] text-[0.55rem] uppercase font-black tracking-widest mb-0.5">Investment</p>
+                                <p className="font-bold text-lg text-[#1e0a18] tracking-tight">
                                     {booking.totalAmount ? `$${booking.totalAmount.toFixed(2)}` : booking.price || 'N/A'}
                                 </p>
                             </div>
-                            <span className={`px-4 py-1.5 rounded-full border text-[10px] font-black uppercase tracking-widest ${getStatusStyle(booking.status || booking.bookingStatus)}`}>
+                            <span className={`px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.15em] ${getStatusStyle(booking.status || booking.bookingStatus)}`}>
                                 {booking.status || booking.bookingStatus || 'Unknown'}
                             </span>
                         </div>
