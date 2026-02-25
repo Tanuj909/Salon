@@ -25,8 +25,8 @@ const HeroSection = () => {
   const categories = [
     {
       label: "Men",
-      sub: "Haircut · Beard · Styling",
-      img: "https://www.freepik.com/premium-photo/man-getting-his-hair-cut-by-barber_278589335.htm#fromView=keyword&page=1&position=27&uuid=dde32999-462e-4b3a-bd55-ec2717865765&query=Men+hair+salon",
+      sub: "Haircut · Styling",
+      img: "https://images.unsplash.com/photo-1647140655214-e4a2d914971f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YmFyYmVyfGVufDB8fDB8fHww",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-[17px] h-[17px] text-[#0D0D0D]">
           <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v11m0 0H5a2 2 0 0 1-2-2v-1m6 3h10m0 0a2 2 0 0 0 2-2v-1m-2 3v4a2 2 0 0 1-2 2H9m10-6H9m0 4v1a2 2 0 0 0 2 2h2" />

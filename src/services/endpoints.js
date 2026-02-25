@@ -15,9 +15,9 @@ export const ENDPOINTS = {
 
   SALON: {
     NEARBY: (lat, lng, radius) =>
-      `/api/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
+      `/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
 
-    DETAILS: (id) => `/api/businesses/${id}`,
+    DETAILS: (id) => `/businesses/${id}`,
   },
 
   BUSINESS: {

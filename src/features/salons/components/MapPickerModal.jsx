@@ -27,12 +27,35 @@ const LocationMarker = ({ position, setPosition, setAddress }) => {
 };
 
 const reverseGeocode = async (lat, lng, setAddress) => {
+    if (!lat || !lng) return;
     try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+        setAddress("Locating...");
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`,
+            {
+                signal: controller.signal,
+                headers: { 'Accept-Language': 'en' }
+            }
+        ).catch(err => {
+            console.warn("Fetch failed:", err);
+            return null;
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!res || !res.ok) {
+            setAddress(`Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+            return;
+        }
+
         const data = await res.json();
-        setAddress(data.display_name);
+        setAddress(data.display_name || `Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
     } catch (err) {
-        console.error("Reverse geocoding error:", err);
+        console.warn("Reverse geocoding suppressed:", err);
+        setAddress(`Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
     }
 };
 
@@ -43,9 +66,9 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
 
     useEffect(() => {
         setIsMounted(true);
-        if (initialPos) {
+        if (initialPos && initialPos.lat && initialPos.lng) {
             setPosition(initialPos);
-            reverseGeocode(initialPos.lat, initialPos.lng, setAddress);
+            reverseGeocode(initialPos.lat, initialPos.lng, setAddress).catch(() => { });
         }
     }, [initialPos]);
 
@@ -67,9 +90,9 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
 
                 {/* Map Area */}
                 <div className="flex-1 relative">
-                    <MapContainer 
-                        center={position} 
-                        zoom={13} 
+                    <MapContainer
+                        center={position}
+                        zoom={13}
                         style={{ height: '100%', width: '100%' }}
                         scrollWheelZoom={true}
                     >
@@ -93,15 +116,15 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
                                 <p className="text-[0.9rem] font-bold text-[#1e0a18] line-clamp-1">{address}</p>
                             </div>
                         </div>
-                        
+
                         <div className="flex items-center gap-3">
-                            <button 
+                            <button
                                 onClick={onClose}
                                 className="px-8 py-3 rounded-2xl text-[0.9rem] font-bold text-[#3c143280] hover:bg-white hover:shadow-sm transition-all"
                             >
                                 Cancel
                             </button>
-                            <button 
+                            <button
                                 onClick={() => onSelect({ ...position, address })}
                                 className="px-10 py-3 bg-[#1e0a18] text-white rounded-2xl text-[0.9rem] font-bold hover:bg-[#7a2860] transition-all flex items-center gap-2 shadow-xl active:scale-95"
                             >
