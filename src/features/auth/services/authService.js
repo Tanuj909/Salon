@@ -17,6 +17,11 @@ export const registerUser = async (data) => {
   return response.data;
 };
 
+export const sendOTP = async ({email, purpose}) =>{
+  const response = await apiClient.post(ENDPOINTS.OTP.SEND,{email,purpose});
+  return response.data;
+}
+
 export const getCurrentUser = async () => {
   const response = await apiClient.get(ENDPOINTS.AUTH.ME);
   return response.data;

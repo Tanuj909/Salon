@@ -9,25 +9,24 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = TokenService.getToken();
-
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
-    async function fetchUser() {
+    async function loadUser() {
       try {
+        const token = TokenService.getToken();
+        if (!token) {
+          setLoading(false);
+          return;
+        }
+
         const data = await getCurrentUser();
         setUser(data);
-      } catch (error) {
+      } catch (err) {
         setUser(null);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchUser();
+    loadUser();
   }, []);
 
   return { user, loading };

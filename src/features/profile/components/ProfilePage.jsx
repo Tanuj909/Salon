@@ -1,33 +1,36 @@
+"use client";
+
+import { useCurrentCustomer } from "@/features/customer/hooks/useCurrentCustomer";
+
 import React from 'react';
 import ProfileHeader from './ProfileHeader';
 import PersonalInfoSection from './PersonalInfoSection';
 import BookingHistory from './BookingHistory';
 import FavoriteSalons from './FavoriteSalons';
+import RecentReviews from './RecentReviews';
 
 const ProfilePage = () => {
-    const user = {
-        name: "Tanuj Kashyap",
-        email: "tanuj@example.com",
-        phone: "+91 98765 43210",
-        dob: "Feb 20, 1995",
-        location: "Mumbai, India",
-        membershipType: "Gold Status Member",
-        loyaltyPoints: "2,450",
-        totalBookings: "48",
-        avatar: null // Will use default in Header
-    };
+
+        const { customer, loading, error } = useCurrentCustomer();
+
+          if (loading) return <p>Loading profile...</p>;
+  if (error) return <p>{error}</p>;
+  if (!customer) return null;
 
     return (
         <main className="min-h-screen pb-20 bg-background-light">
             {/* Profile Banner & Overlap Image handle internally */}
-            <ProfileHeader user={user} />
+            <ProfileHeader user={customer} />
 
             <div className="max-w-[1200px] mx-auto overflow-hidden">
                 {/* Personal Info & Membership Stats (2026 Refined Layout) */}
-                <PersonalInfoSection user={user} />
+                <PersonalInfoSection user={customer} />
 
                 {/* Booking History (Clean Cards) */}
-                <BookingHistory />
+                <BookingHistory bookings={customer.recentBookings} />
+
+                {/* Recent Reviews (Feedback) */}
+                <RecentReviews reviews={customer.recentReviews} />
 
                 {/* Favorite Salons (Premium Grid) */}
                 <FavoriteSalons />
