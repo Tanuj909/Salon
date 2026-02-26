@@ -3,7 +3,24 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { MapPin, Navigation, Star, Search } from "lucide-react";
-import { filters, badgeStyles } from "@/features/salons/data/salons";
+// Local badge styles since the data file was removed
+const badgeStyles = {
+  "Top Rated": {
+    bg: "bg-[#7a2860]/10",
+    text: "text-[#7a2860]",
+    border: "border-[#7a2860]/20"
+  },
+  "New": {
+    bg: "bg-[#287a60]/10",
+    text: "text-[#287a60]",
+    border: "border-[#287a60]/20"
+  },
+  "Trending": {
+    bg: "bg-[#7a6028]/10",
+    text: "text-[#7a6028]",
+    border: "border-[#7a6028]/20"
+  }
+};
 import { useNearbySalons } from "@/features/salons/hooks/useNearbySalons";
 import LocationPicker from "./LocationPicker";
 
@@ -16,43 +33,74 @@ const StarIcon = ({ filled }) => (
 function SalonCard({ salon }) {
   const bc = salon.badge ? badgeStyles[salon.badge] : null;
 
+  // Determine image source with fallback
+  const imageSrc = salon.imageUrls && salon.imageUrls.length > 0 ? salon.imageUrls[0] : salon.bannerImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=60";
+
+  // Build location string from available fields
+  const locationString = [salon.city, salon.state, salon.country].filter(Boolean).join(", ");
+
+  // Open status badge
+  const openBadge = salon.isOpen ? "Open" : "Closed";
+
+  // Verification badge
+  const verified = salon.verificationStatus === "VERIFIED";
+
   return (
     <Link
-      href={`/salons/${salon.slug}`}
+      href={`/salons/${salon.id}`}
       className="group block bg-white rounded-[20px] overflow-hidden border border-[#3c143212] cursor-pointer shadow-[0_2px_16px_rgba(60,20,50,0.06)] no-underline h-full"
     >
       {/* ── Image ── */}
       <div className="relative h-[210px] overflow-hidden">
         <img
-          src={salon.image || "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=60"}
+          src={imageSrc}
           alt={salon.name}
           className="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.06]"
         />
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(30,10,25,0.45)]" />
 
-        {/* Badge */}
+        {/* Badge (if any) */}
         {salon.badge && bc && (
-          <span className={`absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border font-[DM_Sans] ${bc.bg} ${bc.text} ${bc.border}`}>
+          <span className={`absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border font-[DM_Sans] ${bc.bg} ${bc.text} ${bc.border}`}
+            >
             {salon.badge}
           </span>
         )}
 
-        {/* Price */}
-        <span className="absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full text-[0.72rem] font-semibold tracking-[0.04em] backdrop-blur-[8px] bg-[rgba(253,246,240,0.92)] text-[#7a4020] font-[DM_Sans]">
-          {salon.price || "₹₹"}
+        {/* Open/Closed Badge */}
+        <span className={`absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full text-[0.72rem] font-semibold tracking-[0.04em] backdrop-blur-[8px] ${openBadge === "Open" ? "bg-[#d4f8e8] text-[#1a7f3b]" : "bg-[#f8d4d4] text-[#7f1a1a]"} font-[DM_Sans]`}
+          >
+          {openBadge}
         </span>
+
+        {/* Verification Icon */}
+        {verified && (
+          <span className="absolute top-3.5 left-24">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#1a7f3b]" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+          </span>
+        )}
       </div>
 
       {/* ── Body ── */}
       <div className="p-[22px_22px_20px] flex flex-col h-[calc(100%-210px)]">
-        <h3 className="text-[1.1rem] font-bold leading-[1.3] mb-1.5 text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif]">
+        <h3 className="text-[1.1rem] font-bold leading-[1.3] mb-1.5 text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif]"
+          >
           {salon.name}
         </h3>
 
+        {/* Description */}
+        {salon.description && (
+          <p className="text-[0.85rem] text-[#3c143280] mb-2 font-[DM_Sans] line-clamp-2">
+            {salon.description}
+          </p>
+        )}
+
         <div className="flex items-center gap-1 text-[0.72rem] mb-2.5 text-[#3c143280] font-[DM_Sans]">
           <MapPin size={11} className="text-[#7a2860]/60" />
-          {salon.location || salon.address}
+          {locationString || salon.location || salon.address}
         </div>
 
         {/* Divider */}
@@ -80,15 +128,19 @@ function SalonCard({ salon }) {
         <div className="mt-auto flex items-center justify-between">
           <div className="flex items-center gap-[5px]">
             <div className="flex gap-0.5">
+              {/* Use averageRating and totalReviews if available */}
               {[1, 2, 3, 4, 5].map((i) => (
-                <StarIcon key={i} filled={i <= Math.round(salon.rating || 4.5)} />
+                <StarIcon
+                  key={i}
+                  filled={i <= Math.round(salon.averageRating ?? salon.rating ?? 0)}
+                />
               ))}
             </div>
             <span className="text-[0.82rem] font-semibold text-[#1e0a18] font-[DM_Sans]">
-              {salon.rating || 4.5}
+              {salon.averageRating?.toFixed(1) ?? salon.rating?.toFixed(1) ?? "0.0"}
             </span>
             <span className="text-[0.72rem] text-[#3c143266] font-[DM_Sans]">
-              ({salon.reviews || 0})
+              ({salon.totalReviews ?? salon.reviews ?? 0})
             </span>
           </div>
 
@@ -123,13 +175,18 @@ export default function SalonList() {
   }
 
   const filtered = (salons || []).filter((s) => {
+    const salonCategory = s.category || (s.categoryNames && s.categoryNames.length > 0 ? s.categoryNames[0] : "");
     const matchFilter =
       activeFilter === "All" ||
-      s.category?.toLowerCase().includes(activeFilter.toLowerCase()) ||
+      salonCategory?.toLowerCase().includes(activeFilter.toLowerCase()) ||
       s.tags?.some((t) => t.toLowerCase().includes(activeFilter.toLowerCase()));
+
     const matchSearch =
       s.name?.toLowerCase().includes(search.toLowerCase()) ||
-      s.location?.toLowerCase().includes(search.toLowerCase());
+      s.location?.toLowerCase().includes(search.toLowerCase()) ||
+      s.city?.toLowerCase().includes(search.toLowerCase()) ||
+      salonCategory?.toLowerCase().includes(search.toLowerCase());
+
     return matchFilter && matchSearch;
   });
 
