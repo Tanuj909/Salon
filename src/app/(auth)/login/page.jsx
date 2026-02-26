@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { loginUser } from "@/features/auth/services/authService";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { refreshUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -19,6 +21,7 @@ export default function LoginPage() {
 
     try {
       await loginUser(form);
+      await refreshUser();
       router.push("/profile");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");

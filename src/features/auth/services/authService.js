@@ -1,9 +1,9 @@
-import apiClient from "@/services/apiClient";
+import apiClient, { publicApiClient } from "@/services/apiClient";
 import { ENDPOINTS } from "@/services/endpoints";
 import { TokenService } from "@/lib/tokenService";
 
 export const loginUser = async (data) => {
-  const response = await apiClient.post(ENDPOINTS.AUTH.LOGIN, data);
+  const response = await publicApiClient.post(ENDPOINTS.AUTH.LOGIN, data);
 
   // Assume backend returns { accessToken }
   const token = response.data.accessToken;
@@ -13,12 +13,12 @@ export const loginUser = async (data) => {
 };
 
 export const registerUser = async (data) => {
-  const response = await apiClient.post(ENDPOINTS.AUTH.REGISTER, data);
+  const response = await publicApiClient.post(ENDPOINTS.AUTH.REGISTER, data);
   return response.data;
 };
 
-export const sendOTP = async ({email, purpose}) =>{
-  const response = await apiClient.post(ENDPOINTS.OTP.SEND,{email,purpose});
+export const sendOTP = async ({ email, purpose }) => {
+  const response = await publicApiClient.post(ENDPOINTS.OTP.SEND, { email, purpose });
   return response.data;
 }
 

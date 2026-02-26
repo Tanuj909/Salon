@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import "../styles/globals.css";
+import { AuthProvider } from "@/features/auth/providers/AuthProvider";
 
 export default function RootLayout({ children }) {
   return (
@@ -10,11 +11,14 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
       <body className="bg-beige font-display text-earthy-brown">
-        <Navbar />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
 }
+
 

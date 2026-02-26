@@ -2,21 +2,22 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Scissors, Search, Menu, X } from 'lucide-react';
-import { useAuth } from '@/features/auth/hooks/useAuth';
+import { useAuth, useAuthContext } from '@/features/auth/hooks/useAuth';
 import { logoutUser } from '@/features/auth/services/authService';
 import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuthContext();
   const router = useRouter();
 
   const handleLogout = () => {
-    logoutUser();
+    logout();
     setIsProfileOpen(false);
-    window.location.href = '/login'; // Use window.location to refresh the app state
+    router.push('/login');
   };
+
 
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1200px]">
