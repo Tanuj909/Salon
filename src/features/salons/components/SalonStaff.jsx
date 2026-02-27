@@ -29,9 +29,8 @@ function Reveal({ children, delay = 0, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      } ${className}`}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -143,11 +142,10 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
 
               {/* Availability badge */}
               <div className="mt-3">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium ${
-                  profile.isAvailable
-                    ? 'bg-emerald-50 text-emerald-700'
-                    : 'bg-red-50 text-red-600'
-                }`}>
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium ${profile.isAvailable
+                  ? 'bg-emerald-50 text-emerald-700'
+                  : 'bg-red-50 text-red-600'
+                  }`}>
                   <span className={`w-2 h-2 rounded-full ${profile.isAvailable ? 'bg-emerald-400' : 'bg-red-400'}`} />
                   {profile.isAvailable ? 'Available for Booking' : 'Currently Unavailable'}
                 </span>
@@ -325,85 +323,61 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
   );
 }
 
-// ─── Staff Card ───────────────────────────────────────────────────────────
 function StaffCard({ member, index, onClick }) {
   return (
     <Reveal delay={index * 100}>
       <div
-        className="group relative bg-white rounded-xl overflow-hidden shadow-[0_2px_12px_-4px_rgba(200,169,81,0.08)] hover:shadow-[0_8px_28px_-6px_rgba(200,169,81,0.2)] transition-all duration-500 hover:-translate-y-1 cursor-pointer"
-        onClick={onClick}
+        className="group bg-white rounded-3xl p-8 border border-[#C8A951]/5 hover:border-[#C8A951]/20 hover:shadow-[0_30px_60px_-12px_rgba(200,169,81,0.15)] transition-all duration-500 hover:-translate-y-2 flex flex-col items-center text-center h-full"
       >
-        {/* Gold accent line */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#C8A951] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-        {/* Profile Section */}
-        <div className="relative pt-5 pb-3 px-4 flex flex-col items-center">
-          {/* Avatar */}
-          <div className="relative mb-3">
-            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#C8A951]/15 group-hover:border-[#C8A951]/50 transition-colors duration-500 bg-[#FDFAF6] flex items-center justify-center">
+        {/* Profile Image */}
+        <div className="relative mb-6">
+          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#C8A951]/10 group-hover:border-[#C8A951]/40 transition-colors duration-500 p-1 bg-white">
+            <div className="w-full h-full rounded-full overflow-hidden">
               {member.userProfileImageUrl ? (
                 <img
                   src={member.userProfileImageUrl}
                   alt={member.userFullName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
               ) : (
-                <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.2}>
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              )}
-            </div>
-            {/* Availability dot */}
-            <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${
-              member.isAvailable ? 'bg-emerald-400' : 'bg-red-400'
-            }`} />
-          </div>
-
-          {/* Name */}
-          <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-lg text-[#1C1C1C] text-center leading-tight mb-0.5">
-            {member.userFullName}
-          </h3>
-
-          {/* Designation */}
-          <span className="inline-flex items-center gap-1 text-[10px] tracking-[0.12em] uppercase text-[#C8A951] font-medium">
-            <BriefcaseIcon />
-            {member.designation}
-          </span>
-        </div>
-
-        {/* Availability Strip */}
-        <div className={`py-1.5 text-center text-[10px] font-medium tracking-wider uppercase ${
-          member.isAvailable
-            ? 'bg-emerald-50 text-emerald-700'
-            : 'bg-red-50 text-red-600'
-        }`}>
-          {member.isAvailable ? '● Available' : '● Unavailable'}
-        </div>
-
-        {/* Bio Hover Overlay */}
-        {member.bio && (
-          <div className="absolute inset-0 bg-[#1C1C1C]/90 backdrop-blur-sm flex flex-col items-center justify-center px-5 opacity-0 group-hover:opacity-100 transition-all duration-400 pointer-events-none rounded-xl">
-            <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-[#C8A951]/40 mx-auto mb-3 bg-[#FDFAF6] flex items-center justify-center">
-                {member.userProfileImageUrl ? (
-                  <img src={member.userProfileImageUrl} alt={member.userFullName} className="w-full h-full object-cover" />
-                ) : (
-                  <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.2}>
+                <div className="w-full h-full bg-[#f5edce] flex items-center justify-center">
+                  <svg width={40} height={40} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1}>
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
                   </svg>
-                )}
-              </div>
-              <h4 className="font-[Cormorant_Garamond,Georgia,serif] text-base text-[#C8A951] text-center mb-2">
-                {member.userFullName}
-              </h4>
-              <div className="w-8 h-px bg-[#C8A951]/40 mx-auto mb-3" />
-              <p className="text-white/75 text-[12px] leading-relaxed font-light italic text-center line-clamp-4">
-                "{member.bio}"
-              </p>
+                </div>
+              )}
             </div>
           </div>
-        )}
+          {/* Availability Dot */}
+          <div className={`absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-white ${member.isAvailable ? 'bg-emerald-500' : 'bg-red-500'}`} />
+        </div>
+
+        {/* Info */}
+        <div className="mb-6 flex-1">
+          <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1C1C1C] mb-1 group-hover:text-[#C8A951] transition-colors">
+            {member.userFullName}
+          </h3>
+          <span className="block text-[10px] tracking-[0.2em] uppercase text-[#C8A951] font-bold mb-3">{member.designation}</span>
+
+          <div className="flex flex-wrap justify-center gap-2 mb-4">
+            {member.experienceYears && (
+              <span className="px-3 py-1 bg-[#f5edce]/40 text-[#1C1C1C] text-[10px] font-bold rounded-full uppercase tracking-tighter">
+                {member.experienceYears} Years Exp
+              </span>
+            )}
+            {member.specializationTags?.map((tag, idx) => (
+              <span key={idx} className="px-3 py-1 bg-white border border-[#C8A951]/10 text-[#7a7065] text-[10px] font-bold rounded-full uppercase tracking-tighter">{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Action */}
+        <button
+          onClick={onClick}
+          className="w-full py-3 rounded-xl border border-[#1C1C1C] text-[#1C1C1C] text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#1C1C1C] hover:text-white"
+        >
+          View Profile
+        </button>
       </div>
     </Reveal>
   );
@@ -478,12 +452,9 @@ const SalonStaff = ({ id }) => {
               <div className="w-20 h-20 rounded-full bg-[#f5edce]/50 flex items-center justify-center mb-5">
                 <UsersOffIcon />
               </div>
-              <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C] mb-2">
-                No Staff for this Store
+              <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C]">
+                No Staff Members Available
               </h3>
-              <p className="text-[#9e9287] text-sm font-light max-w-sm text-center leading-relaxed">
-                This salon hasn't added any team members yet. Check back later for updates.
-              </p>
             </div>
           </Reveal>
         </div>
@@ -506,21 +477,17 @@ const SalonStaff = ({ id }) => {
               >
                 Meet Our <em className="italic text-[#C8A951]">Experts</em>
               </h2>
-              <p className="text-[#7a7065] text-[14px] leading-relaxed font-light opacity-80 max-w-md mx-auto">
-                Our talented professionals are here to provide you with an exceptional experience.
-              </p>
             </div>
           </Reveal>
 
-          <div className={`grid gap-5 ${
-            staff.length === 1
-              ? 'grid-cols-1 max-w-[220px] mx-auto'
-              : staff.length === 2
-                ? 'grid-cols-2 max-w-md mx-auto'
-                : staff.length === 3
-                  ? 'grid-cols-2 md:grid-cols-3 max-w-2xl mx-auto'
-                  : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-          }`}>
+          <div className={`grid gap-5 ${staff.length === 1
+            ? 'grid-cols-1 max-w-[220px] mx-auto'
+            : staff.length === 2
+              ? 'grid-cols-2 max-w-md mx-auto'
+              : staff.length === 3
+                ? 'grid-cols-2 md:grid-cols-3 max-w-2xl mx-auto'
+                : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+            }`}>
             {staff.map((member, index) => (
               <StaffCard
                 key={member.id || index}
