@@ -19,10 +19,17 @@ export const applyInterceptors = (axiosInstance) => {
     (response) => response,
     (error) => {
       if (error.response?.status === 401) {
+        // Clear token immediately
         TokenService.removeToken();
-        if (typeof window !== "undefined") {
+
+        // Redirect to login if on client side
+        if (typeof window !== "undefined" && window.location.pathname !== "/login") {
           window.location.href = "/login";
         }
+
+        // Return a pending promise that never resolves/rejects to "swallow" the error
+        // and prevent UI flashes of "Failed to fetch" or similar error states
+        return new Promise(() => { });
       }
       return Promise.reject(error);
     }

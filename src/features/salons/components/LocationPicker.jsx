@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MapPin, Navigation, Search, Loader2, X, Map as MapIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
-const MapPickerModal = dynamic(() => import('./MapPickerModal'), { 
+const MapPickerModal = dynamic(() => import('./MapPickerModal'), {
     ssr: false,
     loading: () => null
 });
@@ -86,26 +86,26 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7a2860]">
                     <MapPin size={18} />
                 </div>
-                
+
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onFocus={() => query.length >= 3 && setShowSuggestions(true)}
                     placeholder="Search for a city or area..."
-                    className="w-full h-[55px] pl-12 pr-[160px] bg-white border border-[#3c143212] rounded-2xl text-[0.9rem] font-medium text-[#1e0a18] outline-none transition-all focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 shadow-sm"
+                    className="w-full h-11 pl-10 pr-[140px] bg-white border border-[#3c143212] rounded-xl text-[0.8rem] font-medium text-[#1e0a18] outline-none transition-all focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 shadow-sm"
                 />
 
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                     {query && (
-                        <button 
+                        <button
                             onClick={() => { setQuery(""); setSuggestions([]); }}
                             className="p-1.5 text-slate-400 hover:text-slate-600"
                         >
                             <X size={16} />
                         </button>
                     )}
-                    
+
                     <button
                         onClick={() => setIsMapOpen(true)}
                         className="p-2.5 bg-slate-100 text-[#1e0a18] rounded-xl hover:bg-[#7a2860] hover:text-white transition-all active:scale-95"
@@ -154,7 +154,7 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
                 </div>
             )}
 
-            <MapPickerModal 
+            <MapPickerModal
                 isOpen={isMapOpen}
                 onClose={() => setIsMapOpen(false)}
                 onSelect={handleMapSelect}

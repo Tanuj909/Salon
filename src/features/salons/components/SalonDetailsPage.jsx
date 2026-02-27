@@ -50,9 +50,8 @@ function Reveal({ children, delay = 0, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      } ${className}`}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -154,24 +153,17 @@ export default function SalonDetailsPage({ id }) {
           <div className="absolute inset-0 bg-gradient-to-t from-[#1C1C1C] via-[#1C1C1C]/40 to-transparent" />
         </div>
 
-        <nav className="absolute top-0 left-0 right-0 z-20 px-8 py-6 flex justify-between items-center">
-             <Link href="/salons" className="p-2 text-white/80 hover:text-white transition-colors bg-black/20 rounded-full backdrop-blur-sm">
-              <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-            </Link>
-          <div className="flex gap-2">
-            <button className="p-2 text-white/80 hover:text-white transition-colors bg-black/20 rounded-full backdrop-blur-sm">
-              <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </button>
-          </div>
-        </nav>
 
         <div className="absolute bottom-0 left-0 right-0 z-10 px-8 md:px-16 pb-16 md:pb-24 text-white">
-          <div className="max-w-4xl">
+          <div className="max-w-4xl mx-auto">
+            <Reveal delay={100}>
+              <Link href="/salons" className="inline-flex items-center gap-2 text-white/60 hover:text-[#C8A951] transition-colors mb-8 group">
+                <svg className="group-hover:-translate-x-1 transition-transform" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span className="text-xs uppercase tracking-widest font-medium">Back to Salons</span>
+              </Link>
+            </Reveal>
             <Reveal delay={200}>
               <div className="flex gap-3 flex-wrap mb-6">
                 {salon.verificationStatus === "VERIFIED" && (
@@ -306,11 +298,11 @@ export default function SalonDetailsPage({ id }) {
                   <div className="w-28 h-28 md:w-36 md:h-36 rounded-full border border-[#C8A951]/20 bg-white shadow-[0_10px_30px_-10px_rgba(200,169,81,0.1)] flex items-center justify-center p-6 text-center transition-all duration-500 hover:border-[#C8A951] hover:shadow-[#C8A951]/30 hover:-translate-y-2 relative overflow-hidden group">
                     {/* Decorative Ring */}
                     <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#C8A951]/10 rounded-full scale-90 group-hover:scale-100 transition-transform duration-700" />
-                    
+
                     <span className="font-[Cormorant_Garamond] text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-[#1C1C1C] z-10 group-hover:text-[#C8A951] transition-colors duration-300">
                       {cat.name}
                     </span>
-                    
+
                     {/* Hover Glow */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#C8A951]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
@@ -369,7 +361,7 @@ export default function SalonDetailsPage({ id }) {
           SALON STAFF SECTION
       ═══════════════════════════════════════════ */}
 
-      <SalonStaff  id={id}/>
+      <SalonStaff id={id} />
 
       {/* ═══════════════════════════════════════════
           LOCATION SECTION

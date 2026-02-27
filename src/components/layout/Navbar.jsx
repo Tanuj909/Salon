@@ -25,7 +25,7 @@ export default function Navbar() {
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2">
             <span className="material-symbols-outlined text-terracotta text-3xl">content_cut</span>
-            <span className="text-xl font-extrabold tracking-tight text-earthy-brown font-display">LUXE</span>
+            <span className="text-xl font-extrabold tracking-tight text-earthy-brown font-display">Fast Booking</span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             {['Home', 'Salons', 'About', 'Contact'].map((item) => (

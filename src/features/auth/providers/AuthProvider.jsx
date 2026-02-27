@@ -35,6 +35,9 @@ export const AuthProvider = ({ children }) => {
     const logout = useCallback(() => {
         TokenService.removeToken();
         setUser(null);
+        if (typeof window !== "undefined") {
+            window.location.href = "/login";
+        }
     }, []);
 
     useEffect(() => {
