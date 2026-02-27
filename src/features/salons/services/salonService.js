@@ -14,3 +14,17 @@ export const fetchSalonById = async (id) => {
   );
   return response.data;
 };
+
+export const getAllSalonStaff = async (id) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SALON.STAFF(id)
+  );
+  return response.data.body.content;
+};
+
+export const getStaffProfile = async (staffId) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SALON.STAFF_PROFILE(staffId)
+  );
+  return response.data.body;
+};

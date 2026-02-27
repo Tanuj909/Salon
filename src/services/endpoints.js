@@ -14,10 +14,12 @@ export const ENDPOINTS = {
   },
 
   SALON: {
-    NEARBY: (lat, lng, radius) =>
-      `/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
+    NEARBY: (lat, lng, radius) => `/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
 
     DETAILS: (id) => `/businesses/${id}`,
+
+    STAFF: (id)=> `/staff/business/${id}`,
+    STAFF_PROFILE: (id) => `/staff/${id}`,
   },
 
   BUSINESS: {

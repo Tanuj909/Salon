@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSalonDetails } from "../hooks/useSalonDetails";
+import SalonStaff from "./SalonStaff";
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 function useReveal() {
@@ -363,6 +364,12 @@ export default function SalonDetailsPage({ id }) {
           </div>
         </section>
       )}
+
+      {/* ═══════════════════════════════════════════
+          SALON STAFF SECTION
+      ═══════════════════════════════════════════ */}
+
+      <SalonStaff  id={id}/>
 
       {/* ═══════════════════════════════════════════
           LOCATION SECTION
