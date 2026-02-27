@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSalonDetails } from "../hooks/useSalonDetails";
 import SalonStaff from "./SalonStaff";
+import SalonServices from "./SalonServices";
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 function useReveal() {
@@ -139,7 +140,7 @@ export default function SalonDetailsPage({ id }) {
   }
 
   // Create a combined object for UI compatibility
-  const salonImg = salon.bannerImageUrl || (salon.imageUrls && salon.imageUrls.length > 0 ? salon.imageUrls[0] : "");
+  const salonImg = salon.bannerImageUrl || (salon.imageUrls && salon.imageUrls.length > 0 ? salon.imageUrls[0] : null);
   const locationText = [salon.address, salon.city, salon.state, salon.postalCode, salon.country]
     .filter(Boolean)
     .filter(str => !str.includes("Coordinates:")) // Filter out placeholder coordinates string if full details exist
@@ -152,7 +153,7 @@ export default function SalonDetailsPage({ id }) {
       ═══════════════════════════════════════════ */}
       <section className="relative h-[80vh] min-h-[600px] overflow-hidden">
         <div ref={heroRef} className="absolute inset-0">
-          <img src={salonImg} alt={salon.name} className="w-full h-full object-cover" />
+          {salonImg && <img src={salonImg} alt={salon.name} className="w-full h-full object-cover" />}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         </div>
 
@@ -355,56 +356,9 @@ export default function SalonDetailsPage({ id }) {
       )}
 
       {/* ═══════════════════════════════════════════
-          SERVICES SECTION
+          SERVICES SECTION (PAGINATED API)
       ═══════════════════════════════════════════ */}
-      {salon.services && salon.services.length > 0 && (
-        <section className="py-24 bg-white" id="services">
-          <div className="max-w-7xl mx-auto px-8">
-            <Reveal>
-              <div className="text-center mb-16">
-                <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Pricing & Services</span>
-                <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C]">Our Services</h2>
-              </div>
-            </Reveal>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {salon.services.map((service, i) => (
-                <Reveal key={i} delay={i * 100}>
-                  <div className="group bg-[#FDFAF6] rounded-3xl p-10 border border-[#C8A951]/5 hover:border-[#C8A951]/20 hover:bg-white hover:shadow-[0_30px_60px_-12px_rgba(200,169,81,0.15)] transition-all duration-500 hover:-translate-y-2 relative flex flex-col h-full">
-                    <div className="mb-8">
-                      <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-3xl text-[#1C1C1C] mb-4 group-hover:text-[#C8A951] transition-colors">{service.name}</h3>
-                      <p className="text-[#7a7065] text-sm leading-relaxed line-clamp-2">{service.description || service.desc}</p>
-                    </div>
-
-                    <div className="mt-auto">
-                      <div className="flex items-center justify-between mb-8">
-                        <div className="flex flex-col">
-                          <span className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Price</span>
-                          <span className="font-[Cormorant_Garamond,Georgia,serif] text-3xl text-[#1C1C1C] font-semibold">
-                            ₹{service.price}
-                          </span>
-                        </div>
-                        {service.duration && (
-                          <div className="flex flex-col items-end">
-                            <span className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Duration</span>
-                            <span className="flex items-center gap-1.5 text-sm text-[#1C1C1C] font-medium">
-                              <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
-                                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-                              </svg>
-                              {service.duration}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      <button className="w-full py-4 rounded-xl bg-[#1C1C1C] text-white text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#C8A951] hover:text-[#1C1C1C] hover:shadow-lg">Book Now</button>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <SalonServices id={id} />
 
       {/* ═══════════════════════════════════════════
           REVIEWS SECTION

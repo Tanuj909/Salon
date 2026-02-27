@@ -28,3 +28,10 @@ export const getStaffProfile = async (staffId) => {
   );
   return response.data.body;
 };
+
+export const getSalonServices = async (id) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SALON.SERVICES(id)
+  );
+  return response.data.body.content;
+};

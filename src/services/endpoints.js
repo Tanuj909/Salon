@@ -5,7 +5,7 @@ export const ENDPOINTS = {
     ME: "/auth/me",
   },
 
-  OTP:{
+  OTP: {
     SEND: "/auth/send-otp"
   },
 
@@ -18,8 +18,9 @@ export const ENDPOINTS = {
 
     DETAILS: (id) => `/businesses/${id}`,
 
-    STAFF: (id)=> `/staff/business/${id}`,
+    STAFF: (id) => `/staff/business/${id}`,
     STAFF_PROFILE: (id) => `/staff/${id}`,
+    SERVICES: (id) => `/services/business/${id}`,
   },
 
   BUSINESS: {
