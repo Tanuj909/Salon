@@ -158,15 +158,18 @@ export default function BecomePartnerPage() {
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-green-100">
                 <CheckCircle2 size={40} className="text-green-500" />
               </div>
-              <h2 className="font-[Cormorant_Garamond] text-4xl text-[#1C1C1C] mb-4">
+
+              <div className="flex flex-col items-center">
+              <h2 className="font-[Cormorant_Garamond] text-4xl text-[#1C1C1C] mb-5">
                 Application <em className="italic text-[#C8A951]">Received</em>
               </h2>
               <p className="text-[#7a7065] text-lg max-w-md mx-auto mb-10 font-light">
                 Thank you for choosing Luxe. Our curation team will review your business details and get back to you within 48 hours.
               </p>
+              </div>
               <button
                 onClick={() => router.push("/")}
-                className="px-10 py-4 bg-[#1C1C1C] text-[#C8A951] rounded-lg text-sm font-medium tracking-widest uppercase hover:bg-[#2a2a2a] transition-all shadow-lg"
+                className="px-10 py-4 bg-[#1C1C1C] text-[#C8A951] rounded-lg text-sm font-medium tracking-widest uppercase hover:bg-[#2a2a2a] transition-all shadow-lg mt-5"
               >
                 Return Home
               </button>

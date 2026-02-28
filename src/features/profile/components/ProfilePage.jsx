@@ -27,7 +27,7 @@ const ProfilePage = () => {
                 <PersonalInfoSection user={customer} />
 
                 {/* Booking History (Clean Cards) */}
-                <BookingHistory bookings={customer.recentBookings} />
+                <BookingHistory businessId={customer.businessId} />
 
                 {/* Recent Reviews (Feedback) */}
                 <RecentReviews reviews={customer.recentReviews} />

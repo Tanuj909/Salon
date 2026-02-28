@@ -23,6 +23,11 @@ export const ENDPOINTS = {
     SERVICES: (id) => `/services/business/${id}`,
   },
 
+  BOOKINGS: {
+    CREATE: "/bookings",
+    MY_BUSINESS: (businessId) => `/bookings/my/business/${businessId}`,
+  },
+
   BUSINESS: {
     REGISTER: "/businesses/register",
   },

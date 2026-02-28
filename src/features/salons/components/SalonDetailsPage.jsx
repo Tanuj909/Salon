@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSalonDetails } from "../hooks/useSalonDetails";
 import SalonStaff from "./SalonStaff";
 import SalonServices from "./SalonServices";
+import BookAppointmentModal from "./BookAppointmentModal";
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 function useReveal() {
@@ -116,8 +117,20 @@ const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frid
 export default function SalonDetailsPage({ id }) {
   const { salon, loading, error } = useSalonDetails(id);
   const [lightboxSrc, setLightboxSrc] = useState(null);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [preSelectedService, setPreSelectedService] = useState(null);
   const today = DAY_NAMES[new Date().getDay()];
   const heroRef = useParallax();
+
+  const handleBookService = (service) => {
+    setPreSelectedService(service);
+    setIsBookingOpen(true);
+  };
+
+  const handleCloseBooking = () => {
+    setIsBookingOpen(false);
+    setPreSelectedService(null);
+  };
 
   if (loading) {
     return (
@@ -224,10 +237,10 @@ export default function SalonDetailsPage({ id }) {
 
             <Reveal delay={500}>
               <div className="flex gap-4 sm:gap-6 flex-wrap">
-                <a href="#booking" className="group relative px-10 py-5 rounded-full bg-[#C8A951] text-[#1C1C1C] text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_20px_40px_-10px_rgba(200,169,81,0.4)] hover:-translate-y-1">
+                <button onClick={() => setIsBookingOpen(true)} className="group relative px-10 py-5 rounded-full bg-[#C8A951] text-[#1C1C1C] text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_20px_40px_-10px_rgba(200,169,81,0.4)] hover:-translate-y-1 border-0 cursor-pointer">
                   <span className="relative z-10">Book Appointment</span>
                   <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                </a>
+                </button>
                 <a href="#services" className="group px-10 py-5 rounded-full border-2 border-white text-white text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:bg-white hover:text-black">
                   <span>View Services</span>
                 </a>
@@ -358,7 +371,7 @@ export default function SalonDetailsPage({ id }) {
       {/* ═══════════════════════════════════════════
           SERVICES SECTION (PAGINATED API)
       ═══════════════════════════════════════════ */}
-      <SalonServices id={id} />
+      <SalonServices id={id} onBookService={handleBookService} />
 
       {/* ═══════════════════════════════════════════
           REVIEWS SECTION
@@ -530,12 +543,21 @@ export default function SalonDetailsPage({ id }) {
               Book Your <em className="italic text-[#C8A951] font-light">Experience</em>
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <button className="px-12 py-6 rounded-full bg-[#C8A951] text-[#1C1C1C] text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1">Book Appointment Now</button>
+              <button onClick={() => setIsBookingOpen(true)} className="px-12 py-6 rounded-full bg-[#C8A951] text-[#1C1C1C] text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1">Book Appointment Now</button>
               <button className="px-12 py-6 rounded-full border border-white/20 text-white text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white/10">Inquire via WhatsApp</button>
             </div>
           </Reveal>
         </div>
       </section>
+
+      {/* Booking Modal */}
+      <BookAppointmentModal
+        isOpen={isBookingOpen}
+        onClose={handleCloseBooking}
+        salonId={id}
+        salonName={salon.name}
+        preSelectedService={preSelectedService}
+      />
 
       {/* Global Styles */}
       <style jsx>{`
