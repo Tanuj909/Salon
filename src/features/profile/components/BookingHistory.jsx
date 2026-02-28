@@ -1,9 +1,53 @@
-import React from 'react';
-import { Calendar, Clock, CreditCard, User, Scissors, ChevronRight, ChevronLeft, Loader2, AlertCircle, Receipt, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { Calendar, Clock, CreditCard, User, Scissors, ChevronRight, ChevronLeft, Loader2, AlertCircle, Receipt, MapPin, Star } from 'lucide-react';
 import { useBookingHistory } from '../hooks/useBookingHistory';
 
 const BookingHistory = ({ businessId }) => {
-    const { bookings, loading, error, pagination, nextPage, prevPage } = useBookingHistory(businessId);
+    const { bookings, loading, error, pagination, nextPage, prevPage, cancelBooking, isCanceling, submitReview, isSubmittingReview } = useBookingHistory(businessId);
+
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [newReview, setNewReview] = useState({
+        rating: 5,
+        comment: "",
+        isAnonymous: false
+    });
+
+    const handleCancel = async (bookingId) => {
+        if (isCanceling) return;
+        const reason = window.prompt("Please provide a reason for cancellation:");
+        if (reason === null) return;
+
+        const success = await cancelBooking(bookingId, reason.trim() || "Client not available");
+        if (!success) {
+            alert("Failed to cancel the booking. Please try again.");
+        }
+    };
+
+    const handleOpenReviewModal = (booking) => {
+        setSelectedBooking(booking);
+        setNewReview({ rating: 5, comment: "", isAnonymous: false });
+        setShowReviewModal(true);
+    };
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedBooking) return;
+
+        const success = await submitReview({
+            ...newReview,
+            businessId: selectedBooking.business?.id || businessId,
+            bookingId: selectedBooking.id
+        });
+
+        if (success) {
+            setShowReviewModal(false);
+            setSelectedBooking(null);
+            alert("Thank you for your valuable feedback!");
+        } else {
+            alert("Failed to submit review. Please try again later.");
+        }
+    };
 
     const getStatusStyle = (status) => {
         if (!status) return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
@@ -247,8 +291,8 @@ const BookingHistory = ({ businessId }) => {
                                 </div>
                             </div>
 
-                            {/* Right: Pricing */}
-                            <div className="flex items-center justify-between md:justify-end gap-8 md:min-w-[180px]">
+                            {/* Right: Pricing & Actions */}
+                            <div className="flex flex-col md:items-end gap-3 md:min-w-[180px]">
                                 <div className="text-right">
                                     <p className="text-[#3c143230] text-[0.55rem] uppercase font-black tracking-widest mb-0.5">Amount</p>
                                     {booking.discountAmount > 0 ? (
@@ -272,6 +316,25 @@ const BookingHistory = ({ businessId }) => {
                                         {booking.paymentStatus || ''}
                                     </p>
                                 </div>
+
+                                <button
+                                    onClick={() => handleCancel(booking.id)}
+                                    disabled={isCanceling}
+                                    className="mt-1 px-4 py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center"
+                                >
+                                    Cancel Booking
+                                </button>
+
+                                {/* Write Review Button */}
+                                {booking.status?.toUpperCase() === 'COMPLETED' && (
+                                    <button
+                                        onClick={() => handleOpenReviewModal(booking)}
+                                        className="mt-1 px-4 py-1.5 rounded-lg border border-[#10b98120] text-[#10b981] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#10b98110] transition-colors w-full md:w-auto text-center flex items-center justify-center gap-1.5"
+                                    >
+                                        <Star size={12} />
+                                        Write Review
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -298,6 +361,80 @@ const BookingHistory = ({ businessId }) => {
                     >
                         Next →
                     </button>
+                </div>
+            )}
+
+            {/* Review Modal */}
+            {showReviewModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={(e) => e.target === e.currentTarget && setShowReviewModal(false)}>
+                    <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+                        <button
+                            onClick={() => setShowReviewModal(false)}
+                            className="absolute top-6 right-6 text-[#3c143260] hover:text-[#1e0a18] transition-colors"
+                            type="button"
+                        >
+                            <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                                <path d="M18 6L6 18M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <h3 className="font-[Cormorant_Garamond] text-3xl font-bold text-[#1e0a18] mb-2">Share Your Experience</h3>
+                        <p className="text-[#3c143260] text-sm mb-6">Your feedback helps us maintain our standard of luxury.</p>
+
+                        <form onSubmit={handleReviewSubmit} className="space-y-4">
+                            <div>
+                                <label className="block text-[10px] uppercase tracking-widest text-[#3c143280] font-bold mb-2">Rating *</label>
+                                <div className="flex gap-2">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            key={star}
+                                            type="button"
+                                            onClick={() => setNewReview({ ...newReview, rating: star })}
+                                            className={`text-3xl transition-colors focus:outline-none ${star <= newReview.rating ? 'text-[#C8A951]' : 'text-[#e5d9c5]'}`}
+                                        >
+                                            ★
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <label htmlFor="review-comment" className="block text-[10px] uppercase tracking-widest text-[#3c143280] font-bold mb-2">Comments *</label>
+                                <textarea
+                                    id="review-comment"
+                                    required
+                                    rows={4}
+                                    value={newReview.comment}
+                                    onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                                    className="w-full px-4 py-3 rounded-xl border border-[#3c143210] bg-[#fdfaf8] focus:outline-none focus:border-[#7a286040] transition-colors text-sm resize-none"
+                                    placeholder="Tell us about your service..."
+                                />
+                            </div>
+
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <div className="relative flex items-center justify-center w-5 h-5 border border-[#3c143220] rounded group-hover:border-[#7a2860] transition-colors">
+                                    <input
+                                        type="checkbox"
+                                        checked={newReview.isAnonymous}
+                                        onChange={(e) => setNewReview({ ...newReview, isAnonymous: e.target.checked })}
+                                        className="appearance-none absolute w-full h-full cursor-pointer peer"
+                                    />
+                                    <svg className="w-3 h-3 text-[#7a2860] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </div>
+                                <span className="text-[#3c143260] text-sm select-none">Submit anonymously</span>
+                            </label>
+
+                            <button
+                                type="submit"
+                                disabled={isSubmittingReview}
+                                className="w-full mt-6 py-4 rounded-xl bg-[#1e0a18] text-white text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#7a2860] disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isSubmittingReview ? "Submitting..." : "Post Review"}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             )}
         </div>

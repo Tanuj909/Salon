@@ -20,12 +20,18 @@ export const ENDPOINTS = {
 
     STAFF: (id) => `/staff/business/${id}`,
     STAFF_PROFILE: (id) => `/staff/${id}`,
-    SERVICES: (id) => `/services/business/${id}`,
+    SERVICES: (id) => `/services/business/${id}/active`,
+  },
+
+  REVIEWS: {
+    BY_BUSINESS: (businessId) => `/reviews/business/${businessId}`,
+    CREATE: "/reviews",
   },
 
   BOOKINGS: {
     CREATE: "/bookings",
     MY_BUSINESS: (businessId) => `/bookings/my/business/${businessId}`,
+    CANCEL: (id) => `/bookings/my/${id}/cancel`,
   },
 
   BUSINESS: {

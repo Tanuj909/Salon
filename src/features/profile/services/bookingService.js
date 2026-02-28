@@ -12,3 +12,12 @@ export const createBooking = async (bookingData) => {
   const response = await apiClient.post(ENDPOINTS.BOOKINGS.CREATE, bookingData);
   return response.data;
 };
+
+export const cancelMyBooking = async (bookingId, reason) => {
+  const response = await apiClient.put(
+    ENDPOINTS.BOOKINGS.CANCEL(bookingId),
+    null,
+    { params: { reason } }
+  );
+  return response.data;
+};

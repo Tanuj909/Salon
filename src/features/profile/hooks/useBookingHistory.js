@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { getMyBusinessBookings } from "../services/bookingService";
+import { getMyBusinessBookings, cancelMyBooking } from "../services/bookingService";
+import { createReview } from "../../salons/services/reviewService";
 
 export const useBookingHistory = (businessId) => {
   const [bookings, setBookings] = useState([]);
@@ -16,6 +17,9 @@ export const useBookingHistory = (businessId) => {
     currentPage: 0,
     pageSize: 20,
   });
+
+  const [isCanceling, setIsCanceling] = useState(false);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const fetchBookings = useCallback(async (pageNum = 0) => {
     if (!businessId) {
@@ -67,14 +71,47 @@ export const useBookingHistory = (businessId) => {
     }
   };
 
+  const cancelBooking = async (bookingId, reason) => {
+    setIsCanceling(true);
+    try {
+      await cancelMyBooking(bookingId, reason);
+      // Refetch to get updated status
+      await fetchBookings(page);
+      return true;
+    } catch (err) {
+      console.error("Error canceling booking:", err);
+      return false;
+    } finally {
+      setIsCanceling(false);
+    }
+  };
+
+  const submitReview = async (reviewData) => {
+    setIsSubmittingReview(true);
+    try {
+      await createReview(reviewData);
+      // Wait for completion, then optional refetch or UI update can happen.
+      return true;
+    } catch (err) {
+      console.error("Error creating review:", err);
+      return false;
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  };
+
   return {
     bookings,
     loading,
     error,
     pagination,
+    isCanceling,
+    isSubmittingReview,
     nextPage,
     prevPage,
     goToPage,
+    cancelBooking,
+    submitReview,
     refetch: () => fetchBookings(page),
   };
 };

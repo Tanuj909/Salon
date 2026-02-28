@@ -6,6 +6,7 @@ import { useSalonDetails } from "../hooks/useSalonDetails";
 import SalonStaff from "./SalonStaff";
 import SalonServices from "./SalonServices";
 import BookAppointmentModal from "./BookAppointmentModal";
+import SalonReviews from "./SalonReviews";
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 function useReveal() {
@@ -376,78 +377,12 @@ export default function SalonDetailsPage({ id }) {
       {/* ═══════════════════════════════════════════
           REVIEWS SECTION
       ═══════════════════════════════════════════ */}
-      {salon.reviews && salon.reviews.length > 0 && (
-        <section className="py-24 bg-[#FDFAF6]" id="reviews">
-          <div className="max-w-7xl mx-auto px-8">
-            <Reveal>
-              <div className="text-center mb-16">
-                <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Testimonials</span>
-                <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] mb-6">Customer Reviews</h2>
-              </div>
-            </Reveal>
-
-            <div className="grid lg:grid-cols-3 gap-12 items-start">
-              <Reveal className="lg:col-span-1 bg-white p-10 rounded-3xl shadow-sm border border-[#C8A951]/5">
-                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-3xl text-[#1C1C1C] mb-6">Overall Rating</h3>
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-6xl font-bold text-[#1C1C1C]">
-                    {(salon.averageRating || 0).toFixed(1)}
-                  </span>
-                  <div>
-                    <div className="flex text-[#C8A951] mb-1">
-                      {"★".repeat(Math.round(salon.averageRating || 0))}{"☆".repeat(5 - Math.round(salon.averageRating || 0))}
-                    </div>
-                    <span className="text-[#9e9287] text-sm font-medium uppercase tracking-widest">{salon.totalReviews || 0} Reviews</span>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  {[5, 4, 3, 2, 1].map((star) => (
-                    <div key={star} className="flex items-center gap-4">
-                      <span className="text-xs font-bold text-[#7a7065] w-4">{star}</span>
-                      <div className="flex-1 h-1.5 bg-[#f5edce] rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-[#C8A951]"
-                          style={{ width: `${(salon.ratingBreakdown?.[star] / salon.totalReviews) * 100 || 0}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-
-              <div className="lg:col-span-2 grid md:grid-cols-2 gap-6">
-                {salon.reviews.map((review, i) => (
-                  <Reveal key={review.id || i} delay={i * 100}>
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-[#C8A951]/5 hover:border-[#C8A951]/20 transition-all">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full bg-[#f5edce] flex items-center justify-center text-[#C8A951] font-bold overflow-hidden">
-                          {review.userProfileImageUrl ? (
-                            <img src={review.userProfileImageUrl} alt={review.userName} className="w-full h-full object-cover" />
-                          ) : (
-                            review.userName?.substring(0, 2).toUpperCase()
-                          )}
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-[#1C1C1C]">
-                            {review.userName}
-                          </h4>
-                          <div className="flex text-[#C8A951] text-[10px]">
-                            {"★".repeat(Math.round(review.rating))}{"☆".repeat(5 - Math.round(review.rating))}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-[#7a7065] text-sm leading-relaxed italic">
-                        "{review.comment}"
-                      </p>
-                    </div>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      <SalonReviews
+        id={id}
+        overallRating={salon.averageRating}
+        totalReviews={salon.totalReviews}
+        ratingBreakdown={salon.ratingBreakdown}
+      />
 
       {/* ═══════════════════════════════════════════
           SALON STAFF SECTION
