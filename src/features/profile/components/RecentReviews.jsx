@@ -9,12 +9,12 @@ const RecentReviews = ({ reviews }) => {
     if (displayReviews.length === 0) {
         return (
             <div className="px-8 mt-16">
-                <h2 className="text-2xl font-bold text-slate-900 mb-8">Recent Reviews</h2>
-                <div className="bg-white p-12 rounded-xl border border-dashed border-slate-200 text-center">
-                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+                <h2 className="text-2xl font-bold text-gray-900 mb-8">Recent Reviews</h2>
+                <div className="bg-white p-12 rounded-xl border border-dashed border-border text-center">
+                    <div className="w-16 h-16 bg-background-light rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                         <MessageSquare size={32} />
                     </div>
-                    <p className="text-slate-500 font-medium">You haven't left any reviews yet.</p>
+                    <p className="text-muted font-medium">You haven't left any reviews yet.</p>
                 </div>
             </div>
         );

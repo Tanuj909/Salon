@@ -152,9 +152,9 @@ const BookingHistory = ({ businessId }) => {
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
                 <div className="bg-red-50 border border-red-100 rounded-2xl p-8 text-center">
-                    <AlertCircle className="w-10 h-10 text-red-400 mx-auto mb-3" />
-                    <p className="text-red-600 font-medium">{error}</p>
-                    <p className="text-red-400 text-sm mt-1">Please try again later.</p>
+                    <AlertCircle className="w-10 h-10 text-primary mx-auto mb-3" />
+                    <p className="text-primary font-medium">{error}</p>
+                    <p className="text-primary text-sm mt-1">Please try again later.</p>
                 </div>
             </div>
         );
@@ -167,12 +167,12 @@ const BookingHistory = ({ businessId }) => {
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
-                <div className="bg-white p-12 rounded-xl border border-dashed border-slate-200 text-center">
-                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+                <div className="bg-white p-12 rounded-xl border border-dashed border-border text-center">
+                    <div className="w-16 h-16 bg-background-light rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                         <Calendar size={32} />
                     </div>
-                    <p className="text-slate-500 font-medium">No bookings found in your history.</p>
-                    <p className="text-slate-400 text-sm mt-1">Your appointments will appear here once booked.</p>
+                    <p className="text-muted font-medium">No bookings found in your history.</p>
+                    <p className="text-muted text-sm mt-1">Your appointments will appear here once booked.</p>
                 </div>
             </div>
         );

@@ -25,7 +25,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4 md:gap-8">
           <Link href="/" className="flex items-center gap-2">
             <span className="material-symbols-outlined text-terracotta text-3xl">content_cut</span>
-            <span className="text-xl font-extrabold tracking-tight text-earthy-brown font-display hidden [@media(min-width:400px)]:inline">Fast Booking</span>
+            <span className="text-xl font-extrabold tracking-tight text-earthy-brown hidden [@media(min-width:400px)]:inline">Fast Booking</span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             {['Home', 'Salons', 'About', 'Contact'].map((item) => (
@@ -36,7 +36,7 @@ export default function Navbar() {
                     item === 'About' ? '/#about' :
                       `/${item.toLowerCase()}`
                 }
-                className="text-sm font-semibold hover:text-terracotta transition-colors text-earthy-brown font-display"
+                className="text-sm font-semibold hover:text-terracotta transition-colors text-earthy-brown"
               >
                 {item}
               </Link>
@@ -48,7 +48,7 @@ export default function Navbar() {
           <div className="relative hidden sm:block">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-terracotta/60 text-sm">search</span>
             <input
-              className="pl-10 pr-4 py-2 bg-white/40 border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-48 lg:w-64 transition-all placeholder-earthy-brown/50 font-display outline-none text-earthy-brown"
+              className="pl-10 pr-4 py-2 bg-white/40 border-none rounded-full text-sm focus:ring-2 focus:ring-primary w-48 lg:w-64 transition-all placeholder-earthy-brown/50 outline-none text-earthy-brown"
               placeholder="Search services..."
               type="text"
             />

@@ -183,12 +183,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     if (s.num === 2 && canProceedStep1) setStep(2);
                                     if (s.num === 3 && canProceedStep1 && canProceedStep2) setStep(3);
                                 }}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all ${step === s.num
-                                    ? "bg-[#C8A951] text-[#1C1C1C]"
-                                    : step > s.num
-                                        ? "bg-[#1C1C1C] text-white"
-                                        : "bg-white text-[#9e9287] border border-[#C8A951]/10"
-                                    }`}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all ${step === s.num ? "bg-[#C8A951] text-[#1C1C1C]" : step > s.num ? "bg-[#1C1C1C] text-white" : "bg-white text-[#9e9287] border border-[#C8A951]/10"}`}
                             >
                                 <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[9px]">
                                     {step > s.num ? "✓" : s.num}
@@ -230,10 +225,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                             <button
                                                 key={service.id}
                                                 onClick={() => toggleService(service)}
-                                                className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-300 group ${isSelected
-                                                    ? "border-[#C8A951] bg-[#C8A951]/5 shadow-[0_0_0_1px_rgba(200,169,81,0.2)]"
-                                                    : "border-transparent bg-[#F7F3EE] hover:border-[#C8A951]/30 hover:bg-[#F7F3EE]/80"
-                                                    }`}
+                                                className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-300 group ${isSelected ? "border-[#C8A951] bg-[#C8A951]/5 shadow-[0_0_0_1px_rgba(200,169,81,0.2)]" : "border-transparent bg-[#F7F3EE] hover:border-[#C8A951]/30 hover:bg-[#F7F3EE]/80"}`}
                                             >
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-4">
@@ -288,10 +280,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                         {/* "Any" option */}
                                         <button
                                             onClick={() => setSelectedStaff(null)}
-                                            className={`flex-shrink-0 flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all min-w-[100px] ${!selectedStaff
-                                                ? "border-[#C8A951] bg-[#C8A951]/5"
-                                                : "border-transparent bg-[#F7F3EE] hover:border-[#C8A951]/20"
-                                                }`}
+                                            className={`flex-shrink-0 flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all min-w-[100px] ${!selectedStaff ? "border-[#C8A951] bg-[#C8A951]/5" : "border-transparent bg-[#F7F3EE] hover:border-[#C8A951]/20"}`}
                                         >
                                             <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg ${!selectedStaff ? "bg-[#C8A951] text-white" : "bg-white text-[#C8A951] border border-[#C8A951]/10"}`}>
                                                 <Sparkles size={18} />
@@ -305,10 +294,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                 <button
                                                     key={member.id}
                                                     onClick={() => setSelectedStaff(member)}
-                                                    className={`flex-shrink-0 flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all min-w-[100px] ${isSelected
-                                                        ? "border-[#C8A951] bg-[#C8A951]/5"
-                                                        : "border-transparent bg-[#F7F3EE] hover:border-[#C8A951]/20"
-                                                        }`}
+                                                    className={`flex-shrink-0 flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all min-w-[100px] ${isSelected ? "border-[#C8A951] bg-[#C8A951]/5" : "border-transparent bg-[#F7F3EE] hover:border-[#C8A951]/20"}`}
                                                 >
                                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${isSelected ? "ring-2 ring-[#C8A951] ring-offset-2" : ""}`}>
                                                         {member.profileImageUrl ? (
@@ -437,10 +423,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                         <button
                                             key={pm.value}
                                             onClick={() => setPaymentMethod(pm.value)}
-                                            className={`flex items-center gap-2 px-5 py-3 rounded-xl border-2 text-sm font-medium transition-all ${paymentMethod === pm.value
-                                                ? "border-[#C8A951] bg-[#C8A951]/5 text-[#1C1C1C]"
-                                                : "border-transparent bg-[#F7F3EE] text-[#7a7065] hover:border-[#C8A951]/20"
-                                                }`}
+                                            className={`flex items-center gap-2 px-5 py-3 rounded-xl border-2 text-sm font-medium transition-all ${paymentMethod === pm.value ? "border-[#C8A951] bg-[#C8A951]/5 text-[#1C1C1C]" : "border-transparent bg-[#F7F3EE] text-[#7a7065] hover:border-[#C8A951]/20"}`}
                                         >
                                             <span>{pm.icon}</span>
                                             {pm.label}
@@ -466,8 +449,8 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                             {/* Error */}
                             {submitError && (
                                 <div className="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100">
-                                    <AlertCircle size={16} className="text-red-500 shrink-0" />
-                                    <p className="text-red-600 text-sm">{submitError}</p>
+                                    <AlertCircle size={16} className="text-primary shrink-0" />
+                                    <p className="text-primary text-sm">{submitError}</p>
                                 </div>
                             )}
                         </div>

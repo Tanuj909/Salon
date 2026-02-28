@@ -112,8 +112,7 @@ const HeroSection = () => {
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`absolute inset-0 transition-opacity duration-[1200ms] ease-in-out ${index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]'
-                }`}
+              className={`absolute inset-0 transition-opacity duration-[1200ms] ease-in-out ${index === current ? 'opacity-100 scale-100' : 'opacity-0 scale-[1.03]' }`}
               style={{
                 backgroundImage: `url('${slide.url}')`,
                 backgroundSize: 'cover',
@@ -131,7 +130,7 @@ const HeroSection = () => {
         {/* Content */}
         <div className="relative z-[10] h-full flex flex-col items-center justify-center text-center px-4 md:px-8 lg:px-16 pb-[60px] md:pb-[100px] pt-32 md:pt-0">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-gold/12 border border-gray-300 rounded-full px-[14px] md:px-[18px] py-[4px] md:py-[6px] mb-[20px] md:mb-[28px] animate-fade-up [animation-delay:200ms] mt-4 md:mt-20">
+          <div className="inline-flex items-center gap-2 bg-gold/12 border border-border rounded-full px-[14px] md:px-[18px] py-[4px] md:py-[6px] mb-[20px] md:mb-[28px] animate-fade-up [animation-delay:200ms] mt-4 md:mt-20">
             <div className="w-[5px] md:w-[6px] h-[5px] md:h-[6px] rounded-full bg-gold animate-pulse-custom" />
             <span className="text-[10px] md:text-[11px] tracking-[0.12em] uppercase text-white font-medium">
               Now Accepting Bookings

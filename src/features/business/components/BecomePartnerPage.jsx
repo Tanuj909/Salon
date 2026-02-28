@@ -156,16 +156,16 @@ export default function BecomePartnerPage() {
           {success ? (
             <div className="py-20 px-10 text-center relative z-10">
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-green-100">
-                <CheckCircle2 size={40} className="text-green-500" />
+                <CheckCircle2 size={40} className="text-primary" />
               </div>
 
               <div className="flex flex-col items-center">
-              <h2 className="font-[Cormorant_Garamond] text-4xl text-[#1C1C1C] mb-5">
-                Application <em className="italic text-[#C8A951]">Received</em>
-              </h2>
-              <p className="text-[#7a7065] text-lg max-w-md mx-auto mb-10 font-light">
-                Thank you for choosing Luxe. Our curation team will review your business details and get back to you within 48 hours.
-              </p>
+                <h2 className="font-[Cormorant_Garamond] text-4xl text-[#1C1C1C] mb-5">
+                  Application <em className="italic text-[#C8A951]">Received</em>
+                </h2>
+                <p className="text-[#7a7065] text-lg max-w-md mx-auto mb-10 font-light">
+                  Thank you for choosing Luxe. Our curation team will review your business details and get back to you within 48 hours.
+                </p>
               </div>
               <button
                 onClick={() => router.push("/")}
@@ -211,7 +211,7 @@ export default function BecomePartnerPage() {
               {/* Form Area */}
               <div className="md:w-2/3 p-10">
                 {error && (
-                  <div className="mb-8 p-4 bg-red-50 text-red-600 rounded-xl border border-red-100 flex gap-3 text-sm animate-fade-in">
+                  <div className="mb-8 p-4 bg-red-50 text-primary rounded-xl border border-red-100 flex gap-3 text-sm animate-fade-in">
                     <AlertCircle size={18} />
                     {error}
                   </div>
@@ -367,7 +367,7 @@ export default function BecomePartnerPage() {
                               <span className="text-xs font-medium text-[#1C1C1C]">{parseFloat(form.longitude).toFixed(4)}</span>
                             </div>
                           </div>
-                          <CheckCircle2 size={16} className="text-green-500" />
+                          <CheckCircle2 size={16} className="text-primary" />
                         </div>
                       )}
                     </div>
@@ -388,10 +388,7 @@ export default function BecomePartnerPage() {
                           key={cat.id}
                           type="button"
                           onClick={() => handleCategoryToggle(cat.id)}
-                          className={`px-5 py-2 rounded-lg text-xs font-medium tracking-wide transition-all border ${form.categoryIds.includes(cat.id)
-                              ? "bg-[#C8A951] text-[#1C1C1C] border-[#C8A951] shadow-md shadow-[#C8A951]/20"
-                              : "bg-white text-[#7a7065] border-[#C8A951]/10 hover:border-[#C8A951]"
-                            }`}
+                          className={`px-5 py-2 rounded-lg text-xs font-medium tracking-wide transition-all border ${form.categoryIds.includes(cat.id) ? "bg-[#C8A951] text-[#1C1C1C] border-[#C8A951] shadow-md shadow-[#C8A951]/20" : "bg-white text-[#7a7065] border-[#C8A951]/10 hover:border-[#C8A951]"}`}
                         >
                           {cat.name}
                         </button>

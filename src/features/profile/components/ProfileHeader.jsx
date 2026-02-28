@@ -37,7 +37,7 @@ const ProfileHeader = ({ user }) => {
               />
             </div>
             {user?.user?.verificationStatus === "VERIFIED" && (
-              <div className="absolute bottom-4 right-4 bg-blue-500 text-white p-2 rounded-full border-4 border-white shadow-lg">
+              <div className="absolute bottom-4 right-4 bg-primary text-white p-2 rounded-full border-4 border-white shadow-lg">
                 <ShieldCheck size={20} />
               </div>
             )}

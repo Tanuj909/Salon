@@ -100,7 +100,7 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
                     {query && (
                         <button
                             onClick={() => { setQuery(""); setSuggestions([]); }}
-                            className="p-1.5 text-slate-400 hover:text-slate-600"
+                            className="p-1.5 text-muted hover:text-muted"
                         >
                             <X size={16} />
                         </button>
@@ -108,7 +108,7 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
 
                     <button
                         onClick={() => setIsMapOpen(true)}
-                        className="p-2.5 bg-slate-100 text-[#1e0a18] rounded-xl hover:bg-[#7a2860] hover:text-white transition-all active:scale-95"
+                        className="p-2.5 bg-background-light text-[#1e0a18] rounded-xl hover:bg-[#7a2860] hover:text-white transition-all active:scale-95"
                         title="Pick from map"
                     >
                         <MapIcon size={16} />
@@ -140,7 +140,7 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
                                     onClick={() => handleSelect(s)}
                                     className="w-full px-5 py-4 flex items-start gap-4 hover:bg-[#f9f5f2] transition-colors border-b border-[#3c143208] last:border-0 text-left group"
                                 >
-                                    <div className="mt-1 p-1.5 rounded-lg bg-slate-50 text-slate-400 group-hover:bg-[#7a2860]/10 group-hover:text-[#7a2860]">
+                                    <div className="mt-1 p-1.5 rounded-lg bg-background-light text-muted group-hover:bg-[#7a2860]/10 group-hover:text-[#7a2860]">
                                         <MapPin size={14} />
                                     </div>
                                     <div>

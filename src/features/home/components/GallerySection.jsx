@@ -79,7 +79,7 @@ const GallerySection = () => {
   return (
     <section className="py-24 px-6 max-w-[1200px] mx-auto bg-creamy/30">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight text-earthy-brown font-display">Our Gallery</h2>
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight text-earthy-brown">Our Gallery</h2>
         <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-3 mb-8"></div>
         
         {/* Filter Buttons */}
@@ -88,11 +88,7 @@ const GallerySection = () => {
             <button
               key={category.id}
               onClick={() => setActiveFilter(category.id)}
-              className={`px-6 py-2 rounded-full text-sm font-bold font-display transition-all duration-300 ${
-                activeFilter === category.id
-                  ? 'bg-primary text-creamy shadow-lg scale-105'
-                  : 'bg-white text-plum hover:bg-primary/10 hover:scale-105'
-              }`}
+              className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${ activeFilter === category.id ? 'bg-primary text-creamy shadow-lg scale-105' : 'bg-white text-plum hover:bg-primary/10 hover:scale-105' }`}
             >
               {category.label}
             </button>
@@ -115,19 +111,19 @@ const GallerySection = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-plum/90 via-plum/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
             {/* Category Tag */}
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-plum px-3 py-1 rounded-full text-xs font-bold font-display opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-plum px-3 py-1 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               {categories.find(cat => cat.id === item.category)?.label}
             </div>
             
             {/* Content Overlay */}
             <div className="absolute bottom-0 left-0 p-6 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-              <h3 className="text-creamy text-xl font-bold mb-1 font-display drop-shadow-md">
+              <h3 className="text-creamy text-xl font-bold mb-1 drop-shadow-md">
                 {item.title}
               </h3>
-              <p className="text-creamy/90 text-xs mb-3 font-display">
+              <p className="text-creamy/90 text-xs mb-3">
                 {item.description}
               </p>
-              <button className="bg-primary text-creamy px-4 py-1.5 rounded-full text-xs font-bold font-display hover:bg-white hover:text-primary transition-colors mt-3">
+              <button className="bg-primary text-creamy px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white hover:text-primary transition-colors mt-3">
                 View Details
               </button>
             </div>
@@ -138,14 +134,14 @@ const GallerySection = () => {
       {/* Empty State */}
       {filteredItems.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-plum/60 font-display text-lg">No items found in this category.</p>
+          <p className="text-plum/60 text-lg">No items found in this category.</p>
         </div>
       )}
 
       {/* Load More Button (optional) */}
       {/* {filteredItems.length > 0 && (
         <div className="text-center mt-12">
-          <button className="bg-transparent border-2 border-primary text-primary px-8 py-3 rounded-full text-sm font-bold font-display hover:bg-primary hover:text-creamy transition-all duration-300">
+          <button className="bg-transparent border-2 border-primary text-primary px-8 py-3 rounded-full text-sm font-bold hover:bg-primary hover:text-creamy transition-all duration-300">
             Load More
           </button>
         </div>

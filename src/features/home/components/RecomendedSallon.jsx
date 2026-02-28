@@ -134,7 +134,7 @@ export default function RecomendedSallon() {
                   )}
 
                   {/* Open Status */}
-                  <span className={`absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full text-[0.72rem] font-semibold tracking-[0.04em] backdrop-blur-[8px] ${salon.isOpen ? 'bg-[#fdf6f0e0] text-[#7a4020]' : 'bg-red-50/90 text-red-600'} font-[DM_Sans]`}>
+                  <span className={`absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full text-[0.72rem] font-semibold tracking-[0.04em] backdrop-blur-[8px] ${salon.isOpen ? 'bg-[#fdf6f0e0] text-[#7a4020]' : 'bg-red-50/90 text-primary'} font-[DM_Sans]`}>
                     {salon.isOpen ? 'Open' : 'Closed'}
                   </span>
                 </div>

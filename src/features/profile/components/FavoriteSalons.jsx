@@ -30,8 +30,8 @@ const FavoriteSalons = ({ salons }) => {
         return (
             <div className="px-8 mt-16 text-center py-20 bg-white rounded-xl border border-slate-100 border-dashed">
                 <Heart className="mx-auto text-slate-200 mb-4" size={48} />
-                <h3 className="text-xl font-bold text-slate-900">No favorite salons yet</h3>
-                <p className="text-slate-500 mt-2">Explore our directory and save your favorite wellness spots!</p>
+                <h3 className="text-xl font-bold text-gray-900">No favorite salons yet</h3>
+                <p className="text-muted mt-2">Explore our directory and save your favorite wellness spots!</p>
                 <button className="mt-6 px-8 py-3 bg-primary text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all">
                     Explore Salons
                 </button>

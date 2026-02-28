@@ -29,8 +29,7 @@ function Reveal({ children, delay = 0, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        } ${className}`}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -142,11 +141,8 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
 
               {/* Availability badge */}
               <div className="mt-3">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium ${profile.isAvailable
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'bg-red-50 text-red-600'
-                  }`}>
-                  <span className={`w-2 h-2 rounded-full ${profile.isAvailable ? 'bg-emerald-400' : 'bg-red-400'}`} />
+                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium ${profile.isAvailable ? 'bg-emerald-50 text-primary' : 'bg-red-50 text-primary' }`}>
+                  <span className={`w-2 h-2 rounded-full ${profile.isAvailable ? 'bg-primary' : 'bg-primary'}`} />
                   {profile.isAvailable ? 'Available for Booking' : 'Currently Unavailable'}
                 </span>
               </div>
@@ -349,7 +345,7 @@ function StaffCard({ member, index, onClick }) {
             </div>
           </div>
           {/* Availability Dot */}
-          <div className={`absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-white ${member.isAvailable ? 'bg-emerald-500' : 'bg-red-500'}`} />
+          <div className={`absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-white ${member.isAvailable ? 'bg-primary' : 'bg-primary'}`} />
         </div>
 
         {/* Info */}
@@ -480,14 +476,7 @@ const SalonStaff = ({ id }) => {
             </div>
           </Reveal>
 
-          <div className={`grid gap-5 ${staff.length === 1
-            ? 'grid-cols-1 max-w-[220px] mx-auto'
-            : staff.length === 2
-              ? 'grid-cols-2 max-w-md mx-auto'
-              : staff.length === 3
-                ? 'grid-cols-2 md:grid-cols-3 max-w-2xl mx-auto'
-                : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-            }`}>
+          <div className={`grid gap-5 ${staff.length === 1 ? 'grid-cols-1 max-w-[220px] mx-auto' : staff.length === 2 ? 'grid-cols-2 max-w-md mx-auto' : staff.length === 3 ? 'grid-cols-2 md:grid-cols-3 max-w-2xl mx-auto' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' }`}>
             {staff.map((member, index) => (
               <StaffCard
                 key={member.id || index}

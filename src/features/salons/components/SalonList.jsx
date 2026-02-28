@@ -306,10 +306,7 @@ export default function SalonList() {
                 <button
                   onClick={handleFetch}
                   disabled={loading || !hasChanges}
-                  className={`w-full h-11 rounded-xl font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${loading || !hasChanges
-                    ? "bg-[#3c143208] text-[#3c143230] cursor-not-allowed border border-[#3c143205]"
-                    : "bg-[#1e0a18] text-white hover:bg-[#7a2860] shadow-lg shadow-[#1e0a18]/10 hover:shadow-[#7a2860]/20 active:scale-95"
-                    }`}
+                  className={`w-full h-11 rounded-xl font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${loading || !hasChanges ? "bg-[#3c143208] text-[#3c143230] cursor-not-allowed border border-[#3c143205]" : "bg-[#1e0a18] text-white hover:bg-[#7a2860] shadow-lg shadow-[#1e0a18]/10 hover:shadow-[#7a2860]/20 active:scale-95"}`}
                 >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />

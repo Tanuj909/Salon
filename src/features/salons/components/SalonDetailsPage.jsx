@@ -53,8 +53,7 @@ function Reveal({ children, delay = 0, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        } ${className}`}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" } ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -185,7 +184,7 @@ export default function SalonDetailsPage({ id }) {
             <Reveal delay={200}>
               <div className="flex items-center gap-3 mb-6">
                 {salon.verificationStatus === "VERIFIED" && (
-                  <div className="flex items-center gap-1.5 bg-blue-500/90 text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold shadow-lg">
+                  <div className="flex items-center gap-1.5 bg-primary/90 text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold shadow-lg">
                     <svg width={12} height={12} viewBox="0 0 24 24" fill="white">
                       <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                     </svg>

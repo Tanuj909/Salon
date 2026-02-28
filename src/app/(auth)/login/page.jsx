@@ -37,9 +37,9 @@ export default function LoginPage() {
         <div className="text-center mb-8 animate-fade-in">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-terracotta text-4xl">content_cut</span>
-            <span className="text-3xl font-extrabold tracking-tight text-earthy-brown font-display">LUXE</span>
+            <span className="text-3xl font-extrabold tracking-tight text-earthy-brown">LUXE</span>
           </Link>
-          <h1 className="text-2xl font-bold text-earthy-brown font-display">Welcome Back</h1>
+          <h1 className="text-2xl font-bold text-earthy-brown">Welcome Back</h1>
           <p className="text-earthy-brown/60 mt-2">Sign in to your account to continue</p>
         </div>
 

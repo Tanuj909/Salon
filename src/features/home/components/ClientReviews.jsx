@@ -113,7 +113,7 @@ const ClientReviews = () => {
 
   return (
     <section
-      className="py-16 md:py-24 overflow-hidden font-serif"
+      className="py-16 md:py-24 overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #fdf6f0 0%, #ffffff 100%)' }}
     >
       <div className="max-w-[1240px] mx-auto px-4 md:px-12">
@@ -149,14 +149,7 @@ const ClientReviews = () => {
             onClick={handlePrev}
             disabled={currentIndex === 0}
             aria-label="Previous"
-            className="
-              w-12 h-12 rounded-full shrink-0 flex items-center justify-center
-              border border-[rgba(155,88,118,0.28)] bg-white
-              cursor-pointer transition-all duration-200
-              hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08]
-              disabled:opacity-[0.28] disabled:cursor-not-allowed
-              group
-            "
+            className="w-12 h-12 rounded-full shrink-0 flex items-center justify-center border border-[rgba(155,88,118,0.28)] bg-white cursor-pointer transition-all duration-200 hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08] disabled:opacity-[0.28] disabled:cursor-not-allowed group"
           >
             <svg
               className="transition-colors duration-200 group-hover:[stroke:#fff] group-disabled:[stroke:#3c1432]"
@@ -186,10 +179,7 @@ const ClientReviews = () => {
                   }}
                 >
                   {/* Card - Removed shadows and hover effects */}
-                  <div className="
-                    bg-white rounded-3xl px-[30px] pt-9 pb-[30px]
-                    border border-[rgba(155,88,118,0.12)]
-                  ">
+                  <div className="bg-white rounded-3xl px-[30px] pt-9 pb-[30px] border border-[rgba(155,88,118,0.12)]">
 
                     {/* Quote icon */}
                     <div className="mb-[18px] text-[rgba(155,88,118,0.15)]">
@@ -246,14 +236,7 @@ const ClientReviews = () => {
             onClick={handleNext}
             disabled={currentIndex === maxIndex}
             aria-label="Next"
-            className="
-              w-12 h-12 rounded-full shrink-0 flex items-center justify-center
-              border border-[rgba(155,88,118,0.28)] bg-white
-              cursor-pointer transition-all duration-200
-              hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08]
-              disabled:opacity-[0.28] disabled:cursor-not-allowed
-              group
-            "
+            className="w-12 h-12 rounded-full shrink-0 flex items-center justify-center border border-[rgba(155,88,118,0.28)] bg-white cursor-pointer transition-all duration-200 hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08] disabled:opacity-[0.28] disabled:cursor-not-allowed group"
           >
             <svg
               className="transition-colors duration-200 group-hover:[stroke:#fff] group-disabled:[stroke:#3c1432]"
