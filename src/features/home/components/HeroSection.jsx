@@ -106,7 +106,7 @@ const HeroSection = () => {
       `}</style>
 
       {/* Hero Section */}
-      <section className="relative w-full h-[80vh] min-h-[600px]  overflow-visible mb-32 md:mb-40 font-['DM_Sans',sans-serif] bg-black">
+      <section className="relative w-full h-auto md:h-[80vh] min-h-[500px] md:min-h-[600px] overflow-visible mb-20 md:mb-40 font-['DM_Sans',sans-serif] bg-black">
         {/* Slides */}
         <div className="absolute inset-0 z-0 bg-black overflow-hidden">
           {slides.map((slide, index) => (
@@ -129,24 +129,24 @@ const HeroSection = () => {
         <div className="absolute inset-0 z-[3] opacity-[0.04] pointer-events-none hero-grain transition-opacity duration-700" />
 
         {/* Content */}
-        <div className="relative z-[10] h-full flex flex-col items-center justify-center text-center px-6 pb-[100px]">
+        <div className="relative z-[10] h-full flex flex-col items-center justify-center text-center px-4 md:px-8 lg:px-16 pb-[60px] md:pb-[100px] pt-32 md:pt-0">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-gold/12 border border-gray-300 rounded-full px-[18px] py-[6px] mb-[28px] animate-fade-up [animation-delay:200ms] mt-20">
-            <div className="w-[6px] h-[6px] rounded-full bg-gold animate-pulse-custom" />
-            <span className="text-[11px] tracking-[0.12em] uppercase text-white font-medium">
+          <div className="inline-flex items-center gap-2 bg-gold/12 border border-gray-300 rounded-full px-[14px] md:px-[18px] py-[4px] md:py-[6px] mb-[20px] md:mb-[28px] animate-fade-up [animation-delay:200ms] mt-4 md:mt-20">
+            <div className="w-[5px] md:w-[6px] h-[5px] md:h-[6px] rounded-full bg-gold animate-pulse-custom" />
+            <span className="text-[10px] md:text-[11px] tracking-[0.12em] uppercase text-white font-medium">
               Now Accepting Bookings
             </span>
           </div>
 
-          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(42px,7vw,88px)] font-light text-white leading-[1.1] tracking-[-0.01em] max-w-[820px] mb-5 animate-fade-up [animation-delay:400ms]">
+          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(2rem,8vw,5.5rem)] font-light text-white leading-[1.1] tracking-[-0.01em] max-w-[820px] mb-5 animate-fade-up [animation-delay:400ms]">
             Book <em className="italic text-gold-light font-normal">Trusted</em> Salon<br />Services Near You
           </h1>
 
-          <p className="text-[clamp(14px,1.5vw,17px)] font-light text-white/65 tracking-[0.03em] max-w-[480px] leading-[1.7] mb-11 animate-fade-up [animation-delay:600ms]">
+          <p className="text-[clamp(0.85rem,2vw,1.06rem)] font-light text-white/65 tracking-[0.03em] max-w-[480px] leading-[1.7] mb-8 md:mb-11 animate-fade-up [animation-delay:600ms]">
             Premium grooming for Men, Women & Pets —<br />All in One Platform.
           </p>
 
-          <a href="#" className="group relative inline-flex items-center gap-3 bg-gradient-to-br from-[#C9A96E] to-[#A07840] text-black text-[14px] font-medium tracking-[0.06em] uppercase px-10 py-[18px] rounded-full shadow-[0_8px_32px_rgba(201,169,110,0.25)] hover:shadow-[0_16px_48px_rgba(201,169,110,0.4)] transition-all duration-400 hover:-translate-y-[3px] animate-fade-up [animation-delay:800ms] overflow-hidden">
+          <a href="#" className="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-br from-[#C9A96E] to-[#A07840] text-black text-[13px] md:text-[14px] font-medium tracking-[0.06em] uppercase px-8 md:px-10 py-[16px] md:py-[18px] rounded-full shadow-[0_8px_32px_rgba(201,169,110,0.25)] hover:shadow-[0_16px_48px_rgba(201,169,110,0.4)] transition-all duration-400 hover:-translate-y-[3px] animate-fade-up [animation-delay:800ms] overflow-hidden w-full sm:w-auto">
             <div className="absolute inset-0 bg-gradient-to-br from-[#E8D5A3] to-[#C9A96E] opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
             <span className="relative z-[1]">Explore Salons</span>
             <svg className="relative z-[1] w-[18px] h-[18px] transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -156,30 +156,30 @@ const HeroSection = () => {
           </a>
         </div>
 
-        {/* CATEGORY CARDS — shift lower: translateY(70%) */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-[60%] z-[40] flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 pointer-events-none">
+        {/* CATEGORY CARDS */}
+        <div className="relative md:absolute bottom-0 left-0 right-0 translate-y-0 md:translate-y-[60%] z-[40] flex flex-col md:flex-row items-center justify-center gap-4 md:gap-20 pointer-events-none px-6 pb-12 md:pb-0">
           {categories.map((cat, index) => (
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer pointer-events-auto group animate-fade-up"
               style={{ animationDelay: `${300 + index * 150}ms` }}
             >
-              <div className="w-[180px] h-[180px] md:w-[220px] md:h-[220px] rounded-full overflow-hidden border-[6px] border-[#FAF7F2] shadow-[0_24px_64px_rgba(0,0,0,0.22),0_4px_16px_rgba(0,0,0,0.10)] transition-all duration-[450ms] cubic-bezier(0.34,1.56,0.64,1) group-hover:shadow-[0_45px_100px_rgba(0,0,0,0.3),0_0_0_4px_#C9A96E,0_15px_40px_rgba(201,169,110,0.25)] relative bg-[#111]">
+              <div className="w-[140px] h-[140px] xs:w-[160px] xs:h-[160px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] rounded-full overflow-hidden border-[4px] md:border-[6px] border-[#FAF7F2] shadow-[0_24px_64px_rgba(0,0,0,0.22),0_4px_16px_rgba(0,0,0,0.10)] transition-all duration-[450ms] cubic-bezier(0.34,1.56,0.64,1) group-hover:shadow-[0_45px_100px_rgba(0,0,0,0.3),0_0_0_4px_#C9A96E,0_15px_40px_rgba(201,169,110,0.25)] relative bg-[#111]">
                 <img src={cat.img} alt={cat.label} className="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-115" loading="lazy" />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-b from-black/20 via-transparent to-black/65" />
 
                 {/* Content Inside Card */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-[5]">
-                  <div className="font-['Cormorant_Garamond',serif] text-[28px] md:text-[32px] font-semibold text-white shadow-[0_2px_4px_rgba(0,0,0,0.5)] tracking-[0.04em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transform transition-transform duration-500 group-hover:scale-110">
+                  <div className="font-['Cormorant_Garamond',serif] text-[22px] xs:text-[24px] sm:text-[28px] md:text-[32px] font-semibold text-white shadow-[0_2px_4px_rgba(0,0,0,0.5)] tracking-[0.04em] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transform transition-transform duration-500 group-hover:scale-110">
                     {cat.label}
                   </div>
-                  <div className="text-[10px] md:text-[11px] text-white/80 tracking-[0.15em] uppercase mt-1 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+                  <div className="text-[8px] xs:text-[9px] md:text-[11px] text-white/80 tracking-[0.15em] uppercase mt-1 font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
                     {cat.sub}
                   </div>
                 </div>
 
-                <div className="absolute bottom-[24px] left-1/2 -translate-x-1/2 z-[10] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="w-[44px] h-[44px] bg-[#C9A96E] rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(201,169,110,0.4)]">
+                <div className="absolute bottom-[18px] xs:bottom-[20px] md:bottom-[24px] left-1/2 -translate-x-1/2 z-[10] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-[34px] xs:w-[38px] md:w-[44px] h-[34px] xs:h-[38px] md:h-[44px] bg-[#C9A96E] rounded-full flex items-center justify-center shadow-[0_4px_12px_rgba(201,169,110,0.4)]">
                     {cat.icon}
                   </div>
                 </div>

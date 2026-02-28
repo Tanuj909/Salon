@@ -60,13 +60,26 @@ const ClientReviews = () => {
     }
   ];
 
-  const VISIBLE = 3;
-  const maxIndex = reviews.length - VISIBLE; // 0–3
-  const GAP = 24;
-
+  const reviewsCount = reviews.length;
+  const [visibleCards, setVisibleCards] = useState(3);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) setVisibleCards(3);
+      else if (width >= 768) setVisibleCards(2);
+      else setVisibleCards(1);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const maxIndex = reviewsCount - visibleCards;
+  const GAP = 24;
 
   const goTo = (index) => setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
 
@@ -80,7 +93,7 @@ const ClientReviews = () => {
   useEffect(() => {
     if (!isPaused) startAutoplay();
     return () => clearInterval(intervalRef.current);
-  }, [isPaused]);
+  }, [isPaused, maxIndex]);
 
   const handlePrev = () => { goTo(currentIndex - 1); startAutoplay(); };
   const handleNext = () => { goTo(currentIndex + 1); startAutoplay(); };
@@ -100,10 +113,10 @@ const ClientReviews = () => {
 
   return (
     <section
-      className="py-24 overflow-hidden font-serif"
+      className="py-16 md:py-24 overflow-hidden font-serif"
       style={{ background: 'linear-gradient(180deg, #fdf6f0 0%, #ffffff 100%)' }}
     >
-      <div className="max-w-[1240px] mx-auto px-12">
+      <div className="max-w-[1240px] mx-auto px-4 md:px-12">
 
         {/* Header - Fixed alignment */}
         <div className="text-center mb-14">
@@ -118,9 +131,9 @@ const ClientReviews = () => {
             style={{ background: 'linear-gradient(90deg, #9b5876, #3c1432)' }}
           />
           <div className='flex items-center justify-center'>
-          <p className="text-[rgba(60,20,50,0.58)] max-w-[500px] mx-auto text-[0.93rem] leading-[1.65]">
-            Don't just take our word for it — hear from our wonderful clients about their experiences
-          </p>
+            <p className="text-[rgba(60,20,50,0.58)] max-w-[500px] mx-auto text-[0.93rem] leading-[1.65]">
+              Don't just take our word for it — hear from our wonderful clients about their experiences
+            </p>
           </div>
 
         </div>
@@ -161,7 +174,7 @@ const ClientReviews = () => {
               style={{
                 gap: GAP,
                 transition: 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)',
-                transform: `translateX(calc(-${currentIndex} * (100% / ${VISIBLE} + ${GAP / VISIBLE}px * ${VISIBLE - 1} / ${VISIBLE - 1 || 1})))`,
+                transform: `translateX(calc(-${currentIndex * (100 / visibleCards)}% - ${currentIndex * (GAP / visibleCards)}px))`,
               }}
             >
               {reviews.map((review) => (
@@ -169,7 +182,7 @@ const ClientReviews = () => {
                   key={review.id}
                   className="min-w-0 shrink-0"
                   style={{
-                    flex: `0 0 calc(${100 / VISIBLE}% - ${(GAP * (VISIBLE - 1)) / VISIBLE}px)`,
+                    flex: `0 0 calc(100% / ${visibleCards} - ${((visibleCards - 1) * GAP) / visibleCards}px)`,
                   }}
                 >
                   {/* Card - Removed shadows and hover effects */}

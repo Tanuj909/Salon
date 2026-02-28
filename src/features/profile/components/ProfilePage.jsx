@@ -11,11 +11,11 @@ import RecentReviews from './RecentReviews';
 
 const ProfilePage = () => {
 
-        const { customer, loading, error } = useCurrentCustomer();
+    const { customer, loading, error } = useCurrentCustomer();
 
-          if (loading) return <p>Loading profile...</p>;
-  if (error) return <p>{error}</p>;
-  if (!customer) return null;
+    if (loading) return <p>Loading profile...</p>;
+    if (error) return <p>{error}</p>;
+    if (!customer) return null;
 
     return (
         <main className="min-h-screen pb-20 bg-background-light">

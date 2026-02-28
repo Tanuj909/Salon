@@ -46,6 +46,7 @@ const ServicesSection = () => {
     }
   ];
 
+  const [visibleCards, setVisibleCards] = useState(4);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -53,7 +54,18 @@ const ServicesSection = () => {
   const trackRef = useRef(null);
   const autoPlayRef = useRef(null);
 
-  const visibleCards = 4;
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) setVisibleCards(4);
+      else if (width >= 768) setVisibleCards(2);
+      else setVisibleCards(1);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const maxIndex = services.length - visibleCards;
 
   const goTo = (index) => {
@@ -115,26 +127,26 @@ const ServicesSection = () => {
     setDragOffset(0);
   };
 
-  const translateX = `calc(-${currentIndex * (100 / visibleCards)}% + ${isDragging ? dragOffset : 0}px)`;
+  const translateX = `calc(-${currentIndex * (100 / visibleCards)}% - ${currentIndex * (24 / visibleCards)}px + ${isDragging ? dragOffset : 0}px)`;
 
   return (
-    <section className="py-24 px-6 max-w-[1300px] mx-auto font-['Georgia',serif]">
+    <section className="py-16 md:py-20 lg:py-24 px-4 md:px-6 max-w-[1300px] mx-auto font-['Georgia',serif]">
       {/* Header */}
-      <div className="text-center mb-14">
+      <div className="text-center mb-10 md:mb-14">
         <p className="text-[#9b5876] text-[0.8rem] tracking-[0.2em] uppercase mb-3 font-['Georgia',serif]">
           Crafted With Care
         </p>
-        <h2 className="text-[clamp(2rem,4vw,3rem)] font-extrabold text-[#3c1432] m-0 leading-[1.15] font-['Georgia',serif]">
+        <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-extrabold text-[#3c1432] m-0 leading-[1.15] font-['Georgia',serif]">
           Our Premium Services
         </h2>
         <div className="w-16 h-[3px] bg-gradient-to-r from-[#9b5876] to-[#3c1432] mx-auto mt-4 rounded-sm" />
       </div>
 
       {/* Carousel */}
-      <div className="relative">
+      <div className="relative group/carousel">
         {/* Track wrapper */}
         <div
-          className={`overflow-hidden rounded-[4px] pr-6 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+          className={`overflow-hidden rounded-[4px] ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
@@ -154,7 +166,10 @@ const ServicesSection = () => {
             {services.map((service, index) => (
               <div
                 key={index}
-                className="relative h-[480px] rounded-[20px] overflow-hidden shrink-0 w-[calc(25%-18px)] group shadow-none hover:shadow-[0_32px_60px_rgba(80,30,60,0.35)] transition-all duration-400 ease-in-out select-none"
+                className="relative h-[380px] md:h-[420px] lg:h-[480px] rounded-[20px] overflow-hidden shrink-0 group shadow-none hover:shadow-[0_32px_60px_rgba(80,30,60,0.35)] transition-all duration-400 ease-in-out select-none"
+                style={{
+                  width: `calc(100% / ${visibleCards} - ${((visibleCards - 1) * 24) / visibleCards}px)`
+                }}
               >
                 <img
                   src={service.image}
@@ -163,11 +178,11 @@ const ServicesSection = () => {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#3c1432]/90 via-[#3c1432]/15 to-transparent opacity-85 transition-opacity duration-300 group-hover:opacity-95" />
-                <div className="absolute bottom-0 left-0 p-7 w-full">
+                <div className="absolute bottom-0 left-0 p-6 md:p-7 w-full">
                   <h3 className="text-[#fff8f2] text-[1.35rem] font-bold mb-2 transition-transform duration-300 group-hover:-translate-y-1.5">
                     {service.title}
                   </h3>
-                  <p className="text-[#fff8f2]/90 text-[0.85rem] leading-relaxed mb-4 opacity-0 translate-y-3 transition-all duration-300 delay-50 group-hover:opacity-100 group-hover:translate-y-0">
+                  <p className="text-[#fff8f2]/90 text-[0.85rem] leading-relaxed mb-4 opacity-0 translate-y-3 transition-all duration-300 delay-50 group-hover:opacity-100 group-hover:translate-y-0 line-clamp-3 md:line-clamp-none">
                     {service.description}
                   </p>
                   <button className="bg-transparent border-[1.5px] border-[#fff8f2]/70 text-[#fff8f2] px-[22px] py-2 rounded-full text-[0.8rem] font-semibold opacity-0 translate-y-3 transition-all duration-300 delay-100 tracking-wider hover:bg-[#fff8f2] hover:text-[#3c1432] group-hover:opacity-100 group-hover:translate-y-0">
@@ -181,7 +196,7 @@ const ServicesSection = () => {
 
         {/* Navigation Arrows */}
         <button
-          className="w-12 h-12 rounded-full border-[1.5px] border-[#642850]/40 bg-white flex items-center justify-center transition-all duration-200 shadow-[0_4px_16px_rgba(100,40,80,0.12)] hover:bg-[#3c1432] hover:border-[#3c1432] hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed group absolute top-1/2 -translate-y-1/2 -left-6"
+          className="hidden md:flex w-12 h-12 rounded-full border-[1.5px] border-[#642850]/40 bg-white items-center justify-center transition-all duration-200 shadow-[0_4px_16px_rgba(100,40,80,0.12)] hover:bg-[#3c1432] hover:border-[#3c1432] hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed group absolute top-1/2 -translate-y-1/2 -left-3 lg:-left-6 z-10"
           onClick={() => { prev(); resetAutoPlay(); }}
           disabled={currentIndex === 0}
         >
@@ -190,7 +205,7 @@ const ServicesSection = () => {
           </svg>
         </button>
         <button
-          className="w-12 h-12 rounded-full border-[1.5px] border-[#642850]/40 bg-white flex items-center justify-center transition-all duration-200 shadow-[0_4px_16px_rgba(100,40,80,0.12)] hover:bg-[#3c1432] hover:border-[#3c1432] hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed group absolute top-1/2 -translate-y-1/2 -right-6"
+          className="hidden md:flex w-12 h-12 rounded-full border-[1.5px] border-[#642850]/40 bg-white items-center justify-center transition-all duration-200 shadow-[0_4px_16px_rgba(100,40,80,0.12)] hover:bg-[#3c1432] hover:border-[#3c1432] hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed group absolute top-1/2 -translate-y-1/2 -right-3 lg:-right-6 z-10"
           onClick={() => { next(); resetAutoPlay(); }}
           disabled={currentIndex === maxIndex}
         >
@@ -200,16 +215,16 @@ const ServicesSection = () => {
         </button>
       </div>
 
-      {/* Dots
-      <div className="flex justify-center items-center gap-2 mt-9">
-        {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+      {/* Dots for mobile - keeping them for better UX on 1-card view */}
+      <div className="flex md:hidden justify-center items-center gap-2 mt-6">
+        {services.map((_, i) => (
           <button
             key={i}
-            className={`cursor-pointer transition-[background,transform,width] duration-250 border-none ${i === currentIndex ? 'bg-[#3c1432] w-7 h-2 rounded' : 'w-2 h-2 rounded-full bg-[#642850]/25'}`}
+            className={`cursor-pointer transition-all duration-300 border-none h-1 rounded-full ${i === currentIndex ? 'bg-[#3c1432] w-6' : 'bg-[#642850]/20 w-1.5'}`}
             onClick={() => { goTo(i); resetAutoPlay(); }}
           />
         ))}
-      </div> */}
+      </div>
     </section>
   );
 };

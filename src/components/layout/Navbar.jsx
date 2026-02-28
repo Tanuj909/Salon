@@ -21,11 +21,11 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[1200px]">
-      <div className="glass-nav rounded-full px-8 py-3 flex items-center justify-between shadow-2xl">
-        <div className="flex items-center gap-8">
+      <div className="glass-nav rounded-full px-4 md:px-8 py-3 flex items-center justify-between shadow-2xl">
+        <div className="flex items-center gap-4 md:gap-8">
           <Link href="/" className="flex items-center gap-2">
             <span className="material-symbols-outlined text-terracotta text-3xl">content_cut</span>
-            <span className="text-xl font-extrabold tracking-tight text-earthy-brown font-display">Fast Booking</span>
+            <span className="text-xl font-extrabold tracking-tight text-earthy-brown font-display hidden [@media(min-width:400px)]:inline">Fast Booking</span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             {['Home', 'Salons', 'About', 'Contact'].map((item) => (

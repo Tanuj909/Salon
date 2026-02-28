@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     // <footer className="bg-[#3c1432] text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
-   <footer className="bg-plum text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
+    <footer className="bg-plum text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
       {/* Scoped styles only for pseudo-elements and hover effects Tailwind can't do in JSX */}
       <style>{`
         .ft-link:hover { color: #c4956a; }
@@ -24,9 +24,9 @@ const Footer = () => {
             {/* Logo */}
             <div className="flex items-center gap-2.5 mb-5">
               <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="#c4956a" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 3l6 6-6 6M12 15h6"/>
-                <circle cx="18" cy="15" r="2"/>
-                <circle cx="6" cy="3" r="1.5"/>
+                <path d="M6 3l6 6-6 6M12 15h6" />
+                <circle cx="18" cy="15" r="2" />
+                <circle cx="6" cy="3" r="1.5" />
               </svg>
               <span className="text-2xl font-extrabold tracking-[0.08em] text-[#fdf6f0]">LUXE</span>
               <div className="w-2 h-2 rounded-full bg-[#c4956a] shrink-0" />
@@ -44,7 +44,7 @@ const Footer = () => {
                 style={{ borderColor: 'rgba(253,246,240,0.2)', color: 'rgba(253,246,240,0.7)', background: 'transparent' }}
                 aria-label="Instagram">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                  <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4.5" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
                 </svg>
               </a>
               {/* Facebook */}
@@ -52,7 +52,7 @@ const Footer = () => {
                 style={{ borderColor: 'rgba(253,246,240,0.2)', color: 'rgba(253,246,240,0.7)', background: 'transparent' }}
                 aria-label="Facebook">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                 </svg>
               </a>
               {/* Globe */}
@@ -60,7 +60,7 @@ const Footer = () => {
                 style={{ borderColor: 'rgba(253,246,240,0.2)', color: 'rgba(253,246,240,0.7)', background: 'transparent' }}
                 aria-label="Website">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/>
+                  <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
                 </svg>
               </a>
             </div>
@@ -89,7 +89,7 @@ const Footer = () => {
             <div className="flex items-start gap-3 mb-[18px] text-[0.88rem] leading-[1.6]" style={{ color: 'rgba(253,246,240,0.55)' }}>
               <span className="text-[#c4956a] shrink-0 mt-[2px]">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
                 </svg>
               </span>
               <span>123 Elegance Blvd, Suite 100<br />Beverly Hills, CA 90210</span>
@@ -99,7 +99,7 @@ const Footer = () => {
             <div className="flex items-start gap-3 mb-[18px] text-[0.88rem] leading-[1.6]" style={{ color: 'rgba(253,246,240,0.55)' }}>
               <span className="text-[#c4956a] shrink-0 mt-[2px]">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
                 </svg>
               </span>
               <span>+1 (555) 123-4567</span>
@@ -109,7 +109,7 @@ const Footer = () => {
             <div className="flex items-start gap-3 mb-[18px] text-[0.88rem] leading-[1.6]" style={{ color: 'rgba(253,246,240,0.55)' }}>
               <span className="text-[#c4956a] shrink-0 mt-[2px]">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" />
                 </svg>
               </span>
               <span>appointments@luxesalon.com</span>
