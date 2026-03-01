@@ -27,9 +27,7 @@ export const applyInterceptors = (axiosInstance) => {
           window.location.href = "/login";
         }
 
-        // Return a pending promise that never resolves/rejects to "swallow" the error
-        // and prevent UI flashes of "Failed to fetch" or similar error states
-        return new Promise(() => { });
+        return Promise.reject(error);
       }
       return Promise.reject(error);
     }

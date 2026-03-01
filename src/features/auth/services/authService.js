@@ -18,9 +18,16 @@ export const registerUser = async (data) => {
 };
 
 export const sendOTP = async ({ email, purpose }) => {
-  const response = await publicApiClient.post(ENDPOINTS.OTP.SEND, { email, purpose });
-  return response.data;
-}
+  console.log("Sending OTP to:", email, "Purpose:", purpose);
+  try {
+    const response = await publicApiClient.post(ENDPOINTS.OTP.SEND, { email, purpose });
+    console.log("OTP Response:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("OTP Error:", error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+};
 
 export const getCurrentUser = async () => {
   const response = await apiClient.get(ENDPOINTS.AUTH.ME);
