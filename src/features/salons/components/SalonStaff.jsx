@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useEffect, useState } from 'react';
 import { useSalonStaff } from '../hooks/useSalonStaff';
 import { useStaffProfile } from '../hooks/useStaffProfile';
@@ -29,7 +31,7 @@ function Reveal({ children, delay = 0, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" } ${className}`}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -38,21 +40,6 @@ function Reveal({ children, delay = 0, className = "" }) {
 }
 
 // ─── Icons ────────────────────────────────────────────────────────────────
-const BriefcaseIcon = () => (
-  <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-  </svg>
-);
-
-const UsersOffIcon = () => (
-  <svg width={56} height={56} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-    <circle cx="9" cy="7" r="4" />
-    <line x1="17" y1="8" x2="23" y2="8" />
-  </svg>
-);
-
 const CloseIcon = () => (
   <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round">
     <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
@@ -61,7 +48,6 @@ const CloseIcon = () => (
 
 // ─── Staff Profile Modal ──────────────────────────────────────────────────
 function StaffProfileModal({ profile, loading, error, onClose }) {
-  // Lock body scroll when modal is open
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
@@ -77,302 +63,107 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
   };
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-[fadeIn_0.2s_ease]" />
-
-      {/* Modal */}
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-[#4b3621]/80 backdrop-blur-md animate-fadeIn" />
       <div
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[#FDFAF6] rounded-2xl shadow-2xl animate-[slideUp_0.3s_ease]"
+        className="relative w-full max-w-xl bg-[#f7ede2] rounded-[48px] overflow-hidden shadow-2xl animate-slideUp"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center text-[#7a7065] hover:text-[#1C1C1C] transition-colors shadow-sm"
-        >
+        <button onClick={onClose} className="absolute top-8 right-8 z-10 w-12 h-12 rounded-full bg-white/50 hover:bg-white flex items-center justify-center text-[#5a3d2b] transition-all cursor-pointer">
           <CloseIcon />
         </button>
 
         {loading && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <div className="w-10 h-10 border-3 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin" />
-            <p className="text-[#7a7065] text-sm">Loading profile...</p>
-          </div>
-        )}
-
-        {error && (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <svg width={28} height={28} viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth={1.5}>
-              <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
-            </svg>
-            <p className="text-[#7a7065] text-sm">{error}</p>
+          <div className="flex flex-col items-center justify-center py-32 gap-6">
+            <div className="w-12 h-12 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
+            <p className="text-[#5a3d2b] text-[10px] font-bold uppercase tracking-widest">Profiling Excellence...</p>
           </div>
         )}
 
         {profile && !loading && (
-          <>
-            {/* Header */}
-            <div className="relative pt-8 pb-6 px-8 text-center border-b border-[#C8A951]/10">
-              {/* Gold accent */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C8A951] to-transparent" />
-
-              {/* Avatar */}
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#C8A951]/30 mx-auto mb-4 bg-white flex items-center justify-center">
-                {profile.userProfileImageUrl ? (
-                  <img src={profile.userProfileImageUrl} alt={profile.userFullName} className="w-full h-full object-cover" />
-                ) : (
-                  <svg width={36} height={36} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.2}>
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-                  </svg>
-                )}
+          <div className="p-12 md:p-16">
+            <div className="flex flex-col items-center text-center mb-12">
+              <div className="w-32 h-32 rounded-[32px] overflow-hidden border-4 border-white shadow-xl mb-8">
+                <img src={profile.userProfileImageUrl || `https://ui-avatars.com/api/?name=${profile.userFullName}&background=cd6133&color=fef9f3`} alt={profile.userFullName} className="w-full h-full object-cover" />
               </div>
-
-              <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1C1C1C] mb-1">
-                {profile.userFullName}
-              </h3>
-              <span className="inline-flex items-center gap-1.5 text-[10px] tracking-[0.15em] uppercase text-[#C8A951] font-semibold">
-                <BriefcaseIcon />
-                {profile.designation}
-              </span>
-
-              {/* Availability badge */}
-              <div className="mt-3">
-                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium ${profile.isAvailable ? 'bg-emerald-50 text-primary' : 'bg-red-50 text-primary' }`}>
-                  <span className={`w-2 h-2 rounded-full ${profile.isAvailable ? 'bg-primary' : 'bg-primary'}`} />
-                  {profile.isAvailable ? 'Available for Booking' : 'Currently Unavailable'}
-                </span>
-              </div>
+              <h3 className="text-4xl font-bold text-[#5a3d2b] mb-2">{profile.userFullName}</h3>
+              <span className="text-[10px] uppercase tracking-[0.4em] text-[#cd6133] font-extrabold">{profile.designation}</span>
             </div>
 
-            {/* Bio */}
-            {profile.bio && (
-              <div className="px-8 py-5 border-b border-[#C8A951]/10">
-                <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#C8A951] font-semibold mb-2">About</h4>
-                <p className="text-[#7a7065] text-[13px] leading-relaxed font-light italic">
-                  "{profile.bio}"
-                </p>
-              </div>
-            )}
-
-            {/* Details Grid */}
-            <div className="px-8 py-5 border-b border-[#C8A951]/10">
-              <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#C8A951] font-semibold mb-4">Details</h4>
-              <div className="grid grid-cols-2 gap-4">
-                {/* Rating */}
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <span className="text-[#C8A951] text-lg">★</span>
-                  <p className="font-[Cormorant_Garamond] text-xl text-[#1C1C1C] leading-none mt-1">
-                    {(profile.averageRating || 0).toFixed(1)}
-                  </p>
-                  <span className="text-[9px] uppercase tracking-widest text-[#9e9287]">Rating</span>
+            <div className="space-y-10">
+              {profile.bio && (
+                <div className="text-center">
+                  <p className="text-[#5a3d2b] text-lg leading-relaxed italic opacity-80">"{profile.bio}"</p>
                 </div>
+              )}
 
-                {/* Reviews */}
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <svg className="mx-auto mb-1" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.5}>
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  </svg>
-                  <p className="font-[Cormorant_Garamond] text-xl text-[#1C1C1C] leading-none mt-1">
-                    {profile.totalReviews || 0}
-                  </p>
-                  <span className="text-[9px] uppercase tracking-widest text-[#9e9287]">Reviews</span>
-                </div>
-
-                {/* Bookings */}
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <svg className="mx-auto mb-1" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.5}>
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  <p className="font-[Cormorant_Garamond] text-xl text-[#1C1C1C] leading-none mt-1">
-                    {profile.totalBookings || 0}
-                  </p>
-                  <span className="text-[9px] uppercase tracking-widest text-[#9e9287]">Bookings</span>
-                </div>
-
-                {/* Commission */}
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <svg className="mx-auto mb-1" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.5}>
-                    <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                  </svg>
-                  <p className="font-[Cormorant_Garamond] text-xl text-[#1C1C1C] leading-none mt-1">
-                    {profile.commission || 0}%
-                  </p>
-                  <span className="text-[9px] uppercase tracking-widest text-[#9e9287]">Commission</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Work Schedule */}
-            <div className="px-8 py-5 border-b border-[#C8A951]/10">
-              <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#C8A951] font-semibold mb-3">Work Schedule</h4>
-              <div className="flex flex-wrap gap-3">
-                {/* Hours */}
-                <div className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 shadow-sm">
-                  <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.5}>
-                    <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  <span className="text-[13px] text-[#1C1C1C]">
-                    {formatTime(profile.workStartTime)} – {formatTime(profile.workEndTime)}
-                  </span>
-                </div>
-
-                {/* Off Days */}
-                {profile.weeklyOffDays && profile.weeklyOffDays.length > 0 && (
-                  <div className="flex items-center gap-2 bg-white rounded-lg px-4 py-2.5 shadow-sm">
-                    <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.5}>
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-                    </svg>
-                    <span className="text-[13px] text-[#1C1C1C]">
-                      Off: {profile.weeklyOffDays.map(d => d.charAt(0) + d.slice(1).toLowerCase()).join(', ')}
-                    </span>
+              <div className="grid grid-cols-3 gap-6">
+                {[
+                  { label: 'Rating', value: (profile.averageRating || 0).toFixed(1) },
+                  { label: 'Experience', value: (profile.experienceYears || 0) + 'y' },
+                  { label: 'Bookings', value: profile.totalBookings || 0 }
+                ].map((stat, i) => (
+                  <div key={i} className="bg-white/50 rounded-3xl p-6 text-center border border-[#cd6133]/5">
+                    <span className="block text-2xl font-bold text-[#5a3d2b] mb-1">{stat.value}</span>
+                    <span className="block text-[8px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">{stat.label}</span>
                   </div>
-                )}
+                ))}
+              </div>
+
+              <div className="bg-[#4b3621] text-[#fef9f3] p-10 rounded-[40px] flex items-center justify-between">
+                <div className="flex flex-col">
+                  <span className="text-[9px] uppercase tracking-widest text-[#fef9f3]/40 font-bold mb-2">Availability</span>
+                  <p className="text-xl font-bold">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
+                </div>
+                <div className={`px-4 py-2 rounded-full text-[9px] font-extrabold uppercase tracking-widest ${profile.isAvailable ? 'bg-[#cd6133]' : 'bg-red-500'}`}>
+                  {profile.isAvailable ? 'Active' : 'Busy'}
+                </div>
               </div>
             </div>
-
-            {/* Contact */}
-            {profile.userPhoneNumber && (
-              <div className="px-8 py-5 border-b border-[#C8A951]/10">
-                <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#C8A951] font-semibold mb-3">Contact</h4>
-                <div className="flex items-center gap-3 bg-white rounded-lg px-4 py-3 shadow-sm">
-                  <div className="w-8 h-8 rounded-full bg-[#f5edce] flex items-center justify-center flex-shrink-0">
-                    <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1.5}>
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-                    </svg>
-                  </div>
-                  <span className="text-[14px] text-[#1C1C1C]">{profile.userPhoneNumber}</span>
-                </div>
-              </div>
-            )}
-
-            {/* Specialized Services */}
-            {profile.specializedServices && profile.specializedServices.length > 0 && (
-              <div className="px-8 py-5">
-                <h4 className="text-[10px] tracking-[0.3em] uppercase text-[#C8A951] font-semibold mb-4">Specialized Services</h4>
-                <div className="space-y-3">
-                  {profile.specializedServices.map((service) => (
-                    <div key={service.id} className="bg-white rounded-xl p-4 shadow-sm flex items-start gap-4">
-                      {service.imageUrl && (
-                        <img
-                          src={service.imageUrl}
-                          alt={service.name}
-                          className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
-                          onError={(e) => { e.target.style.display = 'none'; }}
-                        />
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <h5 className="font-[Cormorant_Garamond,Georgia,serif] text-base text-[#1C1C1C] leading-tight">
-                            {service.name}
-                          </h5>
-                          <span className="font-[Cormorant_Garamond] text-lg text-[#C8A951] font-semibold whitespace-nowrap">
-                            ₹{service.price}
-                          </span>
-                        </div>
-                        {service.description && (
-                          <p className="text-[#9e9287] text-[11px] leading-relaxed mt-1 line-clamp-2">{service.description}</p>
-                        )}
-                        <div className="flex items-center gap-3 mt-2">
-                          {service.durationMinutes && (
-                            <span className="flex items-center gap-1 text-[10px] text-[#7a7065]">
-                              <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-                                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-                              </svg>
-                              {service.durationMinutes} min
-                            </span>
-                          )}
-                          {service.category && (
-                            <span className="text-[10px] text-[#C8A951] bg-[#C8A951]/10 px-2 py-0.5 rounded-full">
-                              {service.category}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Bottom padding */}
-            <div className="h-4" />
-          </>
+          </div>
         )}
       </div>
-
-      {/* Keyframe styles */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(20px) scale(0.97); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
     </div>
   );
 }
 
+// ─── Staff Card ───────────────────────────────────────────────────────────────
 function StaffCard({ member, index, onClick }) {
+  const name = member.userFullName || member.fullName || "Specialist";
   return (
     <Reveal delay={index * 100}>
-      <div
-        className="group bg-white rounded-3xl p-8 border border-[#C8A951]/5 hover:border-[#C8A951]/20 hover:shadow-[0_30px_60px_-12px_rgba(200,169,81,0.15)] transition-all duration-500 hover:-translate-y-2 flex flex-col items-center text-center h-full"
-      >
-        {/* Profile Image */}
-        <div className="relative mb-6">
-          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#C8A951]/10 group-hover:border-[#C8A951]/40 transition-colors duration-500 p-1 bg-white">
-            <div className="w-full h-full rounded-full overflow-hidden">
-              {member.userProfileImageUrl ? (
-                <img
-                  src={member.userProfileImageUrl}
-                  alt={member.userFullName}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-              ) : (
-                <div className="w-full h-full bg-[#f5edce] flex items-center justify-center">
-                  <svg width={40} height={40} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1}>
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-              )}
-            </div>
+      <div className="group relative bg-white p-6 rounded-[40px] border border-[#cd6133]/5 hover:border-[#cd6133]/20 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(205,97,51,0.15)] flex flex-col items-center text-center h-full">
+        <div className="relative mb-8 w-full flex justify-center">
+          <div className="w-40 h-40 rounded-[36px] overflow-hidden border-4 border-white shadow-xl relative z-10">
+            <img
+              src={member.userProfileImageUrl || member.image || `https://ui-avatars.com/api/?name=${name}&background=cd6133&color=fef9f3`}
+              alt={name}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+            />
           </div>
-          {/* Availability Dot */}
-          <div className={`absolute bottom-2 right-2 w-4 h-4 rounded-full border-2 border-white ${member.isAvailable ? 'bg-primary' : 'bg-primary'}`} />
+          <div className="absolute -bottom-2 -right-2 w-20 h-20 bg-[#cd6133]/10 rounded-[28px] -z-0 group-hover:rotate-12 group-hover:bg-[#cd6133]/20 transition-all duration-700" />
         </div>
 
-        {/* Info */}
-        <div className="mb-6 flex-1">
-          <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1C1C1C] mb-1 group-hover:text-[#C8A951] transition-colors">
-            {member.userFullName}
-          </h3>
-          <span className="block text-[10px] tracking-[0.2em] uppercase text-[#C8A951] font-bold mb-3">{member.designation}</span>
+        <h3 className="text-2xl text-[#5a3d2b] font-bold mb-2 group-hover:text-[#cd6133] transition-colors">{name}</h3>
+        <p className="text-[9px] uppercase tracking-[0.3em] text-[#5a3d2b]/40 font-extrabold mb-8">{member.designation}</p>
 
-          <div className="flex flex-wrap justify-center gap-2 mb-4">
-            {member.experienceYears && (
-              <span className="px-3 py-1 bg-[#f5edce]/40 text-[#1C1C1C] text-[10px] font-bold rounded-full uppercase tracking-tighter">
-                {member.experienceYears} Years Exp
-              </span>
-            )}
-            {member.specializationTags?.map((tag, idx) => (
-              <span key={idx} className="px-3 py-1 bg-white border border-[#C8A951]/10 text-[#7a7065] text-[10px] font-bold rounded-full uppercase tracking-tighter">{tag}</span>
-            ))}
+        <div className="flex items-center gap-6 mb-8 w-full justify-center border-t border-[#cd6133]/5 pt-8">
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-bold text-[#5a3d2b]">{member.averageRating || member.rating || "5.0"}</span>
+            <span className="text-[8px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">Grade</span>
+          </div>
+          <div className="w-px h-8 bg-[#cd6133]/10" />
+          <div className="flex flex-col items-center">
+            <span className="text-xl font-bold text-[#5a3d2b]">{member.experienceYears || "4"}+</span>
+            <span className="text-[8px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">Exp</span>
           </div>
         </div>
 
-        {/* Action */}
         <button
           onClick={onClick}
-          className="w-full py-3 rounded-xl border border-[#1C1C1C] text-[#1C1C1C] text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#1C1C1C] hover:text-white"
+          className="w-full py-4 rounded-2xl border-2 border-[#cd6133] text-[#cd6133] text-[9px] font-bold uppercase tracking-widest hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all duration-500 active:scale-95 cursor-pointer mt-auto shadow-sm"
         >
-          View Profile
+          View Portfolio
         </button>
       </div>
     </Reveal>
@@ -397,62 +188,10 @@ const SalonStaff = ({ id }) => {
 
   if (loading) {
     return (
-      <section className="py-16 bg-[#FDFAF6]">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="flex flex-col items-center justify-center gap-3 py-12">
-            <div className="w-10 h-10 border-3 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin" />
-            <p className="text-[#7a7065] text-sm tracking-wider uppercase">Loading our team...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section className="py-16 bg-[#FDFAF6]">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="flex flex-col items-center justify-center gap-3 py-12">
-            <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center">
-              <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="#e53e3e" strokeWidth={1.5}>
-                <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
-              </svg>
-            </div>
-            <p className="text-[#7a7065] text-sm">{error}</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!staff || staff.length === 0) {
-    return (
-      <section className="py-16 bg-[#FDFAF6]">
-        <div className="max-w-7xl mx-auto px-8">
-          <Reveal>
-            <div className="text-center mb-10">
-              <span className="block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-3 opacity-90">
-                Our Team
-              </span>
-              <h2
-                className="font-[Cormorant_Garamond,Georgia,serif] font-light text-[#1C1C1C] leading-[1.1]"
-                style={{ fontSize: "clamp(32px,4.5vw,46px)" }}
-              >
-                Meet Our <em className="italic text-[#C8A951]">Experts</em>
-              </h2>
-            </div>
-          </Reveal>
-
-          <Reveal delay={200}>
-            <div className="flex flex-col items-center justify-center py-14 border border-dashed border-[#C8A951]/25 rounded-xl bg-white/50">
-              <div className="w-20 h-20 rounded-full bg-[#f5edce]/50 flex items-center justify-center mb-5">
-                <UsersOffIcon />
-              </div>
-              <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C]">
-                No Staff Members Available
-              </h3>
-            </div>
-          </Reveal>
+      <section className="py-32 bg-[#f7ede2]">
+        <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center gap-6">
+          <div className="w-12 h-12 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
+          <p className="text-[#5a3d2b] text-[10px] font-bold uppercase tracking-widest">Gathering Excellence...</p>
         </div>
       </section>
     );
@@ -460,36 +199,36 @@ const SalonStaff = ({ id }) => {
 
   return (
     <>
-      <section className="py-16 bg-[#FDFAF6]" id="team">
+      <section className="py-32 bg-[#f7ede2]" id="staff">
         <div className="max-w-7xl mx-auto px-8">
           <Reveal>
-            <div className="text-center mb-10">
-              <span className="block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-3 opacity-90">
-                Our Team
-              </span>
-              <h2
-                className="font-[Cormorant_Garamond,Georgia,serif] font-light text-[#1C1C1C] leading-[1.1] mb-4"
-                style={{ fontSize: "clamp(32px,4.5vw,46px)" }}
-              >
-                Meet Our <em className="italic text-[#C8A951]">Experts</em>
+            <div className="text-center mb-32">
+              <span className="block text-[11px] tracking-[0.5em] uppercase text-[#cd6133] font-extrabold mb-8">Master Artisans</span>
+              <h2 className="text-6xl text-[#5a3d2b] font-bold leading-tight">
+                Meet Our <em className="italic font-light">Experts</em>
               </h2>
             </div>
           </Reveal>
 
-          <div className={`grid gap-5 ${staff.length === 1 ? 'grid-cols-1 max-w-[220px] mx-auto' : staff.length === 2 ? 'grid-cols-2 max-w-md mx-auto' : staff.length === 3 ? 'grid-cols-2 md:grid-cols-3 max-w-2xl mx-auto' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' }`}>
-            {staff.map((member, index) => (
-              <StaffCard
-                key={member.id || index}
-                member={member}
-                index={index}
-                onClick={() => handleCardClick(member.id)}
-              />
-            ))}
-          </div>
+          {(!staff || staff.length === 0) ? (
+            <div className="bg-white/30 rounded-[48px] p-24 text-center border border-[#cd6133]/10 italic text-[#5a3d2b]/60">
+              No staff profiles available at this moment.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+              {staff.map((member, index) => (
+                <StaffCard
+                  key={member.id || index}
+                  member={member}
+                  index={index}
+                  onClick={() => handleCardClick(member.id)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Staff Profile Modal */}
       {showModal && (
         <StaffProfileModal
           profile={profile}

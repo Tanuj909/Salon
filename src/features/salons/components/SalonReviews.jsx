@@ -30,7 +30,7 @@ function Reveal({ children, delay = 0, className = "" }) {
     return (
         <div
             ref={ref}
-            className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" } ${className}`}
+            className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${className}`}
             style={{ transitionDelay: `${delay}ms` }}
         >
             {children}
@@ -39,17 +39,15 @@ function Reveal({ children, delay = 0, className = "" }) {
 }
 
 // ─── Main Component ────────────────────────────────────────────────────────────
-const SalonReviews = ({ id, overallRating, totalReviews, ratingBreakdown }) => {
+const SalonReviews = ({ id, overallRating, totalReviews }) => {
     const { reviews, loading, error, pagination, nextPage, prevPage } = useSalonReviews(id);
-
-
 
     if (loading) {
         return (
-            <section className="py-24 bg-[#FDFAF6]" id="reviews">
+            <section className="py-24 bg-[#f7ede2]" id="reviews">
                 <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin mb-4" />
-                    <p className="text-[#9e9287] text-xs uppercase tracking-[0.3em] font-bold">Curating Experiences...</p>
+                    <div className="w-12 h-12 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin mb-4" />
+                    <p className="text-[#5a3d2b] text-xs uppercase tracking-[0.3em] font-bold">Curating Experiences...</p>
                 </div>
             </section>
         );
@@ -57,160 +55,92 @@ const SalonReviews = ({ id, overallRating, totalReviews, ratingBreakdown }) => {
 
     if (error) {
         return (
-            <section className="py-24 bg-[#FDFAF6]" id="reviews">
+            <section className="py-24 bg-[#f7ede2]" id="reviews">
                 <div className="max-w-7xl mx-auto px-8 text-center py-10">
-                    <p className="text-[#9e9287] text-sm italic">Unable to load reviews. Please try again later.</p>
-                </div>
-            </section>
-        );
-    }
-
-    if (!reviews || reviews.length === 0) {
-        return (
-            <section className="py-24 bg-[#FDFAF6]" id="reviews">
-                <div className="max-w-7xl mx-auto px-8 text-center py-10">
-                    <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Testimonials</span>
-                    <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] mb-6">Customer Reviews</h2>
-                    <p className="text-[#9e9287] text-sm italic mb-8">No reviews yet for this salon.</p>
+                    <p className="text-[#5a3d2b] text-sm italic">Unable to load reviews. Please try again later.</p>
                 </div>
             </section>
         );
     }
 
     return (
-        <section className="py-24 bg-[#FDFAF6]" id="reviews">
+        <section className="py-32 bg-[#f7ede2]" id="reviews">
             <div className="max-w-7xl mx-auto px-8">
                 <Reveal>
-                    <div className="flex flex-col md:flex-row items-center justify-between mb-16 gap-6">
-                        <div className="text-center md:text-left">
-                            <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Testimonials</span>
-                            <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C]">Customer Reviews</h2>
-                        </div>
+                    <div className="text-center mb-24">
+                        <span className="block text-[11px] tracking-[0.4em] uppercase text-[#cd6133] font-extrabold mb-6">Testimonials</span>
+                        <h2 className="text-6xl text-[#5a3d2b] font-bold leading-tight">
+                            What Our Clients <em className="italic font-light">Say</em>
+                        </h2>
                     </div>
                 </Reveal>
 
-                <div className="grid lg:grid-cols-3 gap-12 items-start">
-                    <Reveal className="lg:col-span-1 bg-white p-10 rounded-3xl shadow-sm border border-[#C8A951]/5">
-                        <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-3xl text-[#1C1C1C] mb-6">Overall Rating</h3>
-                        <div className="flex items-center gap-4 mb-6">
-                            <span className="text-6xl font-bold text-[#1C1C1C]">
-                                {(overallRating || 0).toFixed(1)}
-                            </span>
-                            <div>
-                                <div className="flex text-[#C8A951] mb-1">
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                        <span key={i}>{i < Math.round(overallRating || 0) ? "★" : "☆"}</span>
-                                    ))}
-                                </div>
-                                <span className="text-[#9e9287] text-sm font-medium uppercase tracking-widest">{totalReviews || 0} Reviews</span>
-                            </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            {[5, 4, 3, 2, 1].map((star) => (
-                                <div key={star} className="flex items-center gap-4">
-                                    <span className="text-xs font-bold text-[#7a7065] w-4">{star}</span>
-                                    <div className="flex-1 h-1.5 bg-[#f5edce] rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-[#C8A951]"
-                                            style={{ width: totalReviews ? `${((ratingBreakdown?.[star] || 0) / totalReviews) * 100}%` : '0%' }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </Reveal>
-
-                    <div className="lg:col-span-2">
-                        <div className="grid md:grid-cols-2 gap-6 mb-10">
-                            {reviews.map((review, i) => (
-                                <Reveal key={review.id || i} delay={i * 100}>
-                                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-[#C8A951]/5 hover:border-[#C8A951]/20 transition-all h-full">
-                                        <div className="flex items-center gap-4 mb-4">
-                                            <div className="w-12 h-12 rounded-full bg-[#f5edce] flex items-center justify-center text-[#C8A951] font-bold overflow-hidden flex-shrink-0">
-                                                {(review.isAnonymous || !review.customer) ? (
-                                                    <span className="text-sm">ANON</span>
-                                                ) : review.customer?.profileImageUrl ? (
-                                                    <img src={review.customer.profileImageUrl} alt={review.customer.fullName} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    review.customer?.fullName?.substring(0, 2).toUpperCase() || 'AN'
-                                                )}
-                                            </div>
-                                            <div className="min-w-0 flex-1">
-                                                <h4 className="text-sm font-bold text-[#1C1C1C] truncate">
-                                                    {review.isAnonymous || !review.customer ? "Anonymous User" : review.customer.fullName}
-                                                </h4>
-                                                <div className="flex items-center gap-2 flex-wrap">
-                                                    <div className="flex text-[#C8A951] text-[10px]">
-                                                        {Array.from({ length: 5 }).map((_, idx) => (
-                                                            <span key={idx}>{idx < Math.round(review.rating) ? "★" : "☆"}</span>
-                                                        ))}
-                                                    </div>
-                                                    <span className="text-[#9e9287] text-[10px] whitespace-nowrap">
-                                                        {new Date(review.createdAt).toLocaleDateString('en-US', {
-                                                            month: 'short',
-                                                            day: 'numeric',
-                                                            year: 'numeric'
-                                                        })}
-                                                    </span>
-                                                </div>
+                {reviews.length === 0 ? (
+                    <div className="text-center py-24 bg-white/30 rounded-[40px] border border-[#cd6133]/10">
+                        <p className="text-[#5a3d2b]/60 italic text-xl">No reviews yet. Be the first to share your experience.</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                        {reviews.map((review, i) => (
+                            <Reveal key={review.id || i} delay={i * 100}>
+                                <div className="bg-white p-10 rounded-[48px] border border-[#cd6133]/5 hover:border-[#cd6133]/20 hover:shadow-[0_40px_80px_-20px_rgba(205,97,51,0.1)] transition-all duration-500 h-full flex flex-col group">
+                                    <div className="flex items-center gap-5 mb-10">
+                                        <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#cd6133]/10 group-hover:border-[#cd6133]/30 transition-colors bg-[#fef9f3]">
+                                            <img
+                                                src={review.user?.profilePic || "https://ui-avatars.com/api/?name=" + (review.user?.fullName || "User") + "&background=cd6133&color=fef9f3"}
+                                                alt={review.user?.fullName}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-[#5a3d2b] text-lg">{review.user?.fullName}</h4>
+                                            <div className="flex items-center gap-1 mt-1">
+                                                {Array.from({ length: 5 }).map((_, starI) => (
+                                                    <svg key={starI} width={16} height={16} viewBox="0 0 24 24" fill={starI < review.rating ? "#cd6133" : "rgba(0,0,0,0.1)"}>
+                                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                    </svg>
+                                                ))}
                                             </div>
                                         </div>
-
-                                        {review.staff && (
-                                            <div className="mb-3 text-[10px] text-[#C8A951] uppercase tracking-widest font-bold">
-                                                Service by {review.staff.fullName}
-                                            </div>
-                                        )}
-
-                                        <p className="text-[#7a7065] text-sm leading-relaxed italic line-clamp-3">
-                                            "{review.comment}"
-                                        </p>
                                     </div>
-                                </Reveal>
-                            ))}
-                        </div>
-
-                        {/* Pagination Controls */}
-                        {pagination.totalPages > 1 && (
-                            <Reveal>
-                                <div className="flex justify-center items-center gap-4">
-                                    <button
-                                        onClick={prevPage}
-                                        disabled={pagination.isFirst}
-                                        className="px-6 py-2 rounded-full border border-[#C8A951]/20 text-[#1C1C1C] text-xs font-bold uppercase tracking-wider disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#C8A951] transition-all"
-                                        type="button"
-                                    >
-                                        Previous
-                                    </button>
-                                    <span className="text-[#9e9287] text-sm font-medium">
-                                        Page {pagination.currentPage + 1} of {pagination.totalPages}
-                                    </span>
-                                    <button
-                                        onClick={nextPage}
-                                        disabled={pagination.isLast}
-                                        className="px-6 py-2 rounded-full border border-[#C8A951]/20 text-[#1C1C1C] text-xs font-bold uppercase tracking-wider disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#C8A951] transition-all"
-                                        type="button"
-                                    >
-                                        Next
-                                    </button>
+                                    <p className="text-[#5a3d2b] text-base leading-relaxed mb-10 italic flex-1 opacity-80">
+                                        "{review.reviewText}"
+                                    </p>
+                                    <div className="flex items-center justify-between pt-8 border-t border-[#cd6133]/5 text-[10px] font-bold uppercase tracking-widest text-[#5a3d2b]/40">
+                                        <span>Verified Experience</span>
+                                        <span>{new Date(review.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                                    </div>
                                 </div>
                             </Reveal>
-                        )}
+                        ))}
                     </div>
-                </div>
+                )}
+
+                {/* Pagination Controls */}
+                {pagination.totalPages > 1 && (
+                    <Reveal delay={300}>
+                        <div className="flex justify-center items-center gap-10 mt-20">
+                            <button
+                                onClick={prevPage}
+                                disabled={pagination.isFirst}
+                                className="px-10 py-5 rounded-full border-2 border-[#cd6133]/20 text-[#cd6133] text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all cursor-pointer"
+                            >
+                                Previous
+                            </button>
+                            <span className="text-[#5a3d2b] text-sm font-bold tracking-widest">
+                                {pagination.currentPage + 1} / {pagination.totalPages}
+                            </span>
+                            <button
+                                onClick={nextPage}
+                                disabled={pagination.isLast}
+                                className="px-10 py-5 rounded-full border-2 border-[#cd6133]/20 text-[#cd6133] text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all cursor-pointer"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </Reveal>
+                )}
             </div>
-
-
-
-            <style jsx>{`
-                .line-clamp-3 {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
-            `}</style>
         </section>
     );
 };

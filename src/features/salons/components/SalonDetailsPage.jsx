@@ -98,15 +98,15 @@ function Stars({ rating, size = 14 }) {
 
 function Badge({ children, variant = "gold" }) {
   const variants = {
-    gold: "bg-[#C8A951] text-[#1C1C1C]",
-    outline: "bg-transparent border border-[#C8A951] text-[#C8A951]",
+    gold: "bg-[#cd6133] text-[#fef9f3]",
+    outline: "bg-transparent border border-[#cd6133] text-[#cd6133]",
     glass: "backdrop-blur-md bg-white/10 text-white border border-white/20",
-    dark: "bg-[#1C1C1C] text-[#C8A951]",
+    plum: "bg-[#4b3621] text-[#fef9f3]",
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide ${variants[variant]}`}
+      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold tracking-widest uppercase ${variants[variant]}`}
     >
       {children}
     </span>
@@ -161,218 +161,169 @@ export default function SalonDetailsPage({ id }) {
     .join(", ") || salon.address;
 
   return (
-    <div className="min-h-screen bg-[#F7F3EE] font-[Jost,sans-serif] font-light">
+    <div className="min-h-screen bg-[#f7ede2] font-['Manrope',sans-serif] text-[#5a3d2b]">
       {/* ═══════════════════════════════════════════
           HERO SECTION
       ═══════════════════════════════════════════ */}
-      <section className="relative h-[80vh] min-h-[600px] overflow-hidden">
+      <section className="relative h-screen min-h-[700px] overflow-hidden">
         <div ref={heroRef} className="absolute inset-0">
           {salonImg && <img src={salonImg} alt={salon.name} className="w-full h-full object-cover" />}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+          {/* Subtle dark plum gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#4b3621]/80 via-[#4b3621]/40 to-[#4b3621]/80" />
         </div>
 
         <div className="absolute inset-0 z-10 flex items-center px-8 md:px-16 lg:px-24">
-          <div className="max-w-4xl text-white">
+          <div className="max-w-5xl text-[#fef9f3]">
             <Reveal delay={100}>
-              <button onClick={() => window.history.back()} className="inline-flex items-center gap-2 text-white/70 hover:text-[#C8A951] transition-all mb-8 group bg-transparent border-0 cursor-pointer">
+              <button
+                onClick={() => window.history.back()}
+                className="inline-flex items-center gap-2 text-[#fef9f3]/70 hover:text-[#cd6133] transition-all mb-10 group bg-transparent border-0 cursor-pointer"
+              >
                 <svg className="group-hover:-translate-x-1 transition-transform" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path d="M19 12H5M12 19l-7-7 7-7" />
                 </svg>
-                <span className="text-xs uppercase tracking-[0.2em] font-medium">Explore Salons</span>
+                <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Discover More</span>
               </button>
             </Reveal>
 
             <Reveal delay={200}>
-              <div className="flex items-center gap-3 mb-6">
+              <div className="flex items-center gap-4 mb-8">
                 {salon.verificationStatus === "VERIFIED" && (
-                  <div className="flex items-center gap-1.5 bg-primary/90 text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold shadow-lg">
-                    <svg width={12} height={12} viewBox="0 0 24 24" fill="white">
+                  <Badge variant="gold">
+                    <svg width={12} height={12} viewBox="0 0 24 24" fill="currentColor">
                       <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                     </svg>
-                    Verified Salon
-                  </div>
+                    Verified Studio
+                  </Badge>
                 )}
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-bold">
+                <Badge variant="glass">
                   {salon.isOpen ? "Open Now" : "Closed"}
-                </div>
+                </Badge>
               </div>
             </Reveal>
 
             <Reveal delay={300}>
-              <h1 className="font-[Cormorant_Garamond,Georgia,serif] font-bold leading-tight mb-4 text-white uppercase tracking-tight"
-                style={{ fontSize: "clamp(48px,7vw,84px)" }}>
+              <h1 className="font-bold leading-[1.1] mb-8 uppercase tracking-tight"
+                style={{ fontSize: "clamp(56px,8vw,100px)" }}>
                 {salon.name}
               </h1>
             </Reveal>
 
             <Reveal delay={400}>
-              <div className="flex items-center gap-6 flex-wrap mb-10">
-                <div className="flex items-center gap-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10">
-                  <div className="flex items-center gap-1 text-[#C8A951]">
-                    <span className="text-lg font-bold">
-                      {salon.averageRating > 0 ? salon.averageRating.toFixed(1) : "New"}
+              <div className="flex flex-col gap-8 mb-12">
+                <div className="flex items-center gap-10 flex-wrap">
+                  {/* Premium Rating */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1 text-[#C8A951]">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <svg key={i} width={20} height={20} viewBox="0 0 24 24" fill={i < Math.round(salon.averageRating || 0) ? "#cd6133" : "rgba(255,255,255,0.2)"}>
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <span className="text-[12px] font-bold uppercase tracking-widest text-[#fef9f3]/80">
+                      {salon.totalReviews > 0 ? `${salon.averageRating.toFixed(1)} / ${salon.totalReviews} Reviews` : "New Experience"}
                     </span>
-                    <svg width={16} height={16} viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                    </svg>
                   </div>
-                  <div className="w-px h-4 bg-white/20" />
-                  <span className="text-white/80 text-xs font-medium uppercase tracking-wider">
-                    {salon.totalReviews > 0 ? `${salon.totalReviews} Reviews` : "No Reviews Yet"}
-                  </span>
+
+                  {/* Location & Contact */}
+                  <div className="flex items-center gap-8 flex-wrap">
+                    {salon.city && (
+                      <div className="flex items-center gap-3 text-[#fef9f3]/90">
+                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
+                            <circle cx="12" cy="10" r="3" />
+                          </svg>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[9px] uppercase tracking-widest text-[#fef9f3]/50 font-bold mb-0.5">Location</span>
+                          <span className="text-sm font-medium">{salon.address}, {salon.city}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {salon.phoneNumber && (
+                      <div className="flex items-center gap-3 text-[#fef9f3]/90">
+                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
+                          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                          </svg>
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-[9px] uppercase tracking-widest text-[#fef9f3]/50 font-bold mb-0.5">Contact</span>
+                          <span className="text-sm font-medium">{salon.phoneNumber}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {salon.city && (
-                  <div className="flex items-center gap-2 text-white/80 text-sm font-medium">
-                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                      <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                    </div>
-                    <span>{salon.city}</span>
+                {/* Inline Categories */}
+                {salon.categories && salon.categories.length > 0 && (
+                  <div className="flex flex-wrap gap-4">
+                    {salon.categories.map((cat, i) => (
+                      <div key={cat.id || i} className="flex items-center gap-3 bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#cd6133]" />
+                        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#fef9f3]">{cat.name}</span>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
             </Reveal>
 
             <Reveal delay={500}>
-              <div className="flex gap-4 sm:gap-6 flex-wrap">
-                <button onClick={() => setIsBookingOpen(true)} className="group relative px-10 py-5 rounded-full bg-[#C8A951] text-[#1C1C1C] text-sm font-bold tracking-widest uppercase overflow-hidden transition-all duration-300 hover:shadow-[0_20px_40px_-10px_rgba(200,169,81,0.4)] hover:-translate-y-1 border-0 cursor-pointer">
+              <div className="flex gap-8 flex-wrap mt-4">
+                <button
+                  onClick={() => setIsBookingOpen(true)}
+                  className="group relative px-12 py-6 rounded-full bg-[#cd6133] text-[#fef9f3] text-xs font-bold tracking-[0.3em] uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(205,97,51,0.5)] hover:-translate-y-1 border-0 cursor-pointer"
+                >
                   <span className="relative z-10">Book Appointment</span>
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                  <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 </button>
-                <a href="#services" className="group px-10 py-5 rounded-full border-2 border-white text-white text-sm font-bold tracking-widest uppercase transition-all duration-300 hover:bg-white hover:text-black">
+                <a
+                  href="#services"
+                  className="group px-12 py-6 rounded-full border border-[#fef9f3]/30 text-[#fef9f3] text-xs font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:bg-[#fef9f3] hover:text-[#4b3621] hover:border-[#fef9f3]"
+                >
                   <span>View Services</span>
                 </a>
               </div>
             </Reveal>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 hidden md:block">
+          <div className="w-px h-24 bg-gradient-to-b from-[#fef9f3]/40 to-transparent relative">
+            <div className="absolute top-0 left-0 w-full h-full bg-[#cd6133] origin-top animate-[scroll_2s_infinite]" />
+          </div>
+        </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          ABOUT SECTION
-      ═══════════════════════════════════════════ */}
-      <section className="py-20 px-8 max-w-7xl mx-auto" id="about">
+      <section className="py-24 px-8 max-w-7xl mx-auto" id="about">
         <Reveal>
-          <div className="flex flex-col lg:flex-row gap-16">
-            {/* Left: Bio */}
-            <div className="lg:w-3/5">
-              <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-6">Our Story</span>
-              <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] leading-tight mb-8">
-                About <em className="italic text-[#C8A951]">Us</em>
-              </h2>
-              <p className="text-[#7a7065] text-lg leading-relaxed font-light mb-8 max-w-2xl">
-                {salon.description}
-              </p>
-              <div className="w-24 h-px bg-[#C8A951]/30" />
-            </div>
-
-            {/* Right: Quick Info Cards */}
-            <div className="lg:w-2/5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-[#C8A951]/5 hover:border-[#C8A951]/20 transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-[#f5edce] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <h4 className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Address</h4>
-                <p className="text-sm text-[#1C1C1C] font-medium leading-snug">{salon.address}, {salon.city}</p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-[#C8A951]/5 hover:border-[#C8A951]/20 transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-[#f5edce] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
-                    <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-                  </svg>
-                </div>
-                <h4 className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Working Hours</h4>
-                <p className="text-sm text-[#1C1C1C] font-medium leading-snug">
-                  {salon.timings?.find(t => t.day === today)?.open} - {salon.timings?.find(t => t.day === today)?.close}
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-[#C8A951]/5 hover:border-[#C8A951]/20 transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-[#f5edce] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
-                  </svg>
-                </div>
-                <h4 className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Contact</h4>
-                <p className="text-sm text-[#1C1C1C] font-medium leading-snug">{salon.phoneNumber}</p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-[#C8A951]/5 hover:border-[#C8A951]/20 transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-[#f5edce] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" /><polyline points="22 4 12 14.01 9 11.01" />
-                  </svg>
-                </div>
-                <h4 className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Registration</h4>
-                <p className="text-sm text-[#1C1C1C] font-medium leading-snug">{salon.registrationNumber}</p>
-              </div>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <span className="block text-[11px] tracking-[0.4em] uppercase text-[#cd6133] font-extrabold mb-6">Our Legacy</span>
+            <h2 className="text-5xl text-[#5a3d2b] font-bold leading-tight mb-8">
+              About <em className="italic font-light">Us</em>
+            </h2>
+            <p className="text-[#5a3d2b] text-lg leading-relaxed font-medium">
+              {salon.description}
+            </p>
           </div>
-          <div className="mt-20 h-px bg-gradient-to-r from-transparent via-[#C8A951]/20 to-transparent" />
         </Reveal>
       </section>
-
-      {/* ═══════════════════════════════════════════
-          CATEGORIES SECTION
-      ═══════════════════════════════════════════ */}
-      {salon.categories && salon.categories.length > 0 && (
-        <section className="py-20 px-8 max-w-7xl mx-auto" id="categories">
-          <Reveal>
-            <div className="text-center mb-16">
-              <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Our Expertise</span>
-              <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] leading-tight">
-                Categories
-              </h2>
-            </div>
-          </Reveal>
-
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-            {salon.categories.map((cat, i) => (
-              <Reveal key={cat.id || i} delay={i * 100}>
-                <div className="flex flex-col items-center group cursor-pointer">
-                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-3xl border border-[#C8A951]/10 bg-white shadow-[0_15px_35px_-15px_rgba(200,169,81,0.1)] flex flex-col items-center justify-center p-8 text-center transition-all duration-500 hover:border-[#C8A951]/40 hover:shadow-[0_25px_50px_-12px_rgba(200,169,81,0.2)] hover:-translate-y-2 relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#C8A951]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* Icon based on Category Name */}
-                    <div className="mb-3 text-[#C8A951] group-hover:scale-110 transition-transform duration-500">
-                      {cat.name.toUpperCase() === "MEN" && (
-                        <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" /></svg>
-                      )}
-                      {cat.name.toUpperCase() === "WOMEN" && (
-                        <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg>
-                      )}
-                      {cat.name.toUpperCase() === "CHILDREN" && (
-                        <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zM2 20c0-2 4-3 5-3 .34 0 .65.04.93.11A6.38 6.38 0 0 1 12 15a6.38 6.38 0 0 1 4.07 2.11c.28-.07.59-.11.93-.11 1 0 5 1 5 3v2H2z" /></svg>
-                      )}
-                      {cat.name.toUpperCase() === "PETS" && (
-                        <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><circle cx="6.5" cy="5.5" r="2.5" /><circle cx="10" cy="5" r="2.5" /><circle cx="14" cy="5" r="2.5" /><circle cx="17.5" cy="5.5" r="2.5" /><path d="M12 10a5 5 0 0 1 5 5v3l-5 2-5-2v-3a5 5 0 0 1 5-5z" /></svg>
-                      )}
-                      {!["MEN", "WOMEN", "CHILDREN", "PETS"].includes(cat.name.toUpperCase()) && (
-                        <svg width={32} height={32} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}><path d="M20 7h-9l-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" /></svg>
-                      )}
-                    </div>
-
-                    <span className="font-[Cormorant_Garamond] text-sm md:text-base font-bold tracking-[0.2em] uppercase text-[#1C1C1C] z-10 group-hover:text-[#C8A951] transition-colors duration-300">
-                      {cat.name}
-                    </span>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* ═══════════════════════════════════════════
           SERVICES SECTION (PAGINATED API)
       ═══════════════════════════════════════════ */}
       <SalonServices id={id} onBookService={handleBookService} />
+
+      {/* ═══════════════════════════════════════════
+          SALON STAFF SECTION
+      ═══════════════════════════════════════════ */}
+      <SalonStaff id={id} />
 
       {/* ═══════════════════════════════════════════
           REVIEWS SECTION
@@ -385,87 +336,60 @@ export default function SalonDetailsPage({ id }) {
       />
 
       {/* ═══════════════════════════════════════════
-          SALON STAFF SECTION
+          LOCATION & TIMINGS SECTION (SIDE BY SIDE)
       ═══════════════════════════════════════════ */}
-      <SalonStaff id={id} />
-
-      {/* ═══════════════════════════════════════════
-          BUSINESS TIMINGS SECTION
-      ═══════════════════════════════════════════ */}
-      <BusinessTimings id={id} />
-
-      {/* ═══════════════════════════════════════════
-          LOCATION SECTION
-      ═══════════════════════════════════════════ */}
-      <section className="py-24 px-8 max-w-7xl mx-auto" id="location">
-        <Reveal>
-          <div className="text-center mb-16">
-            <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Find Us</span>
-            <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] leading-tight">
-              Our Location
-            </h2>
-          </div>
-        </Reveal>
-
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {salon.latitude && salon.longitude && (
+      <section className="py-32 bg-[#cd6133]/5" id="visit">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-16">
+            {/* Left: Business Timings */}
             <Reveal>
-              <div className="rounded-[40px] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] h-[500px] border-8 border-white">
-                <iframe
-                  src={`https://maps.google.com/maps?q=${salon.latitude},${salon.longitude}&z=15&output=embed`}
-                  className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+              <BusinessTimings id={id} compact={true} />
             </Reveal>
-          )}
 
-          <Reveal delay={200}>
-            <div className="space-y-10">
-              <div className="flex gap-6">
-                <div className="w-14 h-14 rounded-full bg-[#f5edce] flex items-center justify-center flex-shrink-0">
-                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
+            {/* Right: Map Area */}
+            {salon.latitude && salon.longitude && (
+              <Reveal delay={200}>
+                <div className="rounded-[40px] overflow-hidden shadow-2xl h-[500px] border-4 border-white relative group">
+                  <iframe
+                    src={`https://maps.google.com/maps?q=${salon.latitude},${salon.longitude}&z=15&output=embed`}
+                    className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-1000"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#cd6133] -translate-y-1/2 translate-x-1/2 rotate-45 pointer-events-none group-hover:scale-110 transition-transform duration-500" />
+                </div>
+              </Reveal>
+            )}
+          </div>
+
+          {/* Full Width Address Row Below */}
+          <Reveal delay={300}>
+            <div className="bg-[#4b3621] rounded-[40px] p-12 text-[#fef9f3] flex flex-col md:flex-row items-center justify-between gap-10">
+              <div className="flex items-center gap-8">
+                <div className="w-16 h-16 rounded-2xl bg-[#cd6133] flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
                   </svg>
                 </div>
                 <div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#9e9287] font-bold mb-2">Address</h4>
-                  <p className="text-xl text-[#1C1C1C] font-semibold leading-relaxed mb-4">{locationText}</p>
-                  <button className="px-6 py-2 rounded-full border border-[#C8A951] text-[#C8A951] text-[10px] font-bold uppercase tracking-widest hover:bg-[#C8A951] hover:text-white transition-all">Get Directions</button>
+                  <h4 className="text-[10px] uppercase tracking-[0.4em] text-[#fef9f3]/50 font-extrabold mb-2">The Address</h4>
+                  <p className="text-xl font-bold leading-relaxed">{locationText}</p>
                 </div>
               </div>
 
-              <div className="flex gap-6">
-                <div className="w-14 h-14 rounded-full bg-[#f5edce] flex items-center justify-center flex-shrink-0">
-                  <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={2}>
-                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
-                  </svg>
+              <div className="flex flex-col md:flex-row items-center gap-10">
+                <div className="text-center md:text-left">
+                  <h4 className="text-[10px] uppercase tracking-[0.4em] text-[#fef9f3]/50 font-extrabold mb-2">Connect</h4>
+                  <p className="text-lg font-bold">{salon.phoneNumber}</p>
                 </div>
-                <div>
-                  <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#9e9287] font-bold mb-2">Metadata</h4>
-                  <p className="text-sm text-[#7a7065] font-light leading-relaxed">
-                    {salon.metaDescription}
-                  </p>
-                </div>
-              </div>
-
-              <div className="pt-6 border-t border-[#C8A951]/10">
-                <h4 className="text-[10px] uppercase tracking-[0.3em] text-[#9e9287] font-bold mb-4">Contact Info</h4>
-                <div className="flex flex-wrap gap-8">
-                  {salon.phoneNumber && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#1C1C1C]">P:</span>
-                      <span className="text-sm text-[#7a7065]">{salon.phoneNumber}</span>
-                    </div>
-                  )}
-                  {salon.email && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-[#1C1C1C]">E:</span>
-                      <span className="text-sm text-[#7a7065]">{salon.email}</span>
-                    </div>
-                  )}
-                </div>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${salon.latitude},${salon.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-10 py-5 rounded-full bg-[#cd6133] text-[#fef9f3] text-[10px] font-bold uppercase tracking-widest hover:bg-[#fef9f3] hover:text-[#4b3621] transition-all shadow-xl group border-0 cursor-pointer"
+                >
+                  Navigate
+                </a>
               </div>
             </div>
           </Reveal>
@@ -475,16 +399,24 @@ export default function SalonDetailsPage({ id }) {
       {/* ═══════════════════════════════════════════
           BOOKING CTA
       ═══════════════════════════════════════════ */}
-      <section className="py-32 bg-[#1C1C1C] relative overflow-hidden" id="booking">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#C8A951]/5 -skew-x-12 translate-x-1/2" />
-        <div className="max-w-4xl mx-auto px-8 relative z-10 text-center">
+      <section className="py-40 bg-[#4b3621] relative overflow-hidden" id="booking">
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#cd6133]/10 -skew-x-12 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-1/4 h-full bg-black/5 skew-x-12 -translate-x-1/2" />
+
+        <div className="max-w-5xl mx-auto px-8 relative z-10 text-center">
           <Reveal>
-            <h2 className="font-[Cormorant_Garamond,Georgia,serif] font-light text-white text-6xl md:text-8xl mb-12 leading-tight uppercase">
-              Book Your <em className="italic text-[#C8A951] font-light">Experience</em>
+            <span className="block text-[11px] tracking-[0.5em] uppercase text-[#cd6133] font-extrabold mb-10">Limited Availability</span>
+            <h2 className="text-7xl md:text-9xl font-bold text-[#fef9f3] mb-16 leading-tight uppercase tracking-tighter">
+              Secure Your <em className="italic font-light text-[#cd6133]">Moment</em>
             </h2>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <button onClick={() => setIsBookingOpen(true)} className="px-12 py-6 rounded-full bg-[#C8A951] text-[#1C1C1C] text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)] hover:-translate-y-1">Book Appointment Now</button>
-              <button className="px-12 py-6 rounded-full border border-white/20 text-white text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-white/10">Inquire via WhatsApp</button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-10">
+              <button
+                onClick={() => setIsBookingOpen(true)}
+                className="px-16 py-8 rounded-full bg-[#cd6133] text-[#fef9f3] text-xs font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:bg-[#fef9f3] hover:text-[#4b3621] hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:-translate-y-2 border-0 cursor-pointer"
+              >
+                Book Appointment Now
+              </button>
+              <button className="px-16 py-8 rounded-full border border-[#fef9f3]/20 text-[#fef9f3] text-xs font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:bg-white/10">Inquire via WhatsApp</button>
             </div>
           </Reveal>
         </div>

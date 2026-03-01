@@ -1,10 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Clock } from "lucide-react";
 import { useSalonTimings } from "../hooks/useSalonTimings";
 
-// Helper function to format HH:MM into 12-hour AM/PM
+// ─── Reveal Animation ──────────────────────────────────────────────────────────
+function useReveal() {
+    const ref = useRef(null);
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
+        const el = ref.current;
+        if (!el) return;
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true);
+                    obs.unobserve(el);
+                }
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -50px 0px" }
+        );
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
+    return { ref, visible };
+}
+
+function Reveal({ children, delay = 0, className = "" }) {
+    const { ref, visible } = useReveal();
+    return (
+        <div
+            ref={ref}
+            className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${className}`}
+            style={{ transitionDelay: `${delay}ms` }}
+        >
+            {children}
+        </div>
+    );
+}
+
 const formatTime = (timeString) => {
     if (!timeString) return "";
     const [hoursStr, minutesStr] = timeString.split(":");
@@ -12,105 +46,90 @@ const formatTime = (timeString) => {
     const minutes = minutesStr;
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
+    hours = hours ? hours : 12;
     return `${hours}:${minutes} ${ampm}`;
 };
 
-const BusinessTimings = ({ id }) => {
+const BusinessTimings = ({ id, compact = false }) => {
     const { timings, loading, error } = useSalonTimings({ id });
-    const [expanded, setExpanded] = useState(false);
 
     if (loading) {
         return (
-            <div className="py-12 flex justify-center items-center gap-3">
-                <div className="w-6 h-6 border-2 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin" />
-                <span className="text-sm font-medium text-[#7a7065]">Loading timings...</span>
+            <div className={`${compact ? 'py-12' : 'py-32'} flex justify-center items-center gap-6 bg-[#f7ede2]`}>
+                <div className="w-10 h-10 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#5a3d2b]">Aligning Moments...</span>
             </div>
         );
     }
 
-    if (error || !timings || timings.length === 0) {
-        return null; // Fail gracefully
-    }
+    if (error || !timings || timings.length === 0) return null;
 
-    // Sort timings by day of week starting from Monday
-    const dayOrder = {
-        MONDAY: 1,
-        TUESDAY: 2,
-        WEDNESDAY: 3,
-        THURSDAY: 4,
-        FRIDAY: 5,
-        SATURDAY: 6,
-        SUNDAY: 7,
-    };
-
-    const sortedTimings = [...timings].sort((a, b) => dayOrder[a.dayOfWeek] - dayOrder[b.dayOfWeek]);
-
-    // Current day for highlighting
-    const todayStr = new Date().toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
+    const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+    const currentDay = new Date().toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
 
     return (
-        <section className="py-24 px-8 max-w-7xl mx-auto" id="timings">
-            <div className="text-center mb-16">
-                <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">When to visit</span>
-                <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] leading-tight flex justify-center items-center gap-4">
-                    <Clock className="w-10 h-10 text-[#C8A951]" strokeWidth={1.5} />
-                    Operating <em className="italic text-[#C8A951]">Hours</em>
-                </h2>
-            </div>
-
-            <div className="max-w-2xl mx-auto bg-white rounded-3xl p-8 lg:p-12 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] border border-[#C8A951]/10">
-                <div className="space-y-2">
-                    {sortedTimings.map((dayData, index) => {
-                        const isToday = dayData.dayOfWeek === todayStr;
-                        const isHidden = !expanded && !isToday && index > 2; // Show today + first few if collapsed (if we want collage behavior)
-
-                        // If not expanded, only show first 3 days + today
-                        if (!expanded && index > 2 && !isToday) {
-                            return null;
-                        }
-
-                        return (
-                            <div
-                                key={dayData.id}
-                                className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 ${isToday ? 'bg-[#F7F3EE] ring-1 ring-[#C8A951]/30' : 'hover:bg-[#F7F3EE]/50'}`}
-                            >
-                                <div className="flex items-center gap-3">
-                                    {isToday && <span className="w-2 h-2 rounded-full bg-[#C8A951] animate-pulse" />}
-                                    <span className={`text-sm tracking-widest font-bold uppercase ${isToday ? 'text-[#C8A951]' : 'text-[#1C1C1C]'}`}>
-                                        {dayData.dayOfWeek.charAt(0) + dayData.dayOfWeek.slice(1).toLowerCase()}
-                                    </span>
-                                    {isToday && <span className="ml-2 text-[10px] bg-[#C8A951] text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Today</span>}
-                                </div>
-
-                                <div className="text-right">
-                                    {dayData.isClosed ? (
-                                        <span className="text-sm font-medium text-red-500/80 uppercase tracking-widest">Closed</span>
-                                    ) : (
-                                        <span className={`text-sm font-semibold tracking-wider ${isToday ? 'text-[#1C1C1C]' : 'text-[#7a7065]'}`}>
-                                            {formatTime(dayData.openTime)} - {formatTime(dayData.closeTime)}
-                                        </span>
-                                    )}
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                {sortedTimings.length > 4 && (
-                    <button
-                        onClick={() => setExpanded(!expanded)}
-                        className="w-full mt-6 py-4 border-t border-[#C8A951]/10 text-xs font-bold uppercase tracking-[0.2em] text-[#C8A951] hover:text-[#1C1C1C] transition-colors flex items-center justify-center gap-2"
-                    >
-                        {expanded ? "Show Less" : "View Full Schedule"}
-                        <svg
-                            className={`w-4 h-4 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}
-                        >
-                            <path d="M6 9l6 6 6-6" />
-                        </svg>
-                    </button>
+        <section className={compact ? "" : "py-40 bg-[#f7ede2]"} id="timings">
+            <div className={compact ? "" : "max-w-7xl mx-auto px-8"}>
+                {!compact && (
+                    <Reveal>
+                        <div className="text-center mb-24">
+                            <span className="block text-[11px] tracking-[0.4em] uppercase text-[#cd6133] font-extrabold mb-8">Plan Your Visit</span>
+                            <h2 className="text-6xl text-[#5a3d2b] font-bold leading-tight">
+                                Opening <em className="italic font-light">Hours</em>
+                            </h2>
+                        </div>
+                    </Reveal>
                 )}
+
+                <div className={`${compact ? 'p-8 md:p-12 rounded-[48px]' : 'max-w-3xl mx-auto rounded-[64px] p-12 md:p-20'} bg-white border border-[#cd6133]/5 shadow-[0_60px_100px_-20px_rgba(205,97,51,0.1)] relative overflow-hidden`}>
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-[#cd6133]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+
+                    <div className={compact ? "space-y-3" : "space-y-6"}>
+                        {daysOfWeek.map((day) => {
+                            const timing = timings.find(t => t.dayOfWeek === day);
+                            const isSelected = day === currentDay;
+
+                            return (
+                                <div
+                                    key={day}
+                                    className={`flex items-center justify-between transition-all duration-500 ${compact ? 'p-5 rounded-[24px]' : 'p-8 rounded-[32px]'
+                                        } ${isSelected
+                                            ? "bg-[#cd6133] text-[#fef9f3] shadow-2xl scale-[1.05] z-10 relative"
+                                            : "hover:bg-[#cd6133]/5 text-[#5a3d2b]"
+                                        }`}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <span className={`${compact ? 'text-xs' : 'text-lg'} font-bold tracking-widest uppercase ${isSelected ? "text-[#fef9f3]" : "text-[#5a3d2b]"}`}>
+                                            {day.charAt(0) + day.slice(1).toLowerCase()}
+                                        </span>
+                                        {isSelected && (
+                                            <span className={`${compact ? 'text-[7px]' : 'text-[9px]'} bg-[#fef9f3]/20 px-3 py-1.5 rounded-full uppercase font-extrabold tracking-widest animate-pulse`}>
+                                                Today
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                        {!timing || timing.isClosed ? (
+                                            <span className={`${compact ? 'text-[10px]' : 'text-xs'} font-extrabold uppercase tracking-widest ${isSelected ? "text-[#fef9f3]/70" : "text-[#cd6133]"}`}>
+                                                Closed
+                                            </span>
+                                        ) : (
+                                            <div className={`flex items-center ${compact ? 'gap-4' : 'gap-8'}`}>
+                                                <span className={`${compact ? 'text-xs' : 'text-base'} font-bold ${isSelected ? "text-[#fef9f3]" : "text-[#5a3d2b]"}`}>
+                                                    {formatTime(timing.openTime)} — {formatTime(timing.closeTime)}
+                                                </span>
+                                                <div className={`${compact ? 'w-8 h-8' : 'w-10 h-10'} rounded-full flex items-center justify-center ${isSelected ? "bg-white/20" : "bg-[#cd6133]/10"}`}>
+                                                    <Clock className={compact ? "w-4 h-4" : "w-5 h-5"} />
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
             </div>
         </section>
     );

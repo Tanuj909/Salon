@@ -70,139 +70,86 @@ function ServiceCard({ service, index, onBookNow }) {
 
     return (
         <Reveal delay={index * 100}>
-            <div className="group bg-white rounded-3xl overflow-hidden border border-[#C8A951]/5 hover:border-[#C8A951]/20 hover:shadow-[0_30px_60px_-12px_rgba(200,169,81,0.15)] transition-all duration-500 hover:-translate-y-2 relative flex flex-col h-full">
-                {/* Service Image */}
-                {service.imageUrl && (
-                    <div className="h-52 overflow-hidden relative">
-                        <img
-                            src={service.imageUrl}
-                            alt={service.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                            onError={(e) => { e.target.style.display = "none"; }}
-                        />
+            <div className="group bg-white rounded-[24px] p-6 md:p-8 border border-[#cd6133]/5 hover:border-[#cd6133]/20 hover:shadow-[0_40px_80px_-15px_rgba(205,97,51,0.1)] transition-all duration-500 hover:-translate-y-2 relative flex flex-col h-full overflow-hidden">
+                {/* Terracotta Top Accent Line */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-[#cd6133] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
 
-                        {/* Badges */}
-                        <div className="absolute top-4 left-4 flex items-center gap-2">
-                            {service.isPopular && (
-                                <div className="bg-[#C8A951] text-[#1C1C1C] text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-1.5">
-                                    <FireIcon /> Popular
-                                </div>
-                            )}
+                {/* Service Badges */}
+                <div className="flex items-center gap-2 mb-6">
+                    {service.isPopular && (
+                        <div className="bg-[#cd6133] text-[#fef9f3] text-[8px] font-bold px-3 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-lg flex items-center gap-1">
+                            <FireIcon /> Popular
                         </div>
-
-                        {service.category && (
-                            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-[9px] font-bold text-[#1C1C1C] shadow-sm uppercase tracking-widest border border-white/50">
-                                {service.category}
-                            </div>
-                        )}
-
-                        {/* Discount ribbon */}
-                        {hasDiscount && (
-                            <div className="absolute top-4 right-4 bg-[#ef4444] text-white text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
-                                {Math.round(((service.price - service.discountedPrice) / service.price) * 100)}% OFF
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* No image fallback — show badges inline */}
-                {!service.imageUrl && (
-                    <div className="h-40 bg-gradient-to-br from-[#F7F3EE] to-[#f0e9dc] flex items-center justify-center relative">
-                        <svg width={48} height={48} viewBox="0 0 24 24" fill="none" stroke="#C8A951" strokeWidth={1} opacity={0.3}>
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                        </svg>
-
-                        <div className="absolute top-4 left-4 flex items-center gap-2">
-                            {service.isPopular && (
-                                <div className="bg-[#C8A951] text-[#1C1C1C] text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg flex items-center gap-1.5">
-                                    <FireIcon /> Popular
-                                </div>
-                            )}
+                    )}
+                    {hasDiscount && (
+                        <div className="bg-[#4b3621] text-[#fef9f3] text-[8px] font-bold px-3 py-1.5 rounded-full uppercase tracking-[0.2em] shadow-lg">
+                            {Math.round(((service.price - service.discountedPrice) / service.price) * 100)}% OFF
                         </div>
-
-                        {service.category && (
-                            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-[9px] font-bold text-[#1C1C1C] shadow-sm uppercase tracking-widest">
-                                {service.category}
-                            </div>
-                        )}
-
-                        {hasDiscount && (
-                            <div className="absolute top-4 right-4 bg-[#ef4444] text-white text-[9px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
-                                {Math.round(((service.price - service.discountedPrice) / service.price) * 100)}% OFF
-                            </div>
-                        )}
-                    </div>
-                )}
+                    )}
+                </div>
 
                 {/* Card Content */}
-                <div className="p-8 flex flex-col flex-1">
-                    <div className="mb-6 flex-1">
-                        <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1C1C1C] mb-3 group-hover:text-[#C8A951] transition-colors leading-tight">
-                            {service.name}
-                        </h3>
+                <div className="flex flex-col flex-1">
+                    <div className="mb-6">
+                        <div className="flex items-start justify-between gap-4 mb-3">
+                            <h3 className="text-2xl text-[#5a3d2b] font-bold leading-tight group-hover:text-[#cd6133] transition-colors">
+                                {service.name}
+                            </h3>
+                            {service.durationMinutes && (
+                                <span className="flex items-center gap-2 text-[9px] text-[#5a3d2b]/50 border border-[#5a3d2b]/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-widest whitespace-nowrap">
+                                    <ClockIcon /> {service.durationMinutes} min
+                                </span>
+                            )}
+                        </div>
                         {service.description && (
-                            <p className="text-[#7a7065] text-sm leading-relaxed line-clamp-2">
+                            <p className="text-[#5a3d2b]/70 text-sm leading-relaxed font-medium line-clamp-2">
                                 {service.description}
                             </p>
                         )}
                     </div>
 
                     {/* Meta info row */}
-                    <div className="flex items-center gap-4 mb-5 flex-wrap">
-                        {service.durationMinutes && (
-                            <span className="flex items-center gap-1.5 text-xs text-[#1C1C1C] font-medium">
-                                <ClockIcon />
-                                {service.durationMinutes} min
-                            </span>
-                        )}
-                        {service.staffCount > 0 && (
-                            <span className="flex items-center gap-1.5 text-xs text-[#9e9287] font-medium">
-                                <UsersIcon />
-                                {service.staffCount} {service.staffCount === 1 ? "Stylist" : "Stylists"}
-                            </span>
-                        )}
-                        {service.totalBookings > 0 && (
-                            <span className="text-[10px] text-[#9e9287] font-bold uppercase tracking-wider">
-                                {service.totalBookings} booked
-                            </span>
-                        )}
-                    </div>
+                    {(service.staffCount > 0 || service.totalBookings > 0) && (
+                        <div className="flex items-center gap-5 mb-8 border-t border-[#cd6133]/5 pt-5">
+                            {service.staffCount > 0 && (
+                                <span className="flex items-center gap-2 text-[9px] text-[#5a3d2b]/60 font-bold uppercase tracking-widest">
+                                    <UsersIcon />
+                                    {service.staffCount} Specialists
+                                </span>
+                            )}
+                            {service.totalBookings > 0 && (
+                                <span className="text-[9px] text-[#cd6133] font-extrabold uppercase tracking-[0.2em]">
+                                    {service.totalBookings} Experienced
+                                </span>
+                            )}
+                        </div>
+                    )}
 
                     {/* Price & Book */}
                     <div className="mt-auto">
                         <div className="flex items-end justify-between mb-6">
                             <div className="flex flex-col">
-                                <span className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">
-                                    {hasDiscount ? "Special Price" : "From"}
+                                <span className="text-[9px] uppercase tracking-[0.2em] text-[#5a3d2b]/40 font-extrabold mb-1">
+                                    Investment
                                 </span>
                                 <div className="flex items-center gap-2">
-                                    <span className="font-[Cormorant_Garamond] text-3xl text-[#1C1C1C] font-semibold">
+                                    <span className="text-3xl text-[#5a3d2b] font-bold tracking-tighter">
                                         ₹{displayPrice}
                                     </span>
                                     {hasDiscount && (
-                                        <span className="text-sm text-[#9e9287] line-through font-light">
+                                        <span className="text-sm text-[#5a3d2b]/40 line-through font-medium">
                                             ₹{service.price}
                                         </span>
                                     )}
                                 </div>
                             </div>
-
-                            {service.durationMinutes && (
-                                <div className="flex flex-col items-end">
-                                    <span className="text-[10px] uppercase tracking-widest text-[#9e9287] font-bold mb-1">Duration</span>
-                                    <span className="flex items-center gap-1.5 text-xs text-[#1C1C1C] font-medium">
-                                        <ClockIcon />
-                                        {service.durationMinutes} min
-                                    </span>
-                                </div>
-                            )}
                         </div>
 
                         <button
                             onClick={() => onBookNow?.(service)}
-                            className="w-full py-4 rounded-xl bg-[#1C1C1C] text-white text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#C8A951] hover:text-[#1C1C1C] hover:shadow-lg active:scale-[0.98] cursor-pointer"
+                            className="w-full py-4 rounded-xl border-2 border-[#cd6133] text-[#cd6133] text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:bg-[#cd6133] hover:text-[#fef9f3] hover:shadow-[0_15px_30px_-10px_rgba(205,97,51,0.4)] active:scale-[0.98] cursor-pointer"
                         >
-                            Book Now
+                            Reserve Experience
                         </button>
                     </div>
                 </div>
@@ -233,27 +180,24 @@ const SalonServices = ({ id, onBookService }) => {
     }
 
     return (
-        <section className="py-24 bg-white relative overflow-hidden" id="services">
-            {/* Decorative side text */}
-            <div className="absolute top-1/2 -right-40 -translate-y-1/2 rotate-90 hidden lg:block">
-                <span className="text-[8vw] font-black text-[#C8A951]/5 whitespace-nowrap uppercase tracking-[0.5em] select-none">
-                    LUXURY TREATMENT
+        <section className="py-32 bg-[#f7ede2] relative overflow-hidden" id="services">
+            {/* Decorative background text */}
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 -rotate-90 hidden lg:block select-none pointer-events-none">
+                <span className="text-[12vw] font-black text-[#cd6133]/5 whitespace-nowrap uppercase tracking-[0.5em]">
+                    Authentic Beauty
                 </span>
             </div>
 
             <div className="max-w-7xl mx-auto px-8 relative z-10">
                 <Reveal>
-                    <div className="text-center mb-16">
-                        <span className="block text-[11px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-4">Pricing & Collections</span>
-                        <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-5xl text-[#1C1C1C] mb-4">Our Services</h2>
-                        <div className="w-20 h-px bg-[#C8A951]/30 mx-auto mb-3" />
-                        <p className="text-[#9e9287] text-sm font-light">
-                            {services.length} {services.length === 1 ? "service" : "services"} available
-                        </p>
+                    <div className="text-center mb-24">
+                        <span className="block text-[11px] tracking-[0.5em] uppercase text-[#cd6133] font-extrabold mb-6">Pricing & Rituals</span>
+                        <h2 className="text-6xl text-[#5a3d2b] font-bold mb-8">Our Services</h2>
+                        <div className="w-24 h-1 bg-[#cd6133]/20 mx-auto" />
                     </div>
                 </Reveal>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {services.map((service, i) => (
                         <ServiceCard
                             key={service.id || i}
