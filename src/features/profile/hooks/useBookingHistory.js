@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { getMyBusinessBookings, cancelMyBooking } from "../services/bookingService";
+import { getMyBookings, getMyBusinessBookings, cancelMyBooking } from "../services/bookingService";
 import { createReview } from "../../salons/services/reviewService";
 
 export const useBookingHistory = (businessId) => {
@@ -15,22 +15,21 @@ export const useBookingHistory = (businessId) => {
     isFirst: true,
     isLast: true,
     currentPage: 0,
-    pageSize: 20,
+    pageSize: 10,
   });
 
   const [isCanceling, setIsCanceling] = useState(false);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const fetchBookings = useCallback(async (pageNum = 0) => {
-    if (!businessId) {
-      setLoading(false);
-      return;
-    }
 
     setLoading(true);
     setError(null);
     try {
-      const data = await getMyBusinessBookings(businessId, pageNum);
+      const data = businessId
+        ? await getMyBusinessBookings(businessId, pageNum, 10, "bookingDate,asc")
+        : await getMyBookings(pageNum, 10, "bookingDate,asc");
+
       setBookings(data.content || []);
       setPagination({
         totalPages: data.totalPages || 0,
@@ -38,7 +37,7 @@ export const useBookingHistory = (businessId) => {
         isFirst: data.first ?? true,
         isLast: data.last ?? true,
         currentPage: data.number || 0,
-        pageSize: data.size || 20,
+        pageSize: data.size || 10,
       });
       setPage(pageNum);
     } catch (err) {
