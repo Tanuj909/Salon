@@ -42,7 +42,7 @@ const PersonalInfoSection = ({ user }) => {
 
                             <Link
                                 href="/profile/edit"
-                                className="flex items-center gap-2 px-6 py-3 bg-[#1e0a18] text-white rounded-xl font-bold hover:bg-[#7a2860] transition-all shadow-md group active:scale-95 text-sm"
+                                className="flex items-center gap-2 px-6 py-3 bg-gray-400 text-white rounded-xl font-bold hover:bg-gray-600 transition-all shadow-md group active:scale-95 text-sm"
                             >
                                 <Edit3 size={16} />
                                 <span>Modify Details</span>

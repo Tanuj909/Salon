@@ -7,6 +7,7 @@ import SalonStaff from "./SalonStaff";
 import SalonServices from "./SalonServices";
 import BookAppointmentModal from "./BookAppointmentModal";
 import SalonReviews from "./SalonReviews";
+import BusinessTimings from "./BusinessTimings";
 
 // ─── Custom Hooks ────────────────────────────────────────────────────────────
 function useReveal() {
@@ -53,7 +54,7 @@ function Reveal({ children, delay = 0, className = "" }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8" } ${className}`}
+      className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
@@ -387,6 +388,11 @@ export default function SalonDetailsPage({ id }) {
           SALON STAFF SECTION
       ═══════════════════════════════════════════ */}
       <SalonStaff id={id} />
+
+      {/* ═══════════════════════════════════════════
+          BUSINESS TIMINGS SECTION
+      ═══════════════════════════════════════════ */}
+      <BusinessTimings id={id} />
 
       {/* ═══════════════════════════════════════════
           LOCATION SECTION

@@ -5,6 +5,7 @@ import { X, Calendar, Clock, User, Scissors, CreditCard, MessageSquare, CheckCir
 import { useCreateBooking } from "../../profile/hooks/useCreateBooking";
 import { useSalonServices } from "../hooks/useSalonServices";
 import { useSalonStaff } from "../hooks/useSalonStaff";
+import { useSalonTimings } from "../hooks/useSalonTimings";
 
 const PAYMENT_METHODS = [
     { value: "UPI", label: "UPI", icon: "📱" },
@@ -17,6 +18,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const { submitBooking, loading: submitting, error: submitError, success, bookingResult, reset } = useCreateBooking();
     const { services, loading: servicesLoading } = useSalonServices({ id: salonId });
     const { staff, loading: staffLoading } = useSalonStaff({ id: salonId });
+    const { timings, loading: timingsLoading } = useSalonTimings({ id: salonId });
 
     // Form state
     const [selectedServices, setSelectedServices] = useState([]);
@@ -84,7 +86,60 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     };
 
     const canProceedStep1 = selectedServices.length > 0;
-    const canProceedStep2 = bookingDate && startTime;
+
+    // --- Timings Validation ---
+    const getSelectedDayLabel = () => {
+        if (!bookingDate) return null;
+        const d = new Date(bookingDate + "T00:00:00");
+        return d.toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
+    };
+
+    const isDateValid = useMemo(() => {
+        if (!bookingDate || !timings || timings.length === 0) return true; // optimistic if no timings
+        const dayLabel = getSelectedDayLabel();
+        const dayData = timings.find((t) => t.dayOfWeek === dayLabel);
+        return dayData ? !dayData.isClosed : true;
+    }, [bookingDate, timings]);
+
+    const isTimeValid = useMemo(() => {
+        if (!bookingDate || !startTime || !timings || timings.length === 0) return true;
+        const dayLabel = getSelectedDayLabel();
+        const dayData = timings.find((t) => t.dayOfWeek === dayLabel);
+
+        if (!dayData || dayData.isClosed) return false;
+        if (!dayData.openTime || !dayData.closeTime) return true;
+
+        // Simple string comparison for time HH:mm
+        return startTime >= dayData.openTime && startTime <= dayData.closeTime;
+    }, [bookingDate, startTime, timings]);
+
+    const availableTimeSlots = useMemo(() => {
+        if (!bookingDate || !timings || timings.length === 0) return [];
+        const dayLabel = getSelectedDayLabel();
+        const dayData = timings.find((t) => t.dayOfWeek === dayLabel);
+
+        if (!dayData || dayData.isClosed || !dayData.openTime || !dayData.closeTime) return [];
+
+        const slots = [];
+        const [openH, openM] = dayData.openTime.split(':').map(Number);
+        const [closeH, closeM] = dayData.closeTime.split(':').map(Number);
+
+        let current = new Date();
+        current.setHours(openH, openM, 0, 0);
+
+        const end = new Date();
+        end.setHours(closeH, closeM, 0, 0);
+
+        while (current <= end) {
+            const h = current.getHours().toString().padStart(2, '0');
+            const m = current.getMinutes().toString().padStart(2, '0');
+            slots.push(`${h}:${m}`);
+            current.setMinutes(current.getMinutes() + 30); // 30 min interval
+        }
+        return slots;
+    }, [bookingDate, timings]);
+
+    const canProceedStep2 = bookingDate && startTime && isDateValid && isTimeValid;
     const canSubmit = canProceedStep1 && canProceedStep2;
 
     const handleSubmit = async () => {
@@ -322,15 +377,24 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                             <div>
                                 <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C] mb-1 flex items-center gap-2">
                                     <Calendar size={18} className="text-[#C8A951]" />
-                                    Select Date
+                                    Select Date {timingsLoading && <Loader2 className="w-3 h-3 text-[#C8A951] animate-spin inline ml-2" />}
                                 </h3>
                                 <input
                                     type="date"
                                     value={bookingDate}
                                     min={minDate}
-                                    onChange={(e) => setBookingDate(e.target.value)}
-                                    className="w-full mt-3 p-4 rounded-xl bg-[#F7F3EE] border-2 border-transparent focus:border-[#C8A951] focus:outline-none text-[#1C1C1C] font-medium transition-all text-sm"
+                                    onChange={(e) => {
+                                        setBookingDate(e.target.value);
+                                        setStartTime("");
+                                    }}
+                                    className={`w-full mt-3 p-4 rounded-xl border-2 focus:outline-none text-[#1C1C1C] font-medium transition-all text-sm ${bookingDate && !isDateValid ? "bg-red-50 border-red-200 focus:border-red-500" : "bg-[#F7F3EE] border-transparent focus:border-[#C8A951]"}`}
                                 />
+                                {bookingDate && !isDateValid && (
+                                    <p className="text-red-500 text-xs mt-2 flex items-center gap-1">
+                                        <AlertCircle size={12} />
+                                        The salon is closed on this day. Please select another date.
+                                    </p>
+                                )}
                             </div>
 
                             {/* Time Selection */}
@@ -339,12 +403,36 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <Clock size={18} className="text-[#C8A951]" />
                                     Select Time
                                 </h3>
-                                <input
-                                    type="time"
-                                    value={startTime}
-                                    onChange={(e) => setStartTime(e.target.value)}
-                                    className="w-full mt-3 p-4 rounded-xl bg-[#F7F3EE] border-2 border-transparent focus:border-[#C8A951] focus:outline-none text-[#1C1C1C] font-medium transition-all text-sm"
-                                />
+                                {!bookingDate ? (
+                                    <p className="text-sm text-[#9e9287] mt-3">Please select a date first to view available time slots.</p>
+                                ) : !isDateValid ? (
+                                    <p className="text-sm text-red-500 mt-3">The salon is closed on this day.</p>
+                                ) : availableTimeSlots.length === 0 ? (
+                                    <p className="text-sm text-[#9e9287] mt-3">No time slots available for this date.</p>
+                                ) : (
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
+                                        {availableTimeSlots.map((time) => {
+                                            const isSelected = startTime === time;
+
+                                            // Format for display (e.g. 09:00 AM)
+                                            const [h, m] = time.split(':');
+                                            const hours = parseInt(h, 10);
+                                            const ampm = hours >= 12 ? 'PM' : 'AM';
+                                            const displayHours = hours % 12 || 12;
+                                            const displayTime = `${displayHours}:${m.padStart(2, '0')} ${ampm}`;
+
+                                            return (
+                                                <button
+                                                    key={time}
+                                                    onClick={() => setStartTime(time)}
+                                                    className={`py-3 px-2 rounded-xl border-2 text-sm font-semibold transition-all ${isSelected ? "border-[#C8A951] bg-[#C8A951] text-white" : "border-transparent bg-[#F7F3EE] text-[#1C1C1C] hover:border-[#C8A951]/40"}`}
+                                                >
+                                                    {displayTime}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

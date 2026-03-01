@@ -33,7 +33,7 @@ const ProfilePage = () => {
                 <RecentReviews reviews={customer.recentReviews} />
 
                 {/* Favorite Salons (Premium Grid) */}
-                <FavoriteSalons />
+                {/* <FavoriteSalons /> */}
             </div>
         </main>
     );
