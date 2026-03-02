@@ -3,22 +3,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { MapPin, Navigation, Star, Search } from "lucide-react";
-// Local badge styles since the data file was removed
+// Local badge styles
 const badgeStyles = {
-  "Top Rated": {
-    bg: "bg-[#7a2860]/10",
-    text: "text-[#7a2860]",
-    border: "border-[#7a2860]/20"
+  "VERIFIED": {
+    bg: "bg-[#cd6133]/10",
+    text: "text-[#cd6133]",
+    border: "border-[#cd6133]/20"
   },
   "New": {
-    bg: "bg-[#287a60]/10",
-    text: "text-[#287a60]",
-    border: "border-[#287a60]/20"
+    bg: "bg-[#4b3621]/10",
+    text: "text-[#4b3621]",
+    border: "border-[#4b3621]/20"
   },
   "Trending": {
-    bg: "bg-[#7a6028]/10",
-    text: "text-[#7a6028]",
-    border: "border-[#7a6028]/20"
+    bg: "bg-[#C8A951]/10",
+    text: "text-[#C8A951]",
+    border: "border-[#C8A951]/20"
   }
 };
 import { useNearbySalons } from "@/features/salons/hooks/useNearbySalons";
@@ -26,126 +26,115 @@ import LocationPicker from "./LocationPicker";
 
 // ─── Star Icon ────────────────────────────────────────────────────────────────
 const StarIcon = ({ filled }) => (
-  <Star size={13} fill={filled ? "#c4956a" : "transparent"} color={filled ? "#c4956a" : "#e0d0c8"} />
+  <Star size={13} fill={filled ? "#cd6133" : "transparent"} color={filled ? "#cd6133" : "#e0d0c8"} />
 );
 
 // ─── Salon Card ───────────────────────────────────────────────────────────────
 function SalonCard({ salon }) {
-  const bc = salon.badge ? badgeStyles[salon.badge] : null;
-
   // Determine image source with fallback
-  const imageSrc = salon.imageUrls && salon.imageUrls.length > 0 ? salon.imageUrls[0] : salon.bannerImageUrl || "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=60";
+  const imageSrc = salon.bannerImageUrl || (salon.imageUrls && salon.imageUrls.length > 0 ? salon.imageUrls[0] : "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=60");
 
   // Build location string from available fields
   const locationString = [salon.city, salon.state, salon.country].filter(Boolean).join(", ");
 
   // Open status badge
-  const openBadge = salon.isOpen ? "Open" : "Closed";
+  const openBadge = salon.isOpen ? "Open Now" : "Closed";
 
-  // Verification badge
-  const verified = salon.verificationStatus === "VERIFIED";
+  // Verification badge check
+  const badge = salon.verificationStatus === "VERIFIED" ? "VERIFIED" : null;
+  const bc = badge ? badgeStyles[badge] : null;
 
   return (
     <Link
       href={`/salons/${salon.id}`}
-      className="group block bg-white rounded-[20px] overflow-hidden border border-[#3c143212] cursor-pointer shadow-[0_2px_16px_rgba(60,20,50,0.06)] no-underline h-full"
+      className="group block bg-white rounded-[20px] overflow-hidden border border-[#4b3621]/10 cursor-pointer shadow-[0_2px_16px_rgba(75,54,33,0.06)] no-underline h-full flex flex-col"
     >
       {/* ── Image ── */}
-      <div className="relative h-[210px] overflow-hidden">
+      <div className="relative h-[210px] overflow-hidden shrink-0">
         <img
           src={imageSrc}
           alt={salon.name}
-          className="w-full h-full object-cover transition-transform duration-[600ms] group-hover:scale-[1.06]"
+          className="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.08]"
         />
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(30,10,25,0.45)]" />
+        {/* Subtle Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(75,54,33,0.6)]" />
 
-        {/* Badge (if any) */}
-        {salon.badge && bc && (
-          <span className={`absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border font-[DM_Sans] ${bc.bg} ${bc.text} ${bc.border}`}
-          >
-            {salon.badge}
-          </span>
-        )}
+        {/* Badge */}
+{badge && bc && (
+  <span
+    className="
+      absolute top-3.5 left-3.5
+      px-[11px] py-1
+      rounded-full
+      text-[0.68rem]
+      font-bold
+      tracking-[0.06em]
+      font-['Manrope',sans-serif]
+      bg-[#cd6133]
+      text-white
+      border border-white/20
+      shadow-md
+    "
+  >
+    Top Rated
+  </span>
+)}
 
         {/* Open/Closed Badge */}
-        <span className={`absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full text-[0.72rem] font-semibold tracking-[0.04em] backdrop-blur-[8px] ${openBadge === "Open" ? "bg-[#d4f8e8] text-[#1a7f3b]" : "bg-[#f8d4d4] text-[#7f1a1a]"} font-[DM_Sans]`}
-        >
+        <span className={`absolute top-3.5 right-3.5 px-3 py-1 rounded-full text-[0.7rem] font-bold tracking-[0.04em] backdrop-blur-[8px] ${salon.isOpen ? "bg-[#fdf6f0]/90 text-[#cd6133]" : "bg-[#f8d4d4]/90 text-[#7f1a1a]"} font-['Manrope',sans-serif]`}>
           {openBadge}
         </span>
-
-        {/* Verification Icon */}
-        {verified && (
-          <span className="absolute top-3.5 left-24">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#1a7f3b]" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          </span>
-        )}
       </div>
 
       {/* ── Body ── */}
-      <div className="p-[22px_22px_20px] flex flex-col h-[calc(100%-210px)]">
-        <h3 className="text-[1.1rem] font-bold leading-[1.3] mb-1.5 text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif]"
-        >
+      <div className="p-[22px_22px_20px] flex flex-col flex-1">
+        <h3 className="text-[1.15rem] font-bold leading-[1.3] mb-1.5 text-[#4b3621] font-[Cormorant_Garamond,Georgia,serif] line-clamp-1">
           {salon.name}
         </h3>
 
+        <div className="flex items-center gap-1.5 text-[0.75rem] mb-3 text-[#5a3d2b]/70 font-['Manrope',sans-serif] font-medium">
+          <MapPin size={12} className="text-[#cd6133]" />
+          {locationString || salon.address || "Location unavailable"}
+        </div>
+
+        {/* Divider */}
+        <div className="h-px mb-3 bg-[#4b3621]/10" />
+
         {/* Description */}
         {salon.description && (
-          <p className="text-[0.85rem] text-[#3c143280] mb-2 font-[DM_Sans] line-clamp-2">
+          <p className="text-[0.8rem] text-[#5a3d2b]/80 mb-3 font-['Manrope',sans-serif] line-clamp-2 italic leading-relaxed">
             {salon.description}
           </p>
         )}
 
-        <div className="flex items-center gap-1 text-[0.72rem] mb-2.5 text-[#3c143280] font-[DM_Sans]">
-          <MapPin size={11} className="text-[#7a2860]/60" />
-          {locationString || salon.location || salon.address}
-        </div>
-
-        {/* Divider */}
-        <div className="h-px mb-2.5 bg-[#3c143212]" />
-
-        <p className="text-[0.72rem] font-medium mb-3 text-[#3c14328c] font-[DM_Sans]">
-          {salon.category}
-        </p>
-
-        {/* Tags */}
-        {salon.tags && (
-          <div className="flex gap-1.5 flex-wrap mb-3.5">
-            {salon.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[0.62rem] font-semibold px-2 py-[2px] rounded-full border bg-[#9b58760a] text-[#7a2860] border-[#9b58781a] font-[DM_Sans] tracking-wider uppercase"
-              >
-                {tag}
-              </span>
-            ))}
+        {/* Service Count (if available) */}
+        {salon.serviceCount !== undefined && salon.serviceCount !== null && (
+          <div className="inline-block px-2.5 py-1 bg-[#4b3621]/5 text-[#4b3621] text-[0.68rem] font-bold uppercase tracking-widest rounded-md mb-auto font-['Manrope',sans-serif] self-start">
+            {salon.serviceCount} Services Available
           </div>
         )}
 
-        {/* Footer */}
-        <div className="mt-auto flex items-center justify-between">
-          <div className="flex items-center gap-[5px]">
+        {/* Footer: Rating & Button */}
+        <div className="mt-4 pt-4 flex items-center justify-between border-t border-[#4b3621]/10">
+          <div className="flex items-center gap-1.5">
             <div className="flex gap-0.5">
-              {/* Use averageRating and totalReviews if available */}
               {[1, 2, 3, 4, 5].map((i) => (
                 <StarIcon
                   key={i}
-                  filled={i <= Math.round(salon.averageRating ?? salon.rating ?? 0)}
+                  filled={i <= Math.round(salon.averageRating || 0)}
                 />
               ))}
             </div>
-            <span className="text-[0.82rem] font-semibold text-[#1e0a18] font-[DM_Sans]">
-              {salon.averageRating?.toFixed(1) ?? salon.rating?.toFixed(1) ?? "0.0"}
+            <span className="text-[0.85rem] font-bold text-[#4b3621] font-['Manrope',sans-serif]">
+              {(salon.averageRating || 0).toFixed(1)}
             </span>
-            <span className="text-[0.72rem] text-[#3c143266] font-[DM_Sans]">
-              ({salon.totalReviews ?? salon.reviews ?? 0})
+            <span className="text-[0.75rem] text-[#5a3d2b]/60 font-['Manrope',sans-serif] ml-0.5">
+              ({salon.totalReviews || 0})
             </span>
           </div>
 
-          <span className="py-2 px-[18px] rounded-full border-[1.5px] border-[#3c14322e] text-[0.75rem] font-semibold text-[#3c1432] tracking-[0.04em] font-[DM_Sans] transition-all duration-[220ms] group-hover:bg-gradient-to-br group-hover:from-[#3c1432] group-hover:to-[#7a2860] group-hover:border-transparent group-hover:text-[#fdf6f0] group-hover:shadow-[0_4px_16px_rgba(60,20,50,0.22)]">
-            Book Now
+          <span className="py-2 px-[18px] rounded-full border-[1.5px] border-[#cd6133] text-[0.75rem] font-bold text-[#cd6133] tracking-[0.04em] font-['Manrope',sans-serif] transition-all duration-300 group-hover:bg-[#cd6133] group-hover:text-[#fef9f3] group-hover:shadow-[0_4px_16px_rgba(205,97,51,0.3)]">
+            Explore
           </span>
         </div>
       </div>
@@ -258,7 +247,7 @@ export default function SalonList() {
 
         {/* ── Advanced Filter Control ── */}
         <div className="mb-10">
-          <div className="bg-white/80 backdrop-blur-md p-5 md:p-6 rounded-[1.5rem] border border-[#3c143208] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="p-5 md:p-6 rounded-[1.5rem] border border-[#3c143208]">
             {/* Location & Radius Row */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
               {/* Location Picker */}

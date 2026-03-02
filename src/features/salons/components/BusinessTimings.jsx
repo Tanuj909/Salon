@@ -68,8 +68,8 @@ const BusinessTimings = ({ id, compact = false }) => {
     const currentDay = new Date().toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
 
     return (
-        <section className={compact ? "" : "py-40 bg-[#f7ede2]"} id="timings">
-            <div className={compact ? "" : "max-w-7xl mx-auto px-8"}>
+        <section className={compact ? "h-full" : "py-40 bg-[#f7ede2]"} id="timings">
+            <div className={compact ? "h-full" : "max-w-7xl mx-auto px-8"}>
                 {!compact && (
                     <Reveal>
                         <div className="text-center mb-24">
@@ -81,7 +81,7 @@ const BusinessTimings = ({ id, compact = false }) => {
                     </Reveal>
                 )}
 
-                <div className={`${compact ? 'p-8 md:p-12 rounded-[48px]' : 'max-w-3xl mx-auto rounded-[64px] p-12 md:p-20'} bg-white border border-[#cd6133]/5 shadow-[0_60px_100px_-20px_rgba(205,97,51,0.1)] relative overflow-hidden`}>
+                <div className={`${compact ? 'p-8 md:p-12 rounded-[48px] h-full flex flex-col justify-center' : 'max-w-3xl mx-auto rounded-[64px] p-12 md:p-20'} bg-white border border-[#cd6133]/20 shadow-lg relative overflow-hidden`}>
                     <div className="absolute top-0 right-0 w-48 h-48 bg-[#cd6133]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
 
                     <div className={compact ? "space-y-3" : "space-y-6"}>

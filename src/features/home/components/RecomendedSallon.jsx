@@ -32,22 +32,50 @@ const StarIcon = ({ filled }) => (
 export default function RecomendedSallon() {
   const [salons, setSalons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [locationDenied, setLocationDenied] = useState(false);
+
+  const fetchSalonsWithLocation = () => {
+    setLoading(true);
+    
+    if (!navigator.geolocation) {
+      fetchFallback();
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        setLocationDenied(false);
+        try {
+          const data = await fetchNearbySalons(position.coords.latitude, position.coords.longitude, 50);
+          setSalons(data || []);
+        } catch (error) {
+          console.error("Failed to fetch recommended salons:", error);
+        } finally {
+          setLoading(false);
+        }
+      },
+      (error) => {
+        console.warn("Location denied or error:", error);
+        setLocationDenied(true);
+        fetchFallback();
+      }
+    );
+  };
+
+  const fetchFallback = async () => {
+    try {
+      // Fallback to Dubai coordinates if location is denied
+      const data = await fetchNearbySalons(25.2048, 55.2708, 50);
+      setSalons(data || []);
+    } catch (error) {
+      console.error("Failed to fetch fallback salons:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchSalons = async () => {
-      try {
-        setLoading(true);
-        // Using Dubai coordinates as default for home page recommendations
-        const data = await fetchNearbySalons(25.2048, 55.2708, 50);
-        setSalons(data || []);
-      } catch (error) {
-        console.error("Failed to fetch recommended salons:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSalons();
+    fetchSalonsWithLocation();
   }, []);
 
   if (loading) {
@@ -87,17 +115,31 @@ export default function RecomendedSallon() {
             </p>
           </div>
 
-          {/* View All */}
-          <Link
-            href="/salons"
-            className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] border-[#3c14322e] bg-white text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] text-[#3c1432] no-underline font-[DM_Sans] hover:bg-gradient-to-br hover:from-[#3c1432] hover:to-[#7a2860] hover:border-transparent hover:text-[#fdf6f0] hover:shadow-[0_6px_24px_rgba(60,20,50,0.22)]"
-          >
-            View All Salons
-            <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </Link>
+          {/* Actions */}
+          <div className="flex items-center gap-4 flex-wrap">
+            {locationDenied && (
+              <button
+                onClick={fetchSalonsWithLocation}
+                className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] border-[#c4956a] bg-[#c4956a]/10 text-[#7a4020] text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] font-[DM_Sans] hover:bg-[#c4956a] hover:text-white"
+              >
+                <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Get Current Location
+              </button>
+            )}
+            <Link
+              href="/salons"
+              className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] border-[#3c14322e] bg-white text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] text-[#3c1432] no-underline font-[DM_Sans] hover:bg-gradient-to-br hover:from-[#3c1432] hover:to-[#7a2860] hover:border-transparent hover:text-[#fdf6f0] hover:shadow-[0_6px_24px_rgba(60,20,50,0.22)]"
+            >
+              View All Salons
+              <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         {/* Divider */}

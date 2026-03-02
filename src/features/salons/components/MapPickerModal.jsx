@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -74,8 +75,8 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
 
     if (!isOpen || !isMounted) return null;
 
-    return (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+    const modalContent = (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="bg-white w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col h-[80vh]">
                 {/* Header */}
                 <div className="px-8 py-6 flex items-center justify-between border-b border-[#3c14320a]">
@@ -137,6 +138,8 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 };
 
 export default MapPickerModal;

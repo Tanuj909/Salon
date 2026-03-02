@@ -16,8 +16,8 @@ const Footer = () => {
 
       <div className="max-w-[1200px] mx-auto">
 
-        {/* 4-column grid */}
-        <div className="grid grid-cols-4 gap-12 mb-16 lg:grid-cols-4 sm:grid-cols-1">
+        {/* Responsive grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
 
           {/* Col 1 — Brand */}
           <div>
@@ -139,11 +139,11 @@ const Footer = () => {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex justify-between items-center flex-wrap gap-3 pt-7 border-t" style={{ borderColor: 'rgba(253,246,240,0.1)' }}>
-          <p className="text-[0.78rem]" style={{ color: 'rgba(253,246,240,0.35)', fontFamily: "'Georgia', serif" }}>
+        <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 pt-7 border-t" style={{ borderColor: 'rgba(253,246,240,0.1)' }}>
+          <p className="text-[0.78rem] w-full md:w-auto" style={{ color: 'rgba(253,246,240,0.35)', fontFamily: "'Georgia', serif" }}>
             © 2024 Luxe Salon &amp; Spa. All rights reserved.
           </p>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 w-full md:w-auto">
             <a href="#" className="ft-bottom-link text-[0.78rem] no-underline transition-colors duration-200"
               style={{ color: 'rgba(253,246,240,0.35)', fontFamily: "'Georgia', serif" }}>
               Privacy Policy

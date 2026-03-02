@@ -1,4 +1,5 @@
 import HeroSection from "@/features/home/components/HeroSection";
+import Categories from "@/features/home/components/Categories";
 import ServicesSection from "@/features/home/components/ServicesSection";
 import RecomendedSallon from "@/features/home/components/RecomendedSallon";
 import AboutSection from "@/features/home/components/AboutSection";
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
+      <Categories />
       <ServicesSection />
       <RecomendedSallon />
       {/* <GallerySection/> */}

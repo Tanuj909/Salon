@@ -64,7 +64,7 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
     }
 
     return (
-        <section className="py-32 bg-[#f7ede2]" id="reviews">
+        <section className="py-32" id="reviews">
             <div className="max-w-7xl mx-auto px-8">
                 <Reveal>
                     <div className="text-center mb-24">
@@ -83,7 +83,7 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                         {reviews.map((review, i) => (
                             <Reveal key={review.id || i} delay={i * 100}>
-                                <div className="bg-white p-10 rounded-[48px] border border-[#cd6133]/5 hover:border-[#cd6133]/20 hover:shadow-[0_40px_80px_-20px_rgba(205,97,51,0.1)] transition-all duration-500 h-full flex flex-col group">
+                                <div className="bg-white p-10 rounded-[48px] border border-[#cd6133]/20 shadow-md hover:border-[#cd6133]/40 hover:shadow-xl transition-all duration-500 h-full flex flex-col group">
                                     <div className="flex items-center gap-5 mb-10">
                                         <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#cd6133]/10 group-hover:border-[#cd6133]/30 transition-colors bg-[#fef9f3]">
                                             <img

@@ -132,38 +132,38 @@ function StaffCard({ member, index, onClick }) {
   const name = member.userFullName || member.fullName || "Specialist";
   return (
     <Reveal delay={index * 100}>
-      <div className="group relative bg-white p-6 rounded-[40px] border border-[#cd6133]/5 hover:border-[#cd6133]/20 transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(205,97,51,0.15)] flex flex-col items-center text-center h-full">
-        <div className="relative mb-8 w-full flex justify-center">
-          <div className="w-40 h-40 rounded-[36px] overflow-hidden border-4 border-white shadow-xl relative z-10">
+      <div className="group relative bg-white p-5 rounded-[32px] border border-[#cd6133]/20 shadow-md hover:border-[#cd6133]/40 transition-all duration-700 hover:shadow-xl flex flex-col items-center text-center h-full">
+        <div className="relative mb-5 mt-2 w-full flex justify-center">
+          <div className="w-28 h-28 rounded-full overflow-hidden border-[3px] border-[#cd6133]/10 shadow-md relative z-10 bg-[#f7ede2] group-hover:border-[#cd6133]/40 transition-colors duration-500">
             <img
               src={member.userProfileImageUrl || member.image || `https://ui-avatars.com/api/?name=${name}&background=cd6133&color=fef9f3`}
               alt={name}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+              style={{ objectPosition: "top" }}
             />
           </div>
-          <div className="absolute -bottom-2 -right-2 w-20 h-20 bg-[#cd6133]/10 rounded-[28px] -z-0 group-hover:rotate-12 group-hover:bg-[#cd6133]/20 transition-all duration-700" />
         </div>
 
-        <h3 className="text-2xl text-[#5a3d2b] font-bold mb-2 group-hover:text-[#cd6133] transition-colors">{name}</h3>
-        <p className="text-[9px] uppercase tracking-[0.3em] text-[#5a3d2b]/40 font-extrabold mb-8">{member.designation}</p>
+        <h3 className="text-lg text-[#5a3d2b] font-bold mb-1 group-hover:text-[#cd6133] transition-colors truncate w-full px-2">{name}</h3>
+        <p className="text-[8px] uppercase tracking-[0.2em] text-[#5a3d2b]/50 font-extrabold mb-5 truncate w-full px-2">{member.designation}</p>
 
-        <div className="flex items-center gap-6 mb-8 w-full justify-center border-t border-[#cd6133]/5 pt-8">
+        <div className="flex items-center gap-4 mb-5 w-full justify-center border-t border-[#cd6133]/5 pt-5">
           <div className="flex flex-col items-center">
-            <span className="text-xl font-bold text-[#5a3d2b]">{member.averageRating || member.rating || "5.0"}</span>
-            <span className="text-[8px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">Grade</span>
+            <span className="text-sm font-bold text-[#5a3d2b]">{member.averageRating || member.rating || "5.0"}</span>
+            <span className="text-[7px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">Grade</span>
           </div>
-          <div className="w-px h-8 bg-[#cd6133]/10" />
+          <div className="w-px h-6 bg-[#cd6133]/10" />
           <div className="flex flex-col items-center">
-            <span className="text-xl font-bold text-[#5a3d2b]">{member.experienceYears || "4"}+</span>
-            <span className="text-[8px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">Exp</span>
+            <span className="text-sm font-bold text-[#5a3d2b]">{member.experienceYears || "4"}+</span>
+            <span className="text-[7px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">Exp</span>
           </div>
         </div>
 
         <button
           onClick={onClick}
-          className="w-full py-4 rounded-2xl border-2 border-[#cd6133] text-[#cd6133] text-[9px] font-bold uppercase tracking-widest hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all duration-500 active:scale-95 cursor-pointer mt-auto shadow-sm"
+          className="w-full py-3 rounded-xl border border-[#cd6133] text-[#cd6133] text-[9px] font-bold uppercase tracking-widest hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all duration-300 active:scale-95 cursor-pointer mt-auto"
         >
-          View Portfolio
+          View Profile
         </button>
       </div>
     </Reveal>
@@ -199,7 +199,7 @@ const SalonStaff = ({ id }) => {
 
   return (
     <>
-      <section className="py-32 bg-[#f7ede2]" id="staff">
+      <section className="py-32" id="staff">
         <div className="max-w-7xl mx-auto px-8">
           <Reveal>
             <div className="text-center mb-32">
