@@ -60,9 +60,9 @@ function SalonCard({ salon }) {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(75,54,33,0.6)]" />
 
         {/* Badge */}
-{badge && bc && (
-  <span
-    className="
+        {badge && bc && (
+          <span
+            className="
       absolute top-3.5 left-3.5
       px-[11px] py-1
       rounded-full
@@ -75,10 +75,10 @@ function SalonCard({ salon }) {
       border border-white/20
       shadow-md
     "
-  >
-    Top Rated
-  </span>
-)}
+          >
+            Top Rated
+          </span>
+        )}
 
         {/* Open/Closed Badge */}
         <span className={`absolute top-3.5 right-3.5 px-3 py-1 rounded-full text-[0.7rem] font-bold tracking-[0.04em] backdrop-blur-[8px] ${salon.isOpen ? "bg-[#fdf6f0]/90 text-[#cd6133]" : "bg-[#f8d4d4]/90 text-[#7f1a1a]"} font-['Manrope',sans-serif]`}>
@@ -152,13 +152,26 @@ export default function SalonList() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
 
-  // Manual fetch state
   const [draftParams, setDraftParams] = useState({
     lat: searchParams.lat,
     lng: searchParams.lng,
     radius: searchParams.radius,
     address: searchParams.address
   });
+
+  const [showTimeoutOptions, setShowTimeoutOptions] = useState(false);
+
+  React.useEffect(() => {
+    let timer;
+    if (loading && !salons.length) {
+      timer = setTimeout(() => {
+        setShowTimeoutOptions(true);
+      }, 10000);
+    } else {
+      setShowTimeoutOptions(false);
+    }
+    return () => clearTimeout(timer);
+  }, [loading, salons.length]);
 
   // Sync draft params with search params only on initial load or browser detection
   const hasInitialized = React.useRef(false);
@@ -186,10 +199,49 @@ export default function SalonList() {
 
   if (loading && !salons.length) {
     return (
-      <div className="min-h-screen bg-[#f9f5f2] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-[#7a2860]/20 border-t-[#7a2860] rounded-full animate-spin" />
-          <p className="text-[#3c143280] font-medium font-[DM_Sans]">Finding best salons near you...</p>
+      <div className="min-h-screen bg-[#f9f5f2] flex items-center justify-center p-6">
+        <div className="flex flex-col items-center gap-6 text-center max-w-md">
+          <div className="w-16 h-16 border-4 border-[#7a2860]/20 border-t-[#7a2860] rounded-full animate-spin" />
+          <div className="space-y-2">
+            <h2 className="text-xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">
+              {showTimeoutOptions ? "Still searching for your location..." : "Finding best salons near you..."}
+            </h2>
+            <p className="text-[#3c143280] font-medium font-[DM_Sans] text-sm">
+              {showTimeoutOptions
+                ? "It's taking a bit longer than expected. You can wait a moment or enter your location manually below."
+                : "We're locating the premium grooming spaces in your area."}
+            </p>
+          </div>
+
+          {showTimeoutOptions && (
+            <div className="w-full pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="p-4 bg-white/50 rounded-2xl border border-[#3c143208] shadow-sm">
+                <p className="text-[10px] uppercase tracking-widest font-bold text-[#7a2860] mb-3">Enter Manually</p>
+                <LocationPicker
+                  currentAddress={draftParams.address}
+                  lat={draftParams.lat}
+                  lng={draftParams.lng}
+                  onLocationSelect={(loc) => {
+                    setDraftParams(prev => ({ ...prev, ...loc }));
+                    updateParams({ ...draftParams, ...loc });
+                  }}
+                  onDetectLocation={() => {
+                    navigator.geolocation.getCurrentPosition(
+                      (pos) => {
+                        const newLoc = {
+                          lat: pos.coords.latitude,
+                          lng: pos.coords.longitude,
+                          address: "Detected Location"
+                        };
+                        setDraftParams(prev => ({ ...prev, ...newLoc }));
+                        updateParams({ ...draftParams, ...newLoc });
+                      }
+                    );
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

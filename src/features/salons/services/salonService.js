@@ -1,8 +1,9 @@
 import apiClient from "@/services/apiClient";
+import { publicApiClient } from "@/services/apiClient";
 import { ENDPOINTS } from "@/services/endpoints";
 
 export const fetchNearbySalons = async (lat, lng, radius = 20) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.NEARBY(lat, lng, radius)
   );
   return response.data;

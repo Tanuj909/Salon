@@ -8,10 +8,7 @@ import { useSalonStaff } from "../hooks/useSalonStaff";
 import { useSalonTimings } from "../hooks/useSalonTimings";
 
 const PAYMENT_METHODS = [
-    { value: "UPI", label: "UPI", icon: "📱" },
-    { value: "CARD", label: "Card", icon: "💳" },
-    { value: "CASH", label: "Cash", icon: "💵" },
-    { value: "WALLET", label: "Wallet", icon: "👛" },
+    { value: "Cash", label: "CASH", icon: "💶" },
 ];
 
 const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelectedService }) => {
@@ -353,15 +350,15 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                 >
                                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${isSelected ? "ring-2 ring-[#C8A951] ring-offset-2" : ""}`}>
                                                         {member.profileImageUrl ? (
-                                                            <img src={member.profileImageUrl} alt={member.fullName} className="w-full h-full object-cover" />
+                                                            <img src={member.profileImageUrl} alt={member.userFullName || member.fullName} className="w-full h-full object-cover" />
                                                         ) : (
                                                             <div className="w-full h-full bg-[#f5edce] flex items-center justify-center text-[#C8A951] font-bold text-sm">
-                                                                {member.fullName?.substring(0, 2).toUpperCase()}
+                                                                {(member.userFullName || member.fullName)?.substring(0, 2).toUpperCase()}
                                                             </div>
                                                         )}
                                                     </div>
                                                     <span className="text-[10px] font-bold text-[#1C1C1C] text-center leading-tight max-w-[80px] truncate">
-                                                        {member.fullName?.split(" ")[0]}
+                                                        {member.userFullName || member.fullName}
                                                     </span>
                                                     {member.designation && (
                                                         <span className="text-[8px] text-[#9e9287] truncate max-w-[80px]">{member.designation}</span>
@@ -482,7 +479,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <User size={14} className="text-[#C8A951]" />
                                     <span className="text-[10px] uppercase tracking-[0.2em] text-[#9e9287] font-bold">Stylist:</span>
                                     <span className="text-sm text-[#1C1C1C] font-semibold">
-                                        {selectedStaff ? selectedStaff.fullName : "Any Available"}
+                                        {selectedStaff ? (selectedStaff.userFullName || selectedStaff.fullName) : "Any Available"}
                                     </span>
                                 </div>
 

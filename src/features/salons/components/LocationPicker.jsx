@@ -33,6 +33,8 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const [searchError, setSearchError] = useState("");
+
     const searchPlaces = async (val) => {
         if (val.length < 3) {
             setSuggestions([]);
@@ -40,15 +42,35 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
         }
 
         setIsSearching(true);
+        setSearchError("");
         try {
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&limit=5&addressdetails=1`
+                `https://photon.komoot.io/api/?q=${encodeURIComponent(val)}&limit=5`
             );
             const data = await response.json();
-            setSuggestions(data);
+
+            // Map Photon format to internal format
+            const mapped = (data.features || []).map(f => {
+                const p = f.properties;
+                const name = p.name || "";
+                const details = [p.city, p.state, p.country].filter(Boolean).join(", ");
+                const display_name = name ? (details ? `${name}, ${details}` : name) : details;
+
+                return {
+                    lat: f.geometry.coordinates[1],
+                    lon: f.geometry.coordinates[0],
+                    display_name: display_name,
+                    name: name
+                };
+            });
+
+            setSuggestions(mapped);
             setShowSuggestions(true);
         } catch (error) {
             console.error("Geocoding error:", error);
+            setSearchError("Failed to fetch locations. Please try again.");
+            setSuggestions([]);
+            setShowSuggestions(true);
         } finally {
             setIsSearching(false);
         }
@@ -125,12 +147,22 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
             </div>
 
             {/* Suggestions Dropdown */}
-            {showSuggestions && (suggestions.length > 0 || isSearching) && (
+            {showSuggestions && (suggestions.length > 0 || isSearching || searchError || (query.length >= 3 && suggestions.length === 0)) && (
                 <div className="absolute top-full mt-2 w-full bg-white rounded-2xl shadow-2xl border border-[#3c143212] overflow-hidden z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
                     {isSearching ? (
                         <div className="p-6 flex items-center justify-center gap-3 text-[#3c143260]">
                             <Loader2 size={20} className="animate-spin" />
                             <span className="text-sm font-medium">Searching locations...</span>
+                        </div>
+                    ) : searchError ? (
+                        <div className="p-6 flex flex-col items-center justify-center gap-2 text-red-500">
+                            <X size={20} />
+                            <span className="text-sm font-medium">{searchError}</span>
+                        </div>
+                    ) : query.length >= 3 && suggestions.length === 0 ? (
+                        <div className="p-6 flex flex-col items-center justify-center gap-2 text-[#3c143260]">
+                            <Search size={20} />
+                            <span className="text-sm font-medium">No locations found</span>
                         </div>
                     ) : (
                         <div className="max-h-[300px] overflow-y-auto">
@@ -143,9 +175,13 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
                                     <div className="mt-1 p-1.5 rounded-lg bg-background-light text-muted group-hover:bg-[#7a2860]/10 group-hover:text-[#7a2860]">
                                         <MapPin size={14} />
                                     </div>
-                                    <div>
-                                        <p className="text-[0.85rem] font-bold text-[#1e0a18] line-clamp-1">{s.display_name.split(',')[0]}</p>
-                                        <p className="text-[0.75rem] text-[#3c143260] line-clamp-1">{s.display_name.split(',').slice(1).join(',').trim()}</p>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-[0.85rem] font-bold text-[#1e0a18] line-clamp-1">
+                                            {s.name || s.display_name.split(',')[0]}
+                                        </p>
+                                        <p className="text-[0.75rem] text-[#3c143260] line-clamp-1">
+                                            {s.name ? s.display_name.split(',').slice(1).join(',').trim() : s.display_name.split(',').slice(1).join(',').trim()}
+                                        </p>
                                     </div>
                                 </button>
                             ))}

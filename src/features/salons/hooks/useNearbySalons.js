@@ -5,7 +5,7 @@ import { fetchNearbySalons } from "../services/salonService";
 import { useUserLocation } from "./useUserLocation";
 
 export const useNearbySalons = () => {
-  const { location: browserLocation, error: locationError } = useUserLocation();
+  const { location: browserLocation, error: locationError, loading: locationLoading, isTimeout: locationTimeout } = useUserLocation();
 
   const [salons, setSalons] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,14 +36,17 @@ export const useNearbySalons = () => {
     }
   }, [browserLocation, searchParams.lat]);
 
-  // Handle location errors
+  // Handle location errors and loading state
   useEffect(() => {
-    if (locationError && !searchParams.lat && !initialized.current) {
-      // If we don't have a location and there's an error, but we haven't manually searched
-      // We can set a default location or show the error
-      // Let's not set error yet to allow manual typing
+    if (!locationLoading) {
+      if (locationError || locationTimeout) {
+        setLoading(false);
+        if (locationTimeout) {
+          setError("Location search timed out. Please enter your location manually.");
+        }
+      }
     }
-  }, [locationError, searchParams.lat]);
+  }, [locationLoading, locationError, locationTimeout]);
 
   const loadSalons = useCallback(async (params) => {
     if (!params.lat || !params.lng) {
