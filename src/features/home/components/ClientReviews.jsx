@@ -113,8 +113,7 @@ const ClientReviews = () => {
 
   return (
     <section
-      className="py-16 md:py-24 overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #fdf6f0 0%, #ffffff 100%)' }}
+      className="py-10 overflow-hidden bg-plum/5"
     >
       <div className="max-w-[1240px] mx-auto px-4 md:px-12">
 

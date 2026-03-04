@@ -13,8 +13,14 @@ export const ENDPOINTS = {
     CURRENT: "/customers/me",
   },
 
+  CATEGORIES: {
+    ALL: "/categories",
+  },
+
   SALON: {
     NEARBY: (lat, lng, radius) => `/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
+    NEARBY_BY_CATEGORY: (categoryId, lat, lng, radius, size) =>
+      `/businesses/nearby/category/${categoryId}?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}&size=${size}&page=0`,
 
     DETAILS: (id) => `/businesses/${id}`,
 

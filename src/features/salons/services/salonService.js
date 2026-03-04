@@ -9,6 +9,18 @@ export const fetchNearbySalons = async (lat, lng, radius = 20) => {
   return response.data;
 };
 
+export const fetchCategories = async () => {
+  const response = await publicApiClient.get(ENDPOINTS.CATEGORIES.ALL);
+  return response.data.content;
+};
+
+export const fetchNearbyByCategory = async (categoryId, lat, lng, radius = 25, size = 4) => {
+  const response = await publicApiClient.get(
+    ENDPOINTS.SALON.NEARBY_BY_CATEGORY(categoryId, lat, lng, radius, size)
+  );
+  return response.data.content;
+};
+
 export const fetchSalonById = async (id) => {
   const response = await apiClient.get(
     ENDPOINTS.SALON.DETAILS(id)

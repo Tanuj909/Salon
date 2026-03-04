@@ -178,12 +178,6 @@ const SalonServices = ({ id, onBookService }) => {
 
     return (
         <section className="py-16 relative overflow-hidden" id="services">
-            {/* Decorative background text - made smaller */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 -rotate-90 hidden lg:block select-none pointer-events-none opacity-30">
-                <span className="text-[8vw] font-black text-[#cd6133]/10 whitespace-nowrap uppercase tracking-[0.5em]">
-                    Authentic Beauty
-                </span>
-            </div>
 
             <div className="max-w-7xl mx-auto px-8 relative z-10">
                 <Reveal>
