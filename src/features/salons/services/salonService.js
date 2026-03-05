@@ -15,7 +15,7 @@ export const fetchCategories = async () => {
 };
 
 export const fetchActiveCategories = async () => {
-  const response = await apiClient.get(ENDPOINTS.CATEGORIES.ACTIVE);
+  const response = await publicApiClient.get(ENDPOINTS.CATEGORIES.ACTIVE);
   return response.data;
 };
 
