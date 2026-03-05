@@ -15,6 +15,7 @@ export const ENDPOINTS = {
 
   CATEGORIES: {
     ALL: "/categories",
+    ACTIVE: "/categories/active",
   },
 
   SALON: {
@@ -43,5 +44,6 @@ export const ENDPOINTS = {
 
   BUSINESS: {
     REGISTER: "/businesses/register",
+    LIST: "/businesses",
   },
 };

@@ -38,7 +38,10 @@ const reverseGeocode = async (lat, lng, setAddress) => {
             `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`,
             {
                 signal: controller.signal,
-                headers: { 'Accept-Language': 'en' }
+                headers: { 
+                    'Accept-Language': 'en',
+                    'User-Agent': 'SalonHub-MapPicker/1.0'
+                }
             }
         ).catch(err => {
             console.warn("Fetch failed:", err);

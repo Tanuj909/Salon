@@ -14,6 +14,11 @@ export const fetchCategories = async () => {
   return response.data.content;
 };
 
+export const fetchActiveCategories = async () => {
+  const response = await apiClient.get(ENDPOINTS.CATEGORIES.ACTIVE);
+  return response.data;
+};
+
 export const fetchNearbyByCategory = async (categoryId, lat, lng, radius = 25, size = 4) => {
   const response = await publicApiClient.get(
     ENDPOINTS.SALON.NEARBY_BY_CATEGORY(categoryId, lat, lng, radius, size)

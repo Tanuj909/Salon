@@ -7,8 +7,8 @@ import { fetchNearbySalons } from "@/features/salons/services/salonService";
 // Local badge styles since the data file was removed
 const badgeStyles = {
   "Top Rated": {
-    bg: "bg-[#7a2860]/10",
-    text: "text-[#7a2860]",
+    bg: "bg-[#7a2860]/60",
+    text: "text-[#ffffff]",
     border: "border-[#7a2860]/20"
   },
   "New": {

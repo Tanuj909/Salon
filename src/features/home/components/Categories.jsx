@@ -58,7 +58,7 @@ function SalonCard({ salon }) {
 
         {/* Badge */}
         {badge && (
-          <span className="absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border bg-[#7a2860]/10 text-[#7a2860] border-[#7a2860]/20 font-[DM_Sans]">
+          <span className="absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border bg-[#7a2860]/60 text-[#ffffff] border-[#7a2860]/20 font-[DM_Sans]">
             {badge}
           </span>
         )}

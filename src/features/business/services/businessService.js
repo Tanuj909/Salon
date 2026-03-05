@@ -9,3 +9,10 @@ export const registerBusiness = async (payload) => {
 
   return response.data;
 };
+
+export const fetchBusinesses = async (page = 0, size = 10) => {
+  const response = await apiClient.get(
+    `${ENDPOINTS.BUSINESS.LIST}?page=${page}&size=${size}&sortBy=id&sortDirection=ASC`
+  );
+  return response.data;
+};
