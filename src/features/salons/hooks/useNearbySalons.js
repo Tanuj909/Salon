@@ -41,7 +41,9 @@ export const useNearbySalons = () => {
     if (!locationLoading) {
       if (locationError || locationTimeout) {
         setLoading(false);
-        if (locationTimeout) {
+        if (locationError) {
+          setError("Location access is denied. Please allow location to find salons nearby.");
+        } else if (locationTimeout) {
           setError("Location search timed out. Please enter your location manually.");
         }
       }

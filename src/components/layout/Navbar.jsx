@@ -391,3 +391,319 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+// "use client";
+// import React, { useState, useEffect } from 'react';
+// import Link from 'next/link';
+// import { useAuthContext } from '@/features/auth/hooks/useAuth';
+// import { useRouter } from 'next/navigation';
+
+// export default function Navbar() {
+//   const [isMenuOpen, setIsMenuOpen] = useState(false);
+//   const [isProfileOpen, setIsProfileOpen] = useState(false);
+//   const [isScrolled, setIsScrolled] = useState(false);
+//   const { user, loading, logout } = useAuthContext();
+//   const router = useRouter();
+
+//   useEffect(() => {
+//     const handleScroll = () => setIsScrolled(window.scrollY > 40);
+//     window.addEventListener('scroll', handleScroll);
+//     return () => window.removeEventListener('scroll', handleScroll);
+//   }, []);
+
+//   useEffect(() => {
+//     const handleClickOutside = (e) => {
+//       if (!e.target.closest('[data-profile-menu]')) setIsProfileOpen(false);
+//     };
+//     document.addEventListener('mousedown', handleClickOutside);
+//     return () => document.removeEventListener('mousedown', handleClickOutside);
+//   }, []);
+
+//   const handleLogout = () => {
+//     logout();
+//     setIsProfileOpen(false);
+//     router.push('/login');
+//   };
+
+//   return (
+//     <>
+//       <style>{`
+//         @keyframes fadeSlideDown {
+//           from { opacity: 0; transform: translateY(-8px); }
+//           to   { opacity: 1; transform: translateY(0); }
+//         }
+//         @keyframes mobileMenuIn {
+//           from { opacity: 0; transform: translateY(-12px); }
+//           to   { opacity: 1; transform: translateY(0); }
+//         }
+//       `}</style>
+
+//       <nav className="fixed top-0 left-0 right-0 z-50 w-full">
+
+//         {/* ── Main Pill Bar ── */}
+//         <div
+//           style={{
+//             margin: isScrolled ? '0' : '12px 24px 0',
+//             borderRadius: isScrolled ? '0px' : '20px',
+//             background: 'rgba(255,255,255,0.96)',
+//             backdropFilter: 'blur(20px)',
+//             WebkitBackdropFilter: 'blur(20px)',
+//             boxShadow: isScrolled
+//               ? '0 2px 32px rgba(0,0,0,0.08)'
+//               : '0 4px 40px rgba(0,0,0,0.15), 0 1px 8px rgba(0,0,0,0.06)',
+//             borderBottom: isScrolled ? '1px solid rgba(0,0,0,0.06)' : 'none',
+//             transition: 'all 0.45s cubic-bezier(0.4,0,0.2,1)',
+//           }}
+//         >
+//           <div
+//             style={{
+//               display: 'flex',
+//               alignItems: 'center',
+//               justifyContent: 'space-between',
+//               padding: isScrolled ? '13px 40px' : '11px 22px',
+//               transition: 'padding 0.45s cubic-bezier(0.4,0,0.2,1)',
+//             }}
+//           >
+
+//             {/* ── Logo ── */}
+//             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+//               <div style={{
+//                 width: 38, height: 38, borderRadius: 11,
+//                 background: 'linear-gradient(135deg, #D98C5F 0%, #bf6d3e 100%)',
+//                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+//                 boxShadow: '0 4px 14px rgba(217,140,95,0.38)',
+//                 flexShrink: 0,
+//               }}>
+//                 <span className="material-symbols-outlined" style={{ color: '#fff', fontSize: 20 }}>content_cut</span>
+//               </div>
+//               <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+//                 <span style={{ fontWeight: 700, fontSize: '0.98rem', color: '#1a1a1a', letterSpacing: '-0.02em' }}>
+//                   Fast Booking
+//                 </span>
+//                 <span style={{ fontSize: '0.6rem', color: '#D98C5F', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
+//                   Salons & Barbershops
+//                 </span>
+//               </div>
+//             </Link>
+
+//             {/* ── Desktop Nav Links ── */}
+//             <div style={{ display: 'none', alignItems: 'center', gap: 2 }} className="md-nav">
+//               {[{ href: '/', label: 'Home' }, { href: '/salons', label: 'Salons' }].map(({ href, label }) => (
+//                 <Link
+//                   key={href}
+//                   href={href}
+//                   style={{
+//                     padding: '7px 15px', borderRadius: 9,
+//                     fontSize: '0.86rem', fontWeight: 500,
+//                     color: '#555', textDecoration: 'none',
+//                     transition: 'all 0.15s ease',
+//                   }}
+//                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(217,140,95,0.09)'; e.currentTarget.style.color = '#D98C5F'; }}
+//                   onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#555'; }}
+//                 >
+//                   {label}
+//                 </Link>
+//               ))}
+//             </div>
+
+//             {/* ── Right Actions ── */}
+//             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+
+//               {/* List Your Business */}
+//               <Link
+//                 href="/contact"
+//                 className="hide-mobile"
+//                 style={{
+//                   display: 'flex', alignItems: 'center', gap: 6,
+//                   padding: '8px 17px', borderRadius: 50,
+//                   fontSize: '0.8rem', fontWeight: 600,
+//                   background: 'linear-gradient(135deg, #D98C5F 0%, #c0703f 100%)',
+//                   color: '#fff', textDecoration: 'none',
+//                   boxShadow: '0 3px 12px rgba(217,140,95,0.32)',
+//                   transition: 'all 0.18s ease',
+//                   whiteSpace: 'nowrap',
+//                 }}
+//                 onMouseEnter={e => {
+//                   e.currentTarget.style.transform = 'translateY(-1px)';
+//                   e.currentTarget.style.boxShadow = '0 6px 20px rgba(217,140,95,0.45)';
+//                 }}
+//                 onMouseLeave={e => {
+//                   e.currentTarget.style.transform = 'translateY(0)';
+//                   e.currentTarget.style.boxShadow = '0 3px 12px rgba(217,140,95,0.32)';
+//                 }}
+//               >
+//                 <span className="material-symbols-outlined" style={{ fontSize: 15 }}>add_business</span>
+//                 List Your Business
+//               </Link>
+
+//               {/* Auth */}
+//               {!loading && (
+//                 user ? (
+//                   <div style={{ position: 'relative' }} data-profile-menu>
+//                     <button
+//                       onClick={() => setIsProfileOpen(!isProfileOpen)}
+//                       style={{
+//                         width: 37, height: 37, borderRadius: '50%',
+//                         background: isProfileOpen ? 'linear-gradient(135deg, #D98C5F, #c0703f)' : 'rgba(217,140,95,0.11)',
+//                         border: '1.5px solid rgba(217,140,95,0.28)',
+//                         color: isProfileOpen ? '#fff' : '#D98C5F',
+//                         display: 'flex', alignItems: 'center', justifyContent: 'center',
+//                         cursor: 'pointer', transition: 'all 0.18s ease',
+//                       }}
+//                     >
+//                       <span className="material-symbols-outlined" style={{ fontSize: 19 }}>person</span>
+//                     </button>
+
+//                     {isProfileOpen && (
+//                       <div style={{
+//                         position: 'absolute', right: 0, top: 'calc(100% + 10px)',
+//                         width: 176, background: '#fff',
+//                         borderRadius: 16, padding: '6px',
+//                         boxShadow: '0 8px 40px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06)',
+//                         border: '1px solid rgba(0,0,0,0.06)',
+//                         animation: 'fadeSlideDown 0.18s ease-out',
+//                       }}>
+//                         {[
+//                           { href: '/profile', label: 'My Profile', icon: 'account_circle', onClick: () => setIsProfileOpen(false) },
+//                         ].map(({ href, label, icon, onClick }) => (
+//                           <Link key={href} href={href} onClick={onClick} style={{
+//                             display: 'flex', alignItems: 'center', gap: 9,
+//                             padding: '10px 11px', borderRadius: 10,
+//                             fontSize: '0.84rem', fontWeight: 500, color: '#444',
+//                             textDecoration: 'none', transition: 'all 0.14s',
+//                           }}
+//                             onMouseEnter={e => { e.currentTarget.style.background = 'rgba(217,140,95,0.08)'; e.currentTarget.style.color = '#D98C5F'; }}
+//                             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#444'; }}
+//                           >
+//                             <span className="material-symbols-outlined" style={{ fontSize: 17, color: '#D98C5F' }}>{icon}</span>
+//                             {label}
+//                           </Link>
+//                         ))}
+//                         <div style={{ height: 1, background: 'rgba(0,0,0,0.05)', margin: '3px 8px' }} />
+//                         <button onClick={handleLogout} style={{
+//                           width: '100%', display: 'flex', alignItems: 'center', gap: 9,
+//                           padding: '10px 11px', borderRadius: 10,
+//                           fontSize: '0.84rem', fontWeight: 500, color: '#444',
+//                           background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left',
+//                           transition: 'all 0.14s',
+//                         }}
+//                           onMouseEnter={e => { e.currentTarget.style.background = 'rgba(217,140,95,0.08)'; e.currentTarget.style.color = '#D98C5F'; }}
+//                           onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#444'; }}
+//                         >
+//                           <span className="material-symbols-outlined" style={{ fontSize: 17, color: '#D98C5F' }}>logout</span>
+//                           Logout
+//                         </button>
+//                       </div>
+//                     )}
+//                   </div>
+//                 ) : (
+//                   <Link href="/login" style={{
+//                     padding: '8px 18px', borderRadius: 50,
+//                     fontSize: '0.8rem', fontWeight: 600,
+//                     color: '#D98C5F', border: '1.5px solid rgba(217,140,95,0.38)',
+//                     textDecoration: 'none', transition: 'all 0.18s ease',
+//                     background: 'transparent',
+//                   }}
+//                     onMouseEnter={e => {
+//                       e.currentTarget.style.background = 'linear-gradient(135deg, #D98C5F, #c0703f)';
+//                       e.currentTarget.style.color = '#fff';
+//                       e.currentTarget.style.borderColor = 'transparent';
+//                       e.currentTarget.style.boxShadow = '0 4px 14px rgba(217,140,95,0.35)';
+//                     }}
+//                     onMouseLeave={e => {
+//                       e.currentTarget.style.background = 'transparent';
+//                       e.currentTarget.style.color = '#D98C5F';
+//                       e.currentTarget.style.borderColor = 'rgba(217,140,95,0.38)';
+//                       e.currentTarget.style.boxShadow = 'none';
+//                     }}
+//                   >
+//                     Login
+//                   </Link>
+//                 )
+//               )}
+
+//               {/* Hamburger */}
+//               <button
+//                 className="hamburger-btn"
+//                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+//                 style={{
+//                   width: 37, height: 37, borderRadius: 10,
+//                   background: 'rgba(0,0,0,0.05)',
+//                   border: 'none', cursor: 'pointer',
+//                   display: 'none', alignItems: 'center', justifyContent: 'center',
+//                   color: '#555', transition: 'all 0.18s',
+//                 }}
+//               >
+//                 <span className="material-symbols-outlined" style={{ fontSize: 21 }}>
+//                   {isMenuOpen ? 'close' : 'menu'}
+//                 </span>
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* ── Mobile Menu ── */}
+//         {isMenuOpen && (
+//           <div style={{
+//             margin: '8px 24px 0',
+//             borderRadius: 16,
+//             background: 'rgba(255,255,255,0.98)',
+//             backdropFilter: 'blur(20px)',
+//             WebkitBackdropFilter: 'blur(20px)',
+//             boxShadow: '0 8px 40px rgba(0,0,0,0.13)',
+//             padding: '8px',
+//             animation: 'mobileMenuIn 0.2s ease-out',
+//           }}>
+//             {[
+//               { href: '/', label: 'Home', icon: 'home' },
+//               { href: '/salons', label: 'Salons', icon: 'storefront' },
+//               { href: '/contact', label: 'List Your Business', icon: 'add_business' },
+//             ].map(({ href, label, icon }) => (
+//               <Link key={href} href={href} onClick={() => setIsMenuOpen(false)}
+//                 style={{
+//                   display: 'flex', alignItems: 'center', gap: 11,
+//                   padding: '12px 13px', borderRadius: 11,
+//                   color: '#444', fontWeight: 500, fontSize: '0.9rem',
+//                   textDecoration: 'none', transition: 'all 0.14s',
+//                 }}
+//                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(217,140,95,0.08)'; e.currentTarget.style.color = '#D98C5F'; }}
+//                 onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#444'; }}
+//               >
+//                 <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#D98C5F' }}>{icon}</span>
+//                 {label}
+//               </Link>
+//             ))}
+//             {!loading && !user && (
+//               <Link href="/login" onClick={() => setIsMenuOpen(false)} style={{
+//                 display: 'block', textAlign: 'center',
+//                 margin: '6px 4px 4px', padding: '13px',
+//                 borderRadius: 12,
+//                 background: 'linear-gradient(135deg, #D98C5F 0%, #c0703f 100%)',
+//                 color: '#fff', fontWeight: 600, fontSize: '0.9rem',
+//                 textDecoration: 'none',
+//                 boxShadow: '0 4px 16px rgba(217,140,95,0.35)',
+//               }}>
+//                 Login
+//               </Link>
+//             )}
+//           </div>
+//         )}
+
+//         {/* Responsive styles via style tag since Tailwind doesn't cover inline styles */}
+//         <style>{`
+//           @media (min-width: 768px) {
+//             .md-nav { display: flex !important; }
+//             .hamburger-btn { display: none !important; }
+//             .hide-mobile { display: flex !important; }
+//           }
+//           @media (max-width: 767px) {
+//             .md-nav { display: none !important; }
+//             .hamburger-btn { display: flex !important; }
+//             .hide-mobile { display: none !important; }
+//           }
+//         `}</style>
+//       </nav>
+//     </>
+//   );
+// }

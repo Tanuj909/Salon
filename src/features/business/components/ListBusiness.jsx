@@ -17,7 +17,7 @@ import DownloadAppSection from './sections/DownloadAppSection';
  */
 const ListBusiness = () => {
     return (
-        <div className="bg-plum/5 font-[DM_Sans] text-[#3c1432] min-h-screen pt-24 md:pt-28">
+        <div className="bg-plum/5 font-[DM_Sans] text-[#3c1432] min-h-screen pt-16 md:pt-20">
             {/* ── Hero Section ── */}
             <HeroSection />
 
@@ -43,7 +43,7 @@ const ListBusiness = () => {
             <BusinessTypesSection />
 
             {/* ── Download App Section ── */}
-            <DownloadAppSection />
+            {/* <DownloadAppSection /> */}
         </div>
     );
 };

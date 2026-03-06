@@ -391,15 +391,17 @@ export default function SalonList() {
               </svg>
             </div>
             <div className="flex flex-col items-center">
-              <h3 className="text-xl font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">No salons found area</h3>
-              <p className="text-[#3c143260] font-[DM_Sans] max-w-[400px] mx-auto">There are no premium salons registered within {searchParams.radius}km of this location yet.</p>
+              <h3 className="text-xl font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+              <p className="text-[#3c143260] font-[DM_Sans] max-w-[400px] mx-auto mb-6">Please allow location access or search for a location manually to discover premium salons.</p>
             </div>
-            <button
-              onClick={() => updateParams({ radius: 50 })}
-              className="mt-6 text-[#7a2860] font-bold hover:underline font-[DM_Sans]"
-            >
-              Try expanding search radius
-            </button>
+            {error && error.includes("denied") && (
+              <button
+                onClick={() => window.location.reload()}
+                className="px-8 py-3 bg-[#1e0a18] text-white rounded-xl font-bold hover:bg-[#7a2860] transition-colors font-[DM_Sans]"
+              >
+                Retry Location Access
+              </button>
+            )}
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed border-[#3c143220]">
