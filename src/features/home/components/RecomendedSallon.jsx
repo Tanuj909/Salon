@@ -129,26 +129,26 @@ export default function RecomendedSallon() {
 
   return (
     <section className="bg-plum/5 py-10">
-      <div className="max-w-[1280px] mx-auto px-12">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
         {/* ── Section Header ── */}
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
+          <div className="max-w-[500px]">
             {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-2 md:mb-3">
               <span className="w-6 h-px inline-block bg-[#c4956a]" />
-              <span className="text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-[#c4956a] font-[DM_Sans]">
+              <span className="text-[0.65rem] md:text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-[#c4956a] font-[DM_Sans]">
                 Handpicked For You
               </span>
             </div>
 
-            <h2 className="font-bold leading-[1.1] text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.75rem,3vw,2.6rem)]">
+            <h2 className="font-bold leading-[1.1] text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.6rem,4vw,2.6rem)]">
               Recommended
               <span className="italic text-[#7a2860] ml-2">Salons</span>
             </h2>
-            <p className="text-[0.88rem] leading-[1.65] mt-2 max-w-[380px] text-[#3c143280] font-[DM_Sans]">
+            <p className="text-[0.82rem] md:text-[0.88rem] leading-relaxed mt-2 text-[#3c143280] font-[DM_Sans]">
               {locationDenied
-                ? "Location access is required to show salons near you. Please enable location permissions."
+                ? "Location access required to show salons near you."
                 : "Top-rated spaces loved by our community — book a session today."}
             </p>
           </div>
@@ -296,6 +296,6 @@ export default function RecomendedSallon() {
           </div>
         )}
       </div>
-    </section>
+    </section >
   );
 }

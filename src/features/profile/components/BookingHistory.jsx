@@ -132,7 +132,7 @@ const BookingHistory = ({ businessId }) => {
     // Loading state
     if (loading) {
         return (
-            <div className="px-8 mt-16">
+            <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
@@ -147,7 +147,7 @@ const BookingHistory = ({ businessId }) => {
     // Error state
     if (error) {
         return (
-            <div className="px-8 mt-16">
+            <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
@@ -163,7 +163,7 @@ const BookingHistory = ({ businessId }) => {
     // Empty state
     if (!bookings || bookings.length === 0) {
         return (
-            <div className="px-8 mt-16">
+            <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
@@ -179,11 +179,11 @@ const BookingHistory = ({ businessId }) => {
     }
 
     return (
-        <div className="px-8 mt-16">
+        <div className="px-4 sm:px-8 mt-12 sm:mt-16">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                     <p className="text-[#3c143250] text-xs font-bold uppercase tracking-widest mt-1">
                         {pagination.totalElements} {pagination.totalElements === 1 ? 'Booking' : 'Bookings'} Found
                     </p>
@@ -216,7 +216,7 @@ const BookingHistory = ({ businessId }) => {
                 {bookings.map((booking) => (
                     <div
                         key={booking.id}
-                        className="bg-white p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all group"
+                        className="bg-white p-4 sm:p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all group"
                     >
                         {/* Top Row: Booking Number + Status */}
                         <div className="flex items-center justify-between mb-4">
@@ -240,11 +240,11 @@ const BookingHistory = ({ businessId }) => {
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                             {/* Left: Service + Date Info */}
                             <div className="flex items-start gap-5">
-                                <div className="w-14 h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center text-[#7a2860]/40 border border-[#3c143205] shrink-0">
-                                    <Scissors size={22} strokeWidth={1.5} />
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center text-[#7a2860]/40 border border-[#3c143205] shrink-0">
+                                    <Scissors size={20} className="sm:w-[22px] sm:h-[22px]" strokeWidth={1.5} />
                                 </div>
                                 <div className="min-w-0">
-                                    <h4 className="font-bold text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond] leading-tight">
+                                    <h4 className="font-bold text-base sm:text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond] leading-tight">
                                         {getServiceNames(booking.services)}
                                     </h4>
                                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2">

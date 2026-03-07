@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ShieldCheck, CheckCircle, Crown, MapPin, Calendar, Star, Edit3, Share2, ChevronRight } from 'lucide-react';
+import { ShieldCheck, CheckCircle, Crown, MapPin, Calendar, Star, User } from 'lucide-react';
 
 const ProfileHeader = ({ user }) => {
   const [scrolled, setScrolled] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
@@ -12,9 +13,17 @@ const ProfileHeader = ({ user }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const memberSince = "2024";
-  const location = "New York, NY";
-  const reviews = 128;
+  // Only extract data if it exists, no fallbacks
+  const memberSince = user?.memberSince ? new Date(user.memberSince).getFullYear().toString() : null;
+  const location = user?.location;
+  const totalReviews = user?.stats?.totalReviews;
+  const membershipLevel = user?.membershipLevel;
+  const userId = user?.user?.id;
+  const fullName = user?.user?.fullName;
+  const profileImageUrl = user?.user?.profileImageUrl;
+  
+  const isVerified = user?.user?.verificationStatus === 'VERIFIED';
+  const isEmailVerified = user?.user?.isEmailVerified;
 
   const membershipConfig = {
     BRONZE: {
@@ -39,9 +48,7 @@ const ProfileHeader = ({ user }) => {
     },
   };
 
-  const tier = membershipConfig[user?.membershipLevel] || membershipConfig.GOLD;
-  const isVerified = user?.user?.verificationStatus === 'VERIFIED';
-  const isEmailVerified = user?.user?.isEmailVerified;
+  const tier = membershipLevel ? membershipConfig[membershipLevel] : null;
 
   const styles = `
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -150,6 +157,24 @@ const ProfileHeader = ({ user }) => {
       display: block;
       background: #f0ede8;
       border: 3px solid #fff;
+    }
+
+    .ph-avatar-fallback {
+      width: 120px;
+      height: 120px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #f3e9dc, #e8d9cc, #d4c2b2);
+      border: 3px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ph-avatar-fallback svg {
+      width: 60px;
+      height: 60px;
+      color: #a67c6b;
+      opacity: 0.7;
     }
 
     .ph-badge-verified {
@@ -269,114 +294,23 @@ const ProfileHeader = ({ user }) => {
       background: #e5e7eb;
     }
 
-    /* Actions */
-    .ph-actions {
-      display: flex;
-      gap: 8px;
-      align-self: center;
-    }
-
-    .ph-btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      background: linear-gradient(135deg, #b8860b, #c9a84c, #d4a843);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(201,168,76,0.35);
-      letter-spacing: 0.01em;
-    }
-
-    .ph-btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 16px rgba(201,168,76,0.45);
-    }
-
-    .ph-btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 14px;
-      background: transparent;
-      color: #4b4f5a;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .ph-btn-secondary:hover {
-      background: #f9fafb;
-      border-color: #d1d5db;
-    }
-
-    /* Stats bar */
-    .ph-stats-bar {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid #f3f4f6;
-      flex-wrap: wrap;
-    }
-
-    .ph-stat {
-      flex: 1;
-      min-width: 100px;
-      text-align: center;
-      padding: 4px 16px;
-      position: relative;
-    }
-
-    .ph-stat + .ph-stat::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 10%;
-      height: 80%;
-      width: 1px;
-      background: #f0f0f0;
-    }
-
-    .ph-stat-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #0d0f12;
-      line-height: 1.1;
-    }
-
-    .ph-stat-label {
-      font-size: 0.7rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 2px;
-      font-weight: 500;
-    }
-
     /* Responsive */
     @media (max-width: 600px) {
-      .ph-card { margin: 0 12px; margin-top: -60px; padding: 20px; }
-      .ph-banner { height: 220px; }
-      .ph-name { font-size: 1.7rem; }
-      .ph-avatar { width: 88px; height: 88px; border-radius: 12px; }
-      .ph-avatar-wrap { margin-top: -56px; }
-      .ph-actions { width: 100%; justify-content: flex-start; }
-      .ph-layout { gap: 16px; }
+      .ph-card { margin: 0 8px; margin-top: -60px; padding: 20px 16px; border-radius: 16px; }
+      .ph-banner { height: 200px; }
+      .ph-name { font-size: 1.5rem; }
+      .ph-avatar, .ph-avatar-fallback { width: 80px; height: 80px; }
+      .ph-avatar-fallback svg { width: 40px; height: 40px; }
+      .ph-avatar-wrap { margin-top: -50px; }
+      .ph-layout { gap: 12px; }
+      .ph-meta { gap: 10px 15px; }
+      .ph-meta-item { font-size: 0.75rem; }
+      .ph-divider { display: none; }
     }
   `;
+
+  // Don't render anything if no user data
+  if (!user) return null;
 
   return (
     <div className="ph-wrapper">
@@ -397,14 +331,21 @@ const ProfileHeader = ({ user }) => {
       <div className={`ph-card ${loaded ? 'loaded' : ''}`}>
         <div className="ph-layout">
 
-          {/* Avatar */}
+          {/* Avatar - with fallback */}
           <div className="ph-avatar-wrap">
             <div className="ph-avatar-ring">
-              <img
-                className="ph-avatar"
-                src={user?.user?.profileImageUrl || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop'}
-                alt={user?.user?.fullName || 'Profile'}
-              />
+              {profileImageUrl && !imageError ? (
+                <img
+                  className="ph-avatar"
+                  src={profileImageUrl}
+                  alt={fullName || 'Profile'}
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="ph-avatar-fallback">
+                  <User />
+                </div>
+              )}
             </div>
             {isVerified && (
               <div className="ph-badge-verified">
@@ -415,59 +356,66 @@ const ProfileHeader = ({ user }) => {
 
           {/* Info */}
           <div className="ph-info">
-            <div className="ph-name-row">
-              <span className="ph-name">{user?.user?.fullName || 'Alexandra Monroe'}</span>
-              {isEmailVerified && (
-                <span className="ph-email-chip">
-                  <CheckCircle size={11} />
-                  Verified
-                </span>
-              )}
-            </div>
-
-            <div className="ph-tier-row">
-              <span
-                className="ph-tier-badge"
-                style={{ background: tier.gradient, boxShadow: `0 2px 12px ${tier.glow}` }}
-              >
-                <Crown size={12} />
-                {tier.label} Member
-              </span>
-              <span className="ph-id-chip">ID #{user?.user?.id || '10284'}</span>
-            </div>
-
-            <div className="ph-meta">
-              <div className="ph-meta-item">
-                <Calendar size={13} className="ph-meta-icon" />
-                Since {memberSince}
+            {/* Name - only show if fullName exists */}
+            {fullName && (
+              <div className="ph-name-row">
+                <span className="ph-name">{fullName}</span>
+                {isEmailVerified && (
+                  <span className="ph-email-chip">
+                    <CheckCircle size={11} />
+                    Verified
+                  </span>
+                )}
               </div>
-              <div className="ph-divider" />
-              <div className="ph-meta-item">
-                <MapPin size={13} className="ph-meta-icon" />
-                {location}
-              </div>
-              <div className="ph-divider" />
-              <div className="ph-meta-item">
-                <Star size={13} className="ph-meta-icon" />
-                {reviews} reviews
-              </div>
-            </div>
-          </div>
+            )}
 
-          {/* Actions */}
-          <div className="ph-actions">
-            <button className="ph-btn-primary">
-              <Edit3 size={13} />
-              Edit Profile
-            </button>
-            <button className="ph-btn-secondary">
-              <Share2 size={13} />
-              Share
-            </button>
+            {/* Tier and ID - only show if membershipLevel exists */}
+            {(tier || userId) && (
+              <div className="ph-tier-row">
+                {tier && (
+                  <span
+                    className="ph-tier-badge"
+                    style={{ background: tier.gradient, boxShadow: `0 2px 12px ${tier.glow}` }}
+                  >
+                    <Crown size={12} />
+                    {tier.label} Member
+                  </span>
+                )}
+                {userId && (
+                  <span className="ph-id-chip">ID #{userId}</span>
+                )}
+              </div>
+            )}
+
+            {/* Meta info - only show if at least one item exists */}
+            {(memberSince || location || totalReviews) && (
+              <div className="ph-meta">
+                {memberSince && (
+                  <div className="ph-meta-item">
+                    <Calendar size={13} className="ph-meta-icon" />
+                    Since {memberSince}
+                  </div>
+                )}
+                {memberSince && (location || totalReviews) && <div className="ph-divider" />}
+                
+                {location && (
+                  <div className="ph-meta-item">
+                    <MapPin size={13} className="ph-meta-icon" />
+                    {location}
+                  </div>
+                )}
+                {location && totalReviews && <div className="ph-divider" />}
+                
+                {totalReviews && (
+                  <div className="ph-meta-item">
+                    <Star size={13} className="ph-meta-icon" />
+                    {totalReviews} {totalReviews === 1 ? 'review' : 'reviews'}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
-
-        
       </div>
     </div>
   );

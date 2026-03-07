@@ -1,224 +1,289 @@
-// import React from 'react';
-
-// const FeaturesSection = () => {
-//     const features = [
-//         { emoji: '📅', title: 'Appointment scheduling', description: 'A seamless booking software with intelligent automated reminders.' },
-//         { emoji: '💳', title: 'Payment processing', description: 'Secure, frictionless payments via PayPal, Stripe, and more.' },
-//         { emoji: '🛒', title: 'Point of sale (POS)', description: 'Effortlessly manage transactions, barcode scanning, and digital receipts.' },
-//         { emoji: '📢', title: 'Marketing promotions', description: 'Powerful curated marketing tools for targeted promotions and elite discounts.' },
-//         { emoji: '📦', title: 'Product inventory', description: 'Precisely track stock levels and seamlessly manage online retail sales.' },
-//         { emoji: '📊', title: 'Reporting & analytics', description: 'Analyze comprehensive performance metrics with real-time actionable insights.' },
-//     ];
-
-//     return (
-//         <section className="py-16 md:py-20 px-4 sm:px-6 max-w-[1240px] mx-auto">
-//             <div className="text-center mb-12 flex flex-col justify-center items-center">
-//                 <h2 className="text-3xl md:text-4xl font-bold text-[#1e0a18] font-[Cormorant_Garamond] mb-3">
-//                     A full solution to manage and <span className="italic text-[#7a2860]">grow</span> your business
-//                 </h2>
-//                 <p className="text-base text-[#3c1432]/70 max-w-2xl mx-auto">
-//                     Packed with all the essential tools you need to boost sales, seamlessly manage your calendar, and retain elite clients.
-//                 </p>
-//             </div>
-
-//             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-//                 {features.map((feature, index) => (
-//                     <div key={index} className="bg-white p-6 rounded-xl border border-[#3c1432]/5 hover:shadow-lg transition-shadow">
-//                         <div className="w-12 h-12 bg-plum/5 rounded-xl flex items-center justify-center text-2xl mb-4">
-//                             {feature.emoji}
-//                         </div>
-//                         <h3 className="text-lg font-bold text-[#1e0a18] mb-2">{feature.title}</h3>
-//                         <p className="text-sm text-[#3c1432]/60 leading-relaxed">
-//                             {feature.description}
-//                         </p>
-//                     </div>
-//                 ))}
-//             </div>
-//         </section>
-//     );
-// };
-
-// export default FeaturesSection;
-
 import React from 'react';
+import { motion } from 'framer-motion';
+import {
+    BsCalendarCheck,
+    BsCreditCard2Front,
+    BsBag,
+    BsMegaphone,
+    BsBoxSeam,
+    BsGraphUp
+} from 'react-icons/bs';
 
 const FeaturesSection = () => {
     const features = [
         {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-                </svg>
-            ),
+            icon: <BsCalendarCheck size={20} />,
             title: 'Appointment Scheduling',
             description: 'Seamless booking with intelligent automated reminders that reduce no-shows by up to 40%.',
+            image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         },
         {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" />
-                </svg>
-            ),
+            icon: <BsCreditCard2Front size={20} />,
             title: 'Payment Processing',
             description: 'Secure, frictionless payments via PayPal, Stripe, and more — fully integrated.',
+            image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         },
         {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" />
-                </svg>
-            ),
+            icon: <BsBag size={20} />,
             title: 'Point of Sale (POS)',
             description: 'Effortlessly manage transactions, barcode scanning, and digital receipts.',
+            image: 'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         },
         {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                </svg>
-            ),
+            icon: <BsMegaphone size={20} />,
             title: 'Marketing Promotions',
             description: 'Powerful curated marketing tools for targeted promotions and elite discounts.',
+            image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         },
         {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
-                </svg>
-            ),
+            icon: <BsBoxSeam size={20} />,
             title: 'Product Inventory',
             description: 'Precisely track stock levels and seamlessly manage online retail sales.',
+            image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         },
         {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
-                </svg>
-            ),
+            icon: <BsGraphUp size={20} />,
             title: 'Reporting & Analytics',
             description: 'Analyze comprehensive performance metrics with real-time actionable insights.',
+            image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         },
     ];
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                ease: [0.25, 0.1, 0.25, 1],
+            },
+        },
+    };
+
     return (
-        <section style={{ padding: '80px 24px', maxWidth: 1200, margin: '0 auto' }}>
+        <section style={{ padding: '20px 24px 40px', maxWidth: 1200, margin: '0 auto' }}>
 
             {/* Section header */}
-            <div style={{ textAlign: 'center', marginBottom: 56 }}>
-                <div style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                    marginBottom: 18,
-                }}>
-                    <div style={{ width: 28, height: 1, background: 'rgba(196,149,106,0.5)' }} />
-                    <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4956a' }}>
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ textAlign: 'center', marginBottom: 64 }}
+            >
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 12,
+                        marginBottom: 20,
+                    }}
+                >
+                    <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: 32 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        style={{ height: 1, background: '#c4956a' }}
+                    />
+                    <span style={{
+                        fontSize: '0.7rem',
+                        fontWeight: 500,
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        color: '#7a2860',
+                    }}>
                         Everything You Need
                     </span>
-                    <div style={{ width: 28, height: 1, background: 'rgba(196,149,106,0.5)' }} />
-                </div>
-                <h2 style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                    fontWeight: 700,
-                    color: '#1e0a18',
-                    lineHeight: 1.12,
-                    letterSpacing: '-0.02em',
-                    marginBottom: 14,
-                }}>
-                    A full solution to manage and{' '}
-                    <span style={{ color: '#7a2860', fontStyle: 'italic' }}>grow</span>{' '}
-                    your business
-                </h2>
-                <p style={{
-                    fontSize: '0.95rem', color: 'rgba(60,20,50,0.60)',
-                    maxWidth: 520, margin: '0 auto', lineHeight: 1.7,
-                }}>
-                    Packed with essential tools to boost sales, manage your calendar seamlessly, and retain elite clients.
-                </p>
-            </div>
+                    <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: 32 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        style={{ height: 1, background: '#c4956a' }}
+                    />
+                </motion.div>
 
-            {/* Feature grid */}
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-                gap: 20,
-            }}>
-                {features.map((feature, index) => (
-                    <div
-                        key={index}
+                <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    style={{
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+                        fontWeight: 600,
+                        color: '#1e0a18',
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.02em',
+                        marginBottom: 16,
+                    }}
+                >
+                    A full solution to manage and{' '}
+                    <motion.span
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
                         style={{
-                            padding: '28px 28px 28px',
-                            borderRadius: 18,
-                            border: '1px solid rgba(60,20,50,0.07)',
-                            background: 'rgba(255,255,255,0.7)',
-                            transition: 'all 0.22s ease',
-                            cursor: 'default',
-                            position: 'relative',
-                            overflow: 'hidden',
-                        }}
-                        onMouseEnter={e => {
-                            e.currentTarget.style.transform = 'translateY(-3px)';
-                            e.currentTarget.style.boxShadow = '0 16px 48px rgba(60,20,50,0.09)';
-                            e.currentTarget.style.borderColor = 'rgba(196,149,106,0.28)';
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = 'none';
-                            e.currentTarget.style.borderColor = 'rgba(60,20,50,0.07)';
+                            color: '#7a2860',
+                            fontStyle: 'italic',
+                            display: 'inline-block',
                         }}
                     >
-                        {/* Hover accent line */}
-                        <div style={{
-                            position: 'absolute', top: 0, left: 24, right: 24, height: 2,
-                            background: 'linear-gradient(90deg, #c4956a, #7a2860)',
-                            borderRadius: '0 0 4px 4px',
-                            opacity: 0,
-                            transition: 'opacity 0.22s',
-                        }} className="feature-accent-line" />
+                        grow
+                    </motion.span>{' '}
+                    your business
+                </motion.h2>
 
-                        {/* Icon */}
-                        <div style={{
-                            width: 46, height: 46,
-                            borderRadius: 13,
-                            background: 'linear-gradient(135deg, rgba(196,149,106,0.12), rgba(122,40,96,0.06))',
-                            border: '1px solid rgba(196,149,106,0.18)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            color: '#c4956a',
-                            marginBottom: 18,
-                        }}>
-                            {feature.icon}
-                        </div>
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    style={{
+                        fontSize: '0.95rem',
+                        color: 'rgba(60,20,50,0.6)',
+                        maxWidth: 540,
+                        margin: '0 auto',
+                        lineHeight: 1.6,
+                    }}
+                >
+                    Packed with essential tools to boost sales, manage your calendar seamlessly,
+                    and retain elite clients.
+                </motion.p>
+            </motion.div>
 
-                        {/* Number */}
-                        <div style={{
-                            position: 'absolute', top: 22, right: 24,
-                            fontSize: '0.65rem', fontWeight: 700,
-                            color: 'rgba(60,20,50,0.12)',
-                            fontFamily: "'Cormorant Garamond', serif",
-                            letterSpacing: '0.04em',
-                        }}>
-                            0{index + 1}
-                        </div>
+            {/* Feature grid */}
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                    gap: 28,
+                }}
+            >
+                {features.map((feature, index) => (
+                    <motion.div
+                        key={index}
+                        variants={itemVariants}
+                        style={{
+                            position: 'relative',
+                            borderRadius: 20,
+                            overflow: 'hidden',
+                            cursor: 'default',
+                        }}
+                    >
+                        {/* Image Container - All motion divs */}
+                        <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                            style={{
+                                position: 'relative',
+                                height: 200,
+                                width: '100%',
+                                borderRadius: 20,
+                                overflow: 'hidden',
+                                marginBottom: 16,
+                                boxShadow: '0 10px 30px -15px rgba(0,0,0,0.1)',
+                            }}
+                        >
+                            <motion.img
+                                src={feature.image}
+                                alt={feature.title}
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    display: 'block',
+                                }}
+                            />
 
-                        <h3 style={{
-                            fontSize: '0.98rem', fontWeight: 700,
-                            color: '#1e0a18', marginBottom: 8,
-                            letterSpacing: '-0.01em',
-                        }}>
-                            {feature.title}
-                        </h3>
-                        <p style={{
-                            fontSize: '0.85rem', color: 'rgba(60,20,50,0.58)',
-                            lineHeight: 1.65,
-                        }}>
-                            {feature.description}
-                        </p>
-                    </div>
+                            {/* Icon - Inside motion div */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 16,
+                                    left: 16,
+                                    width: 42,
+                                    height: 42,
+                                    borderRadius: 12,
+                                    background: 'white',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#7a2860',
+                                    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
+                                    zIndex: 2,
+                                }}
+                            >
+                                {feature.icon}
+                            </motion.div>
+                        </motion.div>
+
+                        {/* Content */}
+                        <motion.div
+                            whileHover={{ y: -2 }}
+                            transition={{ duration: 0.3 }}
+                            style={{ padding: '0 4px' }}
+                        >
+                            <motion.h3
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+                                style={{
+                                    fontSize: '1.1rem',
+                                    fontWeight: 600,
+                                    color: '#1e0a18',
+                                    letterSpacing: '-0.01em',
+                                    marginBottom: 8,
+                                }}
+                            >
+                                {feature.title}
+                            </motion.h3>
+
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
+                                style={{
+                                    fontSize: '0.85rem',
+                                    color: 'rgba(60,20,50,0.65)',
+                                    lineHeight: 1.6,
+                                    margin: 0,
+                                }}
+                            >
+                                {feature.description}
+                            </motion.p>
+                        </motion.div>
+                    </motion.div>
                 ))}
-            </div>
-
-            <style>{`
-                div:hover .feature-accent-line { opacity: 1 !important; }
-            `}</style>
+            </motion.div>
         </section>
     );
 };

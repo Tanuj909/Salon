@@ -92,10 +92,10 @@ export default function BecomePartnerPage() {
       );
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
-      
+
       if (data.address) {
         const address = data.address;
-        
+
         // Extract address components
         const street = address.road || address.street || address.pedestrian || '';
         const houseNumber = address.house_number || '';
@@ -103,10 +103,10 @@ export default function BecomePartnerPage() {
         const state = address.state || address.state_district || '';
         const postalCode = address.postcode || '';
         const country = address.country || '';
-        
+
         // Format street address
         const streetAddress = `${houseNumber} ${street}`.trim();
-        
+
         return {
           address: streetAddress || data.display_name?.split(',')[0] || '',
           city,
@@ -142,7 +142,7 @@ export default function BecomePartnerPage() {
   // 📍 Handle Map Selection
   const handleMapSelect = async (data) => {
     setIsMapOpen(false);
-    
+
     if (!data.lat || !data.lng) return;
 
     // 1. Update coordinates immediately and clear old address fields to show progress
@@ -163,7 +163,7 @@ export default function BecomePartnerPage() {
     try {
       // 2. Fetch full address details from Nominatim
       const addressDetails = await reverseGeocode(data.lat, data.lng);
-      
+
       if (addressDetails) {
         setForm((prev) => ({
           ...prev,
@@ -177,17 +177,17 @@ export default function BecomePartnerPage() {
         }));
       } else {
         // Fallback: use display name from map if it's not a placeholder
-        const mapAddress = (data.address && !["Locating...", "Loading address...", "Fetch address..."].includes(data.address)) 
-          ? data.address 
+        const mapAddress = (data.address && !["Locating...", "Loading address...", "Fetch address..."].includes(data.address))
+          ? data.address
           : "";
-          
+
         setForm((prev) => ({
           ...prev,
           latitude: data.lat.toString(),
           longitude: data.lng.toString(),
           address: mapAddress || prev.address,
         }));
-        
+
         if (!mapAddress) {
           setLocationError("Could not retrieve full address details. Please fill them manually.");
         }
@@ -213,7 +213,7 @@ export default function BecomePartnerPage() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        
+
         // Update coordinates
         setForm((prev) => ({
           ...prev,
@@ -224,7 +224,7 @@ export default function BecomePartnerPage() {
         // Try to get address from coordinates
         try {
           const addressDetails = await reverseGeocode(latitude, longitude);
-          
+
           if (addressDetails) {
             setForm((prev) => ({
               ...prev,
@@ -279,22 +279,22 @@ export default function BecomePartnerPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen pt-32 pb-24 font-[Jost,sans-serif] bg-[#f5f0eb]">
+    <div className="min-h-screen pt-24 sm:pt-32 pb-12 sm:pb-24 font-[Jost,sans-serif] bg-[#f5f0eb]">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500;600&display=swap');
       `}</style>
 
-      <div className="max-w-[1200px] mx-auto px-6">
-        <div className="relative overflow-hidden rounded-[2rem] bg-white shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]">
+      <div className="max-w-[1200px] mx-auto px-3 sm:px-6">
+        <div className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] bg-white shadow-[0_20px_50px_-20px_rgba(0,0,0,0.15)]">
           {/* Decorative Background Elements */}
           {success ? (
-            <div className="py-20 px-10 text-center relative z-10">
+            <div className="py-12 sm:py-20 px-6 sm:px-10 text-center relative z-10">
               <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-green-100">
                 <CheckCircle2 size={40} className="text-green-600" />
               </div>
 
               <div className="flex flex-col items-center">
-                <h2 className="font-[Cormorant_Garamond] text-4xl text-[#1C1C1C] mb-5">
+                <h2 className="font-[Cormorant_Garamond] text-3xl sm:text-4xl text-[#1C1C1C] mb-5">
                   Application <em className="italic text-[#C8A951]">Received</em>
                 </h2>
                 <p className="text-[#5a4e43] text-lg max-w-md mx-auto mb-10 font-light">
@@ -303,7 +303,7 @@ export default function BecomePartnerPage() {
               </div>
               <button
                 onClick={() => router.push("/")}
-                className="px-10 py-4 bg-[#1C1C1C] text-[#C8A951] rounded-lg text-sm font-medium tracking-widest uppercase hover:bg-[#2a2a2a] transition-all shadow-lg mt-5"
+                className="px-8 sm:px-10 py-3.5 sm:py-4 bg-[#1C1C1C] text-[#C8A951] rounded-lg text-[10px] sm:text-sm font-medium tracking-widest uppercase hover:bg-[#2a2a2a] transition-all shadow-lg mt-5"
               >
                 Return Home
               </button>
@@ -311,12 +311,12 @@ export default function BecomePartnerPage() {
           ) : (
             <div className="relative z-10 flex flex-col md:flex-row">
               {/* Sidebar Info - Darker background for contrast */}
-              <div className="md:w-1/3 p-10 bg-[#1C1C1C] border-b md:border-b-0 md:border-r border-[#C8A951]/20">
-                <span className="block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-6">Partnership</span>
-                <h2 className="font-[Cormorant_Garamond] text-4xl text-white leading-tight mb-6">
+              <div className="md:w-1/3 p-6 sm:p-10 bg-[#1C1C1C] border-b md:border-b-0 md:border-r border-[#C8A951]/20">
+                <span className="block text-[8px] sm:text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-6">Partnership</span>
+                <h2 className="font-[Cormorant_Garamond] text-2xl sm:text-4xl text-white leading-tight mb-6">
                   Grow Your <em className="italic text-[#C8A951]">Business</em> With Luxe
                 </h2>
-                <p className="text-[#b5a99d] text-sm leading-relaxed font-light mb-10">
+                <p className="text-[#b5a99d] text-xs sm:text-sm leading-relaxed font-light mb-8 sm:mb-10">
                   Join an exclusive community of premium salons. Elevate your brand, reach more clients, and manage your bookings with ease.
                 </p>
 
@@ -325,25 +325,25 @@ export default function BecomePartnerPage() {
                     <div className="w-10 h-10 rounded-full bg-[#2a2a2a] border border-[#C8A951]/30 flex items-center justify-center">
                       <CheckCircle2 size={18} className="text-[#C8A951]" />
                     </div>
-                    <span className="text-xs font-medium text-[#e5e5e5] tracking-wide">Premium Visibility</span>
+                    <span className="text-[10px] sm:text-xs font-medium text-[#e5e5e5] tracking-wide">Premium Visibility</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-[#2a2a2a] border border-[#C8A951]/30 flex items-center justify-center">
                       <Briefcase size={18} className="text-[#C8A951]" />
                     </div>
-                    <span className="text-xs font-medium text-[#e5e5e5] tracking-wide">Smart Dashboard</span>
+                    <span className="text-[10px] sm:text-xs font-medium text-[#e5e5e5] tracking-wide">Smart Dashboard</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-full bg-[#2a2a2a] border border-[#C8A951]/30 flex items-center justify-center">
                       <Navigation size={18} className="text-[#C8A951]" />
                     </div>
-                    <span className="text-xs font-medium text-[#e5e5e5] tracking-wide">Simple Management</span>
+                    <span className="text-[10px] sm:text-xs font-medium text-[#e5e5e5] tracking-wide">Simple Management</span>
                   </div>
                 </div>
               </div>
 
               {/* Form Area - Light background but with better contrast inputs */}
-              <div className="md:w-2/3 p-10 bg-[#fafafa]">
+              <div className="md:w-2/3 p-6 sm:p-10 bg-[#fafafa]">
                 {error && (
                   <div className="mb-8 p-4 bg-red-50 text-red-700 rounded-xl border border-red-200 flex gap-3 text-sm animate-fade-in">
                     <AlertCircle size={18} />
@@ -360,8 +360,8 @@ export default function BecomePartnerPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                   {/* Basic Information */}
-                  <div className="space-y-6">
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#C8A951]">Business Profile</h3>
+                  <div className="space-y-4 sm:space-y-6">
+                    <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#C8A951]">Business Profile</h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
@@ -372,7 +372,7 @@ export default function BecomePartnerPage() {
                           value={form.name}
                           onChange={handleChange}
                           required
-                          className="w-full h-12 px-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-[#1C1C1C] placeholder:text-[#b5a99d]"
+                          className="w-full h-11 sm:h-12 px-4 sm:px-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-sm sm:text-base text-[#1C1C1C] placeholder:text-[#b5a99d]"
                         />
                       </div>
                       <div className="space-y-2">
@@ -383,7 +383,7 @@ export default function BecomePartnerPage() {
                           value={form.registrationNumber}
                           onChange={handleChange}
                           required
-                          className="w-full h-12 px-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-[#1C1C1C] placeholder:text-[#b5a99d]"
+                          className="w-full h-11 sm:h-12 px-4 sm:px-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-sm sm:text-base text-[#1C1C1C] placeholder:text-[#b5a99d]"
                         />
                       </div>
                     </div>
@@ -397,14 +397,14 @@ export default function BecomePartnerPage() {
                         onChange={handleChange}
                         required
                         rows="3"
-                        className="w-full p-5 rounded-xl bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-[#1C1C1C] placeholder:text-[#b5a99d] resize-none"
+                        className="w-full p-4 sm:p-5 rounded-xl bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-sm sm:text-base text-[#1C1C1C] placeholder:text-[#b5a99d] resize-none"
                       />
                     </div>
                   </div>
 
                   {/* Contact Information */}
-                  <div className="space-y-6 pt-4">
-                    <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-[#C8A951]">Contact Details</h3>
+                  <div className="space-y-4 sm:space-y-6 pt-2 sm:pt-4">
+                    <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-[#C8A951]">Contact Details</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-wider text-[#6b5e52] font-semibold ml-1">Business Email</label>
@@ -417,7 +417,7 @@ export default function BecomePartnerPage() {
                             value={form.email}
                             onChange={handleChange}
                             required
-                            className="w-full h-12 pl-12 pr-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-[#1C1C1C] placeholder:text-[#b5a99d]"
+                            className="w-full h-11 sm:h-12 pl-11 sm:pl-12 pr-4 sm:pr-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-sm sm:text-base text-[#1C1C1C] placeholder:text-[#b5a99d]"
                           />
                         </div>
                       </div>
@@ -431,7 +431,7 @@ export default function BecomePartnerPage() {
                             value={form.phoneNumber}
                             onChange={handleChange}
                             required
-                            className="w-full h-12 pl-12 pr-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-[#1C1C1C] placeholder:text-[#b5a99d]"
+                            className="w-full h-11 sm:h-12 pl-11 sm:pl-12 pr-4 sm:pr-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-sm sm:text-base text-[#1C1C1C] placeholder:text-[#b5a99d]"
                           />
                         </div>
                       </div>
@@ -452,7 +452,7 @@ export default function BecomePartnerPage() {
                             value={form.address}
                             onChange={handleChange}
                             required
-                            className="w-full h-12 pl-12 pr-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-[#1C1C1C] placeholder:text-[#b5a99d]"
+                            className="w-full h-11 sm:h-12 pl-11 sm:pl-12 pr-4 sm:pr-5 rounded-lg bg-white border border-[#d4c5b5] focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 transition-all outline-none font-medium text-sm sm:text-base text-[#1C1C1C] placeholder:text-[#b5a99d]"
                           />
                         </div>
                       </div>
@@ -460,46 +460,46 @@ export default function BecomePartnerPage() {
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div className="space-y-1.5">
                           <label className="text-[9px] uppercase tracking-widest text-[#6b5e52] font-bold ml-1">City</label>
-                          <input 
-                            name="city" 
-                            placeholder="City" 
-                            value={form.city} 
-                            onChange={handleChange} 
-                            required 
-                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]" 
+                          <input
+                            name="city"
+                            placeholder="City"
+                            value={form.city}
+                            onChange={handleChange}
+                            required
+                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]"
                           />
                         </div>
                         <div className="space-y-1.5">
                           <label className="text-[9px] uppercase tracking-widest text-[#6b5e52] font-bold ml-1">State</label>
-                          <input 
-                            name="state" 
-                            placeholder="State" 
-                            value={form.state} 
-                            onChange={handleChange} 
-                            required 
-                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]" 
+                          <input
+                            name="state"
+                            placeholder="State"
+                            value={form.state}
+                            onChange={handleChange}
+                            required
+                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]"
                           />
                         </div>
                         <div className="space-y-1.5">
                           <label className="text-[9px] uppercase tracking-widest text-[#6b5e52] font-bold ml-1">Postal</label>
-                          <input 
-                            name="postalCode" 
-                            placeholder="00000" 
-                            value={form.postalCode} 
-                            onChange={handleChange} 
-                            required 
-                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]" 
+                          <input
+                            name="postalCode"
+                            placeholder="00000"
+                            value={form.postalCode}
+                            onChange={handleChange}
+                            required
+                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]"
                           />
                         </div>
                         <div className="space-y-1.5">
                           <label className="text-[9px] uppercase tracking-widest text-[#6b5e52] font-bold ml-1">Country</label>
-                          <input 
-                            name="country" 
-                            placeholder="Country" 
-                            value={form.country} 
-                            onChange={handleChange} 
-                            required 
-                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]" 
+                          <input
+                            name="country"
+                            placeholder="Country"
+                            value={form.country}
+                            onChange={handleChange}
+                            required
+                            className="w-full h-11 px-4 rounded-lg bg-white border border-[#d4c5b5] outline-none font-medium text-xs focus:border-[#C8A951] focus:ring-2 focus:ring-[#C8A951]/20 placeholder:text-[#b5a99d]"
                           />
                         </div>
                       </div>
@@ -559,11 +559,10 @@ export default function BecomePartnerPage() {
                             key={cat.id}
                             type="button"
                             onClick={() => handleCategoryToggle(cat.id)}
-                            className={`px-5 py-2 rounded-lg text-xs font-medium tracking-wide transition-all border ${
-                              form.categoryIds.includes(cat.id)
-                                ? "bg-[#C8A951] text-[#1C1C1C] border-[#C8A951] shadow-md"
-                                : "bg-white text-[#5a4e43] border-[#d4c5b5] hover:border-[#C8A951]"
-                            }`}
+                            className={`px-5 py-2 rounded-lg text-xs font-medium tracking-wide transition-all border ${form.categoryIds.includes(cat.id)
+                              ? "bg-[#C8A951] text-[#1C1C1C] border-[#C8A951] shadow-md"
+                              : "bg-white text-[#5a4e43] border-[#d4c5b5] hover:border-[#C8A951]"
+                              }`}
                           >
                             {cat.name}
                           </button>
@@ -575,12 +574,12 @@ export default function BecomePartnerPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="group relative w-full h-14 bg-[#1C1C1C] text-[#C8A951] rounded-lg font-bold overflow-hidden transition-all hover:shadow-2xl active:scale-[0.98] disabled:opacity-70 mt-8"
+                    className="group relative w-full h-12 sm:h-14 bg-[#1C1C1C] text-[#C8A951] rounded-lg font-bold overflow-hidden transition-all hover:shadow-2xl active:scale-[0.98] disabled:opacity-70 mt-4 sm:mt-8"
                   >
                     <div className="absolute inset-0 bg-[#2a2a2a] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                     <div className="relative z-10 flex items-center justify-center gap-3">
-                      {loading ? <Loader2 size={18} className="animate-spin" /> : <CheckCircle2 size={18} />}
-                      <span className="text-sm tracking-widest uppercase">
+                      {loading ? <Loader2 size={16} className="animate-spin sm:w-[18px] sm:h-[18px]" /> : <CheckCircle2 size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                      <span className="text-[10px] sm:text-sm tracking-widest uppercase">
                         {loading ? "Submitting..." : "Send Application"}
                       </span>
                     </div>

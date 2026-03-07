@@ -1,172 +1,383 @@
-// import React from 'react';
-
-// const MarketingSection = () => {
-//     return (
-//         <section className="py-16 md:py-20 px-4 sm:px-6 max-w-[1240px] mx-auto border-t border-[#3c1432]/5">
-//             <div className="grid md:grid-cols-2 gap-12 items-center">
-//                 <div className="order-2 md:order-1 bg-white rounded-2xl p-8 h-[300px] flex items-center justify-center border border-[#3c1432]/5">
-//                     <div className="text-center">
-//                         <span className="text-6xl block mb-4">💬📧</span>
-//                         <span className="text-xl font-medium text-[#3c1432]">Smart Marketing</span>
-//                     </div>
-//                 </div>
-
-//                 <div className="order-1 md:order-2">
-//                     <h2 className="text-3xl md:text-4xl font-bold text-[#1e0a18] font-[Cormorant_Garamond] mb-4">
-//                         Stay in touch with <span className="italic text-[#7a2860]">smart</span> campaigns
-//                     </h2>
-//                     <p className="text-base text-[#3c1432]/70 mb-6">
-//                         Engage clients effortlessly. Automate messaging to reduce no-shows, keep promotions active, and boost retention.
-//                     </p>
-//                     <ul className="space-y-3">
-//                         {['Exquisite customizable message templates', 'Advanced precision client targeting', 'Automated reminders & post-visit follow-ups'].map((item, i) => (
-//                             <li key={i} className="flex items-center gap-3 text-sm">
-//                                 <div className="w-5 h-5 rounded-full bg-plum/10 flex items-center justify-center text-[#7a2860] shrink-0">
-//                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-//                                 </div>
-//                                 {item}
-//                             </li>
-//                         ))}
-//                     </ul>
-//                 </div>
-//             </div>
-//         </section>
-//     );
-// };
-
-// export default MarketingSection;
-
 import React from 'react';
+import { motion } from 'framer-motion';
+import { HiOutlineMail, HiOutlineUserGroup, HiOutlineBell } from 'react-icons/hi';
+import { BsMegaphone, BsChatDots, BsGift, BsGraphUp } from 'react-icons/bs';
+import { FiCheckCircle } from 'react-icons/fi';
 
 const MarketingSection = () => {
     const points = [
-        { label: 'Exquisite customizable message templates', icon: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6' },
-        { label: 'Advanced precision client targeting', icon: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M23 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75' },
-        { label: 'Automated reminders & post-visit follow-ups', icon: 'M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 01-3.46 0' },
+        {
+            label: 'Exquisite customizable message templates',
+            icon: <BsMegaphone size={16} />,
+            color: '#c4956a',
+            description: 'Create beautiful campaigns in minutes'
+        },
+        {
+            label: 'Advanced precision client targeting',
+            icon: <HiOutlineUserGroup size={16} />,
+            color: '#7a2860',
+            description: 'Reach the right clients at the right time'
+        },
+        {
+            label: 'Automated reminders & post-visit follow-ups',
+            icon: <HiOutlineBell size={16} />,
+            color: '#c4956a',
+            description: 'Reduce no-shows by up to 40% automatically'
+        },
     ];
 
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.2,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                ease: [0.25, 0.1, 0.25, 1],
+            },
+        },
+    };
+
     return (
-        <section style={{ padding: '72px 24px', maxWidth: 1200, margin: '0 auto' }}>
+        <section style={{
+            padding: '40px 24px',
+            maxWidth: 1200,
+            margin: '0 auto',
+            position: 'relative',
+        }}>
+            {/* Background decoration */}
             <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                gap: 48,
-                alignItems: 'center',
-            }}>
+                position: 'absolute',
+                top: '20%',
+                right: '10%',
+                width: '400px',
+                height: '400px',
+                background: 'radial-gradient(circle, rgba(196,149,106,0.03) 0%, transparent 70%)',
+                pointerEvents: 'none',
+                zIndex: 0,
+            }} />
 
-                {/* Visual Card */}
-                <div style={{
-                    borderRadius: 24,
-                    border: '1px solid rgba(60,20,50,0.08)',
-                    background: 'linear-gradient(135deg, rgba(196,149,106,0.05) 0%, rgba(122,40,96,0.04) 100%)',
-                    padding: 40,
-                    minHeight: 340,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 20,
+            <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={containerVariants}
+                style={{
                     position: 'relative',
-                    overflow: 'hidden',
-                }}>
-                    {/* Decorative circles */}
-                    <div style={{
-                        position: 'absolute', top: -40, right: -40,
-                        width: 180, height: 180,
-                        borderRadius: '50%',
-                        border: '1px solid rgba(196,149,106,0.12)',
-                    }} />
-                    <div style={{
-                        position: 'absolute', bottom: -30, left: -30,
-                        width: 130, height: 130,
-                        borderRadius: '50%',
-                        border: '1px solid rgba(122,40,96,0.08)',
-                    }} />
-
-                    {/* Mock notification cards */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%', maxWidth: 280, position: 'relative' }}>
-                        {[
-                            { icon: '📩', title: 'Reminder sent', sub: 'Your appointment is tomorrow at 3pm', time: 'Just now' },
-                            { icon: '⭐', title: 'Review request', sub: 'How was your experience today?', time: '2 min ago' },
-                            { icon: '🎁', title: 'Promo blast', sub: '20% off this weekend — 48 clients reached', time: '1 hr ago' },
-                        ].map((notif, i) => (
-                            <div key={i} style={{
-                                display: 'flex', alignItems: 'flex-start', gap: 12,
-                                padding: '12px 14px',
-                                borderRadius: 12,
-                                background: '#fff',
-                                border: '1px solid rgba(196,149,106,0.12)',
-                                boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
-                                opacity: 1 - i * 0.08,
-                                transform: `scale(${1 - i * 0.02})`,
-                            }}>
-                                <span style={{ fontSize: 20, flexShrink: 0 }}>{notif.icon}</span>
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
-                                        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#1e0a18' }}>{notif.title}</span>
-                                        <span style={{ fontSize: '0.62rem', color: 'rgba(60,20,50,0.35)', flexShrink: 0 }}>{notif.time}</span>
-                                    </div>
-                                    <div style={{ fontSize: '0.72rem', color: 'rgba(60,20,50,0.55)', marginTop: 2, lineHeight: 1.4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                        {notif.sub}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Content */}
-                <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
-                        <div style={{ width: 28, height: 1, background: 'rgba(196,149,106,0.5)' }} />
-                        <span style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#c4956a' }}>
-                            Smart Campaigns
+                    zIndex: 2,
+                }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-[60px] items-center relative z-[2]"
+            >
+                {/* Content - Left Side */}
+                <motion.div variants={itemVariants}>
+                    {/* Badge */}
+                    <motion.div
+                        variants={itemVariants}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 10,
+                            marginBottom: 24,
+                            background: 'rgba(122,40,96,0.03)',
+                            padding: '6px 14px 6px 8px',
+                            borderRadius: 100,
+                            border: '1px solid rgba(196,149,106,0.15)',
+                        }}
+                    >
+                        <motion.div
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ type: "spring", stiffness: 500, damping: 15, delay: 0.3 }}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                borderRadius: 8,
+                                background: 'linear-gradient(135deg, #c4956a, #7a2860)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'white',
+                            }}
+                        >
+                            <BsChatDots size={14} />
+                        </motion.div>
+                        <span style={{
+                            fontSize: '0.7rem',
+                            fontWeight: 600,
+                            letterSpacing: '0.1em',
+                            textTransform: 'uppercase',
+                            color: '#7a2860',
+                        }}>
+                            Marketing Automation
                         </span>
-                    </div>
+                    </motion.div>
 
-                    <h2 style={{
-                        fontFamily: "'Cormorant Garamond', serif",
-                        fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-                        fontWeight: 700,
-                        color: '#1e0a18',
-                        lineHeight: 1.15,
-                        letterSpacing: '-0.02em',
-                        marginBottom: 16,
-                    }}>
+                    {/* Headline */}
+                    <motion.h2
+                        variants={itemVariants}
+                        style={{
+                            fontFamily: "'Cormorant Garamond', serif",
+                            fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+                            fontWeight: 600,
+                            color: '#1e0a18',
+                            lineHeight: 1.1,
+                            letterSpacing: '-0.02em',
+                            marginBottom: 20,
+                        }}
+                    >
                         Stay in touch with{' '}
-                        <span style={{ color: '#7a2860', fontStyle: 'italic' }}>smart</span>{' '}
+                        <motion.span
+                            initial={{ opacity: 0, x: -10 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                            style={{
+                                color: '#7a2860',
+                                fontStyle: 'italic',
+                                position: 'relative',
+                                display: 'inline-block',
+                            }}
+                        >
+                            smart
+                            <motion.div
+                                initial={{ width: 0 }}
+                                whileInView={{ width: '100%' }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: 0.8 }}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 4,
+                                    left: 0,
+                                    height: 6,
+                                    background: 'rgba(196,149,106,0.15)',
+                                    borderRadius: 3,
+                                    zIndex: -1,
+                                }}
+                            />
+                        </motion.span>{' '}
                         campaigns
-                    </h2>
+                    </motion.h2>
 
-                    <p style={{
-                        fontSize: '0.93rem',
-                        color: 'rgba(60,20,50,0.62)',
-                        lineHeight: 1.7,
-                        marginBottom: 28,
-                    }}>
-                        Engage clients effortlessly. Automate messaging to reduce no-shows, keep promotions active, and boost retention.
-                    </p>
+                    {/* Description */}
+                    <motion.p
+                        variants={itemVariants}
+                        style={{
+                            fontSize: '1rem',
+                            color: 'rgba(60,20,50,0.6)',
+                            lineHeight: 1.7,
+                            marginBottom: 36,
+                            maxWidth: 480,
+                        }}
+                    >
+                        Engage clients effortlessly with personalized messaging that feels human, not automated. Build lasting relationships and watch your retention soar.
+                    </motion.p>
 
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {/* Feature List */}
+                    <motion.div
+                        variants={containerVariants}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 24,
+                            marginBottom: 32,
+                        }}
+                    >
                         {points.map((item, i) => (
-                            <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                <div style={{
-                                    width: 28, height: 28, borderRadius: 8, flexShrink: 0,
-                                    background: 'linear-gradient(135deg, rgba(196,149,106,0.15), rgba(122,40,96,0.08))',
-                                    border: '1px solid rgba(196,149,106,0.2)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: '#c4956a',
-                                }}>
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                        <polyline points="20 6 9 17 4 12" />
-                                    </svg>
+                            <motion.div
+                                key={i}
+                                variants={itemVariants}
+                                whileHover={{ x: 5 }}
+                                transition={{ duration: 0.2 }}
+                                style={{
+                                    display: 'flex',
+                                    gap: 16,
+                                }}
+                            >
+                                <motion.div
+                                    whileHover={{ scale: 1.1, rotate: 5 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{
+                                        width: 44,
+                                        height: 44,
+                                        borderRadius: 14,
+                                        background: `linear-gradient(135deg, ${item.color}12, ${item.color}05)`,
+                                        border: `1px solid ${item.color}25`,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: item.color,
+                                        flexShrink: 0,
+                                        boxShadow: `0 6px 12px -8px ${item.color}`,
+                                    }}
+                                >
+                                    {item.icon}
+                                </motion.div>
+                                <div>
+                                    <span style={{
+                                        fontSize: '1rem',
+                                        color: '#1e0a18',
+                                        fontWeight: 600,
+                                        letterSpacing: '-0.01em',
+                                        display: 'block',
+                                        marginBottom: 4,
+                                    }}>
+                                        {item.label}
+                                    </span>
+                                    <span style={{
+                                        fontSize: '0.85rem',
+                                        color: 'rgba(60,20,50,0.5)',
+                                        lineHeight: 1.5,
+                                    }}>
+                                        {item.description}
+                                    </span>
                                 </div>
-                                <span style={{ fontSize: '0.86rem', color: '#3c1432', fontWeight: 500 }}>{item.label}</span>
-                            </li>
+                            </motion.div>
                         ))}
-                    </ul>
-                </div>
-            </div>
+                    </motion.div>
+
+                </motion.div>
+
+                {/* Image - Right Side */}
+                <motion.div
+                    variants={itemVariants}
+                    style={{
+                        position: 'relative',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
+                    {/* Decorative elements */}
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.3 }}
+                        style={{
+                            position: 'absolute',
+                            top: -20,
+                            right: -20,
+                            width: 300,
+                            height: 300,
+                            borderRadius: '50%',
+                            background: 'radial-gradient(circle, rgba(196,149,106,0.08) 0%, transparent 70%)',
+                            zIndex: 0,
+                        }}
+                    />
+                    <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.5 }}
+                        style={{
+                            position: 'absolute',
+                            bottom: -20,
+                            left: -20,
+                            width: 250,
+                            height: 250,
+                            borderRadius: '50%',
+                            background: 'radial-gradient(circle, rgba(122,40,96,0.06) 0%, transparent 70%)',
+                            zIndex: 0,
+                        }}
+                    />
+
+                    {/* Main Image Card */}
+                    <motion.div
+                        whileHover={{ y: -8 }}
+                        transition={{ duration: 0.3 }}
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            maxWidth: 480,
+                            borderRadius: 32,
+                            overflow: 'hidden',
+                            boxShadow: '0 30px 60px -20px rgba(122,40,96,0.3), 0 0 0 1px rgba(196,149,106,0.15)',
+                            zIndex: 2,
+                        }}
+                    >
+                        <motion.div
+                            whileHover={{ scale: 1.03 }}
+                            transition={{ duration: 0.4 }}
+                            style={{
+                                borderRadius: 32,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <img
+                                src="https://placehold.co/600x400/7a2860/c4956a?text=Marketing+Dashboard&font=montserrat"
+                                alt="Marketing Campaign Dashboard"
+                                style={{
+                                    width: '100%',
+                                    height: 'auto',
+                                    display: 'block',
+                                }}
+                            />
+                        </motion.div>
+
+                        {/* Gradient Overlay */}
+                        <div style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: '40%',
+                            background: 'linear-gradient(to top, rgba(0,0,0,0.02), transparent)',
+                            pointerEvents: 'none',
+                        }} />
+                    </motion.div>
+
+                    {/* Auto-Pilot Status Overlay - Centered below image */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
+                        style={{
+                            background: '#1e0a18',
+                            borderRadius: 100,
+                            padding: '12px 24px',
+                            boxShadow: '0 20px 40px -10px rgba(30,10,24,0.4)',
+                            zIndex: 4,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 12,
+                            border: '1px solid rgba(196,149,106,0.3)',
+                            marginTop: 24,
+                        }}
+                    >
+                        <div style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            background: '#c4956a',
+                            boxShadow: '0 0 12px #c4956a',
+                        }} />
+                        <span style={{
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            color: 'white',
+                            letterSpacing: '0.08em',
+                            textTransform: 'uppercase'
+                        }}>
+                            Auto-Pilot Active
+                        </span>
+                    </motion.div>
+                </motion.div>
+            </motion.div>
         </section>
     );
 };

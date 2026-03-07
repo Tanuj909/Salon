@@ -229,7 +229,7 @@ function CategoryRow({ category, lat, lng }) {
       {/* Horizontal scroll row */}
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto pb-3 scroll-smooth"
+        className="flex gap-4 overflow-x-auto pb-4 scroll-smooth px-2 -mx-2"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {loading
@@ -269,7 +269,7 @@ export default function Categories() {
 
   return (
     <section className="w-full bg-plum/5 py-10 relative font-['Georgia',serif]">
-      <div className="max-w-[1280px] mx-auto px-12">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
         {/* ── Section header ── */}
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">

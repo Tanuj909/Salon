@@ -117,24 +117,18 @@ const ClientReviews = () => {
     >
       <div className="max-w-[1240px] mx-auto px-4 md:px-12">
 
-        {/* Header - Fixed alignment */}
-        <div className="text-center mb-14">
-          <p className="text-[#9b5876] text-[0.75rem] tracking-[0.22em] uppercase mb-3 font-bold">
-            Testimonials
-          </p>
-          <h2 className="text-[clamp(1.9rem,3.5vw,2.8rem)] font-extrabold text-[#3c1432] leading-[1.15]">
-            What Our Clients Say
-          </h2>
-          <div
-            className="w-16 h-[3px] mx-auto mt-4 mb-5 rounded-sm"
-            style={{ background: 'linear-gradient(90deg, #9b5876, #3c1432)' }}
-          />
-          <div className='flex items-center justify-center'>
-            <p className="text-[rgba(60,20,50,0.58)] max-w-[500px] mx-auto text-[0.93rem] leading-[1.65]">
-              Don't just take our word for it — hear from our wonderful clients about their experiences
-            </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2 md:mb-3">
+              <span className="w-6 h-px inline-block bg-[#D4A373]" />
+              <span className="text-[0.65rem] md:text-[0.7rem] font-bold tracking-[0.15em] uppercase text-[#D4A373]">
+                Client Testimonials
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-5xl font-extrabold text-[#3c1432] leading-tight">
+              Words From Our <span className="italic font-normal text-[#D4A373]">Guests</span>
+            </h2>
           </div>
-
         </div>
 
         {/* Carousel row */}
@@ -143,12 +137,12 @@ const ClientReviews = () => {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Prev button */}
+          {/* Prev button - Hidden on mobile */}
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
             aria-label="Previous"
-            className="w-12 h-12 rounded-full shrink-0 flex items-center justify-center border border-[rgba(155,88,118,0.28)] bg-white cursor-pointer transition-all duration-200 hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08] disabled:opacity-[0.28] disabled:cursor-not-allowed group"
+            className="hidden md:flex w-12 h-12 rounded-full shrink-0 items-center justify-center border border-[rgba(155,88,118,0.28)] bg-white cursor-pointer transition-all duration-200 hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08] disabled:opacity-[0.28] disabled:cursor-not-allowed group"
           >
             <svg
               className="transition-colors duration-200 group-hover:[stroke:#fff] group-disabled:[stroke:#3c1432]"
@@ -177,12 +171,12 @@ const ClientReviews = () => {
                     flex: `0 0 calc(100% / ${visibleCards} - ${((visibleCards - 1) * GAP) / visibleCards}px)`,
                   }}
                 >
-                  {/* Card - Removed shadows and hover effects */}
-                  <div className="bg-white rounded-3xl px-[30px] pt-9 pb-[30px] border border-[rgba(155,88,118,0.12)]">
+                  {/* Card - Optimized for narrow mobile */}
+                  <div className="bg-white rounded-2xl px-5 md:px-[30px] pt-7 md:pt-9 pb-6 md:pb-[30px] border border-[rgba(155,88,118,0.12)]">
 
                     {/* Quote icon */}
-                    <div className="mb-[18px] text-[rgba(155,88,118,0.15)]">
-                      <svg width={34} height={34} fill="currentColor" viewBox="0 0 24 24">
+                    <div className="mb-4 text-[rgba(155,88,118,0.15)]">
+                      <svg width={28} height={28} fill="currentColor" viewBox="0 0 24 24">
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                       </svg>
                     </div>
@@ -204,22 +198,25 @@ const ClientReviews = () => {
                       "{review.text}"
                     </p>
 
-                    {/* Footer */}
-                    <div className="border-t border-[rgba(155,88,118,0.1)] pt-5 mt-auto flex items-center gap-3">
+                    {/* Footer - Improved for narrow mobile */}
+                    <div className="border-t border-[rgba(155,88,118,0.1)] pt-5 mt-auto flex items-start gap-3">
                       <img
                         src={review.image}
                         alt={review.name}
-                        className="w-[46px] h-[46px] rounded-full object-cover border-2 border-[rgba(155,88,118,0.22)] shrink-0"
+                        className="w-10 h-10 md:w-[46px] md:h-[46px] rounded-full object-cover border-2 border-[rgba(155,88,118,0.22)] shrink-0"
                       />
-                      <div className="min-w-0">
-                        <p className="m-0 font-bold text-[#3c1432] text-[0.875rem] whitespace-nowrap overflow-hidden text-ellipsis">
+                      <div className="min-w-0 flex-1">
+                        <p className="m-0 font-bold text-[#3c1432] text-[0.8rem] md:text-[0.875rem] leading-tight mb-1 truncate">
                           {review.name}
                         </p>
-                        <p className="mt-0.5 mb-0 text-[#9b5876] text-[0.75rem]">
+                        <p className="m-0 text-[#9b5876] text-[0.7rem] md:text-[0.75rem] leading-tight">
                           {review.role}
                         </p>
+                        <span className="block mt-2 text-[0.65rem] md:hidden text-[rgba(60,20,50,0.35)]">
+                          {review.date}
+                        </span>
                       </div>
-                      <span className="ml-auto text-[0.7rem] text-[rgba(60,20,50,0.35)] shrink-0">
+                      <span className="hidden md:block ml-auto text-[0.7rem] text-[rgba(60,20,50,0.35)] shrink-0">
                         {review.date}
                       </span>
                     </div>
@@ -230,12 +227,12 @@ const ClientReviews = () => {
             </div>
           </div>
 
-          {/* Next button */}
+          {/* Next button - Hidden on mobile */}
           <button
             onClick={handleNext}
             disabled={currentIndex === maxIndex}
             aria-label="Next"
-            className="w-12 h-12 rounded-full shrink-0 flex items-center justify-center border border-[rgba(155,88,118,0.28)] bg-white cursor-pointer transition-all duration-200 hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08] disabled:opacity-[0.28] disabled:cursor-not-allowed group"
+            className="hidden md:flex w-12 h-12 rounded-full shrink-0 items-center justify-center border border-[rgba(155,88,118,0.28)] bg-white cursor-pointer transition-all duration-200 hover:not-disabled:bg-[#3c1432] hover:not-disabled:border-[#3c1432] hover:not-disabled:scale-[1.08] disabled:opacity-[0.28] disabled:cursor-not-allowed group"
           >
             <svg
               className="transition-colors duration-200 group-hover:[stroke:#fff] group-disabled:[stroke:#3c1432]"
