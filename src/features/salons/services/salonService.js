@@ -53,3 +53,10 @@ export const getSalonServices = async (id) => {
   );
   return response.data;
 };
+
+export const fetchStaffSlots = async (staffId, startDate, endDate) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SLOTS.BY_STAFF(staffId, startDate, endDate)
+  );
+  return response.data;
+};

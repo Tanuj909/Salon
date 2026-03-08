@@ -6,6 +6,7 @@ import { useCreateBooking } from "../../profile/hooks/useCreateBooking";
 import { useSalonServices } from "../hooks/useSalonServices";
 import { useSalonStaff } from "../hooks/useSalonStaff";
 import { useSalonTimings } from "../hooks/useSalonTimings";
+import { useStaffSlots } from "../hooks/useStaffSlots";
 
 const PAYMENT_METHODS = [
     { value: "Cash", label: "CASH", icon: "💶" },
@@ -17,6 +18,14 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const { staff, loading: staffLoading } = useSalonStaff({ id: salonId });
     const { timings, loading: timingsLoading } = useSalonTimings({ id: salonId });
 
+    // Date calculations for 4-day window
+    const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
+    const endDateStr = useMemo(() => {
+        const d = new Date();
+        d.setDate(d.getDate() + 3);
+        return d.toISOString().split("T")[0];
+    }, []);
+
     // Form state
     const [selectedServices, setSelectedServices] = useState([]);
     const [selectedStaff, setSelectedStaff] = useState(null);
@@ -25,6 +34,14 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const [paymentMethod, setPaymentMethod] = useState("UPI");
     const [customerNotes, setCustomerNotes] = useState("");
     const [step, setStep] = useState(1); // 1: Services, 2: Staff & Time, 3: Review
+    const [activeDate, setActiveDate] = useState(todayStr);
+
+    // Slots fetching
+    const { slots: staffSlots, loading: slotsLoading, error: slotsError } = useStaffSlots({
+        staffId: selectedStaff?.id,
+        startDate: todayStr,
+        endDate: endDateStr
+    });
 
     // Reset form when modal opens
     useEffect(() => {
@@ -41,9 +58,10 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
             setStartTime("");
             setPaymentMethod("UPI");
             setCustomerNotes("");
+            setActiveDate(todayStr);
             reset();
         }
-    }, [isOpen, reset, preSelectedService]);
+    }, [isOpen, reset, preSelectedService, todayStr]);
 
     // Close on escape
     useEffect(() => {
@@ -64,15 +82,19 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
         return () => { document.body.style.overflow = ""; };
     }, [isOpen]);
 
+    // Reset active date when staff changes
+    useEffect(() => {
+        if (selectedStaff) {
+            setActiveDate(todayStr);
+        }
+    }, [selectedStaff, todayStr]);
+
     // Calculate totals
     const totals = useMemo(() => {
         const total = selectedServices.reduce((sum, s) => sum + (s.effectivePrice || s.price || 0), 0);
         const duration = selectedServices.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
         return { total, duration };
     }, [selectedServices]);
-
-    // Min date = today
-    const minDate = new Date().toISOString().split("T")[0];
 
     const toggleService = (service) => {
         setSelectedServices((prev) => {
@@ -85,58 +107,49 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const canProceedStep1 = selectedServices.length > 0;
 
     // --- Timings Validation ---
-    const getSelectedDayLabel = () => {
-        if (!bookingDate) return null;
-        const d = new Date(bookingDate + "T00:00:00");
+    const getSelectedDayLabel = (dateStr) => {
+        if (!dateStr) return null;
+        const d = new Date(dateStr + "T00:00:00");
         return d.toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
     };
 
     const isDateValid = useMemo(() => {
-        if (!bookingDate || !timings || timings.length === 0) return true; // optimistic if no timings
-        const dayLabel = getSelectedDayLabel();
+        if (!activeDate || !timings || timings.length === 0) return true;
+        const dayLabel = getSelectedDayLabel(activeDate);
         const dayData = timings.find((t) => t.dayOfWeek === dayLabel);
         return dayData ? !dayData.isClosed : true;
-    }, [bookingDate, timings]);
-
-    const isTimeValid = useMemo(() => {
-        if (!bookingDate || !startTime || !timings || timings.length === 0) return true;
-        const dayLabel = getSelectedDayLabel();
-        const dayData = timings.find((t) => t.dayOfWeek === dayLabel);
-
-        if (!dayData || dayData.isClosed) return false;
-        if (!dayData.openTime || !dayData.closeTime) return true;
-
-        // Simple string comparison for time HH:mm
-        return startTime >= dayData.openTime && startTime <= dayData.closeTime;
-    }, [bookingDate, startTime, timings]);
+    }, [activeDate, timings]);
 
     const availableTimeSlots = useMemo(() => {
-        if (!bookingDate || !timings || timings.length === 0) return [];
-        const dayLabel = getSelectedDayLabel();
-        const dayData = timings.find((t) => t.dayOfWeek === dayLabel);
+        if (!selectedStaff || !staffSlots) return [];
+        // Group slots by date
+        const grouped = staffSlots.reduce((acc, slot) => {
+            if (!acc[slot.date]) acc[slot.date] = [];
+            acc[slot.date].push({
+                time: slot.startTime.substring(0, 5),
+                status: slot.status,
+                id: slot.id
+            });
+            return acc;
+        }, {});
+        return grouped[activeDate] || [];
+    }, [selectedStaff, staffSlots, activeDate]);
 
-        if (!dayData || dayData.isClosed || !dayData.openTime || !dayData.closeTime) return [];
-
-        const slots = [];
-        const [openH, openM] = dayData.openTime.split(':').map(Number);
-        const [closeH, closeM] = dayData.closeTime.split(':').map(Number);
-
-        let current = new Date();
-        current.setHours(openH, openM, 0, 0);
-
-        const end = new Date();
-        end.setHours(closeH, closeM, 0, 0);
-
-        while (current <= end) {
-            const h = current.getHours().toString().padStart(2, '0');
-            const m = current.getMinutes().toString().padStart(2, '0');
-            slots.push(`${h}:${m}`);
-            current.setMinutes(current.getMinutes() + 30); // 30 min interval
+    const availableDates = useMemo(() => {
+        const dates = [];
+        for (let i = 0; i < 4; i++) {
+            const d = new Date();
+            d.setDate(d.getDate() + i);
+            const dateStr = d.toISOString().split('T')[0];
+            dates.push({
+                date: dateStr,
+                label: i === 0 ? "Today" : d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })
+            });
         }
-        return slots;
-    }, [bookingDate, timings]);
+        return dates;
+    }, []);
 
-    const canProceedStep2 = bookingDate && startTime && isDateValid && isTimeValid;
+    const canProceedStep2 = selectedStaff && bookingDate && startTime;
     const canSubmit = canProceedStep1 && canProceedStep2;
 
     const handleSubmit = async () => {
@@ -370,49 +383,58 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                 )}
                             </div>
 
-                            {/* Date Selection */}
-                            <div>
-                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C] mb-1 flex items-center gap-2">
-                                    <Calendar size={18} className="text-[#C8A951]" />
-                                    Select Date {timingsLoading && <Loader2 className="w-3 h-3 text-[#C8A951] animate-spin inline ml-2" />}
-                                </h3>
-                                <input
-                                    type="date"
-                                    value={bookingDate}
-                                    min={minDate}
-                                    onChange={(e) => {
-                                        setBookingDate(e.target.value);
-                                        setStartTime("");
-                                    }}
-                                    className={`w-full mt-3 p-4 rounded-xl border-2 focus:outline-none text-[#1C1C1C] font-medium transition-all text-sm ${bookingDate && !isDateValid ? "bg-red-50 border-red-200 focus:border-red-500" : "bg-[#F7F3EE] border-transparent focus:border-[#C8A951]"}`}
-                                />
-                                {bookingDate && !isDateValid && (
-                                    <p className="text-red-500 text-xs mt-2 flex items-center gap-1">
-                                        <AlertCircle size={12} />
-                                        The salon is closed on this day. Please select another date.
-                                    </p>
-                                )}
-                            </div>
+                            {/* Date Selection Pills */}
+                            {selectedStaff && (
+                                <div>
+                                    <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C] mb-1 flex items-center gap-2">
+                                        <Calendar size={18} className="text-[#C8A951]" />
+                                        Select Date
+                                    </h3>
+                                    <div className="flex gap-2 overflow-x-auto pb-2 mt-3 no-scrollbar">
+                                        {availableDates.map((d) => (
+                                            <button
+                                                key={d.date}
+                                                onClick={() => {
+                                                    setActiveDate(d.date);
+                                                    setStartTime("");
+                                                    setBookingDate("");
+                                                }}
+                                                className={`flex-shrink-0 px-5 py-3 rounded-xl border-2 text-[10px] font-bold uppercase tracking-wider transition-all ${activeDate === d.date ? "border-[#C8A951] bg-[#C8A951] text-white" : "border-transparent bg-[#F7F3EE] text-[#1C1C1C] hover:border-[#C8A951]/20"}`}
+                                            >
+                                                {d.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Time Selection */}
                             <div>
                                 <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1C1C1C] mb-1 flex items-center gap-2">
                                     <Clock size={18} className="text-[#C8A951]" />
-                                    Select Time
+                                    Available Times {(timingsLoading || slotsLoading) && <Loader2 className="w-3 h-3 text-[#C8A951] animate-spin inline ml-2" />}
                                 </h3>
-                                {!bookingDate ? (
-                                    <p className="text-sm text-[#9e9287] mt-3">Please select a date first to view available time slots.</p>
+                                {!selectedStaff ? (
+                                    <p className="text-sm text-[#9e9287] mt-3">Please select a stylist to view availability.</p>
+                                ) : slotsLoading ? (
+                                    <div className="flex items-center gap-3 py-4">
+                                        <Loader2 className="w-5 h-5 text-[#C8A951] animate-spin" />
+                                        <span className="text-[#9e9287] text-sm">Loading available slots...</span>
+                                    </div>
+                                ) : slotsError ? (
+                                    <p className="text-sm text-red-500 mt-3">{slotsError}</p>
                                 ) : !isDateValid ? (
                                     <p className="text-sm text-red-500 mt-3">The salon is closed on this day.</p>
                                 ) : availableTimeSlots.length === 0 ? (
                                     <p className="text-sm text-[#9e9287] mt-3">No time slots available for this date.</p>
                                 ) : (
                                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-                                        {availableTimeSlots.map((time) => {
-                                            const isSelected = startTime === time;
+                                        {availableTimeSlots.map((slot) => {
+                                            const isSelected = startTime === slot.time && bookingDate === activeDate;
+                                            const isAvailable = slot.status === "AVAILABLE";
 
                                             // Format for display (e.g. 09:00 AM)
-                                            const [h, m] = time.split(':');
+                                            const [h, m] = slot.time.split(':');
                                             const hours = parseInt(h, 10);
                                             const ampm = hours >= 12 ? 'PM' : 'AM';
                                             const displayHours = hours % 12 || 12;
@@ -420,9 +442,18 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
 
                                             return (
                                                 <button
-                                                    key={time}
-                                                    onClick={() => setStartTime(time)}
-                                                    className={`py-3 px-2 rounded-xl border-2 text-sm font-semibold transition-all ${isSelected ? "border-[#C8A951] bg-[#C8A951] text-white" : "border-transparent bg-[#F7F3EE] text-[#1C1C1C] hover:border-[#C8A951]/40"}`}
+                                                    key={slot.id}
+                                                    disabled={!isAvailable}
+                                                    onClick={() => {
+                                                        setStartTime(slot.time);
+                                                        setBookingDate(activeDate);
+                                                    }}
+                                                    className={`py-3 px-2 rounded-xl border-2 text-sm font-semibold transition-all ${isSelected
+                                                        ? "border-[#C8A951] bg-[#C8A951] text-white"
+                                                        : isAvailable
+                                                            ? "border-transparent bg-[#F7F3EE] text-[#1C1C1C] hover:border-[#C8A951]/40"
+                                                            : "border-transparent bg-[#F7F3EE]/50 text-[#9e9287] cursor-not-allowed line-through"
+                                                        }`}
                                                 >
                                                     {displayTime}
                                                 </button>

@@ -42,6 +42,10 @@ export const ENDPOINTS = {
     CANCEL: (id) => `/bookings/my/${id}/cancel`,
   },
 
+  SLOTS: {
+    BY_STAFF: (staffId, startDate, endDate) => `/slots/staff/${staffId}?startDate=${startDate}&endDate=${endDate}`,
+  },
+
   BUSINESS: {
     REGISTER: "/businesses/register",
     LIST: "/businesses",
