@@ -40,6 +40,13 @@ export const getAllSalonStaff = async (id) => {
   return response.data.body.content;
 };
 
+export const getStaffByServiceId = async (serviceId) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SALON.STAFF_BY_SERVICE(serviceId)
+  );
+  return response.data;
+};
+
 export const getStaffProfile = async (staffId) => {
   const response = await apiClient.get(
     ENDPOINTS.SALON.STAFF_PROFILE(staffId)

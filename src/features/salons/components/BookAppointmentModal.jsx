@@ -9,13 +9,17 @@ import { useSalonTimings } from "../hooks/useSalonTimings";
 import { useStaffSlots } from "../hooks/useStaffSlots";
 
 const PAYMENT_METHODS = [
-    { value: "Cash", label: "CASH", icon: "💶" },
+    { value: "CASH", label: "CASH", icon: "💶" },
 ];
 
 const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelectedService }) => {
     const { submitBooking, loading: submitting, error: submitError, success, bookingResult, reset } = useCreateBooking();
     const { services, loading: servicesLoading } = useSalonServices({ id: salonId });
-    const { staff, loading: staffLoading } = useSalonStaff({ id: salonId });
+    const [selectedServices, setSelectedServices] = useState([]);
+    const { staff, loading: staffLoading } = useSalonStaff({
+        id: salonId,
+        serviceId: selectedServices.length > 0 ? selectedServices[0].id : null
+    });
     const { timings, loading: timingsLoading } = useSalonTimings({ id: salonId });
 
     // Date calculations for 4-day window
@@ -27,7 +31,6 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     }, []);
 
     // Form state
-    const [selectedServices, setSelectedServices] = useState([]);
     const [selectedStaff, setSelectedStaff] = useState(null);
     const [bookingDate, setBookingDate] = useState("");
     const [startTime, setStartTime] = useState("");

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllSalonStaff } from "../services/salonService";
+import { getAllSalonStaff, getStaffByServiceId } from "../services/salonService";
 
-export const useSalonStaff = ({ id }) => {
+export const useSalonStaff = ({ id, serviceId }) => {
   const [staff, setStaff] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +18,12 @@ export const useSalonStaff = ({ id }) => {
       setLoading(true);
       setError(null);
       try {
-        const data = await getAllSalonStaff(id);
+        let data;
+        if (serviceId) {
+          data = await getStaffByServiceId(serviceId);
+        } else {
+          data = await getAllSalonStaff(id);
+        }
         setStaff(data);
       } catch (err) {
         console.error("Error fetching salon staff:", err?.response?.status, err?.response?.data || err.message);
@@ -29,7 +34,7 @@ export const useSalonStaff = ({ id }) => {
     };
 
     handleStaff();
-  }, [id]);
+  }, [id, serviceId]);
 
   return { staff, loading, error };
 };

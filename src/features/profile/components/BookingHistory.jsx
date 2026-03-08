@@ -52,17 +52,21 @@ const BookingHistory = ({ businessId }) => {
     const getStatusStyle = (status) => {
         if (!status) return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
         switch (status.toUpperCase()) {
-            case 'CONFIRMED':
             case 'PENDING':
+            case 'CONFIRMED':
+            case 'BROADCASTED':
                 return "bg-[#7a286010] text-[#7a2860] border-[#7a286020]";
             case 'COMPLETED':
                 return "bg-[#10b98110] text-[#10b981] border-[#10b98120]";
+            case 'CANCELLED_BY_CUSTOMER':
+            case 'CANCELLED_BY_SALON':
             case 'CANCELLED':
             case 'REJECTED':
                 return "bg-[#ef444410] text-[#ef4444] border-[#ef444420]";
             case 'NO_SHOW':
                 return "bg-[#f9731610] text-[#f97316] border-[#f9731620]";
             case 'CHECKED_IN':
+            case 'IN_PROGRESS':
                 return "bg-[#3b82f610] text-[#3b82f6] border-[#3b82f620]";
             default:
                 return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
@@ -232,7 +236,7 @@ const BookingHistory = ({ businessId }) => {
                                 )}
                             </div>
                             <span className={`px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.15em] ${getStatusStyle(booking.status)}`}>
-                                {booking.status || 'Unknown'}
+                                {(booking.status || 'Unknown').replace(/_/g, ' ')}
                             </span>
                         </div>
 
@@ -317,13 +321,15 @@ const BookingHistory = ({ businessId }) => {
                                     </p>
                                 </div>
 
-                                <button
-                                    onClick={() => handleCancel(booking.id)}
-                                    disabled={isCanceling}
-                                    className="mt-1 px-4 py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center"
-                                >
-                                    Cancel Booking
-                                </button>
+                                {['PENDING', 'CONFIRMED'].includes(booking.status?.toUpperCase()) && (
+                                    <button
+                                        onClick={() => handleCancel(booking.id)}
+                                        disabled={isCanceling}
+                                        className="mt-1 px-4 py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center"
+                                    >
+                                        Cancel Booking
+                                    </button>
+                                )}
 
                                 {/* Write Review Button */}
                                 {booking.status?.toUpperCase() === 'COMPLETED' && (
