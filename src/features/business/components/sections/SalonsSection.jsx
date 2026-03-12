@@ -28,7 +28,7 @@ const SalonsSection = () => {
     const doubledSalons = [...salons, ...salons];
 
     return (
-        <section className="py-16 md:py-24 overflow-hidden">
+        <section className="py-8 md:py-12 overflow-hidden">
             <div className="max-w-[1240px] mx-auto px-6 mb-12 text-center">
                 <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-[#7a2860]/5 border border-[#7a2860]/10">
                     <span className="w-1 h-1 rounded-full bg-[#c4956a]" />
@@ -44,7 +44,7 @@ const SalonsSection = () => {
 
             <div className="flex relative overflow-hidden group">
                 {/* Marquee Animation Container */}
-                <motion.div 
+                <motion.div
                     className="flex gap-6 pr-6 py-4"
                     animate={{ x: [0, "-50%"] }}
                     transition={{
@@ -58,18 +58,18 @@ const SalonsSection = () => {
                     style={{ width: "fit-content" }}
                 >
                     {doubledSalons.map((salon, index) => (
-                        <div 
+                        <div
                             key={`${salon.id}-${index}`}
                             className="relative flex-shrink-0 w-[280px] md:w-[350px] aspect-[16/10] rounded-2xl overflow-hidden shadow-[0_10px_30px_-15px_rgba(30,10,24,0.15)] group/card"
                         >
-                            <img 
-                                src={salon.bannerImageUrl || (salon.imageUrls && salon.imageUrls[0]) || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=800'} 
+                            <img
+                                src={salon.bannerImageUrl || (salon.imageUrls && salon.imageUrls[0]) || 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=800'}
                                 alt={salon.name}
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
                             />
                             {/* Sophisticated Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-[#1e0a18]/90 via-[#1e0a18]/20 to-transparent opacity-80 group-hover/card:opacity-90 transition-opacity" />
-                            
+
                             <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-2 group-hover/card:translate-y-0 transition-transform">
                                 <span className="inline-block px-2 py-0.5 rounded-full bg-[#c4956a]/20 border border-[#c4956a]/30 text-[9px] text-[#c4956a] font-bold uppercase tracking-widest mb-2 backdrop-blur-sm">
                                     {salon.city || "Premium"}
@@ -81,7 +81,7 @@ const SalonsSection = () => {
                         </div>
                     ))}
                 </motion.div>
-                
+
                 {/* Side Fades for depth */}
                 <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent z-10" />
                 <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-white to-transparent z-10" />

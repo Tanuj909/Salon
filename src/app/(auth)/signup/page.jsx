@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { registerUser, sendOTP } from "@/features/auth/services/authService";
+import { useAuthContext } from "@/features/auth/providers/AuthProvider";
 
 export default function SignupPage() {
   const router = useRouter();
+  const { refreshUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
   const [step, setStep] = useState(1); // 1: Email, 2: OTP + Details
@@ -40,8 +42,9 @@ export default function SignupPage() {
 
     try {
       await registerUser(form);
+      await refreshUser();
       alert("Registration successful!");
-      router.push("/login");
+      router.push("/");
     } catch (err) {
       alert(err.response?.data?.message || "Signup failed");
     } finally {

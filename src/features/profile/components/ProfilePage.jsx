@@ -22,7 +22,7 @@ const ProfilePage = () => {
             {/* Profile Banner & Overlap Image handle internally */}
             <ProfileHeader user={customer} />
 
-            <div className="max-w-[1200px] mx-auto overflow-hidden">
+            <div className="max-w-[1200px] mx-auto">
                 {/* Personal Info & Membership Stats (2026 Refined Layout) */}
                 <PersonalInfoSection user={customer} />
 

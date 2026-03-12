@@ -17,15 +17,12 @@ import DownloadAppSection from './sections/DownloadAppSection';
  */
 const ListBusiness = () => {
     return (
-        <div className="bg-plum/5 font-[DM_Sans] text-[#3c1432] min-h-screen pt-24 md:pt-28">
+        <div className="bg-plum/5 font-[DM_Sans] text-[#3c1432] min-h-screen pt-12 md:pt-14">
             {/* ── Hero Section ── */}
             <HeroSection />
 
             {/* ── Features Section ── */}
             <FeaturesSection />
-
-            {/* ── Online Booking Section ── */}
-            {/* <OnlineBookingSection /> */}
 
             {/* ── Stats Section ── */}
             <StatsSection />
@@ -42,8 +39,6 @@ const ListBusiness = () => {
             {/* ── Business Types Section ── */}
             <BusinessTypesSection />
 
-            {/* ── Download App Section ── */}
-            <DownloadAppSection />
         </div>
     );
 };

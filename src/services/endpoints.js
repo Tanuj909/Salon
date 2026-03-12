@@ -27,6 +27,7 @@ export const ENDPOINTS = {
 
     STAFF: (id) => `/staff/business/${id}`,
     STAFF_PROFILE: (id) => `/staff/${id}`,
+    STAFF_BY_SERVICE: (serviceId) => `/staff/service/${serviceId}`,
     SERVICES: (id) => `/services/business/${id}/active`,
   },
 
@@ -40,6 +41,10 @@ export const ENDPOINTS = {
     MY_BOOKINGS: "/bookings/my",
     MY_BUSINESS: (businessId) => `/bookings/my/business/${businessId}`,
     CANCEL: (id) => `/bookings/my/${id}/cancel`,
+  },
+
+  SLOTS: {
+    BY_STAFF: (staffId, startDate, endDate) => `/slots/staff/${staffId}?startDate=${startDate}&endDate=${endDate}`,
   },
 
   BUSINESS: {

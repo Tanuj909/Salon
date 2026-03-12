@@ -14,6 +14,13 @@ export const loginUser = async (data) => {
 
 export const registerUser = async (data) => {
   const response = await publicApiClient.post(ENDPOINTS.AUTH.REGISTER, data);
+  
+  // Store token if available in response
+  const token = response.data.accessToken;
+  if (token) {
+    TokenService.setToken(token);
+  }
+
   return response.data;
 };
 

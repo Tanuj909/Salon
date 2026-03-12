@@ -9,7 +9,7 @@ const StatsSection = () => {
     ];
 
     return (
-        <section className="py-16 px-4 sm:px-6 max-w-[1240px] mx-auto">
+        <section className="py-8 px-4 sm:px-6 max-w-[1240px] mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 {stats.map((stat, index) => (
                     <div key={index}>

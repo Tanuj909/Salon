@@ -52,17 +52,21 @@ const BookingHistory = ({ businessId }) => {
     const getStatusStyle = (status) => {
         if (!status) return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
         switch (status.toUpperCase()) {
-            case 'CONFIRMED':
             case 'PENDING':
+            case 'CONFIRMED':
+            case 'BROADCASTED':
                 return "bg-[#7a286010] text-[#7a2860] border-[#7a286020]";
             case 'COMPLETED':
                 return "bg-[#10b98110] text-[#10b981] border-[#10b98120]";
+            case 'CANCELLED_BY_CUSTOMER':
+            case 'CANCELLED_BY_SALON':
             case 'CANCELLED':
             case 'REJECTED':
                 return "bg-[#ef444410] text-[#ef4444] border-[#ef444420]";
             case 'NO_SHOW':
                 return "bg-[#f9731610] text-[#f97316] border-[#f9731620]";
             case 'CHECKED_IN':
+            case 'IN_PROGRESS':
                 return "bg-[#3b82f610] text-[#3b82f6] border-[#3b82f620]";
             default:
                 return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
@@ -132,7 +136,7 @@ const BookingHistory = ({ businessId }) => {
     // Loading state
     if (loading) {
         return (
-            <div className="px-8 mt-16">
+            <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
@@ -147,7 +151,7 @@ const BookingHistory = ({ businessId }) => {
     // Error state
     if (error) {
         return (
-            <div className="px-8 mt-16">
+            <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
@@ -163,7 +167,7 @@ const BookingHistory = ({ businessId }) => {
     // Empty state
     if (!bookings || bookings.length === 0) {
         return (
-            <div className="px-8 mt-16">
+            <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
                     <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
@@ -179,11 +183,11 @@ const BookingHistory = ({ businessId }) => {
     }
 
     return (
-        <div className="px-8 mt-16">
+        <div className="px-4 sm:px-8 mt-12 sm:mt-16">
             {/* Header */}
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
                     <p className="text-[#3c143250] text-xs font-bold uppercase tracking-widest mt-1">
                         {pagination.totalElements} {pagination.totalElements === 1 ? 'Booking' : 'Bookings'} Found
                     </p>
@@ -216,7 +220,7 @@ const BookingHistory = ({ businessId }) => {
                 {bookings.map((booking) => (
                     <div
                         key={booking.id}
-                        className="bg-white p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all group"
+                        className="bg-white p-4 sm:p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all group"
                     >
                         {/* Top Row: Booking Number + Status */}
                         <div className="flex items-center justify-between mb-4">
@@ -232,7 +236,7 @@ const BookingHistory = ({ businessId }) => {
                                 )}
                             </div>
                             <span className={`px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.15em] ${getStatusStyle(booking.status)}`}>
-                                {booking.status || 'Unknown'}
+                                {(booking.status || 'Unknown').replace(/_/g, ' ')}
                             </span>
                         </div>
 
@@ -240,11 +244,11 @@ const BookingHistory = ({ businessId }) => {
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                             {/* Left: Service + Date Info */}
                             <div className="flex items-start gap-5">
-                                <div className="w-14 h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center text-[#7a2860]/40 border border-[#3c143205] shrink-0">
-                                    <Scissors size={22} strokeWidth={1.5} />
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center text-[#7a2860]/40 border border-[#3c143205] shrink-0">
+                                    <Scissors size={20} className="sm:w-[22px] sm:h-[22px]" strokeWidth={1.5} />
                                 </div>
                                 <div className="min-w-0">
-                                    <h4 className="font-bold text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond] leading-tight">
+                                    <h4 className="font-bold text-base sm:text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond] leading-tight">
                                         {getServiceNames(booking.services)}
                                     </h4>
                                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2">
@@ -317,13 +321,15 @@ const BookingHistory = ({ businessId }) => {
                                     </p>
                                 </div>
 
-                                <button
-                                    onClick={() => handleCancel(booking.id)}
-                                    disabled={isCanceling}
-                                    className="mt-1 px-4 py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center"
-                                >
-                                    Cancel Booking
-                                </button>
+                                {['PENDING', 'CONFIRMED'].includes(booking.status?.toUpperCase()) && (
+                                    <button
+                                        onClick={() => handleCancel(booking.id)}
+                                        disabled={isCanceling}
+                                        className="mt-1 px-4 py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center"
+                                    >
+                                        Cancel Booking
+                                    </button>
+                                )}
 
                                 {/* Write Review Button */}
                                 {booking.status?.toUpperCase() === 'COMPLETED' && (

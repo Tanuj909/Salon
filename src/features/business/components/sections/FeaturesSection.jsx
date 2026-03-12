@@ -1,39 +1,289 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import {
+    BsCalendarCheck,
+    BsCreditCard2Front,
+    BsBag,
+    BsMegaphone,
+    BsBoxSeam,
+    BsGraphUp
+} from 'react-icons/bs';
 
 const FeaturesSection = () => {
     const features = [
-        { emoji: '📅', title: 'Appointment scheduling', description: 'A seamless booking software with intelligent automated reminders.' },
-        { emoji: '💳', title: 'Payment processing', description: 'Secure, frictionless payments via PayPal, Stripe, and more.' },
-        { emoji: '🛒', title: 'Point of sale (POS)', description: 'Effortlessly manage transactions, barcode scanning, and digital receipts.' },
-        { emoji: '📢', title: 'Marketing promotions', description: 'Powerful curated marketing tools for targeted promotions and elite discounts.' },
-        { emoji: '📦', title: 'Product inventory', description: 'Precisely track stock levels and seamlessly manage online retail sales.' },
-        { emoji: '📊', title: 'Reporting & analytics', description: 'Analyze comprehensive performance metrics with real-time actionable insights.' },
+        {
+            icon: <BsCalendarCheck size={20} />,
+            title: 'Appointment Scheduling',
+            description: 'Seamless booking with intelligent automated reminders that reduce no-shows by up to 40%.',
+            image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        },
+        {
+            icon: <BsCreditCard2Front size={20} />,
+            title: 'Payment Processing',
+            description: 'Secure, frictionless payments via PayPal, Stripe, and more — fully integrated.',
+            image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        },
+        {
+            icon: <BsBag size={20} />,
+            title: 'Point of Sale (POS)',
+            description: 'Effortlessly manage transactions, barcode scanning, and digital receipts.',
+            image: 'https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        },
+        {
+            icon: <BsMegaphone size={20} />,
+            title: 'Marketing Promotions',
+            description: 'Powerful curated marketing tools for targeted promotions and elite discounts.',
+            image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        },
+        {
+            icon: <BsBoxSeam size={20} />,
+            title: 'Product Inventory',
+            description: 'Precisely track stock levels and seamlessly manage online retail sales.',
+            image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        },
+        {
+            icon: <BsGraphUp size={20} />,
+            title: 'Reporting & Analytics',
+            description: 'Analyze comprehensive performance metrics with real-time actionable insights.',
+            image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+        },
     ];
 
-    return (
-        <section className="py-16 md:py-20 px-4 sm:px-6 max-w-[1240px] mx-auto">
-            <div className="text-center mb-12 flex flex-col justify-center items-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-[#1e0a18] font-[Cormorant_Garamond] mb-3">
-                    A full solution to manage and <span className="italic text-[#7a2860]">grow</span> your business
-                </h2>
-                <p className="text-base text-[#3c1432]/70 max-w-2xl mx-auto">
-                    Packed with all the essential tools you need to boost sales, seamlessly manage your calendar, and retain elite clients.
-                </p>
-            </div>
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2,
+            },
+        },
+    };
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.5,
+                ease: [0.25, 0.1, 0.25, 1],
+            },
+        },
+    };
+
+    return (
+        <section style={{ padding: '20px 24px 40px', maxWidth: 1200, margin: '0 auto' }}>
+
+            {/* Section header */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+                style={{ textAlign: 'center', marginBottom: 64 }}
+            >
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 12,
+                        marginBottom: 20,
+                    }}
+                >
+                    <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: 32 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        style={{ height: 1, background: '#c4956a' }}
+                    />
+                    <span style={{
+                        fontSize: '0.7rem',
+                        fontWeight: 500,
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        color: '#7a2860',
+                    }}>
+                        Everything You Need
+                    </span>
+                    <motion.div
+                        initial={{ width: 0 }}
+                        whileInView={{ width: 32 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        style={{ height: 1, background: '#c4956a' }}
+                    />
+                </motion.div>
+
+                <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    style={{
+                        fontFamily: "'Cormorant Garamond', serif",
+                        fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+                        fontWeight: 600,
+                        color: '#1e0a18',
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.02em',
+                        marginBottom: 16,
+                    }}
+                >
+                    A full solution to manage and{' '}
+                    <motion.span
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                        style={{
+                            color: '#7a2860',
+                            fontStyle: 'italic',
+                            display: 'inline-block',
+                        }}
+                    >
+                        grow
+                    </motion.span>{' '}
+                    your business
+                </motion.h2>
+
+                <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                    style={{
+                        fontSize: '0.95rem',
+                        color: 'rgba(60,20,50,0.6)',
+                        maxWidth: 540,
+                        margin: '0 auto',
+                        lineHeight: 1.6,
+                    }}
+                >
+                    Packed with essential tools to boost sales, manage your calendar seamlessly,
+                    and retain elite clients.
+                </motion.p>
+            </motion.div>
+
+            {/* Feature grid */}
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                    gap: 28,
+                }}
+            >
                 {features.map((feature, index) => (
-                    <div key={index} className="bg-white p-6 rounded-xl border border-[#3c1432]/5 hover:shadow-lg transition-shadow">
-                        <div className="w-12 h-12 bg-plum/5 rounded-xl flex items-center justify-center text-2xl mb-4">
-                            {feature.emoji}
-                        </div>
-                        <h3 className="text-lg font-bold text-[#1e0a18] mb-2">{feature.title}</h3>
-                        <p className="text-sm text-[#3c1432]/60 leading-relaxed">
-                            {feature.description}
-                        </p>
-                    </div>
+                    <motion.div
+                        key={index}
+                        variants={itemVariants}
+                        style={{
+                            position: 'relative',
+                            borderRadius: 20,
+                            overflow: 'hidden',
+                            cursor: 'default',
+                        }}
+                    >
+                        {/* Image Container - All motion divs */}
+                        <motion.div
+                            whileHover={{ scale: 1.02 }}
+                            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                            style={{
+                                position: 'relative',
+                                height: 200,
+                                width: '100%',
+                                borderRadius: 20,
+                                overflow: 'hidden',
+                                marginBottom: 16,
+                                boxShadow: '0 10px 30px -15px rgba(0,0,0,0.1)',
+                            }}
+                        >
+                            <motion.img
+                                src={feature.image}
+                                alt={feature.title}
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    display: 'block',
+                                }}
+                            />
+
+                            {/* Icon - Inside motion div */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+                                style={{
+                                    position: 'absolute',
+                                    bottom: 16,
+                                    left: 16,
+                                    width: 42,
+                                    height: 42,
+                                    borderRadius: 12,
+                                    background: 'white',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#7a2860',
+                                    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
+                                    zIndex: 2,
+                                }}
+                            >
+                                {feature.icon}
+                            </motion.div>
+                        </motion.div>
+
+                        {/* Content */}
+                        <motion.div
+                            whileHover={{ y: -2 }}
+                            transition={{ duration: 0.3 }}
+                            style={{ padding: '0 4px' }}
+                        >
+                            <motion.h3
+                                initial={{ opacity: 0, x: -10 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+                                style={{
+                                    fontSize: '1.1rem',
+                                    fontWeight: 600,
+                                    color: '#1e0a18',
+                                    letterSpacing: '-0.01em',
+                                    marginBottom: 8,
+                                }}
+                            >
+                                {feature.title}
+                            </motion.h3>
+
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
+                                style={{
+                                    fontSize: '0.85rem',
+                                    color: 'rgba(60,20,50,0.65)',
+                                    lineHeight: 1.6,
+                                    margin: 0,
+                                }}
+                            >
+                                {feature.description}
+                            </motion.p>
+                        </motion.div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </section>
     );
 };

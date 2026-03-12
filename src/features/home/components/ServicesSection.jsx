@@ -133,14 +133,14 @@ const ServicesSection = () => {
     <section className="bg-plum/5 py-10 w-full font-['Georgia',serif]">
       <div className="px-4 md:px-6 max-w-[1300px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
-          <p className="text-[#9b5876] text-[0.8rem] tracking-[0.2em] uppercase mb-3 font-['Georgia',serif]">
+        <div className="text-center mb-8 md:mb-14">
+          <p className="text-[#9b5876] text-[0.7rem] md:text-[0.8rem] tracking-[0.2em] uppercase mb-2 md:mb-3 font-['Georgia',serif]">
             Crafted With Care
           </p>
-          <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-extrabold text-[#3c1432] m-0 leading-[1.15] font-['Georgia',serif]">
+          <h2 className="text-[clamp(1.5rem,5vw,3rem)] font-extrabold text-[#3c1432] m-0 leading-tight font-['Georgia',serif]">
             Our Premium Services
           </h2>
-          <div className="w-16 h-[3px] bg-gradient-to-r from-[#9b5876] to-[#3c1432] mx-auto mt-4 rounded-sm" />
+          <div className="w-12 md:w-16 h-[2px] md:h-[3px] bg-gradient-to-r from-[#9b5876] to-[#3c1432] mx-auto mt-3 md:mt-4 rounded-full" />
         </div>
 
         {/* Carousel */}

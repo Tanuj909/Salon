@@ -35,19 +35,6 @@ export default function RecomendedSallon() {
   const [locationDenied, setLocationDenied] = useState(false);
   const [locationStatus, setLocationStatus] = useState('idle'); // 'idle', 'getting', 'failed', 'success'
 
-  const fetchFallback = async () => {
-    try {
-      setLocationStatus('failed');
-      // Fallback to Dubai coordinates if location is denied
-      const data = await fetchNearbySalons(25.2048, 55.2708, 50);
-      setSalons(data || []);
-    } catch (error) {
-      console.error("Failed to fetch fallback salons:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const fetchSalonsWithLocation = () => {
     setLoading(true);
     setLocationStatus('getting');
@@ -55,15 +42,17 @@ export default function RecomendedSallon() {
     if (!navigator.geolocation) {
       console.warn("Geolocation not supported");
       setLocationDenied(true);
-      fetchFallback();
+      setLoading(false);
+      setLocationStatus('failed');
       return;
     }
 
     // Set a timeout for geolocation
     const timeoutId = setTimeout(() => {
-      console.warn("Geolocation timeout - using fallback");
+      console.warn("Geolocation timeout");
       setLocationDenied(true);
-      fetchFallback();
+      setLoading(false);
+      setLocationStatus('failed');
     }, 8000); // 8 second timeout
 
     navigator.geolocation.getCurrentPosition(
@@ -81,7 +70,7 @@ export default function RecomendedSallon() {
           setSalons(data || []);
         } catch (error) {
           console.error("Failed to fetch recommended salons:", error);
-          fetchFallback();
+          setLocationStatus('failed');
         } finally {
           setLoading(false);
         }
@@ -90,7 +79,8 @@ export default function RecomendedSallon() {
         clearTimeout(timeoutId);
         console.warn("Location error:", error.code, error.message);
         setLocationDenied(true);
-        fetchFallback();
+        setLocationStatus('failed');
+        setLoading(false);
       },
       {
         enableHighAccuracy: false, // Set to false for faster response
@@ -139,26 +129,26 @@ export default function RecomendedSallon() {
 
   return (
     <section className="bg-plum/5 py-10">
-      <div className="max-w-[1280px] mx-auto px-12">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
         {/* ── Section Header ── */}
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
+          <div className="max-w-[500px]">
             {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-2 md:mb-3">
               <span className="w-6 h-px inline-block bg-[#c4956a]" />
-              <span className="text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-[#c4956a] font-[DM_Sans]">
+              <span className="text-[0.65rem] md:text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-[#c4956a] font-[DM_Sans]">
                 Handpicked For You
               </span>
             </div>
 
-            <h2 className="font-bold leading-[1.1] text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.75rem,3vw,2.6rem)]">
+            <h2 className="font-bold leading-[1.1] text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.6rem,4vw,2.6rem)]">
               Recommended
               <span className="italic text-[#7a2860] ml-2">Salons</span>
             </h2>
-            <p className="text-[0.88rem] leading-[1.65] mt-2 max-w-[380px] text-[#3c143280] font-[DM_Sans]">
+            <p className="text-[0.82rem] md:text-[0.88rem] leading-relaxed mt-2 text-[#3c143280] font-[DM_Sans]">
               {locationDenied
-                ? "Showing salons in Dubai — enable location for personalized recommendations."
+                ? "Location access required to show salons near you."
                 : "Top-rated spaces loved by our community — book a session today."}
             </p>
           </div>
@@ -194,7 +184,26 @@ export default function RecomendedSallon() {
         <div className="h-px mb-10 bg-[#3c143214]" />
 
         {/* ── Cards Grid ── */}
-        {recommendedSalons.length > 0 ? (
+        {locationDenied ? (
+          <div className="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
+            <div className="w-16 h-16 bg-[#7a2860]/5 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg width={24} height={24} fill="none" stroke="#7a2860" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+            <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[300px] mx-auto mb-6">
+              Please allow location access to discover premium salons in your area.
+            </p>
+            <button
+              onClick={fetchSalonsWithLocation}
+              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all shadow-md"
+            >
+              Allow Location
+            </button>
+          </div>
+        ) : recommendedSalons.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {recommendedSalons.map((salon) => {
               const badge = salon.verificationStatus === "VERIFIED" ? "Top Rated" : null;
@@ -287,6 +296,6 @@ export default function RecomendedSallon() {
           </div>
         )}
       </div>
-    </section>
+    </section >
   );
 }

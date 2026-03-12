@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { fetchCategories, fetchNearbyByCategory } from "@/features/salons/services/salonService";
+import { useUserLocation } from "@/features/salons/hooks/useUserLocation";
 
 
 // ─── Category fallback images (keyed by name) ──────────────────────────────
@@ -228,7 +229,7 @@ function CategoryRow({ category, lat, lng }) {
       {/* Horizontal scroll row */}
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto pb-3 scroll-smooth"
+        className="flex gap-4 overflow-x-auto pb-4 scroll-smooth px-2 -mx-2"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {loading
@@ -252,21 +253,11 @@ function CategoryRow({ category, lat, lng }) {
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [loadingCats, setLoadingCats] = useState(true);
-  const [location, setLocation] = useState(null);
+  const { location, error, loading: locationLoading } = useUserLocation();
 
-  // ── Get location ────────────────────────────────────────────────────────────
-  useEffect(() => {
-    if (!navigator?.geolocation) return;
-    const timer = setTimeout(() => { }, 7000);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        clearTimeout(timer);
-        setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-      },
-      () => { clearTimeout(timer); },
-      { enableHighAccuracy: false, timeout: 7000, maximumAge: 300000 }
-    );
-  }, []);
+  const handleRetryLocation = () => {
+    window.location.reload(); // Simple way to re-trigger for now since hook uses useEffect once
+  };
 
   // ── Fetch categories ────────────────────────────────────────────────────────
   useEffect(() => {
@@ -278,7 +269,7 @@ export default function Categories() {
 
   return (
     <section className="w-full bg-plum/5 py-10 relative font-['Georgia',serif]">
-      <div className="max-w-[1280px] mx-auto px-12">
+      <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
         {/* ── Section header ── */}
         <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
@@ -314,7 +305,7 @@ export default function Categories() {
         <div className="h-px mb-10 bg-[#3c143214]" />
 
         {/* ── Category rows ── */}
-        {loadingCats ? (
+        {loadingCats || locationLoading ? (
           // skeleton for category rows
           <div className="space-y-14">
             {[1, 2].map((i) => (
@@ -332,37 +323,39 @@ export default function Categories() {
               </div>
             ))}
           </div>
+        ) : error ? (
+          // Location denied or error state
+          <div className="text-center py-16 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
+            <div className="w-16 h-16 bg-[#7a2860]/5 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg width={24} height={24} fill="none" stroke="#7a2860" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+            <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[350px] mx-auto mb-6">
+              To see salons in your area, please allow location access.
+            </p>
+            <button
+              onClick={handleRetryLocation}
+              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all"
+            >
+              Retry Location
+            </button>
+          </div>
         ) : categories.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-[#3c143260] font-[DM_Sans]">
               No categories available at the moment.
             </p>
           </div>
-        ) : !location ? (
-          // Still waiting for geolocation
-          <div className="space-y-14">
-            {[1, 2].map((i) => (
-              <div key={i} className="animate-pulse">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-[50px] h-[50px] rounded-full bg-[#f0e8ee]" />
-                  <div className="space-y-2">
-                    <div className="h-5 bg-[#f0e8ee] rounded w-36" />
-                    <div className="h-3 bg-[#f0e8ee] rounded w-52" />
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  {[1, 2, 3, 4].map((j) => <SalonCardSkeleton key={j} />)}
-                </div>
-              </div>
-            ))}
-          </div>
         ) : (
           categories.map((cat) => (
             <CategoryRow
               key={cat.id}
               category={cat}
-              lat={location.lat}
-              lng={location.lng}
+              lat={location.latitude}
+              lng={location.longitude}
             />
           ))
         )}

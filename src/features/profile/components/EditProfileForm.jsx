@@ -1,152 +1,367 @@
-import React, { useState } from 'react';
+import { Camera, Save, X, Phone, User, Mail, Calendar, MapPin, Loader2, AlertCircle, CheckCircle, Info, Home, Building2, MapPinned } from 'lucide-react';
+import { useUpdateProfile } from '../hooks/useUpdateProfile';
+import { useCustomerProfile } from '../../customer/hooks/useCustomerProfile';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Camera, Save, X, Phone, User, Mail, Calendar, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
-const EditProfileForm = ({ user }) => {
+const EditProfileForm = ({ user: initialUser }) => {
+    const { profile: fetchedProfile, loading: fetching, error: fetchError } = useCustomerProfile();
+    const { updateProfile, loading: updating, error: updateError, success, reset } = useUpdateProfile();
+    const [showToast, setShowToast] = useState(false);
+
+    // Handle Success Toast
+    useEffect(() => {
+        if (success) {
+            setShowToast(true);
+            const timer = setTimeout(() => {
+                setShowToast(false);
+                reset(); // Reset the success state in the hook
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [success, reset]);
+
     const [formData, setFormData] = useState({
-        name: user?.name || "Tanuj Kashyap",
-        email: user?.email || "tanuj@example.com",
-        phone: user?.phone || "+91 98765 43210",
-        dob: user?.dob || "1995-02-20",
-        address: user?.location || "Mumbai, India",
-        avatar: user?.avatar || null
+        fullName: "",
+        phoneNumber: "",
+        dateOfBirth: "",
+        gender: "",
+        preferences: "",
+        profileImageUrl: "",
+        defaultAddress: {
+            addressLine1: "",
+            addressLine2: "",
+            city: "",
+            state: "",
+            postalCode: "",
+            country: "India"
+        }
     });
+
+    // Sync fetched data to form
+    useEffect(() => {
+        const profile = fetchedProfile || initialUser;
+        if (profile) {
+            console.log("Profile data received:", profile); // Debug log
+
+            // Handle date formatting properly
+            let formattedDate = "";
+            if (profile.dateOfBirth) {
+                // If it's a timestamp or date string, extract YYYY-MM-DD
+                const date = new Date(profile.dateOfBirth);
+                if (!isNaN(date.getTime())) {
+                    formattedDate = date.toISOString().split('T')[0];
+                }
+            }
+
+            setFormData({
+                fullName: profile.user?.fullName || profile.fullName || "",
+                phoneNumber: profile.user?.phoneNumber || profile.phoneNumber || "",
+                dateOfBirth: formattedDate,
+                gender: profile.gender || "",
+                preferences: profile.preferences || "",
+                profileImageUrl: profile.user?.profileImageUrl || profile.profileImageUrl || "",
+                defaultAddress: {
+                    addressLine1: profile.addresses?.[0]?.addressLine1 || "",
+                    addressLine2: profile.addresses?.[0]?.addressLine2 || "",
+                    city: profile.addresses?.[0]?.city || "",
+                    state: profile.addresses?.[0]?.state || "",
+                    postalCode: profile.addresses?.[0]?.postalCode || "",
+                    country: profile.addresses?.[0]?.country || "India"
+                }
+            });
+        }
+    }, [fetchedProfile, initialUser]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        if (name.includes('.')) {
+            const [parent, child] = name.split('.');
+            setFormData(prev => ({
+                ...prev,
+                [parent]: { ...prev[parent], [child]: value }
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
     };
 
-    return (
-        <div className="container-custom py-12 px-4 max-w-4xl mx-auto">
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
-                <div className="p-8 border-b border-slate-100 flex justify-between items-center bg-background-light/50">
-                    <div>
-                        <h2 className="text-2xl font-bold text-gray-900">Edit Profile</h2>
-                        <p className="text-sm text-muted mt-1">Update your personal information and preferences.</p>
-                    </div>
-                    <Link
-                        href="/profile"
-                        className="p-2 text-muted hover:text-gray-900 hover:bg-background-light rounded-full transition-all"
-                    >
-                        <X size={24} />
-                    </Link>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await updateProfile(formData);
+    };
+
+    if (fetching) {
+        return (
+            <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+                <div className="relative">
+                    <div className="w-20 h-20 border-4 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin"></div>
                 </div>
+                <div className="text-center">
+                    <p className="text-lg font-medium text-gray-900">Loading Profile</p>
+                    <p className="text-sm text-gray-500 mt-1">Please wait while we fetch your details...</p>
+                </div>
+            </div>
+        );
+    }
 
-                <form className="p-8 space-y-10">
-                    {/* Avatar Upload */}
-                    <div className="flex flex-col items-center gap-4">
-                        <div className="relative group">
-                            <div className="w-32 h-32 rounded-full border-4 border-creamy overflow-hidden bg-background-light shadow-md">
-                                <img
-                                    src={formData.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"}
-                                    alt="Avatar Preview"
-                                    className="w-full h-full object-cover transition-opacity group-hover:opacity-75"
-                                />
+    return (
+        <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-10">
+            <div className="max-w-[1600px] mx-auto">
+                <form onSubmit={handleSubmit}>
+                    {/* Header Section */}
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-[#1C1C1C] rounded-xl flex items-center justify-center shadow-lg">
+                                <User className="w-6 h-6 text-[#C8A951]" />
                             </div>
-                            <button
-                                type="button"
-                                className="absolute bottom-1 right-1 p-2.5 bg-primary text-white rounded-full shadow-lg hover:bg-primary/90 transition-all border-2 border-white"
-                            >
-                                <Camera size={16} />
-                            </button>
-                        </div>
-                        <p className="text-xs font-bold text-muted uppercase tracking-widest">Change Profile Photo</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-muted ml-1">Full Name</label>
-                            <div className="relative">
-                                <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-background-light border border-slate-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-gray-900 font-medium"
-                                    placeholder="Enter your name"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-muted ml-1">Email Address</label>
-                            <div className="relative">
-                                <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    readOnly
-                                    className="w-full pl-12 pr-4 py-3.5 bg-background-light border border-slate-100 rounded-xl cursor-not-allowed text-muted font-medium"
-                                />
-                            </div>
-                            <p className="text-[9px] text-muted mt-1 ml-1">* Email cannot be changed</p>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-muted ml-1">Phone Number</label>
-                            <div className="relative">
-                                <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleChange}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-background-light border border-slate-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-gray-900 font-medium"
-                                    placeholder="+91 00000 00000"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-muted ml-1">Date of Birth</label>
-                            <div className="relative">
-                                <Calendar size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                                <input
-                                    type="date"
-                                    name="dob"
-                                    value={formData.dob}
-                                    onChange={handleChange}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-background-light border border-slate-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-gray-900 font-medium"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="md:col-span-2 space-y-2">
-                            <label className="text-[10px] uppercase font-bold tracking-widest text-muted ml-1">Address</label>
-                            <div className="relative">
-                                <MapPin size={18} className="absolute left-4 top-4 text-slate-300" />
-                                <textarea
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleChange}
-                                    rows={3}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-background-light border border-slate-100 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-gray-900 font-medium resize-none"
-                                    placeholder="Enter your full address"
-                                />
+                            <div>
+                                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Profile Settings</h1>
+                                <p className="text-sm text-gray-500">Manage your personal identity and salon preferences.</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                        <button
-                            type="submit"
-                            className="flex-1 flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 hover:shadow-xl transition-all"
-                        >
-                            <Save size={20} />
-                            Save Changes
-                        </button>
-                        <Link
-                            href="/profile"
-                            className="flex-1 flex items-center justify-center gap-2 bg-background-light text-muted py-4 rounded-xl font-bold hover:bg-slate-200 transition-all"
-                        >
-                            Cancel
-                        </Link>
+                    {/* Bento Grid Layout */}
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        {/* Profile & Loyalty Card (Span 4) */}
+                        <div className="lg:col-span-4 space-y-6">
+                            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm flex flex-col items-center text-center">
+                                <div className="relative group mb-6">
+                                    <div className="w-40 h-40 rounded-full ring-8 ring-gray-50 overflow-hidden bg-gray-100">
+                                        {formData.profileImageUrl ? (
+                                            <Image
+                                                src={formData.profileImageUrl}
+                                                alt="Profile"
+                                                width={160}
+                                                height={160}
+                                                className="w-full h-full object-cover"
+                                                unoptimized
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center">
+                                                <User className="w-16 h-16 text-gray-300" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const url = window.prompt("Enter image URL:", formData.profileImageUrl);
+                                            if (url !== null) setFormData(prev => ({ ...prev, profileImageUrl: url }));
+                                        }}
+                                        className="absolute bottom-1 right-1 p-3 bg-[#1C1C1C] text-[#C8A951] rounded-2xl shadow-xl hover:scale-105 transition-all border-4 border-white"
+                                    >
+                                        <Camera size={20} />
+                                    </button>
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900">{formData.fullName || "Your Name"}</h3>
+                                <p className="text-sm text-gray-500 mb-6">{fetchedProfile?.user?.email || "email@example.com"}</p>
+                                
+                                <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t border-gray-50">
+                                    <div className="p-4 bg-gray-50 rounded-2xl text-center">
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Status</p>
+                                        <p className="text-sm font-bold text-gray-900">{fetchedProfile?.membershipLevel || "BRONZE"}</p>
+                                    </div>
+                                    <div className="p-4 bg-gray-50 rounded-2xl text-center">
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Points</p>
+                                        <p className="text-sm font-bold text-gray-900">{fetchedProfile?.loyaltyPoints || 0}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-[#1C1C1C] p-8 rounded-[2.5rem] text-white relative overflow-hidden">
+                                <div className="relative z-10">
+                                    <h4 className="text-[10px] font-bold text-[#C8A951] uppercase tracking-[0.2em] mb-4">Membership Card</h4>
+                                    <div className="flex justify-between items-end">
+                                        <div>
+                                            <p className="text-2xl font-bold mb-1">{formData.fullName || "VALUED GUEST"}</p>
+                                            <p className="text-xs text-gray-400">Member since 2024</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-xs text-[#C8A951] font-bold italic">FAST BOOKING</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#C8A951]/10 rounded-full blur-3xl"></div>
+                            </div>
+                        </div>
+
+                        {/* Form Details (Span 8) */}
+                        <div className="lg:col-span-8 space-y-6">
+                            {/* Basic Details Card */}
+                            <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+                                <div className="flex items-center gap-3 mb-8">
+                                    <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+                                        <User className="w-5 h-5 text-[#C8A951]" />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-gray-900">Personal Information</h3>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                                        <div className="relative group">
+                                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <input
+                                                type="text"
+                                                name="fullName"
+                                                value={formData.fullName}
+                                                onChange={handleChange}
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold"
+                                                placeholder="Enter full name"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                        <div className="relative group">
+                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <input
+                                                type="tel"
+                                                name="phoneNumber"
+                                                value={formData.phoneNumber}
+                                                onChange={handleChange}
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold"
+                                                placeholder="+91 00000 00000"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Date of Birth</label>
+                                        <div className="relative group">
+                                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <input
+                                                type="date"
+                                                name="dateOfBirth"
+                                                value={formData.dateOfBirth}
+                                                onChange={handleChange}
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Gender</label>
+                                        <select
+                                            name="gender"
+                                            value={formData.gender}
+                                            onChange={handleChange}
+                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold appearance-none cursor-pointer"
+                                        >
+                                            <option value="">Select Gender</option>
+                                            <option value="MALE">Male</option>
+                                            <option value="FEMALE">Female</option>
+                                            <option value="OTHER">Other</option>
+                                            <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Address & Preferences Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+                                            <MapPinned className="w-5 h-5 text-[#C8A951]" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900">Address</h3>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <input
+                                            type="text"
+                                            name="defaultAddress.addressLine1"
+                                            value={formData.defaultAddress.addressLine1}
+                                            onChange={handleChange}
+                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold text-sm"
+                                            placeholder="Street Address"
+                                        />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <input
+                                                type="text"
+                                                name="defaultAddress.city"
+                                                value={formData.defaultAddress.city}
+                                                onChange={handleChange}
+                                                className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold text-sm"
+                                                placeholder="City"
+                                            />
+                                            <input
+                                                type="text"
+                                                name="defaultAddress.postalCode"
+                                                value={formData.defaultAddress.postalCode}
+                                                onChange={handleChange}
+                                                className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold text-sm"
+                                                placeholder="Pincode"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
+                                            <Info className="w-5 h-5 text-[#C8A951]" />
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900">Style Notes</h3>
+                                    </div>
+                                    <textarea
+                                        name="preferences"
+                                        value={formData.preferences}
+                                        onChange={handleChange}
+                                        rows={4}
+                                        className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold resize-none text-sm"
+                                        placeholder="Allergies or preferences..."
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Error Message */}
+                            {(updateError || fetchError) && (
+                                <div className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-600">
+                                    <AlertCircle size={18} />
+                                    <p className="text-sm font-semibold">{updateError || fetchError}</p>
+                                </div>
+                            )}
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-6">
+                                <Link
+                                    href="/profile"
+                                    className="w-full sm:w-auto px-10 py-4 text-gray-500 font-bold text-sm tracking-wide text-center hover:text-gray-900 transition-colors"
+                                >
+                                    Cancel Changes
+                                </Link>
+                                <button
+                                    type="submit"
+                                    disabled={updating}
+                                    className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-[#1C1C1C] text-white font-bold rounded-2xl shadow-xl shadow-gray-100 hover:bg-[#C8A951] hover:text-[#1C1C1C] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                                >
+                                    {updating ? <Loader2 size={20} className="animate-spin" /> : <Save size={20} />}
+                                    {updating ? "Saving Changes..." : "Save Changes"}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
+
+            {/* Success Toast */}
+            {showToast && (
+                <div className="fixed bottom-10 right-10 z-[100] px-8 py-5 bg-[#1C1C1C] text-white shadow-2xl rounded-[1.5rem] flex items-center gap-4 animate-in fade-in slide-in-from-right-8 duration-500">
+                    <div className="w-10 h-10 bg-[#C8A951] text-[#1C1C1C] rounded-full flex items-center justify-center shadow-lg">
+                        <CheckCircle size={24} />
+                    </div>
+                    <div>
+                        <p className="text-sm font-bold tracking-tight">Updated Successfully</p>
+                        <p className="text-xs text-gray-400 mt-0.5">Your profile changes are now live.</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
