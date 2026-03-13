@@ -66,10 +66,10 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-[#4b3621]/80 backdrop-blur-md animate-fadeIn" />
       <div
-        className="relative w-full max-w-xl bg-[#f7ede2] rounded-[48px] overflow-hidden shadow-2xl animate-slideUp"
+        className="relative w-full max-w-xl bg-white/95 backdrop-blur-xl rounded-[40px] overflow-hidden shadow-2xl animate-slideUp border border-white/20"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-8 right-8 z-10 w-12 h-12 rounded-full bg-white/50 hover:bg-white flex items-center justify-center text-[#5a3d2b] transition-all cursor-pointer">
+        <button onClick={onClose} className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-[#4b3621] transition-all cursor-pointer">
           <CloseIcon />
         </button>
 
@@ -81,41 +81,44 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
         )}
 
         {profile && !loading && (
-          <div className="p-12 md:p-16">
-            <div className="flex flex-col items-center text-center mb-12">
-              <div className="w-32 h-32 rounded-[32px] overflow-hidden border-4 border-white shadow-xl mb-8">
-                <img src={profile.userProfileImageUrl || `https://ui-avatars.com/api/?name=${profile.userFullName}&background=cd6133&color=fef9f3`} alt={profile.userFullName} className="w-full h-full object-cover" />
+          <div className="p-10 md:p-14">
+            <div className="flex flex-col items-center text-center mb-10">
+              <div className="relative w-28 h-28 mb-6 group">
+                <div className="absolute inset-0 bg-[#cd6133] rounded-[32px] rotate-6 scale-105 opacity-20 group-hover:rotate-12 transition-transform duration-500" />
+                <div className="relative w-full h-full rounded-[32px] overflow-hidden border-2 border-white shadow-xl">
+                  <img src={profile.userProfileImageUrl || `https://ui-avatars.com/api/?name=${profile.userFullName}&background=cd6133&color=fef9f3`} alt={profile.userFullName} className="w-full h-full object-cover" />
+                </div>
               </div>
-              <h3 className="text-4xl font-bold text-[#5a3d2b] mb-2">{profile.userFullName}</h3>
-              <span className="text-[10px] uppercase tracking-[0.4em] text-[#cd6133] font-extrabold">{profile.designation}</span>
+              <h3 className="text-3xl font-bold text-[#4b3621] mb-1">{profile.userFullName}</h3>
+              <span className="text-[9px] uppercase tracking-[0.3em] text-[#cd6133] font-bold">{profile.designation}</span>
             </div>
 
-            <div className="space-y-10">
+            <div className="space-y-8">
               {profile.bio && (
                 <div className="text-center">
-                  <p className="text-[#5a3d2b] text-lg leading-relaxed italic opacity-80">"{profile.bio}"</p>
+                  <p className="text-[#4b3621]/80 text-base leading-relaxed italic px-4">"{profile.bio}"</p>
                 </div>
               )}
 
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-4">
                 {[
                   { label: 'Rating', value: (profile.averageRating || 0).toFixed(1) },
                   { label: 'Experience', value: (profile.experienceYears || 0) + 'y' },
                   { label: 'Bookings', value: profile.totalBookings || 0 }
                 ].map((stat, i) => (
-                  <div key={i} className="bg-white/50 rounded-3xl p-6 text-center border border-[#cd6133]/5">
-                    <span className="block text-2xl font-bold text-[#5a3d2b] mb-1">{stat.value}</span>
-                    <span className="block text-[8px] uppercase tracking-widest text-[#5a3d2b]/40 font-bold">{stat.label}</span>
+                  <div key={i} className="bg-white rounded-2xl p-4 text-center border border-[#cd6133]/10 shadow-sm hover:border-[#cd6133]/20 transition-colors">
+                    <span className="block text-xl font-bold text-[#4b3621] mb-0.5">{stat.value}</span>
+                    <span className="block text-[7px] uppercase tracking-widest text-[#4b3621]/40 font-bold">{stat.label}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-[#4b3621] text-[#fef9f3] p-10 rounded-[40px] flex items-center justify-between">
+              <div className="bg-[#cd6133]/5 border border-[#cd6133]/10 p-8 rounded-[32px] flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-[9px] uppercase tracking-widest text-[#fef9f3]/40 font-bold mb-2">Availability</span>
-                  <p className="text-xl font-bold">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
+                  <span className="text-[8px] uppercase tracking-widest text-[#cd6133] font-bold mb-1.5 opacity-60">Availability</span>
+                  <p className="text-lg font-bold text-[#4b3621]">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
                 </div>
-                <div className={`px-4 py-2 rounded-full text-[9px] font-extrabold uppercase tracking-widest ${profile.isAvailable ? 'bg-[#cd6133]' : 'bg-red-500'}`}>
+                <div className={`px-4 py-1.5 rounded-full text-[8px] font-bold uppercase tracking-widest text-white shadow-lg ${profile.isAvailable ? 'bg-[#cd6133]' : 'bg-red-500'}`}>
                   {profile.isAvailable ? 'Active' : 'Busy'}
                 </div>
               </div>
@@ -188,7 +191,7 @@ const SalonStaff = ({ id }) => {
 
   if (loading) {
     return (
-      <section className="py-32 bg-[#f7ede2]">
+      <section className="py-32">
         <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center gap-6">
           <div className="w-12 h-12 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
           <p className="text-[#5a3d2b] text-[10px] font-bold uppercase tracking-widest">Gathering Excellence...</p>

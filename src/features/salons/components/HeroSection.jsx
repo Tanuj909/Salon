@@ -76,7 +76,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
             <div ref={heroRef} className="absolute inset-0">
                 {salonImg && <img src={salonImg} alt={salon.name} className="w-full h-full object-cover" />}
                 {/* Subtle dark plum gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#4b3621]/80 via-[#4b3621]/40 to-[#4b3621]/80" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#4b3621]/90 via-[#4b3621]/60 to-[#4b3621]/90" />
             </div>
 
             <div className="relative z-10 flex items-center px-5 md:px-16 lg:px-24">
@@ -123,7 +123,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                 </div>
 
                                 {/* Location & Contact */}
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 w-full">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 w-full backdrop-blur-md bg-black/20 p-5 md:p-6 rounded-3xl border border-white/10">
                                     {salon.city && (
                                         <div className="flex items-center gap-3 text-[#fef9f3]/90">
                                             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
@@ -159,7 +159,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                             {salon.categories && salon.categories.length > 0 && (
                                 <div className="flex flex-wrap gap-2 md:gap-4 mt-2 md:mt-0">
                                     {salon.categories.map((cat, i) => (
-                                        <div key={cat.id || i} className="flex items-center gap-2 md:gap-3 bg-white/5 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10">
+                                        <div key={cat.id || i} className="flex items-center gap-2 md:gap-3 bg-black/20 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10">
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#cd6133]" />
                                             <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[#fef9f3]">{cat.name}</span>
                                         </div>

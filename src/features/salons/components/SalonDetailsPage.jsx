@@ -135,15 +135,7 @@ export default function SalonDetailsPage({ id }) {
       ═══════════════════════════════════════════ */}
       <SalonStaff id={id} />
 
-      {/* ═══════════════════════════════════════════
-          REVIEWS SECTION
-      ═══════════════════════════════════════════ */}
-      <SalonReviews
-        id={id}
-        overallRating={salon.averageRating}
-        totalReviews={salon.totalReviews}
-        ratingBreakdown={salon.ratingBreakdown}
-      />
+
 
       {/* ═══════════════════════════════════════════
           LOCATION & TIMINGS SECTION (SIDE BY SIDE)
@@ -204,7 +196,19 @@ export default function SalonDetailsPage({ id }) {
             </Reveal>
           </div>
         </div>
+
+              {/* ═══════════════════════════════════════════
+          REVIEWS SECTION
+      ═══════════════════════════════════════════ */}
+      <SalonReviews
+        id={id}
+        overallRating={salon.averageRating}
+        totalReviews={salon.totalReviews}
+        ratingBreakdown={salon.ratingBreakdown}
+      />
       </section>
+
+
 
       {/* Booking Modal */}
       <BookAppointmentModal

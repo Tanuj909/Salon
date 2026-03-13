@@ -1,4 +1,5 @@
 import HeroSection from "@/features/home/components/HeroSection";
+import HomeCategories from "@/features/home/components/HomeCategories";
 import Categories from "@/features/home/components/Categories";
 import ServicesSection from "@/features/home/components/ServicesSection";
 import RecomendedSallon from "@/features/home/components/RecomendedSallon";
@@ -10,6 +11,7 @@ export default function Home() {
   return (
     <main>
       <HeroSection />
+      <HomeCategories />
       <ServicesSection />
       <RecomendedSallon />
       <Categories />
