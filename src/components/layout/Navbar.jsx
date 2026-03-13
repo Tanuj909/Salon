@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-md py-3 md:py-4'
+          ? 'bg-[linear-gradient(135deg,#f5f3ff_0%,#f7f5ff_45%,#ffffff_100%)] backdrop-blur-md shadow-md py-3 md:py-4'
           : 'bg-transparent py-5 md:py-6'
         }`}
     >

@@ -70,7 +70,7 @@ function ServiceCard({ service, index, onBookNow }) {
 
     return (
         <Reveal delay={index * 100}>
-            <div className="group bg-white rounded-[20px] p-5 border border-[#cd6133]/20 shadow-sm hover:border-[#cd6133]/40 hover:shadow-md transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-full overflow-hidden">
+            <div className="group rounded-[20px] p-5 border border-[#cd6133]/20 shadow-sm hover:border-[#cd6133]/40 hover:shadow-md transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-full overflow-hidden">
                 {/* Terracotta Top Accent Line */}
                 <div className="absolute top-0 left-0 w-full h-0.5 bg-[#cd6133] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
 
@@ -161,7 +161,7 @@ const SalonServices = ({ id, onBookService }) => {
 
     if (loading) {
         return (
-            <section className="py-16 bg-white" id="services">
+            <section className="py-16" id="services">
                 <div className="max-w-7xl mx-auto px-8">
                     <div className="flex flex-col items-center justify-center gap-4 py-12">
                         <div className="w-10 h-10 border-4 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin" />

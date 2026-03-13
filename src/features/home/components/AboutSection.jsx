@@ -2,7 +2,7 @@ import React from 'react';
 
 const AboutSection = () => {
   return (
-    <section id="about" className="pt-4 pb-12 bg-plum/5">
+    <section id="about" className="pt-4 pb-12">
       <div className="max-w-[1200px] mx-auto px-6">
 
         {/* ── Section Header ── */}

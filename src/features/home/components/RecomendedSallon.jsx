@@ -97,7 +97,7 @@ export default function RecomendedSallon() {
   // Loading states
   if (loading) {
     return (
-      <section className="bg-plum/5 py-10">
+      <section className="py-10">
         <div className="max-w-[1280px] mx-auto px-12">
           <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
             <div>
@@ -128,7 +128,7 @@ export default function RecomendedSallon() {
   const recommendedSalons = salons.slice(0, 4);
 
   return (
-    <section className="bg-plum/5 py-10">
+    <section className="py-10">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
         {/* ── Section Header ── */}
@@ -214,7 +214,7 @@ export default function RecomendedSallon() {
                 <Link
                   key={salon.id}
                   href={`/salons/${salon.id}`}
-                  className="group block bg-white rounded-[20px] overflow-hidden border border-[#3c143212] cursor-pointer shadow-[0_2px_16px_rgba(60,20,50,0.06)] no-underline h-full"
+                  className="group block rounded-[20px] overflow-hidden border border-[#3c143212] cursor-pointer shadow-[0_2px_16px_rgba(60,20,50,0.06)] no-underline h-full"
                 >
                   {/* Image */}
                   <div className="relative h-[200px] overflow-hidden">

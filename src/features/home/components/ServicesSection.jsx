@@ -130,7 +130,7 @@ const ServicesSection = () => {
   const translateX = `calc(-${currentIndex * (100 / visibleCards)}% - ${currentIndex * (24 / visibleCards)}px + ${isDragging ? dragOffset : 0}px)`;
 
   return (
-    <section className="bg-plum/5 py-10 w-full font-['Georgia',serif]">
+    <section className="py-10 w-full font-['Georgia',serif]">
       <div className="px-4 md:px-6 max-w-[1300px] mx-auto">
         {/* Header */}
         <div className="text-center mb-8 md:mb-14">

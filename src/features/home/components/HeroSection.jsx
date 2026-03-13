@@ -58,9 +58,9 @@ const HeroSection = () => {
         }
       `}</style>
 
-      <section className="relative w-full min-h-[100svh] overflow-hidden font-['DM_Sans',sans-serif] bg-black flex flex-col justify-center py-20 px-4">
+      <section className="relative w-full min-h-[100svh] overflow-hidden font-['DM_Sans',sans-serif] flex flex-col justify-center py-20 px-4">
         {/* Animated Background Slides */}
-        <div className="absolute inset-0 z-0 bg-black">
+        <div className="absolute inset-0 z-0">
           {slides.map((slide, index) => (
             <div
               key={index}

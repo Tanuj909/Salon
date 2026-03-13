@@ -55,7 +55,7 @@ const BusinessTimings = ({ id, compact = false }) => {
 
     if (loading) {
         return (
-            <div className={`${compact ? 'py-12' : 'py-32'} flex justify-center items-center gap-6 bg-[#f7ede2]`}>
+            <div className={`${compact ? 'py-12' : 'py-32'} flex justify-center items-center gap-6`}>
                 <div className="w-10 h-10 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[#5a3d2b]">Aligning Moments...</span>
             </div>
@@ -68,7 +68,7 @@ const BusinessTimings = ({ id, compact = false }) => {
     const currentDay = new Date().toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();
 
     return (
-        <section className={compact ? "h-full" : "py-40 bg-[#f7ede2]"} id="timings">
+        <section className={compact ? "h-full" : "py-40"} id="timings">
             <div className={compact ? "h-full" : "max-w-7xl mx-auto px-8"}>
                 {!compact && (
                     <Reveal>

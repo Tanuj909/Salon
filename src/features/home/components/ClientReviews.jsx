@@ -113,7 +113,7 @@ const ClientReviews = () => {
 
   return (
     <section
-      className="py-10 overflow-hidden bg-plum/5"
+      className="py-10 overflow-hidden"
     >
       <div className="max-w-[1240px] mx-auto px-4 md:px-12">
 

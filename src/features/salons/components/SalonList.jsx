@@ -47,7 +47,7 @@ function SalonCard({ salon }) {
   return (
     <Link
       href={`/salons/${salon.id}`}
-      className="group block bg-white rounded-[20px] overflow-hidden border border-[#4b3621]/10 cursor-pointer shadow-[0_2px_16px_rgba(75,54,33,0.06)] no-underline h-full flex flex-col"
+      className="group block rounded-[20px] overflow-hidden border border-[#4b3621]/10 cursor-pointer shadow-[0_2px_16px_rgba(75,54,33,0.06)] no-underline h-full flex flex-col"
     >
       {/* ── Image ── */}
       <div className="relative h-[210px] overflow-hidden shrink-0">
@@ -199,7 +199,7 @@ export default function SalonList() {
 
   if (loading && !salons.length) {
     return (
-      <div className="min-h-screen bg-[#f9f5f2] flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6">
         <div className="flex flex-col items-center gap-6 text-center max-w-md">
           <div className="w-16 h-16 border-4 border-[#7a2860]/20 border-t-[#7a2860] rounded-full animate-spin" />
           <div className="space-y-2">
@@ -264,7 +264,7 @@ export default function SalonList() {
   });
 
   return (
-    <div className="min-h-screen bg-[#f9f5f2] font-[DM_Sans,sans-serif] pt-28 pb-20">
+    <div className="min-h-screen font-[DM_Sans,sans-serif] pt-28 pb-20">
       <div className="max-w-[1200px] mx-auto px-6 md:px-12">
         {/* ── Header Section ── */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-8">
