@@ -678,7 +678,7 @@ import { useSalonTimings } from "../hooks/useSalonTimings";
 import { useStaffSlots } from "../hooks/useStaffSlots";
 
 const PAYMENT_METHODS = [
-    { value: "CASH", label: "CASH", icon: "💶" },
+    { value: "CASH", label: "Pay After Service", icon: "💶" },
 ];
 
 const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelectedService }) => {
