@@ -22,6 +22,12 @@ export const ENDPOINTS = {
     NEARBY: (lat, lng, radius) => `/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
     NEARBY_BY_CATEGORY: (categoryId, lat, lng, radius, size) =>
       `/businesses/nearby/category/${categoryId}?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}&size=${size}&page=0`,
+    SEARCH_NEARBY: (lat, lng, radius, serviceName, categoryId, page = 0, size = 20) => {
+      let url = `/businesses/nearby/search?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}&page=${page}&size=${size}`;
+      if (serviceName) url += `&serviceName=${encodeURIComponent(serviceName)}`;
+      if (categoryId) url += `&categoryId=${categoryId}`;
+      return url;
+    },
 
     DETAILS: (id) => `/businesses/${id}`,
 

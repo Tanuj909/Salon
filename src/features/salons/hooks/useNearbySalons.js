@@ -1,23 +1,27 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { fetchNearbySalons } from "../services/salonService";
+import { fetchNearbySalons, searchNearbySalons } from "../services/salonService";
 import { useUserLocation } from "./useUserLocation";
+
+import { useSearchParams } from "next/navigation";
 
 export const useNearbySalons = () => {
   const { location: browserLocation, error: locationError, loading: locationLoading, isTimeout: locationTimeout } = useUserLocation();
+  const urlParams = useSearchParams();
 
   const [salons, setSalons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFallback, setIsFallback] = useState(false);
 
-  // Search parameters state
   const [searchParams, setSearchParams] = useState({
     lat: null,
     lng: null,
     radius: 20,
-    address: ""
+    address: "",
+    serviceName: urlParams?.get("serviceName") || "",
+    categoryId: urlParams?.get("categoryId") || ""
   });
 
   // Track if we've already initialized with browser location
@@ -59,10 +63,12 @@ export const useNearbySalons = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await fetchNearbySalons(
+      const data = await searchNearbySalons(
         params.lat,
         params.lng,
-        params.radius
+        params.radius,
+        params.serviceName,
+        params.categoryId
       );
 
       setSalons(data || []);
@@ -81,7 +87,7 @@ export const useNearbySalons = () => {
     if (searchParams.lat && searchParams.lng) {
       loadSalons(searchParams);
     }
-  }, [searchParams.lat, searchParams.lng, searchParams.radius, loadSalons]);
+  }, [searchParams.lat, searchParams.lng, searchParams.radius, searchParams.serviceName, searchParams.categoryId, loadSalons]);
 
   const updateParams = (newParams) => {
     setSearchParams(prev => ({ ...prev, ...newParams }));

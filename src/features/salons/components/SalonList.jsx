@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { MapPin, Navigation, Star, Search } from "lucide-react";
+import { MapPin, Navigation, Star, Search, X } from "lucide-react";
 // Local badge styles
 const badgeStyles = {
   "VERIFIED": {
@@ -22,6 +22,7 @@ const badgeStyles = {
   }
 };
 import { useNearbySalons } from "@/features/salons/hooks/useNearbySalons";
+import { fetchActiveCategories } from "@/features/salons/services/salonService";
 import LocationPicker from "./LocationPicker";
 
 // ─── Star Icon ────────────────────────────────────────────────────────────────
@@ -151,15 +152,27 @@ export default function SalonList() {
 
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const [draftParams, setDraftParams] = useState({
     lat: searchParams.lat,
     lng: searchParams.lng,
     radius: searchParams.radius,
-    address: searchParams.address
+    address: searchParams.address,
+    serviceName: searchParams.serviceName || "",
+    categoryId: searchParams.categoryId || ""
   });
 
   const [showTimeoutOptions, setShowTimeoutOptions] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  React.useEffect(() => {
+    fetchActiveCategories().then(data => {
+      // Depending on API response structure, it could be data.content or just data
+      const catList = Array.isArray(data) ? data : (data.content || []);
+      setCategories(catList);
+    }).catch(console.error);
+  }, []);
 
   React.useEffect(() => {
     let timer;
@@ -181,7 +194,9 @@ export default function SalonList() {
         lat: searchParams.lat,
         lng: searchParams.lng,
         radius: searchParams.radius,
-        address: searchParams.address
+        address: searchParams.address,
+        serviceName: searchParams.serviceName || "",
+        categoryId: searchParams.categoryId || ""
       });
       hasInitialized.current = true;
     }
@@ -195,7 +210,9 @@ export default function SalonList() {
     draftParams.lat !== searchParams.lat ||
     draftParams.lng !== searchParams.lng ||
     draftParams.radius !== searchParams.radius ||
-    draftParams.address !== searchParams.address;
+    draftParams.address !== searchParams.address ||
+    draftParams.serviceName !== searchParams.serviceName ||
+    draftParams.categoryId !== searchParams.categoryId;
 
   if (loading && !salons.length) {
     return (
@@ -264,26 +281,60 @@ export default function SalonList() {
   });
 
   return (
-    <div className="min-h-screen font-[DM_Sans,sans-serif] pt-28 pb-20">
+    <div className="min-h-screen font-[DM_Sans,sans-serif] pt-20 md:pt-28 pb-20">
       <div className="max-w-[1200px] mx-auto px-6 md:px-12">
         {/* ── Header Section ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-8">
-          <div className="flex-1">
-            <h1 className="font-bold leading-[1.1] mb-1.5 text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(2rem,4vw,2.5rem)]">
-              Discover Premium
-              <span className="italic text-[#7a2860] block md:inline md:ml-3">
-                Salons
-              </span>
-            </h1>
-            <p className="text-[0.88rem] leading-[1.5] max-w-[420px] text-[#3c143280] font-[DM_Sans]">
-              {isFallback || filtered.length === 0 && salons.length > 0
-                ? "We couldn't find exactly what you were looking for here, but explore our curated collection."
-                : "Handpicked spaces where craft meets care — professional styling just around the corner."}
-            </p>
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 md:gap-6 mb-4 md:mb-8 mt-2 md:mt-0">
+          <div className="flex-1 w-full">
+            {!showMobileSearch ? (
+              <div 
+                className="flex items-center justify-between px-4 py-2 bg-white/60 backdrop-blur-md rounded-2xl border border-[#3c143208] shadow-sm w-full md:w-fit font-bold leading-none text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[1.1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block cursor-pointer md:cursor-default"
+                onClick={() => setShowMobileSearch(true)}
+              >
+                <span>Discover Premium Salons</span>
+                <Search size={20} className="text-[#7a2860] md:hidden" />
+              </div>
+            ) : (
+                <div className="relative w-full flex items-center md:hidden">
+                    <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
+                        <Search size={16} />
+                    </span>
+                    <input
+                        autoFocus
+                        className="w-full h-[46px] pr-[40px] pl-[38px] rounded-2xl border border-[#3c143212] bg-white/60 backdrop-blur-md text-[#2a1020] text-[0.85rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
+                        type="text"
+                        placeholder="Search by name or service..."
+                        value={draftParams.serviceName}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                            setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
+                        }}
+                        onKeyDown={(e) => {
+                           if (e.key === "Enter" && hasChanges && !loading) {
+                             handleFetch();
+                           }
+                        }}
+                        onBlur={() => !draftParams.serviceName && setShowMobileSearch(false)}
+                    />
+                    <button 
+                        onClick={() => {
+                            setSearch("");
+                            setDraftParams(prev => ({ ...prev, serviceName: "" }));
+                            setShowMobileSearch(false);
+                            if (searchParams.serviceName) {
+                              updateParams({ ...draftParams, serviceName: "" });
+                            }
+                        }}
+                        className="absolute right-[12px] top-1/2 -translate-y-1/2 p-1 text-[#3c143259] hover:text-[#7a2860]"
+                    >
+                        <X size={16} />
+                    </button>
+                </div>
+            )}
           </div>
 
-          {/* Search Box */}
-          <div className="relative w-full lg:w-[320px]">
+          {/* Search Box (Desktop Only) */}
+          <div className="hidden md:block relative w-full lg:w-[320px]">
             <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
               <Search size={16} />
             </span>
@@ -291,19 +342,26 @@ export default function SalonList() {
               className="w-full h-10 pr-[16px] pl-[38px] rounded-xl border border-[#3c143212] bg-white/50 backdrop-blur-sm text-[#2a1020] text-[0.78rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
               type="text"
               placeholder="Search by name or service..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={draftParams.serviceName}
+              onChange={(e) => {
+                  setSearch(e.target.value);
+                  setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
+              }}
+              onKeyDown={(e) => {
+                 if (e.key === "Enter" && hasChanges && !loading) {
+                   handleFetch();
+                 }
+              }}
             />
           </div>
         </div>
 
         {/* ── Advanced Filter Control ── */}
-        <div className="mb-10">
-          <div className="p-5 md:p-6 rounded-[1.5rem] border border-[#3c143208]">
-            {/* Location & Radius Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
+        <div className="mb-6 md:mb-10">
+          <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-[#3c143208]">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end mb-4 md:mb-6">
               {/* Location Picker */}
-              <div className="lg:col-span-6 space-y-1.5">
+              <div className="lg:col-span-8 space-y-1.5">
                 <div className="flex items-center justify-between px-1">
                   <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240]">Near Your Location</label>
                 </div>
@@ -341,6 +399,51 @@ export default function SalonList() {
                   />
                 </div>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end">
+              {/* Category Select */}
+              <div className="lg:col-span-5 space-y-1.5 flex flex-col">
+                <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240] ml-1">Category</label>
+                <div className="relative">
+                  <select
+                    className="w-full h-11 px-4 pr-10 rounded-xl border border-[#3c143212] bg-[#fdfaf8]/50 text-[#2a1020] text-[0.85rem] outline-none focus:border-[#7a2860] focus:ring-2 focus:ring-[#7a2860]/5 font-[DM_Sans] appearance-none"
+                    value={draftParams.categoryId}
+                    onChange={(e) => setDraftParams(prev => ({ ...prev, categoryId: e.target.value }))}
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143240]">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </span>
+                </div>
+              </div>
+
+              {/* Service Name Box */}
+              <div className="lg:col-span-5 space-y-1.5 flex flex-col">
+                <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240] ml-1">Service Name</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3c143240]">
+                    <Search size={14} />
+                  </span>
+                  <input
+                    className="w-full h-11 pl-9 pr-4 rounded-xl border border-[#3c143212] bg-[#fdfaf8]/50 text-[#2a1020] text-[0.85rem] outline-none focus:border-[#7a2860] focus:ring-2 focus:ring-[#7a2860]/5 font-[DM_Sans]"
+                    type="text"
+                    placeholder="e.g. Haircut, Facial..."
+                    value={draftParams.serviceName}
+                    onChange={(e) => {
+                        setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
+                        setSearch(e.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                       if (e.key === "Enter" && hasChanges && !loading) {
+                         handleFetch();
+                       }
+                    }}
+                  />
+                </div>
+              </div>
 
               {/* Fetch Button */}
               <div className="lg:col-span-2">
@@ -354,7 +457,7 @@ export default function SalonList() {
                   ) : (
                     <Search size={14} />
                   )}
-                  {loading ? "Fetching" : "Fetch Results"}
+                  {loading ? "Fetching" : "Apply"}
                 </button>
               </div>
             </div>

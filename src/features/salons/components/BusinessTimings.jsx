@@ -69,7 +69,7 @@ const BusinessTimings = ({ id, compact = false }) => {
 
     return (
         <section className={compact ? "h-full" : "py-40"} id="timings">
-            <div className={compact ? "h-full" : "max-w-7xl mx-auto px-8"}>
+            <div className={compact ? "h-full" : "max-w-7xl mx-auto px-4 sm:px-8"}>
                 {!compact && (
                     <Reveal>
                         <div className="text-center mb-24">
@@ -81,8 +81,8 @@ const BusinessTimings = ({ id, compact = false }) => {
                     </Reveal>
                 )}
 
-                <div className={`${compact ? 'p-8 md:p-12 rounded-[48px] h-full flex flex-col justify-center' : 'max-w-3xl mx-auto rounded-[64px] p-12 md:p-20'} bg-white border border-[#cd6133]/20 shadow-lg relative overflow-hidden`}>
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-[#cd6133]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className={`${compact ? 'p-4 sm:p-8 md:p-12 rounded-3xl sm:rounded-[48px] h-full flex flex-col justify-center' : 'max-w-3xl mx-auto rounded-3xl sm:rounded-[64px] p-6 sm:p-12 md:p-20'} bg-white border border-[#cd6133]/20 shadow-lg relative overflow-hidden`}>
+                    <div className="absolute top-0 right-0 w-32 sm:w-48 h-32 sm:h-48 bg-[#cd6133]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
 
                     <div className={compact ? "space-y-3" : "space-y-6"}>
                         {daysOfWeek.map((day) => {
@@ -92,14 +92,14 @@ const BusinessTimings = ({ id, compact = false }) => {
                             return (
                                 <div
                                     key={day}
-                                    className={`flex items-center justify-between transition-all duration-500 ${compact ? 'p-5 rounded-[24px]' : 'p-8 rounded-[32px]'
+                                    className={`flex items-center justify-between transition-all duration-500 ${compact ? 'p-3 sm:p-5 rounded-xl sm:rounded-[24px]' : 'p-4 sm:p-8 rounded-2xl sm:rounded-[32px]'
                                         } ${isSelected
-                                            ? "bg-[#cd6133] text-[#fef9f3] shadow-2xl scale-[1.05] z-10 relative"
+                                            ? "bg-[#cd6133] text-[#fef9f3] shadow-xl sm:shadow-2xl scale-[1.02] sm:scale-[1.05] z-10 relative"
                                             : "hover:bg-[#cd6133]/5 text-[#5a3d2b]"
                                         }`}
                                 >
-                                    <div className="flex items-center gap-4">
-                                        <span className={`${compact ? 'text-xs' : 'text-lg'} font-bold tracking-widest uppercase ${isSelected ? "text-[#fef9f3]" : "text-[#5a3d2b]"}`}>
+                                    <div className="flex items-center gap-2 sm:gap-4 truncate mr-2">
+                                        <span className={`${compact ? 'text-[9px] sm:text-xs' : 'text-sm sm:text-lg'} font-bold tracking-widest uppercase truncate ${isSelected ? "text-[#fef9f3]" : "text-[#5a3d2b]"}`}>
                                             {day.charAt(0) + day.slice(1).toLowerCase()}
                                         </span>
                                         {isSelected && (
@@ -115,12 +115,12 @@ const BusinessTimings = ({ id, compact = false }) => {
                                                 Closed
                                             </span>
                                         ) : (
-                                            <div className={`flex items-center ${compact ? 'gap-4' : 'gap-8'}`}>
-                                                <span className={`${compact ? 'text-xs' : 'text-base'} font-bold ${isSelected ? "text-[#fef9f3]" : "text-[#5a3d2b]"}`}>
-                                                    {formatTime(timing.openTime)} — {formatTime(timing.closeTime)}
+                                            <div className={`flex items-center ${compact ? 'gap-1.5 sm:gap-4' : 'gap-3 sm:gap-8'} shrink-0`}>
+                                                <span className={`${compact ? 'text-[8px] sm:text-xs' : 'text-xs sm:text-base'} font-bold whitespace-nowrap ${isSelected ? "text-[#fef9f3]" : "text-[#5a3d2b]"}`}>
+                                                    {formatTime(timing.openTime)} - {formatTime(timing.closeTime)}
                                                 </span>
-                                                <div className={`${compact ? 'w-8 h-8' : 'w-10 h-10'} rounded-full flex items-center justify-center ${isSelected ? "bg-white/20" : "bg-[#cd6133]/10"}`}>
-                                                    <Clock className={compact ? "w-4 h-4" : "w-5 h-5"} />
+                                                <div className={`${compact ? 'w-6 h-6 sm:w-8 sm:h-8' : 'w-8 h-8 sm:w-10 sm:h-10'} rounded-full flex items-center justify-center shrink-0 ${isSelected ? "bg-white/20" : "bg-[#cd6133]/10"}`}>
+                                                    <Clock className={compact ? "w-3 h-3 sm:w-4 sm:h-4" : "w-4 h-4 sm:w-5 sm:h-5"} />
                                                 </div>
                                             </div>
                                         )}

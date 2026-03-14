@@ -61,7 +61,7 @@ function Badge({ children, variant = "gold" }) {
 
     return (
         <span
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold tracking-widest uppercase ${variants[variant]}`}
+            className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-bold tracking-widest uppercase ${variants[variant]}`}
         >
             {children}
         </span>
@@ -99,8 +99,8 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                     </Reveal>
 
                     <Reveal delay={300}>
-                        <h1 className="font-bold leading-[1.1] mb-6 md:mb-6 uppercase tracking-tight"
-                            style={{ fontSize: "clamp(32px,7vw,80px)" }}>
+                        <h1 className="font-bold leading-[1.1] mb-4 sm:mb-6 md:mb-6 uppercase tracking-tight break-words"
+                            style={{ fontSize: "clamp(26px,8vw,80px)" }}>
                             {salon.name}
                         </h1>
                     </Reveal>
@@ -123,23 +123,23 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                 </div>
 
                                 {/* Location & Contact */}
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 w-full backdrop-blur-md bg-black/20 p-5 md:p-6 rounded-3xl border border-white/10">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8  backdrop-blur-md bg-black/20 p-4 sm:p-5 md:p-6 rounded-2xl sm:rounded-3xl border border-white/10">
                                     {salon.city && (
-                                        <div className="flex items-center gap-3 text-[#fef9f3]/90">
+                                        <div className="flex items-center gap-2.5 sm:gap-3 text-[#fef9f3]/90 min-w-0">
                                             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
                                                 <svg className="w-4 h-4 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                                                     <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
                                                     <circle cx="12" cy="10" r="3" />
                                                 </svg>
                                             </div>
-                                            <div className="flex flex-col">
+                                            <div className="flex flex-col min-w-0 flex-1">
                                                 <span className="text-[8px] md:text-[9px] uppercase tracking-widest text-[#fef9f3]/50 font-bold mb-0.5">Location</span>
-                                                <span className="text-[11px] md:text-sm font-medium line-clamp-1 break-all">{salon.address}, {salon.city}</span>
+                                                <span className="text-[10px] sm:text-[11px] md:text-sm font-medium line-clamp-1 break-words">{salon.address}, {salon.city}</span>
                                             </div>
                                         </div>
                                     )}
 
-                                    {salon.phoneNumber && (
+                                    {/* {salon.phoneNumber && (
                                         <div className="flex items-center gap-3 text-[#fef9f3]/90 mt-2 sm:mt-0">
                                             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
                                                 <svg className="w-4 h-4 md:w-4 md:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -151,17 +151,17 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                                 <span className="text-xs md:text-sm font-medium">{salon.phoneNumber}</span>
                                             </div>
                                         </div>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
 
                             {/* Inline Categories */}
                             {salon.categories && salon.categories.length > 0 && (
-                                <div className="flex flex-wrap gap-2 md:gap-4 mt-2 md:mt-0">
+                                <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-4 mt-2 md:mt-0">
                                     {salon.categories.map((cat, i) => (
-                                        <div key={cat.id || i} className="flex items-center gap-2 md:gap-3 bg-black/20 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-white/10">
+                                        <div key={cat.id || i} className="flex items-center gap-1.5 sm:gap-2 md:gap-3 bg-black/20 backdrop-blur-md px-2.5 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-full border border-white/10">
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#cd6133]" />
-                                            <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[#fef9f3]">{cat.name}</span>
+                                            <span className="text-[8px] sm:text-[9px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[#fef9f3]">{cat.name}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -170,17 +170,17 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                     </Reveal>
 
                     <Reveal delay={500}>
-                        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 mt-2">
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mt-2">
                             <button
                                 onClick={handleBookButtonClick}
-                                className="w-full sm:w-auto group relative px-8 py-4 md:py-4 rounded-full bg-[#cd6133] text-[#fef9f3] text-[10px] font-bold tracking-[0.3em] uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(205,97,51,0.5)] hover:-translate-y-1 border-0 cursor-pointer text-center"
+                                className="w-full sm:w-auto group relative px-6 sm:px-8 py-3.5 sm:py-4 md:py-4 rounded-full bg-[#cd6133] text-[#fef9f3] text-[9px] sm:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_25px_50px_-12px_rgba(205,97,51,0.5)] hover:-translate-y-1 border-0 cursor-pointer text-center"
                             >
                                 <span className="relative z-10">Book Appointment</span>
                                 <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                             </button>
                             <a
                                 href="#services"
-                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-4 md:py-4 rounded-full border border-[#fef9f3]/30 text-[#fef9f3] text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:bg-[#fef9f3] hover:text-[#4b3621] hover:border-[#fef9f3] text-center"
+                                className="w-full sm:w-auto flex items-center justify-center group px-6 sm:px-8 py-3.5 sm:py-4 md:py-4 rounded-full border border-[#fef9f3]/30 text-[#fef9f3] text-[9px] sm:text-[10px] font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase transition-all duration-500 hover:bg-[#fef9f3] hover:text-[#4b3621] hover:border-[#fef9f3] text-center"
                             >
                                 <span>View Services</span>
                             </a>

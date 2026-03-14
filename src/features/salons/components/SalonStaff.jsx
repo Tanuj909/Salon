@@ -66,7 +66,7 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-[#4b3621]/80 backdrop-blur-md animate-fadeIn" />
       <div
-        className="relative w-full max-w-xl bg-white/95 backdrop-blur-xl rounded-[40px] overflow-hidden shadow-2xl animate-slideUp border border-white/20"
+        className="relative w-full max-w-xl bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-[40px] overflow-hidden shadow-2xl animate-slideUp border border-white/20 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button onClick={onClose} className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-black/5 hover:bg-black/10 flex items-center justify-center text-[#4b3621] transition-all cursor-pointer">
@@ -81,8 +81,8 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
         )}
 
         {profile && !loading && (
-          <div className="p-10 md:p-14">
-            <div className="flex flex-col items-center text-center mb-10">
+          <div className="p-6 sm:p-10 md:p-14">
+            <div className="flex flex-col items-center text-center mb-6 sm:mb-10">
               <div className="relative w-28 h-28 mb-6 group">
                 <div className="absolute inset-0 bg-[#cd6133] rounded-[32px] rotate-6 scale-105 opacity-20 group-hover:rotate-12 transition-transform duration-500" />
                 <div className="relative w-full h-full rounded-[32px] overflow-hidden border-2 border-white shadow-xl">
@@ -113,7 +113,7 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
                 ))}
               </div>
 
-              <div className="bg-[#cd6133]/5 border border-[#cd6133]/10 p-8 rounded-[32px] flex items-center justify-between">
+              <div className="bg-[#cd6133]/5 border border-[#cd6133]/10 p-5 sm:p-8 rounded-2xl sm:rounded-[32px] flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-0 text-center sm:text-left">
                 <div className="flex flex-col">
                   <span className="text-[8px] uppercase tracking-widest text-[#cd6133] font-bold mb-1.5 opacity-60">Availability</span>
                   <p className="text-lg font-bold text-[#4b3621]">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
@@ -131,11 +131,11 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
 }
 
 // ─── Staff Card ───────────────────────────────────────────────────────────────
-function StaffCard({ member, index, onClick }) {
+function StaffCard({ member, index, onBook }) {
   const name = member.userFullName || member.fullName || "Specialist";
   return (
     <Reveal delay={index * 100}>
-      <div className="group relative bg-white p-5 rounded-[32px] border border-[#cd6133]/20 shadow-md hover:border-[#cd6133]/40 transition-all duration-700 hover:shadow-xl flex flex-col items-center text-center h-full">
+      <div className="group relative bg-white p-4 sm:p-5 rounded-2xl sm:rounded-[32px] border border-[#cd6133]/20 shadow-md hover:border-[#cd6133]/40 transition-all duration-700 hover:shadow-xl flex flex-col items-center text-center h-full">
         <div className="relative mb-5 mt-2 w-full flex justify-center">
           <div className="w-28 h-28 rounded-full overflow-hidden border-[3px] border-[#cd6133]/10 shadow-md relative z-10 bg-[#f7ede2] group-hover:border-[#cd6133]/40 transition-colors duration-500">
             <img
@@ -163,10 +163,10 @@ function StaffCard({ member, index, onClick }) {
         </div>
 
         <button
-          onClick={onClick}
-          className="w-full py-3 rounded-xl border border-[#cd6133] text-[#cd6133] text-[9px] font-bold uppercase tracking-widest hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all duration-300 active:scale-95 cursor-pointer mt-auto"
+          onClick={onBook}
+          className="w-full py-3 rounded-xl border-2 border-[#cd6133] text-[#cd6133] text-[9px] font-bold uppercase tracking-widest hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all duration-300 active:scale-95 cursor-pointer mt-auto"
         >
-          View Profile
+          Book Now
         </button>
       </div>
     </Reveal>
@@ -174,14 +174,13 @@ function StaffCard({ member, index, onClick }) {
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────
-const SalonStaff = ({ id }) => {
+const SalonStaff = ({ id, onBookStaff }) => {
   const { staff, loading, error } = useSalonStaff({ id });
   const { profile, loading: profileLoading, error: profileError, fetchProfile, clearProfile } = useStaffProfile();
   const [showModal, setShowModal] = useState(false);
 
-  const handleCardClick = (staffId) => {
-    setShowModal(true);
-    fetchProfile(staffId);
+  const handleCardClick = (staffMember) => {
+    onBookStaff?.(staffMember);
   };
 
   const handleCloseModal = () => {
@@ -191,7 +190,7 @@ const SalonStaff = ({ id }) => {
 
   if (loading) {
     return (
-      <section className="py-32">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center gap-6">
           <div className="w-12 h-12 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
           <p className="text-[#5a3d2b] text-[10px] font-bold uppercase tracking-widest">Gathering Excellence...</p>
@@ -202,29 +201,29 @@ const SalonStaff = ({ id }) => {
 
   return (
     <>
-      <section className="py-32" id="staff">
-        <div className="max-w-7xl mx-auto px-8">
+      <section className="py-8 sm:py-12" id="staff">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <Reveal>
-            <div className="text-center mb-32">
-              <span className="block text-[11px] tracking-[0.5em] uppercase text-[#cd6133] font-extrabold mb-8">Master Artisans</span>
-              <h2 className="text-6xl text-[#5a3d2b] font-bold leading-tight">
+            <div className="text-center mb-16 sm:mb-32">
+              <span className="block text-[9px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.5em] uppercase text-[#cd6133] font-extrabold mb-4 sm:mb-8">Master Artisans</span>
+              <h2 className="text-[24px] sm:text-5xl md:text-6xl text-[#5a3d2b] font-bold leading-tight whitespace-nowrap">
                 Meet Our <em className="italic font-light">Experts</em>
               </h2>
             </div>
           </Reveal>
 
           {(!staff || staff.length === 0) ? (
-            <div className="bg-white/30 rounded-[48px] p-24 text-center border border-[#cd6133]/10 italic text-[#5a3d2b]/60">
+            <div className="bg-white/30 rounded-2xl sm:rounded-[48px] p-8 sm:p-24 text-center border border-[#cd6133]/10 italic text-[#5a3d2b]/60">
               No staff profiles available at this moment.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-12">
               {staff.map((member, index) => (
                 <StaffCard
                   key={member.id || index}
                   member={member}
                   index={index}
-                  onClick={() => handleCardClick(member.id)}
+                  onBook={() => handleCardClick(member)}
                 />
               ))}
             </div>

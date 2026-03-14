@@ -5,6 +5,8 @@ import useActiveCategories from '../../../features/salons/hooks/useActiveService
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedService, setSelectedService] = useState("");
   const { categories, loading, error } = useActiveCategories();
 
   const slides = [
@@ -80,8 +82,8 @@ const HeroSection = () => {
         <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
         <div className="absolute inset-0 z-[4] opacity-[0.03] pointer-events-none hero-grain" />
 
-        {/* Content Container - Shifted upward */}
-        <div className="relative z-[10] w-full max-w-7xl mx-auto flex flex-col items-center text-center mt-8 md:-mt-24">
+        {/* Content Container - Shifted downward slightly to clear navbar */}
+        <div className="relative z-[10] w-full max-w-7xl mx-auto flex flex-col items-center text-center mt-6 md:mt-16 lg:mt-8">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-up [animation-delay:100ms]">
             <div className="w-1.5 h-1.5 rounded-full bg-[#B76E4B] animate-pulse" />
@@ -96,18 +98,22 @@ const HeroSection = () => {
           </h1>
 
           {/* Subtext */}
-          <p className="text-[clamp(1rem,2vw,1.25rem)] font-light text-white/80 tracking-wide max-w-2xl leading-relaxed mb-10 animate-fade-up [animation-delay:500ms] px-4 text-shadow">
+          <p className="hidden md:block text-[clamp(1rem,2vw,1.25rem)] font-light text-white/80 tracking-wide max-w-2xl leading-relaxed mb-10 animate-fade-up [animation-delay:500ms] px-4 text-shadow">
             Discover and book the finest grooming for Men, Women & Pets. <br className="hidden md:block" /> Seamless appointments, exceptional results.
           </p>
 
-          {/* Filter Bar (Optimized for Narrow Mobile) */}
+          {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
           <div className="w-full max-w-4xl px-3 animate-fade-up [animation-delay:700ms] mt-10">
-            <div className="bg-white/95 backdrop-blur-xl p-2.5 md:p-2 rounded-[2rem] md:rounded-full shadow-2xl flex flex-col md:flex-row items-center gap-1.5 md:gap-2">
+            <div className="bg-white/95 backdrop-blur-xl p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
 
               {/* Category Select */}
-              <div className="w-full md:w-[28%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 md:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+              <div className="w-full lg:w-[28%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
                 <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2">category</span>
-                <select className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer">
+                <select 
+                  className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
                   <option value="">Categories</option>
                   {loading ? (
                     <option disabled>Loading...</option>
@@ -121,33 +127,40 @@ const HeroSection = () => {
               </div>
 
               {/* Service Select */}
-              <div className="w-full md:w-[24%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 md:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+              <div className="w-full lg:w-[24%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
                 <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2">content_cut</span>
-                <select className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer">
+                <select 
+                  className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer"
+                  value={selectedService}
+                  onChange={(e) => setSelectedService(e.target.value)}
+                >
                   <option value="">Services</option>
-                  <option value="haircut">Haircut</option>
-                  <option value="spa">Spa</option>
-                  <option value="nails">Nails</option>
+                  <option value="Haircut">Haircut</option>
+                  <option value="Spa">Spa</option>
+                  <option value="Nails">Nails</option>
                 </select>
                 <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
               </div>
 
               {/* Location */}
-              <div className="w-full md:w-[32%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-2.5 md:py-2 transition-all hover:bg-white cursor-pointer group">
+              <div className="w-full lg:w-[32%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group">
                 <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2 shrink-0">location_on</span>
                 <div className="flex flex-col text-left overflow-hidden">
-                  <span className="text-[7px] md:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Nearby</span>
-                  <span className="text-xs md:text-sm font-medium text-[#4A3B2F] truncate">Current Location</span>
+                  <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Nearby</span>
+                  <span className="text-xs lg:text-sm font-medium text-[#4A3B2F] truncate">Current Location</span>
                 </div>
-                <button className="ml-auto w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-full bg-white shadow-sm hover:text-[#B76E4B] transition-colors">
-                  <span className="material-symbols-outlined text-base md:text-lg">my_location</span>
+                <button className="ml-auto w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm hover:text-[#B76E4B] transition-colors">
+                  <span className="material-symbols-outlined text-[1rem] lg:text-lg">my_location</span>
                 </button>
               </div>
 
               {/* Search Trigger */}
               <Link
-                href="/salons"
-                className="w-full md:w-[16%] py-3 md:py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
+                href={`/salons?${new URLSearchParams({
+                  ...(selectedCategory && { categoryId: selectedCategory }),
+                  ...(selectedService && { serviceName: selectedService }),
+                }).toString()}`}
+                className="w-full lg:w-[16%] py-3 lg:py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-lg">search</span>
                 <span>Search</span>

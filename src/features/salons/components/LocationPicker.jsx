@@ -115,33 +115,38 @@ const LocationPicker = ({ currentAddress, lat, lng, onLocationSelect, onDetectLo
                     onChange={(e) => setQuery(e.target.value)}
                     onFocus={() => query.length >= 3 && setShowSuggestions(true)}
                     placeholder="Search for a city or area..."
-                    className="w-full h-11 pl-10 pr-[140px] bg-white border border-[#3c143212] rounded-xl text-[0.8rem] font-medium text-[#1e0a18] outline-none transition-all focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 shadow-sm"
+                    className="w-full h-11 pl-10 pr-[100px] bg-white border border-[#3c143212] rounded-xl text-[0.8rem] font-medium text-[#1e0a18] outline-none transition-all focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 shadow-sm"
                 />
 
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                     {query && (
                         <button
                             onClick={() => { setQuery(""); setSuggestions([]); }}
                             className="p-1.5 text-muted hover:text-muted"
                         >
-                            <X size={16} />
+                            <X size={14} />
                         </button>
                     )}
 
                     <button
                         onClick={() => setIsMapOpen(true)}
-                        className="p-2.5 bg-background-light text-[#1e0a18] rounded-xl hover:bg-[#7a2860] hover:text-white transition-all active:scale-95"
+                        className="p-1.5 sm:p-2 bg-transparent sm:bg-background-light text-[#7a2860] sm:text-[#1e0a18] rounded-lg hover:bg-[#7a2860]/10 sm:hover:bg-[#7a2860] sm:hover:text-white transition-all active:scale-95"
                         title="Pick from map"
                     >
                         <MapIcon size={16} />
                     </button>
 
                     <button
-                        onClick={onDetectLocation}
-                        className="flex items-center gap-1.5 px-3 py-2 bg-[#7a2860] text-white rounded-xl text-[0.7rem] font-bold hover:bg-[#1e0a18] transition-all active:scale-95 shadow-md shadow-[#7a2860]/20"
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            onDetectLocation();
+                        }}
+                        className="p-1.5 sm:p-2 sm:px-3 flex items-center gap-1.5 bg-transparent sm:bg-[#7a2860] text-[#7a2860] sm:text-white rounded-lg hover:bg-[#7a2860]/10 sm:hover:bg-[#1e0a18] transition-all active:scale-95 sm:shadow-md sm:shadow-[#7a2860]/20"
+                        title="Detect Location"
                     >
-                        <Navigation size={12} fill="currentColor" />
-                        Detect
+                        <Navigation size={16} className="sm:w-3 sm:h-3" fill="currentColor" />
+                        <span className="hidden sm:inline font-bold text-[0.7rem]">Detect Location</span>
                     </button>
                 </div>
             </div>

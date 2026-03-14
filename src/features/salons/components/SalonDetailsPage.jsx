@@ -58,6 +58,7 @@ export default function SalonDetailsPage({ id }) {
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [preSelectedService, setPreSelectedService] = useState(null);
+  const [preSelectedStaff, setPreSelectedStaff] = useState(null);
   const today = DAY_NAMES[new Date().getDay()];
 
   const handleBookService = (service) => {
@@ -66,6 +67,15 @@ export default function SalonDetailsPage({ id }) {
       return;
     }
     setPreSelectedService(service);
+    setIsBookingOpen(true);
+  };
+  
+  const handleBookStaff = (staff) => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+    setPreSelectedStaff(staff);
     setIsBookingOpen(true);
   };
 
@@ -80,6 +90,7 @@ export default function SalonDetailsPage({ id }) {
   const handleCloseBooking = () => {
     setIsBookingOpen(false);
     setPreSelectedService(null);
+    setPreSelectedStaff(null);
   };
 
   if (loading) {
@@ -133,16 +144,16 @@ export default function SalonDetailsPage({ id }) {
       {/* ═══════════════════════════════════════════
           SALON STAFF SECTION
       ═══════════════════════════════════════════ */}
-      <SalonStaff id={id} />
+      <SalonStaff id={id} onBookStaff={handleBookStaff} />
 
 
 
       {/* ═══════════════════════════════════════════
           LOCATION & TIMINGS SECTION (SIDE BY SIDE)
       ═══════════════════════════════════════════ */}
-      <section className="py-32" id="visit">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-stretch mb-16">
+      <section className="py-8 sm:py-12" id="visit">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-stretch mb-12 sm:mb-16">
             {/* Left: Business Timings */}
             <Reveal className="h-full">
               <div className="h-full flex flex-col">
@@ -166,10 +177,10 @@ export default function SalonDetailsPage({ id }) {
                 ) : <div className="flex-1 rounded-[40px] bg-[#4b3621]/10 flex items-center justify-center min-h-[350px]"><span className="text-[#5a3d2b] font-bold tracking-widest uppercase text-xs">Map Unavailable</span></div>}
 
                 {/* Address Row Below Map */}
-                <div className="bg-[#4b3621] rounded-[32px] p-8 text-[#fef9f3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shrink-0 mt-auto">
-                  <div className="flex items-center gap-5 flex-1">
-                    <div className="w-14 h-14 rounded-xl bg-[#cd6133] flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <div className="bg-[#4b3621] rounded-3xl sm:rounded-[32px] p-5 sm:p-8 text-[#fef9f3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shrink-0 mt-auto">
+                  <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0">
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-[#cd6133] flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <svg width={16} height={16} className="sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
                       </svg>
                     </div>
@@ -180,13 +191,13 @@ export default function SalonDetailsPage({ id }) {
                   </div>
 
                   <div className="flex flex-col items-start sm:items-end sm:border-l sm:border-white/10 sm:pl-6 w-full sm:w-auto">
-                    <h4 className="text-[9px] uppercase tracking-[0.4em] text-[#fef9f3]/50 font-extrabold mb-1">Connect</h4>
-                    <p className="text-sm font-bold mb-3">{salon.phoneNumber}</p>
+                    <h4 className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#fef9f3]/50 font-extrabold mb-1">Connect</h4>
+                    <p className="text-xs sm:text-sm font-bold mb-3">{salon.phoneNumber}</p>
                     <a
                       href={`https://www.google.com/maps/dir/?api=1&destination=${salon.latitude},${salon.longitude}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-2.5 rounded-full bg-[#cd6133] text-[#fef9f3] text-[9px] font-bold uppercase tracking-widest hover:bg-[#fef9f3] hover:text-[#4b3621] transition-all shadow-md group border-0 cursor-pointer text-center w-full sm:w-auto"
+                      className="px-4 sm:px-6 py-2.5 rounded-full bg-[#cd6133] text-[#fef9f3] text-[9px] font-bold uppercase tracking-widest hover:bg-[#fef9f3] hover:text-[#4b3621] transition-all shadow-md group border-0 cursor-pointer text-center w-full sm:w-auto"
                     >
                       Navigate
                     </a>
@@ -217,6 +228,7 @@ export default function SalonDetailsPage({ id }) {
         salonId={id}
         salonName={salon.name}
         preSelectedService={preSelectedService}
+        preSelectedStaff={preSelectedStaff}
       />
     </div>
   );

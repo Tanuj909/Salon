@@ -1,7 +1,17 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
+import useActiveCategories from '@/features/salons/hooks/useActiveServices';
 
 const Footer = () => {
+  const { categories } = useActiveCategories();
+
+  const getCategoryLink = (name) => {
+    const match = categories?.find(c => c.name.toLowerCase() === name.toLowerCase());
+    return match ? `/salons?categoryId=${match.id}` : `/salons`;
+  };
+
   return (
     // <footer className="bg-[#3c1432] text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
     <footer className="bg-plum text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
@@ -76,71 +86,68 @@ const Footer = () => {
           {/* Col 2 — Explore */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Explore</h4>
-            {["Our Salons", "Special Offers", "Gift Cards", "Meet the Team", "Gallery"].map(item => (
-              <a
-                key={item}
-                href="#"
+            
+            <Link
+              href="/salons"
+              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+            >
+              Our Salons
+            </Link>
+            
+            {/* <a
+              href="#"
+              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+            >
+              Special Offers
+            </a>
+
+            <a
+              href="#"
+              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+            >
+              Gift Cards
+            </a> */}
+          </div>
+
+          {/* Col 3 — Categories */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Categories</h4>
+
+            {/* Dynamic Category Links */}
+            {['Men', 'Women', 'Kids', 'Pets'].map((catName) => (
+              <Link
+                key={catName}
+                href={getCategoryLink(catName)}
                 className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
                 style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
               >
-                {item}
-              </a>
+                {catName}
+              </Link>
             ))}
           </div>
 
-          {/* Col 3 — Visit Us */}
+          {/* Col 4 — Business */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Visit Us</h4>
-
-            {/* Address */}
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-3 mb-[18px] text-[0.88rem] leading-[1.6]" style={{ color: 'rgba(253,246,240,0.55)' }}>
-              <span className="text-[#c4956a] shrink-0">
-                <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
-                </svg>
-              </span>
-              <span>123 Elegance Blvd, Suite 100 Beverly Hills, CA 90210</span>
-            </div>
-
-            {/* Phone */}
-            <div className="flex items-center md:items-start gap-3 mb-[18px] text-[0.88rem] leading-[1.6]" style={{ color: 'rgba(253,246,240,0.55)' }}>
-              <span className="text-[#c4956a] shrink-0">
-                <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                </svg>
-              </span>
-              <span>+1 (555) 123-4567</span>
-            </div>
-
-            {/* Email */}
-            <div className="flex items-center md:items-start gap-3 mb-[18px] text-[0.88rem] leading-[1.6]" style={{ color: 'rgba(253,246,240,0.55)' }}>
-              <span className="text-[#c4956a] shrink-0">
-                <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" />
-                </svg>
-              </span>
-              <span className="break-all px-2 md:px-0">appointments@luxesalon.com</span>
-            </div>
-          </div>
-
-          {/* Col 4 — Newsletter */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Stay Elegant</h4>
-            <p className="text-[0.86rem] leading-[1.65] mb-5" style={{ color: 'rgba(253,246,240,0.52)' }}>
-              Join our list for exclusive beauty tips and seasonal offers.
-            </p>
-            <input
-              className="ft-input w-full max-w-[300px] rounded-[10px] border px-4 py-[11px] text-[0.85rem] text-[#fdf6f0] outline-none mb-2.5 transition-all outline-none"
-              style={{ background: 'rgba(253,246,240,0.06)', borderColor: 'rgba(253,246,240,0.18)', fontFamily: "'Georgia', serif" }}
-              type="email"
-              placeholder="Your email address"
-            />
-            <button
-              className="ft-subscribe w-full max-w-[300px] rounded-[10px] border-none px-4 py-[11px] text-[0.85rem] font-bold text-[#fdf6f0] cursor-pointer tracking-wider transition-all"
-              style={{ background: 'linear-gradient(135deg, #9b5876, #7a2860)', fontFamily: "'Georgia', serif" }}
+            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Partner With Us</h4>
+            
+            <Link
+              href="/business"
+              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
             >
-              Subscribe →
-            </button>
+              List your Business
+            </Link>
+            
+            {/* <a
+              href="#"
+              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+            >
+              Partner Portal
+            </a> */}
           </div>
 
         </div>

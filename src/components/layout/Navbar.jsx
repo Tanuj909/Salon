@@ -38,12 +38,12 @@ export default function Navbar() {
           <div className="flex items-center gap-4 lg:gap-8">
             <Link
               href="/"
-              className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm"
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm"
             >
-              <span className="material-symbols-outlined text-[#D98C5F] text-2xl md:text-3xl">
+              <span className="material-symbols-outlined text-[#D98C5F] text-xl sm:text-2xl md:text-3xl">
                 content_cut
               </span>
-              <span className="text-lg md:text-xl font-bold tracking-tight text-gray-700">
+              <span className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-gray-700 whitespace-nowrap">
                 Fast Booking
               </span>
             </Link>
@@ -88,7 +88,10 @@ export default function Navbar() {
                 user ? (
                   <>
                     <button
-                      onClick={() => setIsProfileOpen(!isProfileOpen)}
+                      onClick={() => {
+                        setIsProfileOpen(!isProfileOpen);
+                        setIsMenuOpen(false);
+                      }}
                       className={`flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full transition-all shadow-md border-2 ${isScrolled
                           ? 'bg-[#D98C5F] text-white hover:bg-[#C07B52] border-white/30'
                           : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border-white/50'
@@ -99,7 +102,7 @@ export default function Navbar() {
                     </button>
 
                     {isProfileOpen && (
-                      <div className="absolute right-0 mt-3 w-48 bg-white/95 backdrop-blur-md rounded-xl overflow-hidden py-2 shadow-xl border border-gray-200 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="absolute right-[-30%] mt-3 w-48 bg-white/95 backdrop-blur-md rounded-xl overflow-hidden py-2 shadow-xl border border-gray-200 animate-in fade-in slide-in-from-top-2 duration-200">
                         <Link
                           href="/profile"
                           className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors"
@@ -138,7 +141,10 @@ export default function Navbar() {
                   ? 'bg-black/5 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
                   : 'bg-white/20 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
                 }`}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => {
+                setIsMenuOpen(!isMenuOpen);
+                setIsProfileOpen(false);
+              }}
             >
               <span className="material-symbols-outlined text-2xl">{isMenuOpen ? 'close' : 'menu'}</span>
             </button>
@@ -148,37 +154,47 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="absolute top-full left-0 w-full p-4 md:hidden flex flex-col gap-2 shadow-xl border-t border-gray-100 bg-white/95 backdrop-blur-xl animate-in slide-in-from-top-5 duration-300">
-          <Link
-            href="/"
-            className="text-gray-500 font-medium hover:text-white transition-colors px-5 py-4 rounded-xl hover:bg-[#D98C5F] text-base"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            href="/salons"
-            className="text-gray-500 font-medium hover:text-white transition-colors px-5 py-4 rounded-xl hover:bg-[#D98C5F] text-base"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Salons
-          </Link>
-          <Link
-            href="/contact"
-            className="text-gray-500 font-semibold hover:text-white transition-colors px-5 py-4 rounded-xl hover:bg-[#D98C5F] text-base border border-[#D98C5F]/20"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            List Your Business
-          </Link>
-          {!loading && !user && (
+        <div className="absolute top-full inset-x-4 mt-2 p-4 md:hidden flex flex-col gap-3 shadow-2xl border border-[#D98C5F]/10 bg-white/95 backdrop-blur-2xl animate-in slide-in-from-top-4 duration-300 rounded-3xl">
+          <div className="flex flex-col gap-2 p-2">
             <Link
-              href="/login"
-              className="mt-2 text-center py-4 bg-[#D98C5F] text-white rounded-xl font-semibold shadow-lg active:scale-[0.98] transition-all text-base"
+              href="/"
+              className="flex items-center gap-3 text-gray-600 font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
               onClick={() => setIsMenuOpen(false)}
             >
-              Login
+              <span className="material-symbols-outlined text-xl">home</span>
+              Home
             </Link>
-          )}
+            <Link
+              href="/salons"
+              className="flex items-center gap-3 text-gray-600 font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="material-symbols-outlined text-xl">storefront</span>
+              Salons
+            </Link>
+            
+            <div className="h-px w-full bg-gray-100 my-2" />
+            
+            <Link
+              href="/contact"
+              className="flex items-center gap-3 text-gray-600 font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <span className="material-symbols-outlined text-xl">business_center</span>
+              List Your Business
+            </Link>
+            
+            {!loading && !user && (
+              <Link
+                href="/login"
+                className="mt-3 flex items-center justify-center gap-2 py-3.5 bg-[#D98C5F] hover:bg-[#C6794C] text-white rounded-2xl font-semibold shadow-lg shadow-[#D98C5F]/30 active:scale-[0.98] transition-all text-base"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="material-symbols-outlined text-xl">login</span>
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </nav>

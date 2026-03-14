@@ -79,16 +79,16 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
     if (!isOpen || !isMounted) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="bg-white w-full max-w-4xl rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col h-[80vh]">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="bg-white w-full max-w-4xl rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col h-[85vh] sm:h-[80vh]">
                 {/* Header */}
-                <div className="px-8 py-6 flex items-center justify-between border-b border-[#3c14320a]">
+                <div className="px-4 py-4 sm:px-8 sm:py-6 flex items-center justify-between border-b border-[#3c14320a]">
                     <div>
-                        <h2 className="text-xl font-bold text-[#1e0a18]">Pick Location</h2>
-                        <p className="text-sm text-[#3c143260]">Click on the map to set your position</p>
+                        <h2 className="text-lg sm:text-xl font-bold text-[#1e0a18]">Pick Location</h2>
+                        <p className="text-xs sm:text-sm text-[#3c143260]">Click on the map to set your position</p>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-[#f9f5f2] rounded-full transition-colors">
-                        <X size={24} className="text-[#3c143280]" />
+                    <button onClick={onClose} className="p-1.5 sm:p-2 hover:bg-[#f9f5f2] rounded-full transition-colors">
+                        <X size={20} className="sm:w-6 sm:h-6 text-[#3c143280]" />
                     </button>
                 </div>
 
@@ -109,31 +109,31 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
                 </div>
 
                 {/* Footer Info */}
-                <div className="px-8 py-6 bg-[#f9f5f2]/50 border-t border-[#3c14320a]">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="px-4 py-4 sm:px-8 sm:py-6 bg-[#f9f5f2]/50 border-t border-[#3c14320a]">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
                         <div className="flex items-start gap-3 flex-1">
-                            <div className="p-2 bg-white rounded-xl text-[#7a2860] shadow-sm mt-1">
-                                <MapPin size={20} />
+                            <div className="p-1.5 sm:p-2 bg-white rounded-xl text-[#7a2860] shadow-sm sm:mt-1">
+                                <MapPin size={16} className="sm:w-5 sm:h-5" />
                             </div>
-                            <div className="flex-1">
-                                <p className="text-[0.65rem] font-black uppercase tracking-widest text-[#3c143250] mb-1">Selected Area</p>
-                                <p className="text-[0.9rem] font-bold text-[#1e0a18] line-clamp-1">{address}</p>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-[0.6rem] sm:text-[0.65rem] font-black uppercase tracking-widest text-[#3c143250] mb-0.5 sm:mb-1">Selected Area</p>
+                                <p className="text-[0.8rem] sm:text-[0.9rem] font-bold text-[#1e0a18] line-clamp-2 sm:line-clamp-1 break-words">{address}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto">
                             <button
                                 onClick={onClose}
-                                className="px-8 py-3 rounded-2xl text-[0.9rem] font-bold text-[#3c143280] hover:bg-white hover:shadow-sm transition-all"
+                                className="flex-1 md:flex-none px-2 sm:px-8 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-[0.8rem] sm:text-[0.9rem] font-bold text-[#3c143280] hover:bg-white hover:shadow-sm transition-all text-center whitespace-nowrap"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => onSelect({ ...position, address })}
-                                className="px-10 py-3 bg-[#1e0a18] text-white rounded-2xl text-[0.9rem] font-bold hover:bg-[#7a2860] transition-all flex items-center gap-2 shadow-xl active:scale-95"
+                                className="flex-[2] md:flex-none px-3 sm:px-10 py-2.5 sm:py-3 bg-[#1e0a18] text-white rounded-xl sm:rounded-2xl text-[0.8rem] sm:text-[0.9rem] font-bold hover:bg-[#7a2860] transition-all flex justify-center items-center gap-1.5 sm:gap-2 shadow-xl active:scale-95 whitespace-nowrap text-center"
                             >
-                                <Check size={18} />
-                                Confirm Location
+                                <Check size={14} className="sm:w-[18px] sm:h-[18px]" />
+                                <span>Confirm<span className="hidden sm:inline"> Location</span></span>
                             </button>
                         </div>
                     </div>

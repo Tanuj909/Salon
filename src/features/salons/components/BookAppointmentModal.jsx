@@ -681,7 +681,7 @@ const PAYMENT_METHODS = [
     { value: "CASH", label: "Pay After Service", icon: "💶" },
 ];
 
-const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelectedService }) => {
+const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelectedService, preSelectedStaff }) => {
     const { submitBooking, loading: submitting, error: submitError, success, bookingResult, reset } = useCreateBooking();
     const { services, loading: servicesLoading } = useSalonServices({ id: salonId });
     const [selectedServices, setSelectedServices] = useState([]);
@@ -735,7 +735,17 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                 setSelectedServices([]);
                 setStep(1);
             }
-            setSelectedStaff(null);
+
+            // Initialize staff selection
+            if (preSelectedStaff) {
+                setSelectedStaff(preSelectedStaff);
+                // If they specifically picked a staff, they still need to pick a service first 
+                // UNLESS a service was also pre-selected.
+                // If they clicked "Book" on staff, we stay at Step 1 to pick services.
+            } else {
+                setSelectedStaff(null);
+            }
+
             setBookingDate("");
             setStartTime("");
             setPaymentMethod("UPI");
@@ -743,7 +753,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
             setActiveDate(todayStr);
             reset();
         }
-    }, [isOpen, reset, preSelectedService, todayStr]);
+    }, [isOpen, reset, preSelectedService, preSelectedStaff, todayStr]);
 
     // Close on escape
     useEffect(() => {
@@ -899,25 +909,25 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
             {/* Modal */}
             <div className="relative bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden shadow-2xl flex flex-col animate-[slideUp_0.3s_ease]">
                 {/* Header */}
-                <div className="bg-[#1F355E] px-8 py-6 flex items-center justify-between shrink-0">
-                    <div>
+                <div className="bg-[#1F355E] px-4 py-4 sm:px-8 sm:py-6 flex items-center justify-between shrink-0">
+                    <div className="flex-1 pr-2">
                         <span className="text-[10px] tracking-[0.4em] uppercase text-[#C5A566] font-bold block mb-1">
                             New Appointment
                         </span>
-                        <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#C5A566] font-semibold">
+                        <h2 className="font-[Cormorant_Garamond,Georgia,serif] text-xl sm:text-2xl text-[#C5A566] font-semibold truncate leading-tight">
                             {salonName || "Book Your Visit"}
                         </h2>
                     </div>
                     <button
                         onClick={onClose}
-                        className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:bg-white/20 hover:text-white transition-all border border-white/10"
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0 text-white/70 hover:bg-white/20 hover:text-white transition-all border border-white/10"
                     >
                         <X size={18} />
                     </button>
                 </div>
 
                 {/* Step Indicators */}
-                <div className="px-8 py-4 bg-white border-b border-[#E0E0E0] flex items-center gap-3 shrink-0">
+                <div className="px-3 py-3 sm:px-8 sm:py-4 bg-white border-b border-[#E0E0E0] flex items-center gap-1 sm:gap-3 shrink-0 overflow-x-auto no-scrollbar">
                     {[
                         { num: 1, label: "Services" },
                         { num: 2, label: "Schedule" },
@@ -930,28 +940,28 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     if (s.num === 2 && canProceedStep1) setStep(2);
                                     if (s.num === 3 && canProceedStep1 && canProceedStep2) setStep(3);
                                 }}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] transition-all ${step === s.num ? "bg-[#628EB8] text-white" : step > s.num ? "bg-[#1F355E] text-white" : "bg-white text-[#9babb8] border border-[#E0E0E0]"}`}
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] transition-all whitespace-nowrap ${step === s.num ? "bg-[#628EB8] text-white" : step > s.num ? "bg-[#1F355E] text-white" : "bg-white text-[#9babb8] border border-[#E0E0E0]"}`}
                             >
-                                <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-[9px]">
+                                <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 flex items-center justify-center text-[8px] sm:text-[9px]">
                                     {step > s.num ? "✓" : s.num}
                                 </span>
                                 {s.label}
                             </button>
-                            {i < 2 && <ChevronRight size={14} className="text-[#628EB8]/30" />}
+                            {i < 2 && <ChevronRight size={14} className="text-[#628EB8]/30 shrink-0" />}
                         </React.Fragment>
                     ))}
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 overflow-y-auto p-8">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-8">
                     {/* ─── STEP 1: Select Services ───────────────────── */}
                     {step === 1 && (
                         <div>
-                            <div className="mb-6">
-                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1F355E] mb-1">
+                            <div className="mb-4 sm:mb-6">
+                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl sm:text-2xl text-[#1F355E] mb-1 leading-tight">
                                     Select Services
                                 </h3>
-                                <p className="text-[#628EB8] text-sm">Choose one or more services for your appointment</p>
+                                <p className="text-[#628EB8] text-xs sm:text-sm">Choose one or more services for your appointment</p>
                             </div>
 
                             {servicesLoading ? (
@@ -972,29 +982,26 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                             <button
                                                 key={service.id}
                                                 onClick={() => toggleService(service)}
-                                                className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-300 group ${isSelected ? "border-[#628EB8] bg-[#628EB8]/5 shadow-sm" : "border-[#E0E0E0] bg-white hover:border-[#628EB8]/30 hover:bg-[#F8FAFC]"}`}
+                                                className={`w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 group ${isSelected ? "border-[#628EB8] bg-[#628EB8]/5 shadow-sm" : "border-[#E0E0E0] bg-white hover:border-[#628EB8]/30 hover:bg-[#F8FAFC]"}`}
                                             >
-                                                <div className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-4">
-                                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${isSelected ? "bg-[#628EB8] text-white" : "bg-[#F8FAFC] text-[#1F355E] border border-[#E0E0E0]"}`}>
-                                                            {isSelected ? <CheckCircle size={18} /> : <Scissors size={18} />}
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <div className="flex items-center gap-3 sm:gap-4 shrink overflow-hidden min-w-0">
+                                                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex shrink-0 items-center justify-center transition-all ${isSelected ? "bg-[#628EB8] text-white" : "bg-[#F8FAFC] text-[#1F355E] border border-[#E0E0E0]"}`}>
+                                                            {isSelected ? <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" /> : <Scissors size={16} className="sm:w-[18px] sm:h-[18px]" />}
                                                         </div>
-                                                        <div>
-                                                            <h4 className="font-semibold text-[#1F355E] text-sm">{service.name}</h4>
+                                                        <div className="min-w-0 flex-1">
+                                                            <h4 className="font-semibold text-[#1F355E] text-xs sm:text-sm truncate">{service.name}</h4>
                                                             {service.durationMinutes && (
-                                                                <span className="text-[#628EB8] text-xs flex items-center gap-1 mt-0.5">
+                                                                <span className="text-[#628EB8] text-[10px] sm:text-xs flex items-center gap-0.5 sm:gap-1 mt-0.5">
                                                                     <Clock size={10} /> {service.durationMinutes} min
                                                                 </span>
                                                             )}
                                                         </div>
                                                     </div>
-                                                    <div className="text-right">
-                                                        <span className="font-[Cormorant_Garamond] text-xl font-bold text-[#1F355E]">
+                                                    <div className="text-right shrink-0">
+                                                        <span className="font-[Cormorant_Garamond] text-lg sm:text-xl font-bold text-[#1F355E] block leading-none">
                                                             ₹{service.effectivePrice || service.price}
                                                         </span>
-                                                        {service.discountedPrice && service.discountedPrice < service.price && (
-                                                            <span className="text-xs text-gray-400 line-through ml-2">₹{service.price}</span>
-                                                        )}
                                                     </div>
                                                 </div>
                                             </button>
@@ -1007,13 +1014,13 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
 
                     {/* ─── STEP 2: Staff, Date & Time ───────────────── */}
                     {step === 2 && (
-                        <div className="space-y-8">
+                        <div className="space-y-6 sm:space-y-8">
                             {/* Staff Selection (Optional) */}
                             <div>
-                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1F355E] mb-1">
+                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl sm:text-2xl text-[#1F355E] mb-1">
                                     Choose a Stylist
                                 </h3>
-                                <p className="text-[#628EB8] text-sm mb-4">Optional — select your preferred stylist</p>
+                                <p className="text-[#628EB8] text-xs sm:text-sm mb-3 sm:mb-4">Optional — select your preferred stylist</p>
 
                                 {staffLoading ? (
                                     <div className="flex items-center gap-3 py-4">
@@ -1149,12 +1156,12 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
 
                     {/* ─── STEP 3: Review & Confirm ────────────────── */}
                     {step === 3 && (
-                        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div>
-                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl text-[#1F355E] mb-1">
+                                <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl sm:text-2xl text-[#1F355E] mb-1 leading-tight">
                                     Final Review
                                 </h3>
-                                <p className="text-[#628EB8] text-sm">One last look before we confirm your appointment.</p>
+                                <p className="text-[#628EB8] text-xs sm:text-sm">One last look before we confirm your appointment.</p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -1198,18 +1205,18 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
 
                                     {/* Payment Selection */}
                                     <div>
-                                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#628EB8] font-bold block mb-3">
+                                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#628EB8] font-bold block mb-2 sm:mb-3">
                                             Payment Method
                                         </span>
-                                        <div className="flex gap-3">
+                                        <div className="flex gap-2 sm:gap-3 flex-wrap">
                                             {PAYMENT_METHODS.map((pm) => (
                                                 <button
                                                     key={pm.value}
                                                     onClick={() => setPaymentMethod(pm.value)}
-                                                    className={`flex-1 flex items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all ${paymentMethod === pm.value ? "border-[#1F355E] bg-[#1F355E] text-white shadow-md" : "border-[#E0E0E0] bg-white text-[#1F355E] hover:border-[#628EB8]/30"}`}
+                                                    className={`w-full sm:flex-1 flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl sm:rounded-2xl border-2 transition-all ${paymentMethod === pm.value ? "border-[#1F355E] bg-[#1F355E] text-white shadow-md" : "border-[#E0E0E0] bg-white text-[#1F355E] hover:border-[#628EB8]/30"}`}
                                                 >
-                                                    <span className="text-xl">{pm.icon}</span>
-                                                    <span className="text-xs font-bold uppercase tracking-wider">{pm.label}</span>
+                                                    <span className="text-lg sm:text-xl">{pm.icon}</span>
+                                                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">{pm.label}</span>
                                                 </button>
                                             ))}
                                         </div>
@@ -1286,14 +1293,17 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                 </div>
 
                 {/* Footer */}
-                <div className="px-8 py-5 bg-white border-t border-[#E0E0E0] flex items-center justify-between shrink-0">
+                <div className="px-4 py-4 sm:px-8 sm:py-5 bg-white border-t border-[#E0E0E0] flex items-center justify-between shrink-0">
                     {/* Total Pill */}
                     {selectedServices.length > 0 && (
-                        <div className="flex items-center gap-3">
-                            <span className="text-[10px] uppercase tracking-[0.2em] text-[#628EB8] font-bold">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-[#628EB8] font-bold hidden sm:inline">
                                 {selectedServices.length} {selectedServices.length === 1 ? "service" : "services"}
                             </span>
-                            <span className="font-[Cormorant_Garamond] text-2xl font-bold text-[#1F355E]">
+                            <span className="text-[10px] sm:hidden uppercase tracking-[0.2em] text-[#628EB8] font-bold">
+                                Total:
+                            </span>
+                            <span className="font-[Cormorant_Garamond] text-xl sm:text-2xl font-bold text-[#1F355E]">
                                 ₹{totals.total}
                             </span>
                         </div>
@@ -1301,11 +1311,11 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                     {selectedServices.length === 0 && <span />}
 
                     {/* Navigation Buttons */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                         {step > 1 && (
                             <button
                                 onClick={() => setStep((s) => s - 1)}
-                                className="px-6 py-3 rounded-xl border border-[#E0E0E0] text-[#1F355E] text-[10px] font-bold uppercase tracking-[0.15em] hover:bg-gray-50 transition-all"
+                                className="px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-[#E0E0E0] text-[#1F355E] text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] hover:bg-gray-50 transition-all"
                             >
                                 Back
                             </button>
@@ -1315,7 +1325,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                             <button
                                 onClick={() => setStep((s) => s + 1)}
                                 disabled={(step === 1 && !canProceedStep1) || (step === 2 && !canProceedStep2)}
-                                className="px-8 py-3 rounded-xl bg-[#1F355E] text-white text-[10px] font-bold uppercase tracking-[0.15em] hover:bg-[#628EB8] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-[#1F355E] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] hover:bg-[#628EB8] transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                             >
                                 Continue
                             </button>
@@ -1323,15 +1333,15 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                             <button
                                 onClick={handleSubmit}
                                 disabled={submitting || !canSubmit}
-                                className="px-8 py-3 rounded-xl bg-[#1F355E] text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                                className="px-5 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-[#1F355E] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
                             >
                                 {submitting ? (
                                     <>
                                         <Loader2 size={14} className="animate-spin" />
-                                        Booking...
+                                        <span>Booking...</span>
                                     </>
                                 ) : (
-                                    "Confirm Booking"
+                                    <span>Confirm<span className="hidden sm:inline"> Booking</span></span>
                                 )}
                             </button>
                         )}

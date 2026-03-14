@@ -1,48 +1,57 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 
 const ServicesSection = () => {
   const services = [
     {
       title: "Signature Haircuts",
       description: "Precision styling tailored to your face shape and personal aesthetic.",
-      image: "https://images.unsplash.com/photo-1553521041-d168abd31de3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGhhaXJjdXR8ZW58MHx8MHx8fDA%3D"
+      image: "https://images.unsplash.com/photo-1553521041-d168abd31de3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGhhaXJjdXR8ZW58MHx8MHx8fDA%3D",
+      searchTerm: "Haircut"
     },
     {
       title: "Luxury Skin Care",
       description: "Revitalizing facials and treatments using premium organic elixirs.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC1IXVoviff2vw-vfbnEth3cRVJbetSWlpORQGs3h5LjLLD9H5OdOEei1FUdQTUx9HFAf_MxM0Lrgpda-Z_epKsSlJcRRIs7TB4H1V0C1r1lj0rJjgoot-9crr5L57tchCg-2Z4duk8w9AR97Qs-4NeiUD5JfFfoYyOwa2ZEHDqHI-8SJv56It59aYjrDxFqIsmUHwqPZkgz_qcsqDXuKvSoWfMhqqy8Vnavtk1btUXMAb_CqVj7tLvht43W98PU1-beQy4dfEZIRu9"
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC1IXVoviff2vw-vfbnEth3cRVJbetSWlpORQGs3h5LjLLD9H5OdOEei1FUdQTUx9HFAf_MxM0Lrgpda-Z_epKsSlJcRRIs7TB4H1V0C1r1lj0rJjgoot-9crr5L57tchCg-2Z4duk8w9AR97Qs-4NeiUD5JfFfoYyOwa2ZEHDqHI-8SJv56It59aYjrDxFqIsmUHwqPZkgz_qcsqDXuKvSoWfMhqqy8Vnavtk1btUXMAb_CqVj7tLvht43W98PU1-beQy4dfEZIRu9",
+      searchTerm: "Facial"
     },
     {
       title: "Artistic Manicures",
       description: "Custom nail art and therapeutic hand care for every occasion.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdblC_ad2bLjbNG1gzwDGiwBgnmnDTCAgGOKwuSqEUmyOYpGuolnD0WzzmcKtE1Em6Mcv7NtmPzmprSV80ruWKJ6GbHU7m-3K6zMc7I9oS8H1SLDb8rnZOSQlXxe4D_steWmcj_l9dTGc7byOoXU0WO3JtSqWXd1-bJ1vOAkxuhgyK4M9hCf05IeQi06ReZBzJImNKTCSEdXkPAK3lu_a0tOjMvhLWHXJE47-VY2FYGrVTw04JK6IqB2RSncxzG95UJtUq057UkIi5"
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdblC_ad2bLjbNG1gzwDGiwBgnmnDTCAgGOKwuSqEUmyOYpGuolnD0WzzmcKtE1Em6Mcv7NtmPzmprSV80ruWKJ6GbHU7m-3K6zMc7I9oS8H1SLDb8rnZOSQlXxe4D_steWmcj_l9dTGc7byOoXU0WO3JtSqWXd1-bJ1vOAkxuhgyK4M9hCf05IeQi06ReZBzJImNKTCSEdXkPAK3lu_a0tOjMvhLWHXJE47-VY2FYGrVTw04JK6IqB2RSncxzG95UJtUq057UkIi5",
+      searchTerm: "Nail"
     },
     {
       title: "Bridal Packages",
       description: "Complete transformation services for your most special day.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDZwatrTnvnmq9fKbDCD54TxCGWmSdF8uG7JHsAv0tsf_y3mGeYufo8SXtIpO5SGh5ZdtVgEvAvpcofmIXhg8ePC2wo6M5VSUlq5LDaZDwcuFsbofUOH--p6xj8SwLQYhQHiGmOllpVgvnClOpKg14NyUI5yuRUD3iJPUSkg-SnqU2y0z1bsZbaP25NgGW7wYH5jmHzl_5tQmksd7ezywNc_n6PnQhu8DraI5qkvvtgaDvi3GdA0mqj-nYxXuwNKtpY9G7YxDel5-Br"
+      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDZwatrTnvnmq9fKbDCD54TxCGWmSdF8uG7JHsAv0tsf_y3mGeYufo8SXtIpO5SGh5ZdtVgEvAvpcofmIXhg8ePC2wo6M5VSUlq5LDaZDwcuFsbofUOH--p6xj8SwLQYhQHiGmOllpVgvnClOpKg14NyUI5yuRUD3iJPUSkg-SnqU2y0z1bsZbaP25NgGW7wYH5jmHzl_5tQmksd7ezywNc_n6PnQhu8DraI5qkvvtgaDvi3GdA0mqj-nYxXuwNKtpY9G7YxDel5-Br",
+      searchTerm: "Bridal"
     },
     {
       title: "Color & Highlights",
       description: "Vibrant, long-lasting color treatments crafted by expert colorists.",
-      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop",
+      searchTerm: "Color"
     },
     {
       title: "Deep Massage",
       description: "Tension-melting body therapy using aromatic botanical oils.",
-      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&auto=format&fit=crop",
+      searchTerm: "Massage"
     },
     {
       title: "Lash & Brow",
       description: "Frame your eyes with sculpted brows and voluminous lash extensions.",
-      image: "https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFzaHxlbnwwfHwwfHx8MA%3D%3D"
+      image: "https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFzaHxlbnwwfHwwfHx8MA%3D%3D",
+      searchTerm: "Brow"
     },
     {
       title: "Spa Rituals",
       description: "Full-body wellness journeys blending ancient and modern techniques.",
-      image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&auto=format&fit=crop"
+      image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&auto=format&fit=crop",
+      searchTerm: "Spa"
     }
   ];
 
@@ -57,7 +66,8 @@ const ServicesSection = () => {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width >= 1024) setVisibleCards(4);
+      if (width >= 1280) setVisibleCards(4);
+      else if (width >= 1024) setVisibleCards(3);
       else if (width >= 768) setVisibleCards(2);
       else setVisibleCards(1);
     };
@@ -186,9 +196,9 @@ const ServicesSection = () => {
                     <p className="text-[#fff8f2]/90 text-[0.85rem] leading-relaxed mb-4 opacity-0 translate-y-3 transition-all duration-300 delay-50 group-hover:opacity-100 group-hover:translate-y-0 line-clamp-3 md:line-clamp-none">
                       {service.description}
                     </p>
-                    <button className="bg-transparent border-[1.5px] border-[#fff8f2]/70 text-[#fff8f2] px-[22px] py-2 rounded-full text-[0.8rem] font-semibold opacity-0 translate-y-3 transition-all duration-300 delay-100 tracking-wider hover:bg-[#fff8f2] hover:text-[#3c1432] group-hover:opacity-100 group-hover:translate-y-0">
+                    <Link href={`/salons?serviceName=${service.searchTerm}`} className="inline-block bg-transparent border-[1.5px] border-[#fff8f2]/70 text-[#fff8f2] px-[22px] py-1.5 rounded-full text-[0.8rem] font-semibold opacity-0 translate-y-3 transition-all duration-300 delay-100 tracking-wider hover:bg-[#fff8f2] hover:text-[#3c1432] group-hover:opacity-100 group-hover:translate-y-0 no-underline text-center">
                       Explore
-                    </button>
+                    </Link>
                   </div>
                 </div>
               ))}

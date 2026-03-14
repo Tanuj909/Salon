@@ -9,6 +9,13 @@ export const fetchNearbySalons = async (lat, lng, radius = 20) => {
   return response.data;
 };
 
+export const searchNearbySalons = async (lat, lng, radius = 20, serviceName, categoryId) => {
+  const response = await publicApiClient.get(
+    ENDPOINTS.SALON.SEARCH_NEARBY(lat, lng, radius, serviceName, categoryId)
+  );
+  return response.data.content || response.data; // fallback for paginated response
+};
+
 export const fetchCategories = async () => {
   const response = await publicApiClient.get(ENDPOINTS.CATEGORIES.ALL);
   return response.data.content;
@@ -27,35 +34,35 @@ export const fetchNearbyByCategory = async (categoryId, lat, lng, radius = 25, s
 };
 
 export const fetchSalonById = async (id) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.DETAILS(id)
   );
   return response.data;
 };
 
 export const getAllSalonStaff = async (id) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.STAFF(id)
   );
   return response.data.body.content;
 };
 
 export const getStaffByServiceId = async (serviceId) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.STAFF_BY_SERVICE(serviceId)
   );
   return response.data;
 };
 
 export const getStaffProfile = async (staffId) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.STAFF_PROFILE(staffId)
   );
   return response.data.body;
 };
 
 export const getSalonServices = async (id) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.SERVICES(id)
   );
   return response.data;
