@@ -41,21 +41,21 @@ export const fetchSalonById = async (id) => {
 };
 
 export const getAllSalonStaff = async (id) => {
-  const response = await publicApiClient.get(
+  const response = await apiClient.get(
     ENDPOINTS.SALON.STAFF(id)
   );
   return response.data.body.content;
 };
 
 export const getStaffByServiceId = async (serviceId) => {
-  const response = await publicApiClient.get(
+  const response = await apiClient.get(
     ENDPOINTS.SALON.STAFF_BY_SERVICE(serviceId)
   );
   return response.data;
 };
 
 export const getStaffProfile = async (staffId) => {
-  const response = await publicApiClient.get(
+  const response = await apiClient.get(
     ENDPOINTS.SALON.STAFF_PROFILE(staffId)
   );
   return response.data.body;
