@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthContext } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import NotificationBell from "@/components/layout/NotificationBell";
+
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,6 +84,12 @@ export default function Navbar() {
               List Your Business
             </Link>
 
+            {/* // Navbar ke andar, user logged in ho to: */}
+            <div className=''>
+              {user && <NotificationBell isScrolled={isScrolled} />}
+            </div>
+            
+ 
             {/* Auth / Profile */}
             <div className="relative">
               {!loading && (
