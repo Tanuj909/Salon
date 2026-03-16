@@ -167,6 +167,49 @@ export default function SalonList() {
   const [showTimeoutOptions, setShowTimeoutOptions] = useState(false);
   const [categories, setCategories] = useState([]);
 
+  // ─── Dynamic Placeholders ───
+  const [salonPlaceholderIndex, setSalonPlaceholderIndex] = useState(0);
+  const [servicePlaceholderIndex, setServicePlaceholderIndex] = useState(0);
+
+  const salonPlaceholders = ["Encore Salon", "The Barber Shop", "Luxe Cuts", "Zen Spa", "Elite Grooming", "Radiance Beauty"];
+  const servicePlaceholders = ["Haircut", "Manicure", "Beard Trim", "Facial", "Hair Coloring", "Massage"];
+
+  const [headingIndex, setHeadingIndex] = useState(0);
+  const headings = [
+    "Discover Premium Salons",
+    "Find Your Perfect Style",
+    "Experience Luxury Grooming",
+    "Your Beauty, Our Priority"
+  ];
+
+  const [placeholderFade, setPlaceholderFade] = useState(true);
+  const [headingFade, setHeadingFade] = useState(true);
+
+  // ─── Heading Cycle (5s) ───
+  React.useEffect(() => {
+    const headingInterval = setInterval(() => {
+      setHeadingFade(false);
+      setTimeout(() => {
+        setHeadingIndex((prev) => (prev + 1) % headings.length);
+        setHeadingFade(true);
+      }, 500);
+    }, 5000);
+    return () => clearInterval(headingInterval);
+  }, []);
+
+  // ─── Placeholder Cycle (3.5s) ───
+  React.useEffect(() => {
+    const placeholderInterval = setInterval(() => {
+      setPlaceholderFade(false);
+      setTimeout(() => {
+        setSalonPlaceholderIndex((prev) => (prev + 1) % salonPlaceholders.length);
+        setServicePlaceholderIndex((prev) => (prev + 1) % servicePlaceholders.length);
+        setPlaceholderFade(true);
+      }, 500);
+    }, 3500);
+    return () => clearInterval(placeholderInterval);
+  }, []);
+
   React.useEffect(() => {
     fetchActiveCategories().then(data => {
       // Depending on API response structure, it could be data.content or just data
@@ -180,7 +223,7 @@ export default function SalonList() {
     if (loading && !salons.length) {
       timer = setTimeout(() => {
         setShowTimeoutOptions(true);
-      }, 10000);
+      }, 15000);
     } else {
       setShowTimeoutOptions(false);
     }
@@ -291,9 +334,16 @@ export default function SalonList() {
               <div 
                 className="flex items-center justify-between px-4 py-2 bg-white/60 backdrop-blur-md rounded-2xl border border-[#3c143208] shadow-sm w-full md:w-fit font-bold leading-none text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[0.85rem] sm:text-[1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block md:cursor-default"
               >
-                <span onClick={() => setShowMobileSearch(true)} className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap">Discover Premium Salons</span>
+                <span 
+                  onClick={() => setShowMobileSearch(true)} 
+                  className={`flex-1 cursor-pointer md:cursor-default whitespace-nowrap transition-opacity duration-500 ${headingFade ? "opacity-100" : "opacity-0"}`}
+                >
+                  {headings[headingIndex]}
+                </span>
                 <div className="flex items-center gap-3 md:hidden">
-                    <Search size={18} className="text-[#7a2860] cursor-pointer" onClick={() => setShowMobileSearch(true)} />
+                    {!showFilters && (
+                      <Search size={18} className="text-[#7a2860] cursor-pointer" onClick={() => setShowMobileSearch(true)} />
+                    )}
                     <div className="w-px h-4 bg-[#3c143212]" />
                     <button onClick={() => setShowFilters(!showFilters)} className="relative">
                         <SlidersHorizontal size={18} className="text-[#7a2860] cursor-pointer" />
@@ -305,56 +355,103 @@ export default function SalonList() {
               </div>
             ) : (
                 <div className="relative w-full flex items-center md:hidden">
-                    <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
-                        <Search size={16} />
-                    </span>
-                    <input
-                        autoFocus
-                        className="w-full h-[46px] pr-[40px] pl-[38px] rounded-2xl border border-[#3c143212] bg-white/60 backdrop-blur-md text-[#2a1020] text-[0.85rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
-                        type="text"
-                        placeholder="Search salon by name..."
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        onBlur={() => !search && setShowMobileSearch(false)}
-                    />
-                    <button 
-                        onClick={() => {
-                            setSearch("");
-                            setShowMobileSearch(false);
-                        }}
-                        className="absolute right-[12px] top-1/2 -translate-y-1/2 p-1 text-[#3c143259] hover:text-[#7a2860]"
-                    >
-                        <X size={16} />
-                    </button>
+                    {!showFilters && (
+                      <>
+                        <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
+                            <Search size={16} />
+                        </span>
+                        <input
+                            autoFocus
+                            className={`w-full h-[46px] pr-[40px] pl-[38px] rounded-2xl border border-[#3c143230] bg-white/80 backdrop-blur-md text-[#2a1020] text-[0.85rem] outline-none transition-all duration-300 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans] placeholder:text-[#3c143270] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
+                            type="text"
+                            placeholder={salonPlaceholders[salonPlaceholderIndex]}
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            onBlur={() => !search && setShowMobileSearch(false)}
+                        />
+                        <button 
+                            onClick={() => {
+                                setSearch("");
+                                setShowMobileSearch(false);
+                            }}
+                            className="absolute right-[12px] top-1/2 -translate-y-1/2 p-1 text-[#3c143259] hover:text-[#7a2860]"
+                        >
+                            <X size={16} />
+                        </button>
+                      </>
+                    )}
                 </div>
             )}
           </div>
 
-          {/* Search Box (Desktop Only - Frontend Local Search) & Filter Toggle */}
+          {/* Filter Toggle (Desktop) */}
           <div className="hidden md:flex items-center gap-3">
-            <div className="relative w-[320px]">
-              <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
-                <Search size={16} />
-              </span>
-              <input
-                className="w-full h-10 pr-[16px] pl-[38px] rounded-xl border border-[#3c143212] bg-white/50 backdrop-blur-sm text-[#2a1020] text-[0.78rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
-                type="text"
-                placeholder="Search salon by name..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-            
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`h-10 px-4 flex items-center gap-2 rounded-xl border transition-all duration-300 font-bold text-[0.75rem] ${showFilters ? 'bg-[#1e0a18] text-white border-[#1e0a18] shadow-md' : 'bg-white/50 border-[#3c143212] text-[#4b3621] hover:bg-white hover:border-[#7a2860]/30'}`}
+              className={`h-11 px-6 flex items-center gap-3 rounded-2xl border transition-all duration-300 font-bold text-[0.85rem] ${showFilters ? 'bg-[#1e0a18] text-white border-[#1e0a18] shadow-md' : 'bg-white/50 border-[#3c143212] text-[#4b3621] hover:bg-white hover:border-[#7a2860]/30 shadow-sm'}`}
             >
-              <SlidersHorizontal size={14} className={showFilters ? 'text-[#C8A951]' : 'text-[#7a2860]'} />
-              <span>Filters</span>
+              <SlidersHorizontal size={16} className={showFilters ? 'text-[#C8A951]' : 'text-[#7a2860]'} />
+              <span>{showFilters ? 'Hide Filters' : 'Filters'}</span>
               {hasChanges && (
                 <span className="w-1.5 h-1.5 rounded-full bg-[#cd6133] animate-pulse" />
               )}
               <ChevronDown size={14} className={`transition-transform duration-300 ${showFilters ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
+        </div>
+
+        {/* ── Desktop Dual Search Bar ── */}
+        <div className={`hidden md:block overflow-hidden transition-all duration-300 ${!showFilters ? 'max-h-[100px] mb-8 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+          <div className="flex items-center gap-4 p-2.5 bg-white/70 backdrop-blur-md rounded-[1.5rem] border border-[#3c143212] shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+            {/* Salon Name Search */}
+            <div className="relative flex-1 group">
+              <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143260] transition-colors group-focus-within:text-[#7a2860]">
+                <Search size={18} />
+              </span>
+              <input
+                className={`w-full h-12 pr-[16px] pl-[48px] rounded-xl border border-[#3c143212] bg-white/95 text-[#2a1020] text-[0.9rem] outline-none transition-all duration-200 focus:bg-white focus:border-[#7a2860]/40 focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans] placeholder:text-[#3c143260] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
+                type="text"
+                placeholder={salonPlaceholders[salonPlaceholderIndex]}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+
+            <div className="w-px h-8 bg-[#3c143212]" />
+
+            {/* Service Name Search */}
+            <div className="relative flex-1 group">
+              <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143260] transition-colors group-focus-within:text-[#7a2860]">
+                <Search size={18} />
+              </span>
+              <input
+                className={`w-full h-12 pr-[16px] pl-[48px] rounded-xl border border-[#3c143212] bg-white/95 text-[#2a1020] text-[0.9rem] outline-none transition-all duration-200 focus:bg-white focus:border-[#7a2860]/40 focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans] placeholder:text-[#3c143260] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
+                type="text"
+                placeholder={servicePlaceholders[servicePlaceholderIndex]}
+                value={draftParams.serviceName}
+                onChange={(e) => setDraftParams(prev => ({ ...prev, serviceName: e.target.value }))}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !loading) {
+                    handleFetch();
+                  }
+                }}
+              />
+            </div>
+
+            {/* Search Action Button */}
+            <button
+              onClick={handleFetch}
+              disabled={loading}
+              className={`h-12 px-6 flex items-center justify-center gap-2 rounded-xl bg-[#1e0a18] text-white font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:bg-[#7a2860] hover:shadow-lg hover:shadow-[#1e0a18]/10 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              {loading ? (
+                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+              ) : (
+                <>
+                  <Search size={18} />
+                  <span>Search</span>
+                </>
+              )}
             </button>
           </div>
         </div>

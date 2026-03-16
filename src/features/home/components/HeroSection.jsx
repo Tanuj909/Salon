@@ -1,12 +1,32 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import useActiveCategories from '../../../features/salons/hooks/useActiveServices';
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedService, setSelectedService] = useState("");
+  const [serviceSearch, setServiceSearch] = useState("");
+  const router = useRouter();
+  
+  const [headingIndex, setHeadingIndex] = useState(0);
+  const [headingFade, setHeadingFade] = useState(true);
+  const [placeholderFade, setPlaceholderFade] = useState(true);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  const headings = [
+    "Experience Luxury Services, Near You",
+    "Find Your Perfect Style Today",
+    "Expert Grooming for Everyone",
+    "Your Beauty, Our Priority"
+  ];
+
+  const servicePlaceholders = [
+    "Haircut", "Manicure", "Beard Trim", "Facial", "Hair Coloring", "Massage", "Spa Treatment"
+  ];
+
   const { categories, loading, error } = useActiveCategories();
 
   const slides = [
@@ -16,11 +36,36 @@ const HeroSection = () => {
     { url: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1600&q=80', label: '04' }
   ];
 
+  // ─── Background Cycle ───
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 8000);
     return () => clearInterval(timer);
+  }, []);
+
+  // ─── Heading Cycle (5s) ───
+  useEffect(() => {
+    const headingTimer = setInterval(() => {
+      setHeadingFade(false);
+      setTimeout(() => {
+        setHeadingIndex((prev) => (prev + 1) % headings.length);
+        setHeadingFade(true);
+      }, 500);
+    }, 5000);
+    return () => clearInterval(headingTimer);
+  }, []);
+
+  // ─── Placeholder Cycle (3.5s) ───
+  useEffect(() => {
+    const placeholderTimer = setInterval(() => {
+      setPlaceholderFade(false);
+      setTimeout(() => {
+        setPlaceholderIndex((prev) => (prev + 1) % servicePlaceholders.length);
+        setPlaceholderFade(true);
+      }, 500);
+    }, 3500);
+    return () => clearInterval(placeholderTimer);
   }, []);
 
   return (
@@ -93,8 +138,18 @@ const HeroSection = () => {
           </div>
 
           {/* Main Heading - Refined for single line */}
-          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(1.6rem,8vw,4.5rem)] text-white font-light leading-[1.1] tracking-tight mb-5 animate-fade-up [animation-delay:300ms] text-shadow-lg px-2">
-            Experience <span className="italic text-[#B76E4B] font-normal">Luxury</span> Services, Near You
+          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(1.6rem,8vw,4.5rem)] text-white font-light leading-[1.1] tracking-tight mb-5 animate-fade-up [animation-delay:300ms] text-shadow-lg px-2 min-h-[1.2em]">
+            <span className={`inline-block transition-opacity duration-500 ${headingFade ? 'opacity-100' : 'opacity-0'}`}>
+              {headings[headingIndex].split(' ').map((word, i) => (
+                <React.Fragment key={i}>
+                  {word === 'Luxury' ? (
+                    <span className="italic text-[#B76E4B] font-normal">{word} </span>
+                  ) : (
+                    <>{word} </>
+                  )}
+                </React.Fragment>
+              ))}
+            </span>
           </h1>
 
           {/* Subtext */}
@@ -165,6 +220,38 @@ const HeroSection = () => {
                 <span className="material-symbols-outlined text-lg">search</span>
                 <span>Search</span>
               </Link>
+            </div>
+
+            {/* Service Search Bar - Below Filter Bar */}
+            <div className="mt-4 md:mt-6 flex justify-center w-full">
+              <div className="w-full max-w-xl bg-black/70 backdrop-blur-2xl p-1.5 md:p-2 rounded-2xl md:rounded-full shadow-2xl border border-white/10 flex items-center gap-2 group transition-all hover:bg-black/80">
+                <div className="flex-1 relative flex items-center pl-4">
+                  <span className="material-symbols-outlined text-[#B76E4B] text-xl mr-3 group-focus-within:animate-bounce">content_cut</span>
+                  <input
+                    type="text"
+                    className={`w-full bg-transparent text-white text-sm md:text-base font-medium outline-none placeholder:text-white/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
+                    placeholder={`Search Service: ${servicePlaceholders[placeholderIndex]}`}
+                    value={serviceSearch}
+                    onChange={(e) => setServiceSearch(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && serviceSearch.trim()) {
+                        router.push(`/salons?serviceName=${encodeURIComponent(serviceSearch.trim())}`);
+                      }
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    if (serviceSearch.trim()) {
+                      router.push(`/salons?serviceName=${encodeURIComponent(serviceSearch.trim())}`);
+                    }
+                  }}
+                  className="px-6 py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-xl md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
+                >
+                  <span className="material-symbols-outlined text-lg">search</span>
+                  <span className="hidden sm:inline">Search Service</span>
+                </button>
+              </div>
             </div>
           </div>
 

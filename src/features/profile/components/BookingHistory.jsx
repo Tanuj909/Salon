@@ -183,12 +183,11 @@ const BookingHistory = ({ businessId }) => {
     }
 
     return (
-        <div className="px-4 sm:px-8 mt-12 sm:mt-16">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-8">
+        <div className="px-3 sm:px-8 mt-10 sm:mt-16">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
                     <h2 className="text-xl sm:text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
-                    <p className="text-[#3c143250] text-xs font-bold uppercase tracking-widest mt-1">
+                    <p className="text-[#3c143250] text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1">
                         {pagination.totalElements} {pagination.totalElements === 1 ? 'Booking' : 'Bookings'} Found
                     </p>
                 </div>
@@ -223,19 +222,19 @@ const BookingHistory = ({ businessId }) => {
                         className="bg-white p-4 sm:p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all group"
                     >
                         {/* Top Row: Booking Number + Status */}
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                                <span className="text-[#3c143230] text-[0.65rem] font-black uppercase tracking-widest">
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <div className="flex items-center gap-2 sm:gap-3">
+                                <span className="text-[#3c143230] text-[0.6rem] sm:text-[0.65rem] font-black uppercase tracking-widest">
                                     {booking.bookingNumber}
                                 </span>
                                 {booking.paymentMethod && (
-                                    <span className="flex items-center gap-1 text-[#3c143230] text-[0.6rem] font-bold uppercase tracking-wider">
+                                    <span className="flex items-center gap-1 text-[#3c143230] text-[0.55rem] sm:text-[0.6rem] font-bold uppercase tracking-wider">
                                         <CreditCard size={10} />
                                         {booking.paymentMethod}
                                     </span>
                                 )}
                             </div>
-                            <span className={`px-4 py-1.5 rounded-full border text-[9px] font-black uppercase tracking-[0.15em] ${getStatusStyle(booking.status)}`}>
+                            <span className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border text-[8px] sm:text-[9px] font-black uppercase tracking-[0.15em] ${getStatusStyle(booking.status)} whitespace-nowrap`}>
                                 {(booking.status || 'Unknown').replace(/_/g, ' ')}
                             </span>
                         </div>
@@ -251,17 +250,17 @@ const BookingHistory = ({ businessId }) => {
                                     <h4 className="font-bold text-base sm:text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond] leading-tight">
                                         {getServiceNames(booking.services)}
                                     </h4>
-                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-2">
-                                        <span className="flex items-center gap-1.5 text-[#3c143260] text-xs font-medium">
+                                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2">
+                                        <span className="flex items-center gap-1.5 text-[#3c143260] text-[10px] sm:text-xs font-medium">
                                             <Calendar size={12} />
                                             {formatDate(booking.bookingDate)}
                                         </span>
-                                        <span className="flex items-center gap-1.5 text-[#3c143240] text-xs font-medium">
+                                        <span className="flex items-center gap-1.5 text-[#3c143240] text-[10px] sm:text-xs font-medium">
                                             <Clock size={12} />
                                             {formatTime(booking.startTime)} — {formatTime(booking.endTime)}
                                         </span>
                                         {getTotalDuration(booking.services) && (
-                                            <span className="text-[#3c143230] text-xs font-medium">
+                                            <span className="text-[#3c143230] text-[10px] sm:text-xs font-medium">
                                                 ({getTotalDuration(booking.services)})
                                             </span>
                                         )}
@@ -296,51 +295,56 @@ const BookingHistory = ({ businessId }) => {
                             </div>
 
                             {/* Right: Pricing & Actions */}
-                            <div className="flex flex-col md:items-end gap-3 md:min-w-[180px]">
-                                <div className="text-right">
-                                    <p className="text-[#3c143230] text-[0.55rem] uppercase font-black tracking-widest mb-0.5">Amount</p>
-                                    {booking.discountAmount > 0 ? (
-                                        <>
-                                            <p className="text-[#3c143230] text-xs line-through">
-                                                ₹{booking.totalAmount?.toFixed(2)}
+                            <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-3 md:min-w-[180px] pt-4 md:pt-0 border-t md:border-t-0 border-[#3c143208]">
+                                <div className="text-left md:text-right">
+                                    <p className="text-[#3c143230] text-[0.5rem] sm:text-[0.55rem] uppercase font-black tracking-widest mb-0.5">Amount</p>
+                                    <div className="flex flex-col md:items-end">
+                                        {booking.discountAmount > 0 ? (
+                                            <>
+                                                <div className="flex items-center gap-2 md:flex-row-reverse">
+                                                    <p className="text-[#3c143230] text-[10px] sm:text-xs line-through">
+                                                        ₹{booking.totalAmount?.toFixed(2)}
+                                                    </p>
+                                                    <p className="font-bold text-base sm:text-lg text-[#1e0a18] tracking-tight">
+                                                        ₹{booking.finalAmount?.toFixed(2)}
+                                                    </p>
+                                                </div>
+                                                <p className="text-[#10b981] text-[0.55rem] sm:text-[0.6rem] font-bold">
+                                                    −₹{booking.discountAmount?.toFixed(2)} off
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <p className="font-bold text-base sm:text-lg text-[#1e0a18] tracking-tight">
+                                                ₹{booking.finalAmount?.toFixed(2) || booking.totalAmount?.toFixed(2) || 'N/A'}
                                             </p>
-                                            <p className="font-bold text-lg text-[#1e0a18] tracking-tight">
-                                                ₹{booking.finalAmount?.toFixed(2)}
-                                            </p>
-                                            <p className="text-[#10b981] text-[0.6rem] font-bold">
-                                                −₹{booking.discountAmount?.toFixed(2)} off
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <p className="font-bold text-lg text-[#1e0a18] tracking-tight">
-                                            ₹{booking.finalAmount?.toFixed(2) || booking.totalAmount?.toFixed(2) || 'N/A'}
+                                        )}
+                                        <p className={`text-[0.55rem] sm:text-[0.6rem] font-bold uppercase tracking-wider mt-0.5 ${getPaymentStatusStyle(booking.paymentStatus)}`}>
+                                            {booking.paymentStatus || ''}
                                         </p>
-                                    )}
-                                    <p className={`text-[0.6rem] font-bold uppercase tracking-wider mt-0.5 ${getPaymentStatusStyle(booking.paymentStatus)}`}>
-                                        {booking.paymentStatus || ''}
-                                    </p>
+                                    </div>
                                 </div>
 
-                                {['PENDING', 'CONFIRMED'].includes(booking.status?.toUpperCase()) && (
-                                    <button
-                                        onClick={() => handleCancel(booking.id)}
-                                        disabled={isCanceling}
-                                        className="mt-1 px-4 py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto text-center"
-                                    >
-                                        Cancel Booking
-                                    </button>
-                                )}
+                                <div className="flex flex-col gap-2 w-1/2 md:w-auto">
+                                    {['PENDING', 'CONFIRMED'].includes(booking.status?.toUpperCase()) && (
+                                        <button
+                                            onClick={() => handleCancel(booking.id)}
+                                            disabled={isCanceling}
+                                            className="px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-center"
+                                        >
+                                            Cancel
+                                        </button>
+                                    )}
 
-                                {/* Write Review Button */}
-                                {booking.status?.toUpperCase() === 'COMPLETED' && (
-                                    <button
-                                        onClick={() => handleOpenReviewModal(booking)}
-                                        className="mt-1 px-4 py-1.5 rounded-lg border border-[#10b98120] text-[#10b981] text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#10b98110] transition-colors w-full md:w-auto text-center flex items-center justify-center gap-1.5"
-                                    >
-                                        <Star size={12} />
-                                        Write Review
-                                    </button>
-                                )}
+                                    {booking.status?.toUpperCase() === 'COMPLETED' && (
+                                        <button
+                                            onClick={() => handleOpenReviewModal(booking)}
+                                            className="px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg border border-[#10b98120] text-[#10b981] text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#10b98110] transition-colors w-full text-center flex items-center justify-center gap-1.5"
+                                        >
+                                            <Star size={10} className="sm:w-3 sm:h-3" />
+                                            <span>Review</span>
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
