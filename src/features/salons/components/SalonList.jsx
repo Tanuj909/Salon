@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { MapPin, Navigation, Star, Search, X } from "lucide-react";
+import { MapPin, Navigation, Star, Search, X, SlidersHorizontal, ChevronDown } from "lucide-react";
 // Local badge styles
 const badgeStyles = {
   "VERIFIED": {
@@ -153,6 +153,7 @@ export default function SalonList() {
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   const [draftParams, setDraftParams] = useState({
     lat: searchParams.lat,
@@ -288,11 +289,19 @@ export default function SalonList() {
           <div className="flex-1 w-full">
             {!showMobileSearch ? (
               <div 
-                className="flex items-center justify-between px-4 py-2 bg-white/60 backdrop-blur-md rounded-2xl border border-[#3c143208] shadow-sm w-full md:w-fit font-bold leading-none text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[1.1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block cursor-pointer md:cursor-default"
-                onClick={() => setShowMobileSearch(true)}
+                className="flex items-center justify-between px-4 py-2 bg-white/60 backdrop-blur-md rounded-2xl border border-[#3c143208] shadow-sm w-full md:w-fit font-bold leading-none text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[0.85rem] sm:text-[1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block md:cursor-default"
               >
-                <span>Discover Premium Salons</span>
-                <Search size={20} className="text-[#7a2860] md:hidden" />
+                <span onClick={() => setShowMobileSearch(true)} className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap">Discover Premium Salons</span>
+                <div className="flex items-center gap-3 md:hidden">
+                    <Search size={18} className="text-[#7a2860] cursor-pointer" onClick={() => setShowMobileSearch(true)} />
+                    <div className="w-px h-4 bg-[#3c143212]" />
+                    <button onClick={() => setShowFilters(!showFilters)} className="relative">
+                        <SlidersHorizontal size={18} className="text-[#7a2860] cursor-pointer" />
+                        {hasChanges && (
+                            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#cd6133] border-2 border-white" />
+                        )}
+                    </button>
+                </div>
               </div>
             ) : (
                 <div className="relative w-full flex items-center md:hidden">
@@ -303,27 +312,15 @@ export default function SalonList() {
                         autoFocus
                         className="w-full h-[46px] pr-[40px] pl-[38px] rounded-2xl border border-[#3c143212] bg-white/60 backdrop-blur-md text-[#2a1020] text-[0.85rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
                         type="text"
-                        placeholder="Search by name or service..."
-                        value={draftParams.serviceName}
-                        onChange={(e) => {
-                            setSearch(e.target.value);
-                            setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
-                        }}
-                        onKeyDown={(e) => {
-                           if (e.key === "Enter" && hasChanges && !loading) {
-                             handleFetch();
-                           }
-                        }}
-                        onBlur={() => !draftParams.serviceName && setShowMobileSearch(false)}
+                        placeholder="Search salon by name..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        onBlur={() => !search && setShowMobileSearch(false)}
                     />
                     <button 
                         onClick={() => {
                             setSearch("");
-                            setDraftParams(prev => ({ ...prev, serviceName: "" }));
                             setShowMobileSearch(false);
-                            if (searchParams.serviceName) {
-                              updateParams({ ...draftParams, serviceName: "" });
-                            }
                         }}
                         className="absolute right-[12px] top-1/2 -translate-y-1/2 p-1 text-[#3c143259] hover:text-[#7a2860]"
                     >
@@ -333,32 +330,38 @@ export default function SalonList() {
             )}
           </div>
 
-          {/* Search Box (Desktop Only) */}
-          <div className="hidden md:block relative w-full lg:w-[320px]">
-            <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
-              <Search size={16} />
-            </span>
-            <input
-              className="w-full h-10 pr-[16px] pl-[38px] rounded-xl border border-[#3c143212] bg-white/50 backdrop-blur-sm text-[#2a1020] text-[0.78rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
-              type="text"
-              placeholder="Search by name or service..."
-              value={draftParams.serviceName}
-              onChange={(e) => {
-                  setSearch(e.target.value);
-                  setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
-              }}
-              onKeyDown={(e) => {
-                 if (e.key === "Enter" && hasChanges && !loading) {
-                   handleFetch();
-                 }
-              }}
-            />
+          {/* Search Box (Desktop Only - Frontend Local Search) & Filter Toggle */}
+          <div className="hidden md:flex items-center gap-3">
+            <div className="relative w-[320px]">
+              <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
+                <Search size={16} />
+              </span>
+              <input
+                className="w-full h-10 pr-[16px] pl-[38px] rounded-xl border border-[#3c143212] bg-white/50 backdrop-blur-sm text-[#2a1020] text-[0.78rem] outline-none transition-all duration-200 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans]"
+                type="text"
+                placeholder="Search salon by name..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+            
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`h-10 px-4 flex items-center gap-2 rounded-xl border transition-all duration-300 font-bold text-[0.75rem] ${showFilters ? 'bg-[#1e0a18] text-white border-[#1e0a18] shadow-md' : 'bg-white/50 border-[#3c143212] text-[#4b3621] hover:bg-white hover:border-[#7a2860]/30'}`}
+            >
+              <SlidersHorizontal size={14} className={showFilters ? 'text-[#C8A951]' : 'text-[#7a2860]'} />
+              <span>Filters</span>
+              {hasChanges && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#cd6133] animate-pulse" />
+              )}
+              <ChevronDown size={14} className={`transition-transform duration-300 ${showFilters ? 'rotate-180' : ''}`} />
+            </button>
           </div>
         </div>
 
-        {/* ── Advanced Filter Control ── */}
-        <div className="mb-6 md:mb-10">
-          <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-[#3c143208]">
+        {/* ── Advanced Filter Control (Collapsible) ── */}
+        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${showFilters ? 'max-h-[800px] mb-6 md:mb-10 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+          <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-[#3c143208] bg-white/40 backdrop-blur-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end mb-4 md:mb-6">
               {/* Location Picker */}
               <div className="lg:col-span-8 space-y-1.5">
@@ -411,7 +414,7 @@ export default function SalonList() {
                     value={draftParams.categoryId}
                     onChange={(e) => setDraftParams(prev => ({ ...prev, categoryId: e.target.value }))}
                   >
-                    <option value="">All Categories</option>
+                    <option value="">Choose Category</option>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143240]">
@@ -434,7 +437,6 @@ export default function SalonList() {
                     value={draftParams.serviceName}
                     onChange={(e) => {
                         setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
-                        setSearch(e.target.value);
                     }}
                     onKeyDown={(e) => {
                        if (e.key === "Enter" && hasChanges && !loading) {

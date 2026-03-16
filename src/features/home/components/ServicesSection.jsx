@@ -55,7 +55,7 @@ const ServicesSection = () => {
     }
   ];
 
-  const [visibleCards, setVisibleCards] = useState(4);
+  const [visibleCards, setVisibleCards] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -71,7 +71,10 @@ const ServicesSection = () => {
       else if (width >= 768) setVisibleCards(2);
       else setVisibleCards(1);
     };
+    
+    // Initial call
     handleResize();
+    
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);

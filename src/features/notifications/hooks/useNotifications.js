@@ -36,8 +36,8 @@ export const useNotifications = () => {
 
     const client = new Client({
       // SockJS matches your WebSocketConfig → /ws endpoint
-      webSocketFactory: () =>
-        new SockJS(`${process.env.NEXT_PUBLIC_API_BASE_URL}/ws`),
+webSocketFactory: () =>
+  new SockJS(`${process.env.NEXT_PUBLIC_WS_BASE_URL}/ws`),
 
       // AuthChannelInterceptor expects JWT in STOMP connect headers
       connectHeaders: {
