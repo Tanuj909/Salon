@@ -685,10 +685,19 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const { submitBooking, loading: submitting, error: submitError, success, bookingResult, reset } = useCreateBooking();
     const { services, loading: servicesLoading } = useSalonServices({ id: salonId });
     const [selectedServices, setSelectedServices] = useState([]);
-    const { staff, loading: staffLoading } = useSalonStaff({
+    const { staff: allStaff, loading: staffLoading } = useSalonStaff({
         id: salonId,
-        serviceId: selectedServices.length > 0 ? selectedServices[0].id : null
+        serviceId: null // Force fetching all staff (we removed service-based fetching here)
     });
+
+    // Filter out Receptionist/Front Desk
+    const staff = useMemo(() => {
+        if (!allStaff) return [];
+        return allStaff.filter(
+            (member) => !member.designation?.toLowerCase().includes("receptionist") && 
+                       !member.designation?.toLowerCase().includes("front desk")
+        );
+    }, [allStaff]);
     const { timings, loading: timingsLoading } = useSalonTimings({ id: salonId });
 
     // Date calculations for 4-day window (using local time)
@@ -710,13 +719,30 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     }, []);
 
     // Form state
-    const [selectedStaff, setSelectedStaff] = useState(null);
+    // Form state - Initialize with pre-selected values if available
+    const [selectedStaff, setSelectedStaff] = useState(preSelectedStaff || null);
     const [bookingDate, setBookingDate] = useState("");
     const [startTime, setStartTime] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("UPI");
     const [customerNotes, setCustomerNotes] = useState("");
-    const [step, setStep] = useState(1); // 1: Services, 2: Staff & Time, 3: Review
+    
+    // Step logic: If we have a pre-selected service, jump to step 2. Otherwise start at 1.
+    const [step, setStep] = useState(preSelectedService ? 2 : 1); // 1: Services, 2: Staff & Time, 3: Review
     const [activeDate, setActiveDate] = useState(todayStr);
+
+    // Initialize services
+    useEffect(() => {
+        if (preSelectedService) {
+            setSelectedServices([preSelectedService]);
+        }
+    }, [preSelectedService]);
+
+    // Update staff if prop changes
+    useEffect(() => {
+        if (preSelectedStaff) {
+             setSelectedStaff(preSelectedStaff);
+        }
+    }, [preSelectedStaff]);
 
     // Slots fetching
     const { slots: staffSlots, loading: slotsLoading, error: slotsError } = useStaffSlots({
@@ -725,35 +751,20 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
         endDate: endDateStr
     });
 
-    // Reset form when modal opens
+    // Reset form when modal closes, not when it opens (to preserve initialization)
     useEffect(() => {
-        if (isOpen) {
-            if (preSelectedService) {
-                setSelectedServices([preSelectedService]);
-                setStep(2); // Skip to schedule step
-            } else {
-                setSelectedServices([]);
-                setStep(1);
-            }
-
-            // Initialize staff selection
-            if (preSelectedStaff) {
-                setSelectedStaff(preSelectedStaff);
-                // If they specifically picked a staff, they still need to pick a service first 
-                // UNLESS a service was also pre-selected.
-                // If they clicked "Book" on staff, we stay at Step 1 to pick services.
-            } else {
-                setSelectedStaff(null);
-            }
-
+        if (!isOpen) {
             setBookingDate("");
             setStartTime("");
             setPaymentMethod("UPI");
             setCustomerNotes("");
             setActiveDate(todayStr);
+            setStep(preSelectedService ? 2 : 1);
+            if (!preSelectedStaff) setSelectedStaff(null);
+            if (!preSelectedService) setSelectedServices([]);
             reset();
         }
-    }, [isOpen, reset, preSelectedService, preSelectedStaff, todayStr]);
+    }, [isOpen, todayStr, reset, preSelectedService, preSelectedStaff]); 
 
     // Close on escape
     useEffect(() => {

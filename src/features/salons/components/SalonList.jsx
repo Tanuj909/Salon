@@ -176,10 +176,11 @@ export default function SalonList() {
 
   const [headingIndex, setHeadingIndex] = useState(0);
   const headings = [
-    "Find Your Perfect Style",
-    "Discover Elite Salons",
-    "Luxury Grooming For You",
-    "Beauty Redefined For You"
+    "premium",
+    "elite",
+    "luxury",
+    "Deluxe",
+    "Finest"
   ];
 
   const [placeholderFade, setPlaceholderFade] = useState(true);
@@ -336,9 +337,13 @@ export default function SalonList() {
               >
                 <span 
                   onClick={() => setShowMobileSearch(true)} 
-                  className={`flex-1 cursor-pointer md:cursor-default whitespace-nowrap overflow-hidden truncate transition-opacity duration-500 ${headingFade ? "opacity-100" : "opacity-0"}`}
+                  className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap overflow-hidden truncate"
                 >
-                  {headings[headingIndex]}
+                  Discover{" "}
+                  <span className={`inline-block transition-opacity duration-500 text-[#cd6133] ${headingFade ? "opacity-100" : "opacity-0"}`}>
+                    {headings[headingIndex]}
+                  </span>{" "}
+                  Salons
                 </span>
                 <div className="flex items-center gap-2 sm:gap-3 md:hidden shrink-0 ml-2">
                     {!showFilters && (
@@ -576,7 +581,10 @@ export default function SalonList() {
               </svg>
             </div>
             <h3 className="text-xl font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Something went wrong</h3>
-            <p className="text-[#3c143260] font-[DM_Sans] max-w-[400px] mx-auto">{error}</p>
+            <div className="flex justify-center">
+              <p className="text-[#3c143260] font-[DM_Sans] max-w-[400px] mx-auto">{error}</p>
+            </div>
+            
             <button
               onClick={retry}
               className="mt-6 px-8 py-3 bg-[#1e0a18] text-white rounded-xl font-bold hover:bg-[#7a2860] transition-colors font-[DM_Sans]"

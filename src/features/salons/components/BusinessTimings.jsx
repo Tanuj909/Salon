@@ -18,7 +18,7 @@ function useReveal() {
                     obs.unobserve(el);
                 }
             },
-            { threshold: 0.12, rootMargin: "0px 0px -50px 0px" }
+            { threshold: 0.05, rootMargin: "50px" }
         );
         obs.observe(el);
         return () => obs.disconnect();
@@ -28,11 +28,12 @@ function useReveal() {
 
 function Reveal({ children, delay = 0, className = "" }) {
     const { ref, visible } = useReveal();
+    const safeDelay = Math.min(delay, 300);
     return (
         <div
             ref={ref}
-            className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"} ${className}`}
-            style={{ transitionDelay: `${delay}ms` }}
+            className={`transition-all duration-500 ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"} ${className}`}
+            style={{ transitionDelay: `${safeDelay}ms` }}
         >
             {children}
         </div>

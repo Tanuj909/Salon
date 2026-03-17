@@ -72,7 +72,9 @@ export default function NotificationBell({ isScrolled }) {
 
       {/* ── Dropdown ── */}
       {open && (
-        <div className="absolute right-0 top-12 w-80 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+        <div className="absolute right-0 sm:right-0 md:right-0 top-12 w-[calc(100vw-2rem)] sm:w-80 md:w-80 max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden transform md:translate-x-0 translate-x-[calc(50%-1.5rem)] xs:translate-x-[calc(50%-1.5rem)] right-1/2 sm:translate-x-0 sm:right-0 xl:translate-x-0">
+          <div className="fixed inset-0 sm:hidden z-[-1]" onClick={() => setOpen(false)} />
+          <div className="relative z-10 w-full h-full bg-white">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <div className="flex items-center gap-2">
@@ -171,6 +173,7 @@ export default function NotificationBell({ isScrolled }) {
               </button>
             </div>
           )}
+          </div>
         </div>
       )}
     </div>

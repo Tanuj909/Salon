@@ -9,25 +9,29 @@ const CATEGORIES = [
     name: "Men",
     image: "/api/placeholder/400/400", // Will replace with actual generated paths in final step or use relative if possible
     href: "/salons?category=MEN",
-    imgKey: "category_men_1773427934952.png"
+    imgKey: "category_men_1773427934952.png",
+    price: "30"
   },
   {
     name: "Women",
     image: "/api/placeholder/400/400",
     href: "/salons?category=WOMEN",
-    imgKey: "category_women_1773427951840.png"
+    imgKey: "category_women_1773427951840.png",
+    price: "80"
   },
   {
     name: "Kids",
     image: "/api/placeholder/400/400",
     href: "/salons?category=KIDS",
-    imgKey: "category_kids_1773427988583.png"
+    imgKey: "category_kids_1773427988583.png",
+    price: "50"
   },
   {
     name: "Pets",
     image: "/api/placeholder/400/400",
     href: "/salons?category=PETS",
-    imgKey: "category_pets_1773428004915.png"
+    imgKey: "category_pets_1773428004915.png",
+    price: "70"
   }
 ];
 
@@ -74,17 +78,23 @@ export default function HomeCategories() {
                     alt={cat.name}
                     className="w-full h-full object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-125"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-opacity duration-700 group-hover:opacity-40" />
+                  <div className="absolute inset-x-0 bottom-0 h-1/4 bg-black/80 backdrop-blur-[2px] transition-colors duration-700 group-hover:bg-[#cd6133]/90" />
                 </div>
                 
-                <div className="absolute inset-0 flex items-end justify-center pb-8 sm:pb-12">
+                <div className="absolute inset-x-0 bottom-0 h-1/4 flex items-center justify-center pb-2">
                   <div className="flex flex-col items-center">
-                    <span className="text-white text-base sm:text-lg md:text-xl font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-transform duration-700 group-hover:-translate-y-1">
+                    <span className="text-white text-base sm:text-lg md:text-xl font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-transform duration-700 group-hover:-translate-y-1 drop-shadow-md">
                       {cat.name}
                     </span>
-                    <div className="w-0 h-0.5 bg-white transition-all duration-700 group-hover:w-full mt-1.5 opacity-60" />
+                    <div className="w-0 h-0.5 bg-white transition-all duration-700 group-hover:w-full mt-1.5 opacity-80 shadow-sm" />
                   </div>
                 </div>
+              </div>
+
+              {/* Pricing Section */}
+              <div className="mt-4 sm:mt-5 flex flex-col items-center justify-center transition-opacity duration-500 opacity-90 group-hover:opacity-100">
+                <span className="text-xs sm:text-sm text-gray-500 font-medium tracking-wide uppercase">Starting from</span>
+                <span className="text-base sm:text-lg font-bold text-[#cd6133] mt-0.5">AED {cat.price}</span>
               </div>
             </Link>
           ))}

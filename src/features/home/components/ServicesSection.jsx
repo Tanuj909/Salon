@@ -160,8 +160,8 @@ const ServicesSection = () => {
                     <p className="text-[#fff8f2]/90 text-[0.85rem] leading-relaxed mb-4 line-clamp-3 md:line-clamp-none">
                       {service.description}
                     </p>
-                    <Link href={`/salons?serviceName=${service.searchTerm}`} className="inline-block bg-transparent border-[1.5px] border-[#fff8f2]/70 text-[#fff8f2] px-[22px] py-1.5 rounded-full text-[0.8rem] font-semibold tracking-wider hover:bg-[#fff8f2] hover:text-[#3c1432] no-underline text-center transition-all duration-300 mt-3">
-                      Explore
+                    <Link href={`/salons?serviceName=${service.searchTerm}`} className="inline-block bg-gray-800 border-[1.5px] border-[#fff8f2]/70  px-[22px] py-1.5 rounded-full text-[0.8rem] font-semibold tracking-wider hover:bg-gray-900  no-underline text-center transition-all duration-300 mt-3">
+                      <p className='text-white'>Explore</p>
                     </Link>
                   </div>
                 </div>

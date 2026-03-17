@@ -110,7 +110,17 @@ export default function Navbar() {
                     </button>
 
                     {isProfileOpen && (
-                      <div className="absolute right-[-30%] mt-3 w-48 bg-white/95 backdrop-blur-md rounded-xl overflow-hidden py-2 shadow-xl border border-gray-200 animate-in fade-in slide-in-from-top-2 duration-200">
+<div className="fixed 
+  left-1/2 -translate-x-1/2   /* perfect center */
+  md:absolute md:left-auto md:right-0 md:translate-x-0   /* desktop normal */
+  top-12 
+  w-[calc(100vw-2rem)] sm:w-64 md:w-48 
+  max-w-[calc(100vw-2rem)] 
+  bg-white/95 backdrop-blur-md 
+  rounded-xl overflow-hidden py-2 
+  shadow-xl border border-gray-200 
+  animate-in fade-in slide-in-from-top-2 duration-200 
+  z-50 mt-5">
                         <Link
                           href="/profile"
                           className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors"
@@ -145,7 +155,7 @@ export default function Navbar() {
 
             {/* Hamburger (Mobile) */}
             <button
-              className={`md:hidden p-1 md:p-2.5 rounded-lg transition-all ${isScrolled
+              className={`flex items-center justify-center md:hidden p-1.5 md:p-2.5 rounded-lg transition-all ${isScrolled
                   ? 'bg-black/5 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
                   : 'bg-white/20 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
                 }`}
