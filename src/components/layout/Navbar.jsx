@@ -145,7 +145,7 @@ export default function Navbar() {
 
             {/* Hamburger (Mobile) */}
             <button
-              className={`md:hidden p-2 md:p-2.5 rounded-lg transition-all ${isScrolled
+              className={`md:hidden p-1 md:p-2.5 rounded-lg transition-all ${isScrolled
                   ? 'bg-black/5 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
                   : 'bg-white/20 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
                 }`}

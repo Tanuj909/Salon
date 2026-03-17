@@ -256,7 +256,7 @@ const HeroSection = () => {
           </div>
 
           {/* Quick Actions (Hero Bottom) */}
-          <div className="mt-12 flex flex-wrap justify-center gap-4 animate-fade-up [animation-delay:900ms]">
+          <div className="mt-8 flex flex-wrap justify-center gap-4 animate-fade-up [animation-delay:900ms]">
             <Link
               href="/salons"
               className="px-8 py-4 bg-[#B76E4B] hover:bg-[#9E5A3A] border-2 border-white/30 backdrop-blur-md rounded-full text-white font-bold tracking-widest uppercase text-[10px] transition-all flex items-center gap-2 group"

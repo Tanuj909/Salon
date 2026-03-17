@@ -2,64 +2,16 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { services } from '@/features/home/data/servicesData';
 
 const ServicesSection = () => {
-  const services = [
-    {
-      title: "Signature Haircuts",
-      description: "Precision styling tailored to your face shape and personal aesthetic.",
-      image: "https://images.unsplash.com/photo-1553521041-d168abd31de3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGhhaXJjdXR8ZW58MHx8MHx8fDA%3D",
-      searchTerm: "Haircut"
-    },
-    {
-      title: "Luxury Skin Care",
-      description: "Revitalizing facials and treatments using premium organic elixirs.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC1IXVoviff2vw-vfbnEth3cRVJbetSWlpORQGs3h5LjLLD9H5OdOEei1FUdQTUx9HFAf_MxM0Lrgpda-Z_epKsSlJcRRIs7TB4H1V0C1r1lj0rJjgoot-9crr5L57tchCg-2Z4duk8w9AR97Qs-4NeiUD5JfFfoYyOwa2ZEHDqHI-8SJv56It59aYjrDxFqIsmUHwqPZkgz_qcsqDXuKvSoWfMhqqy8Vnavtk1btUXMAb_CqVj7tLvht43W98PU1-beQy4dfEZIRu9",
-      searchTerm: "Facial"
-    },
-    {
-      title: "Artistic Manicures",
-      description: "Custom nail art and therapeutic hand care for every occasion.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdblC_ad2bLjbNG1gzwDGiwBgnmnDTCAgGOKwuSqEUmyOYpGuolnD0WzzmcKtE1Em6Mcv7NtmPzmprSV80ruWKJ6GbHU7m-3K6zMc7I9oS8H1SLDb8rnZOSQlXxe4D_steWmcj_l9dTGc7byOoXU0WO3JtSqWXd1-bJ1vOAkxuhgyK4M9hCf05IeQi06ReZBzJImNKTCSEdXkPAK3lu_a0tOjMvhLWHXJE47-VY2FYGrVTw04JK6IqB2RSncxzG95UJtUq057UkIi5",
-      searchTerm: "Nail"
-    },
-    {
-      title: "Bridal Packages",
-      description: "Complete transformation services for your most special day.",
-      image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDZwatrTnvnmq9fKbDCD54TxCGWmSdF8uG7JHsAv0tsf_y3mGeYufo8SXtIpO5SGh5ZdtVgEvAvpcofmIXhg8ePC2wo6M5VSUlq5LDaZDwcuFsbofUOH--p6xj8SwLQYhQHiGmOllpVgvnClOpKg14NyUI5yuRUD3iJPUSkg-SnqU2y0z1bsZbaP25NgGW7wYH5jmHzl_5tQmksd7ezywNc_n6PnQhu8DraI5qkvvtgaDvi3GdA0mqj-nYxXuwNKtpY9G7YxDel5-Br",
-      searchTerm: "Bridal"
-    },
-    {
-      title: "Color & Highlights",
-      description: "Vibrant, long-lasting color treatments crafted by expert colorists.",
-      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop",
-      searchTerm: "Color"
-    },
-    {
-      title: "Deep Massage",
-      description: "Tension-melting body therapy using aromatic botanical oils.",
-      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&auto=format&fit=crop",
-      searchTerm: "Massage"
-    },
-    {
-      title: "Lash & Brow",
-      description: "Frame your eyes with sculpted brows and voluminous lash extensions.",
-      image: "https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFzaHxlbnwwfHwwfHx8MA%3D%3D",
-      searchTerm: "Brow"
-    },
-    {
-      title: "Spa Rituals",
-      description: "Full-body wellness journeys blending ancient and modern techniques.",
-      image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&auto=format&fit=crop",
-      searchTerm: "Spa"
-    }
-  ];
 
   const [visibleCards, setVisibleCards] = useState(1);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
+  const [hasMounted, setHasMounted] = useState(false);
   const trackRef = useRef(null);
   const autoPlayRef = useRef(null);
 
@@ -72,14 +24,16 @@ const ServicesSection = () => {
       else setVisibleCards(1);
     };
     
-    // Initial call
     handleResize();
+    setHasMounted(true);
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const maxIndex = services.length - visibleCards;
+  // Determine how many cards to show based on mounting status
+  const currentVisible = hasMounted ? visibleCards : 1;
+  const maxIndex = services.length - currentVisible;
 
   const goTo = (index) => {
     setCurrentIndex(Math.max(0, Math.min(index, maxIndex)));
@@ -95,6 +49,13 @@ const ServicesSection = () => {
     }, 4000);
     return () => clearInterval(autoPlayRef.current);
   }, [maxIndex]);
+
+  // Keep index in bounds on resize
+  useEffect(() => {
+    if (currentIndex > maxIndex && maxIndex >= 0) {
+      setCurrentIndex(maxIndex);
+    }
+  }, [maxIndex, currentIndex]);
 
   const resetAutoPlay = () => {
     clearInterval(autoPlayRef.current);
@@ -140,7 +101,7 @@ const ServicesSection = () => {
     setDragOffset(0);
   };
 
-  const translateX = `calc(-${currentIndex * (100 / visibleCards)}% - ${currentIndex * (24 / visibleCards)}px + ${isDragging ? dragOffset : 0}px)`;
+  const translateX = `calc(-${currentIndex * (100 / currentVisible)}% - ${currentIndex * (24 / currentVisible)}px + ${isDragging ? dragOffset : 0}px)`;
 
   return (
     <section className="py-10 w-full font-['Georgia',serif]">
@@ -180,26 +141,26 @@ const ServicesSection = () => {
               {services.map((service, index) => (
                 <div
                   key={index}
-                  className="relative h-[380px] md:h-[420px] lg:h-[480px] rounded-[20px] overflow-hidden shrink-0 group shadow-none hover:shadow-[0_32px_60px_rgba(80,30,60,0.35)] transition-all duration-400 ease-in-out select-none"
+                  className="relative h-[380px] md:h-[420px] lg:h-[480px] rounded-[20px] overflow-hidden shrink-0 select-none shadow-sm"
                   style={{
-                    width: `calc(100% / ${visibleCards} - ${((visibleCards - 1) * 24) / visibleCards}px)`
+                    width: `calc(100% / ${currentVisible} - ${((currentVisible - 1) * 24) / currentVisible}px)`
                   }}
                 >
                   <img
                     src={service.image}
                     alt={service.title}
                     draggable={false}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110"
+                    className="absolute inset-0 w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#3c1432]/90 via-[#3c1432]/15 to-transparent opacity-85 transition-opacity duration-300 group-hover:opacity-95" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#3c1432]/95 via-[#3c1432]/25 to-transparent" />
                   <div className="absolute bottom-0 left-0 p-6 md:p-7 w-full">
-                    <h3 className="text-[#fff8f2] text-[1.35rem] font-bold mb-2 transition-transform duration-300 group-hover:-translate-y-1.5">
+                    <h3 className="text-[#fff8f2] text-[1.35rem] font-bold mb-2">
                       {service.title}
                     </h3>
-                    <p className="text-[#fff8f2]/90 text-[0.85rem] leading-relaxed mb-4 opacity-0 translate-y-3 transition-all duration-300 delay-50 group-hover:opacity-100 group-hover:translate-y-0 line-clamp-3 md:line-clamp-none">
+                    <p className="text-[#fff8f2]/90 text-[0.85rem] leading-relaxed mb-4 line-clamp-3 md:line-clamp-none">
                       {service.description}
                     </p>
-                    <Link href={`/salons?serviceName=${service.searchTerm}`} className="inline-block bg-transparent border-[1.5px] border-[#fff8f2]/70 text-[#fff8f2] px-[22px] py-1.5 rounded-full text-[0.8rem] font-semibold opacity-0 translate-y-3 transition-all duration-300 delay-100 tracking-wider hover:bg-[#fff8f2] hover:text-[#3c1432] group-hover:opacity-100 group-hover:translate-y-0 no-underline text-center">
+                    <Link href={`/salons?serviceName=${service.searchTerm}`} className="inline-block bg-transparent border-[1.5px] border-[#fff8f2]/70 text-[#fff8f2] px-[22px] py-1.5 rounded-full text-[0.8rem] font-semibold tracking-wider hover:bg-[#fff8f2] hover:text-[#3c1432] no-underline text-center transition-all duration-300 mt-3">
                       Explore
                     </Link>
                   </div>
