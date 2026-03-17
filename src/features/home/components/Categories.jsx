@@ -378,7 +378,7 @@ export default function Categories() {
         <MapPickerModal
           isOpen={isMapModalOpen}
           onClose={() => setIsMapModalOpen(false)}
-          onLocationSelect={(loc) => {
+          onSelect={(loc) => {
             setIsMapModalOpen(false);
           }}
         />

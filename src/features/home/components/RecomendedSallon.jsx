@@ -314,7 +314,7 @@ export default function RecomendedSallon() {
         <MapPickerModal
           isOpen={isMapModalOpen}
           onClose={() => setIsMapModalOpen(false)}
-          onLocationSelect={(loc) => {
+          onSelect={(loc) => {
             setIsMapModalOpen(false);
             // Optional: You could instantly refetch using loc.lat and loc.lng here if desired.
           }}
