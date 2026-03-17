@@ -4,7 +4,12 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { fetchCategories, fetchNearbyByCategory } from "@/features/salons/services/salonService";
 import { useUserLocation } from "@/features/salons/hooks/useUserLocation";
-import MapPickerModal from "@/features/salons/components/MapPickerModal";
+import dynamic from "next/dynamic";
+
+const MapPickerModal = dynamic(
+  () => import("@/features/salons/components/MapPickerModal"),
+  { ssr: false }
+);
 
 
 // ─── Category fallback images (keyed by name) ──────────────────────────────

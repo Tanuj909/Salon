@@ -3,7 +3,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchNearbySalons } from "@/features/salons/services/salonService";
-import MapPickerModal from "@/features/salons/components/MapPickerModal";
+import dynamic from "next/dynamic";
+
+const MapPickerModal = dynamic(
+  () => import("@/features/salons/components/MapPickerModal"),
+  { ssr: false }
+);
 
 // Local badge styles since the data file was removed
 const badgeStyles = {
