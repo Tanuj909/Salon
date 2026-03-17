@@ -90,6 +90,7 @@ function ServiceCard({ service, index, onBookNow }) {
                 </div>
 
                 {/* Card Content */}
+                
                 <div className="flex flex-col flex-1">
                     <div className="mb-4">
                         <div className="flex items-start justify-between gap-2 sm:gap-3 mb-2">
