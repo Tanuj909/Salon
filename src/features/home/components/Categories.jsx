@@ -261,6 +261,7 @@ export default function Categories() {
   const [loadingCats, setLoadingCats] = useState(true);
   const { location, error, loading: locationLoading } = useUserLocation();
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+  const [manualLocation, setManualLocation] = useState(null);
 
   const handleRetryLocation = () => {
     window.location.reload(); // Simple way to re-trigger for now since hook uses useEffect once
@@ -312,7 +313,7 @@ export default function Categories() {
         <div className="h-px mb-10 bg-[#3c143214]" />
 
         {/* ── Category rows ── */}
-        {loadingCats || locationLoading ? (
+        {loadingCats || (!manualLocation && locationLoading) ? (
           // skeleton for category rows
           <div className="space-y-14">
             {[1, 2].map((i) => (
@@ -330,7 +331,7 @@ export default function Categories() {
               </div>
             ))}
           </div>
-        ) : error ? (
+        ) : (!manualLocation && error) ? (
           // Location denied or error state
           <div className="text-center py-16 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
             <div className="w-16 h-16 bg-[#7a2860]/5 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -369,8 +370,8 @@ export default function Categories() {
             <CategoryRow
               key={cat.id}
               category={cat}
-              lat={location.latitude}
-              lng={location.longitude}
+              lat={manualLocation ? manualLocation.lat : location?.latitude}
+              lng={manualLocation ? manualLocation.lng : location?.longitude}
             />
           ))
         )}
@@ -380,6 +381,7 @@ export default function Categories() {
           onClose={() => setIsMapModalOpen(false)}
           onSelect={(loc) => {
             setIsMapModalOpen(false);
+            setManualLocation(loc);
           }}
         />
       </div>

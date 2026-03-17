@@ -97,6 +97,22 @@ export default function RecomendedSallon() {
     );
   };
 
+  const fetchSalonsByCoordinates = async (lat, lng) => {
+    setLoading(true);
+    setLocationDenied(false);
+    setLocationStatus('success');
+
+    try {
+      const data = await fetchNearbySalons(lat, lng, 50);
+      setSalons(data || []);
+    } catch (error) {
+      console.error("Failed to fetch recommended salons:", error);
+      setLocationStatus('failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchSalonsWithLocation();
   }, []);
@@ -316,7 +332,7 @@ export default function RecomendedSallon() {
           onClose={() => setIsMapModalOpen(false)}
           onSelect={(loc) => {
             setIsMapModalOpen(false);
-            // Optional: You could instantly refetch using loc.lat and loc.lng here if desired.
+            fetchSalonsByCoordinates(loc.lat, loc.lng);
           }}
         />
       </div>
