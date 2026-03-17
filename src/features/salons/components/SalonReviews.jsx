@@ -84,31 +84,49 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
                         {reviews.map((review, i) => (
                             <Reveal key={review.id || i} delay={i * 100}>
                                 <div className="bg-white p-6 sm:p-10 rounded-3xl sm:rounded-[48px] border border-[#cd6133]/20 shadow-md hover:border-[#cd6133]/40 hover:shadow-xl transition-all duration-500 h-full flex flex-col group">
-                                    <div className="flex items-center gap-4 sm:gap-5 mb-6 sm:mb-10">
+                                    <div className="flex items-center gap-4 sm:gap-5 mb-6">
                                         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#cd6133]/10 group-hover:border-[#cd6133]/30 transition-colors bg-[#fef9f3] shrink-0">
                                             <img
-                                                src={review.user?.profilePic || "https://ui-avatars.com/api/?name=" + (review.user?.fullName || "User") + "&background=cd6133&color=fef9f3"}
-                                                alt={review.user?.fullName}
+                                                src={review.customer?.profileImageUrl || "https://ui-avatars.com/api/?name=" + (review.customer?.fullName || "User") + "&background=cd6133&color=fef9f3"}
+                                                alt={review.customer?.fullName}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
-                                        <div>
-                                            <h4 className="font-bold text-[#5a3d2b] text-lg">{review.user?.fullName}</h4>
-                                            <div className="flex items-center gap-1 mt-1">
-                                                {Array.from({ length: 5 }).map((_, starI) => (
-                                                    <svg key={starI} width={16} height={16} viewBox="0 0 24 24" fill={starI < review.rating ? "#cd6133" : "rgba(0,0,0,0.1)"}>
-                                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                                                    </svg>
-                                                ))}
+                                        <div className="flex-1">
+                                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                                                <h4 className="font-bold text-[#5a3d2b] text-lg leading-tight">{review.customer?.fullName}</h4>
+                                                <div className="flex items-center gap-0.5">
+                                                    {Array.from({ length: 5 }).map((_, starI) => (
+                                                        <svg key={starI} width={14} height={14} viewBox="0 0 24 24" fill={starI < review.rating ? "#cd6133" : "rgba(0,0,0,0.1)"}>
+                                                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                        </svg>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[10px] uppercase tracking-wider font-bold text-[#cd6133]/70">
+                                                <span>{review.business?.name}</span>
+                                                {review.staff && (
+                                                    <span className="flex items-center gap-1">
+                                                        <span className="w-1 h-1 rounded-full bg-[#cd6133]/30" />
+                                                        Staff: {review.staff.fullName}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                    <p className="text-[#5a3d2b] text-sm sm:text-base leading-relaxed mb-6 sm:mb-10 italic flex-1 opacity-80 break-words">
-                                        "{review.reviewText}"
+
+                                    <p className="text-[#5a3d2b] text-sm sm:text-base leading-relaxed mb-6 italic flex-1 opacity-80 break-words line-clamp-4">
+                                        "{review.comment}"
                                     </p>
-                                    <div className="flex items-center justify-between pt-6 sm:pt-8 border-t border-[#cd6133]/5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#5a3d2b]/40">
-                                        <span>Verified Experience</span>
-                                        <span>{new Date(review.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                                    
+                                    <div className="flex items-center justify-between pt-6 border-t border-[#cd6133]/5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#5a3d2b]/40">
+                                        <span className="flex items-center gap-1.5">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-green-600/60">
+                                                <polyline points="20 6 9 17 4 12" />
+                                            </svg>
+                                            Verified Experience
+                                        </span>
+                                        <span>{new Date(review.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
                                     </div>
                                 </div>
                             </Reveal>

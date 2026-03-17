@@ -176,10 +176,10 @@ export default function SalonList() {
 
   const [headingIndex, setHeadingIndex] = useState(0);
   const headings = [
-    "Discover Premium Salons",
     "Find Your Perfect Style",
-    "Experience Luxury Grooming",
-    "Your Beauty, Our Priority"
+    "Discover Elite Salons",
+    "Luxury Grooming For You",
+    "Beauty Redefined For You"
   ];
 
   const [placeholderFade, setPlaceholderFade] = useState(true);
@@ -336,11 +336,11 @@ export default function SalonList() {
               >
                 <span 
                   onClick={() => setShowMobileSearch(true)} 
-                  className={`flex-1 cursor-pointer md:cursor-default whitespace-nowrap transition-opacity duration-500 ${headingFade ? "opacity-100" : "opacity-0"}`}
+                  className={`flex-1 cursor-pointer md:cursor-default whitespace-nowrap overflow-hidden truncate transition-opacity duration-500 ${headingFade ? "opacity-100" : "opacity-0"}`}
                 >
                   {headings[headingIndex]}
                 </span>
-                <div className="flex items-center gap-3 md:hidden">
+                <div className="flex items-center gap-2 sm:gap-3 md:hidden shrink-0 ml-2">
                     {!showFilters && (
                       <Search size={18} className="text-[#7a2860] cursor-pointer" onClick={() => setShowMobileSearch(true)} />
                     )}

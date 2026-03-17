@@ -17,10 +17,10 @@ const HeroSection = () => {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
   const headings = [
-    "Experience Luxury Services, Near You",
-    "Find Your Perfect Style Today",
-    "Expert Grooming for Everyone",
-    "Your Beauty, Our Priority"
+    "Experience Luxury Services Near You",
+    "Find Your Perfect Style Right Today",
+    "Expert Grooming For Everyone Locally",
+    "Your Beauty Is Always Our Priority"
   ];
 
   const servicePlaceholders = [
@@ -158,7 +158,7 @@ const HeroSection = () => {
           </p>
 
           {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
-          <div className="w-full max-w-4xl px-3 animate-fade-up [animation-delay:700ms] mt-10">
+          <div className="w-full max-w-4xl px-3 animate-fade-up [animation-delay:700ms] mt-5">
             <div className="bg-white/95 backdrop-blur-xl p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
 
               {/* Category Select */}
@@ -224,13 +224,13 @@ const HeroSection = () => {
 
             {/* Service Search Bar - Below Filter Bar */}
             <div className="mt-4 md:mt-6 flex justify-center w-full">
-              <div className="w-full max-w-xl bg-black/70 backdrop-blur-2xl p-1.5 md:p-2 rounded-2xl md:rounded-full shadow-2xl border border-white/10 flex items-center gap-2 group transition-all hover:bg-black/80">
-                <div className="flex-1 relative flex items-center pl-4">
-                  <span className="material-symbols-outlined text-[#B76E4B] text-xl mr-3 group-focus-within:animate-bounce">content_cut</span>
+              <div className="w-full max-w-xl bg-white/95 backdrop-blur-xl p-1.5 md:p-2 rounded-full md:rounded-full shadow-2xl border border-white/20 flex items-center gap-2 group transition-all hover:bg-white">
+                <div className="flex-1 relative flex items-center pl-3">
+                  <span className="material-symbols-outlined text-[#B76E4B] text-xl mr-3">content_cut</span>
                   <input
                     type="text"
-                    className={`w-full bg-transparent text-white text-sm md:text-base font-medium outline-none placeholder:text-white/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
-                    placeholder={`Search Service: ${servicePlaceholders[placeholderIndex]}`}
+                    className={`w-full bg-transparent text-[#4A3B2F] text-sm md:text-base font-medium outline-none placeholder:text-[#4A3B2F]/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
+                    placeholder={`${servicePlaceholders[placeholderIndex]}`}
                     value={serviceSearch}
                     onChange={(e) => setServiceSearch(e.target.value)}
                     onKeyDown={(e) => {
@@ -246,7 +246,7 @@ const HeroSection = () => {
                       router.push(`/salons?serviceName=${encodeURIComponent(serviceSearch.trim())}`);
                     }
                   }}
-                  className="px-6 py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-xl md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
+                  className="px-3 py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
                 >
                   <span className="material-symbols-outlined text-lg">search</span>
                   <span className="hidden sm:inline">Search Service</span>
