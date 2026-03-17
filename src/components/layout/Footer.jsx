@@ -134,7 +134,7 @@ const Footer = () => {
             <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Partner With Us</h4>
             
             <Link
-              href="/business"
+              href="/contact"
               className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
               style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
             >

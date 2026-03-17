@@ -24,7 +24,7 @@ const AboutSection = () => {
           <div className="flex flex-col md:flex-row items-center gap-10 md:gap-8 lg:gap-16">
             <div className="w-full md:w-1/2">
               <div className="relative group">
-                <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-full h-full border-2 border-[#D98C5F]/30 rounded-xl -z-10 group-hover:translate-x-1 group-hover:translate-y-1 transition-transform"></div>
+                <div className="absolute -top-3 -left-3 md:-top-4 md:-left-4 w-full h-full border-2 border-[#D98C5F]/30 rounded-xl -z-10 group-hover:-translate-x-1 group-hover:translate-y-1 transition-transform"></div>
                 <img
                   alt="About our Experience"
                   className="w-full aspect-[4/3] object-cover rounded-xl shadow-xl md:shadow-2xl"
@@ -45,7 +45,7 @@ const AboutSection = () => {
           </div>
 
           {/* Expertise Part */}
-          <div className="flex flex-col md:flex-row-reverse items-center gap-10 md:gap-8 lg:gap-16">
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-8 lg:gap-16">
             <div className="w-full md:w-1/2 text-center md:text-left">
               <h3 className="text-[#B76E4B] font-bold tracking-[0.15em] uppercase text-xs md:text-xs lg:text-sm mb-3 lg:mb-4">The Expertise</h3>
               <h2 className="text-3xl md:text-3xl lg:text-4xl font-extrabold mb-4 lg:mb-6 leading-tight text-[#3c1432]">Master Craftsmanship & Premium Products</h2>
@@ -58,7 +58,7 @@ const AboutSection = () => {
             </div>
             <div className="w-full md:w-1/2">
               <div className="relative group">
-                <div className="absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-full h-full border-2 border-[#D98C5F]/30 rounded-xl -z-10 group-hover:-translate-x-1 group-hover:-translate-y-1 transition-transform"></div>
+                <div className="absolute -bottom-3 -right-3 md:-bottom-4 md:-right-4 w-full h-full border-2 border-[#D98C5F]/30 rounded-xl -z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></div>
                 <img
                   alt="Our Expertise"
                   className="w-full aspect-[4/3] object-cover rounded-xl shadow-xl md:shadow-2xl"

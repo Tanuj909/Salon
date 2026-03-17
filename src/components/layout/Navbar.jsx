@@ -86,14 +86,16 @@ export default function Navbar() {
 
             {/* // Navbar ke andar, user logged in ho to: */}
             <div className=''>
-              {user && <NotificationBell isScrolled={isScrolled} />}
+              {!loading && user && <NotificationBell isScrolled={isScrolled} />}
             </div>
             
  
             {/* Auth / Profile */}
-            <div className="relative">
-              {!loading && (
-                user ? (
+            <div className="relative flex items-center">
+              {loading ? (
+                // Skeleton loader to prevent popping
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-gray-200/40 animate-pulse border border-white/20"></div>
+              ) : user ? (
                   <>
                     <button
                       onClick={() => {
@@ -142,15 +144,14 @@ export default function Navbar() {
                 ) : (
                   <Link
                     href="/login"
-                    className={`px-5 md:px-7 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all shadow-md active:scale-95 ${isScrolled
+                    className={`px-5 md:px-7 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all shadow-md active:scale-95 whitespace-nowrap ${isScrolled
                         ? 'bg-[#D98C5F] text-white hover:bg-[#C07B52]'
                         : 'bg-white/20 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border border-white/30'
                       }`}
                   >
                     Login
                   </Link>
-                )
-              )}
+                )}
             </div>
 
             {/* Hamburger (Mobile) */}

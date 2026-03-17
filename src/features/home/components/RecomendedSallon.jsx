@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchNearbySalons } from "@/features/salons/services/salonService";
+import MapPickerModal from "@/features/salons/components/MapPickerModal";
 
 // Local badge styles since the data file was removed
 const badgeStyles = {
@@ -34,6 +35,7 @@ export default function RecomendedSallon() {
   const [loading, setLoading] = useState(true);
   const [locationDenied, setLocationDenied] = useState(false);
   const [locationStatus, setLocationStatus] = useState('idle'); // 'idle', 'getting', 'failed', 'success'
+  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   const fetchSalonsWithLocation = () => {
     setLoading(true);
@@ -285,16 +287,33 @@ export default function RecomendedSallon() {
             })}
           </div>
         ) : (
-          <div className="text-center py-12 bg-white/50 rounded-2xl">
-            <p className="text-[#3c143280]">No salons found in your area.</p>
-            <Link
-              href="/salons"
-              className="inline-block mt-4 text-[#7a2860] hover:underline"
-            >
-              Browse all salons
-            </Link>
+          <div className="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
+            <p className="text-[#3c143280] mb-4">No salons found near your current location.</p>
+            <div className="flex items-center justify-center gap-4">
+              <button
+                onClick={() => setIsMapModalOpen(true)}
+                className="py-2 px-6 rounded-full border border-[#7a2860] text-[#7a2860] text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:text-white transition-all shadow-sm"
+              >
+                Choose location manually
+              </button>
+              <Link
+                href="/salons"
+                className="py-2 px-6 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:shadow-lg transition-all shadow-md no-underline"
+              >
+                Browse all salons
+              </Link>
+            </div>
           </div>
         )}
+
+        <MapPickerModal
+          isOpen={isMapModalOpen}
+          onClose={() => setIsMapModalOpen(false)}
+          onLocationSelect={(loc) => {
+            setIsMapModalOpen(false);
+            // Optional: You could instantly refetch using loc.lat and loc.lng here if desired.
+          }}
+        />
       </div>
     </section >
   );

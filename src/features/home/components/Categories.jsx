@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { fetchCategories, fetchNearbyByCategory } from "@/features/salons/services/salonService";
 import { useUserLocation } from "@/features/salons/hooks/useUserLocation";
+import MapPickerModal from "@/features/salons/components/MapPickerModal";
 
 
 // ─── Category fallback images (keyed by name) ──────────────────────────────
@@ -254,6 +255,7 @@ export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [loadingCats, setLoadingCats] = useState(true);
   const { location, error, loading: locationLoading } = useUserLocation();
+  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   const handleRetryLocation = () => {
     window.location.reload(); // Simple way to re-trigger for now since hook uses useEffect once
@@ -338,10 +340,18 @@ export default function Categories() {
             </p>
             <button
               onClick={handleRetryLocation}
-              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all"
+              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all mb-4"
             >
               Retry Location
             </button>
+            <div className="flex justify-center">
+               <button
+                  onClick={() => setIsMapModalOpen(true)}
+                  className="py-2 px-6 rounded-full border border-[#7a2860] text-[#7a2860] text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:text-white transition-all shadow-sm"
+                >
+                  Choose location manually
+                </button>
+            </div>
           </div>
         ) : categories.length === 0 ? (
           <div className="text-center py-16">
@@ -359,6 +369,14 @@ export default function Categories() {
             />
           ))
         )}
+
+        <MapPickerModal
+          isOpen={isMapModalOpen}
+          onClose={() => setIsMapModalOpen(false)}
+          onLocationSelect={(loc) => {
+            setIsMapModalOpen(false);
+          }}
+        />
       </div>
     </section>
   );

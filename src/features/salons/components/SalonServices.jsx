@@ -93,7 +93,7 @@ function ServiceCard({ service, index, onBookNow }) {
                 <div className="flex flex-col flex-1">
                     <div className="mb-4">
                         <div className="flex items-start justify-between gap-2 sm:gap-3 mb-2">
-                            <h3 className="text-lg sm:text-xl text-[#5a3d2b] font-bold leading-tight group-hover:text-[#cd6133] transition-colors line-clamp-1 break-words">
+                            <h3 className="text-base sm:text-xl text-[#5a3d2b] font-bold leading-tight group-hover:text-[#cd6133] transition-colors line-clamp-2 break-all">
                                 {service.name}
                             </h3>
                             {service.durationMinutes && (
@@ -189,7 +189,7 @@ const SalonServices = ({ id, onBookService }) => {
                     </div>
                 </Reveal>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                <div className="grid grid-cols-1 min-[500px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
                     {services.map((service, i) => (
                         <ServiceCard
                             key={service.id || i}
