@@ -74,3 +74,10 @@ export const fetchStaffSlots = async (staffId, startDate, endDate) => {
   );
   return response.data;
 };
+
+export const fetchDistinctServiceNames = async () => {
+  const response = await publicApiClient.get(
+    '/services/distinct/names'
+  );
+  return response.data;
+};

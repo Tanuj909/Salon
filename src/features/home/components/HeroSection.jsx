@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useActiveCategories from '../../../features/salons/hooks/useActiveServices';
+import { fetchDistinctServiceNames } from '@/features/salons/services/salonService';
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
@@ -15,6 +16,9 @@ const HeroSection = () => {
   const [headingFade, setHeadingFade] = useState(true);
   const [placeholderFade, setPlaceholderFade] = useState(true);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  const [distinctServices, setDistinctServices] = useState([]);
+  const [loadingServices, setLoadingServices] = useState(true);
 
   const headings = [
     "Experience Luxury Services Near You",
@@ -42,6 +46,20 @@ const HeroSection = () => {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 8000);
     return () => clearInterval(timer);
+  }, []);
+
+  // ─── Fetch Distinct Services ───
+  useEffect(() => {
+    fetchDistinctServiceNames()
+      .then((data) => {
+        setDistinctServices(data || []);
+      })
+      .catch((err) => {
+        console.error("Failed to load distinct services:", err);
+      })
+      .finally(() => {
+        setLoadingServices(false);
+      });
   }, []);
 
   // ─── Heading Cycle (5s) ───
@@ -190,9 +208,13 @@ const HeroSection = () => {
                   onChange={(e) => setSelectedService(e.target.value)}
                 >
                   <option value="">Services</option>
-                  <option value="Haircut">Haircut</option>
-                  <option value="Spa">Spa</option>
-                  <option value="Nails">Nails</option>
+                  {loadingServices ? (
+                    <option disabled>Loading...</option>
+                  ) : (
+                    distinctServices.map((service, idx) => (
+                      <option key={idx} value={service}>{service}</option>
+                    ))
+                  )}
                 </select>
                 <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
               </div>
