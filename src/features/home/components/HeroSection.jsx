@@ -38,7 +38,7 @@ const HeroSection = () => {
     const val = e.target.value;
     setServiceSearch(val);
     if (val.trim()) {
-      const results = fuse.search(val.trim()).slice(0, 5).map(result => result.item);
+      const results = fuse.search(val.trim()).slice(0, 3).map(result => result.item);
       setSuggestions(results);
       setShowSuggestions(true);
     } else {
