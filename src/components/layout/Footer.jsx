@@ -33,20 +33,20 @@ const Footer = () => {
           {/* Col 1 — Brand */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             {/* Logo */}
-<div className="flex items-center gap-2.5 mb-5">
+<div className="mb-6">
   <Link
     href="/"
-    className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-2.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm"
+    className="inline-flex items-center gap-3 no-underline max-w-full"
   >
-    <span className="material-symbols-outlined text-[#D98C5F] text-2xl md:text-3xl">
-      content_cut
-    </span>
-  </Link>
-  <div className="flex items-center gap-2.5 flex-wrap">
-    <span className="text-2xl font-extrabold tracking-[0.08em] text-[#fdf6f0] whitespace-nowrap">
+    <img 
+      src="/logo/fastbooking.png" 
+      alt="Fast Booking Logo" 
+      className="w-14 md:w-16 lg:w-[72px] h-auto object-contain shrink-0" 
+    />
+    <span className="text-2xl lg:text-3xl font-extrabold tracking-[0.05em] text-[#fdf6f0] leading-tight break-words">
       Fast Booking
     </span>
-  </div>
+  </Link>
 </div>
 
             {/* Tagline */}

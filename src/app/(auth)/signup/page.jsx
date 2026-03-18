@@ -58,7 +58,11 @@ export default function SignupPage() {
         {/* Logo/Brand Section */}
         <div className="text-center mb-8 animate-fade-in">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <span className="material-symbols-outlined text-terracotta text-4xl">content_cut</span>
+            <img 
+              src="/logo/fastbooking.png" 
+              alt="Fast Booking Logo" 
+              className="w-14 sm:w-16 h-auto object-contain" 
+            />
             <span className="text-3xl font-extrabold tracking-tight text-earthy-brown">Fast Booking</span>
           </Link>
           <h1 className="text-2xl font-bold text-earthy-brown">
