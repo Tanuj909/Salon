@@ -216,12 +216,15 @@ export default function RecomendedSallon() {
               </svg>
             </div>
             <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+            <div className="flex justify-center">
             <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[300px] mx-auto mb-6">
               Please allow location access to discover premium salons in your area.
             </p>
+            </div>
+
             <button
               onClick={fetchSalonsWithLocation}
-              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all shadow-md"
+              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all shadow-md mt-5"
             >
               Allow Location
             </button>
@@ -310,16 +313,16 @@ export default function RecomendedSallon() {
         ) : (
           <div className="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
             <p className="text-[#3c143280] mb-4">No salons found near your current location.</p>
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4 sm:px-0">
               <button
                 onClick={() => setIsMapModalOpen(true)}
-                className="py-2 px-6 rounded-full border border-[#7a2860] text-[#7a2860] text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:text-white transition-all shadow-sm"
+                className="w-full sm:w-auto py-2 px-6 rounded-full border border-[#7a2860] text-[#7a2860] text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:text-white transition-all shadow-sm"
               >
                 Choose location manually
               </button>
               <Link
                 href="/salons"
-                className="py-2 px-6 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:shadow-lg transition-all shadow-md no-underline"
+                className="w-full sm:w-auto text-center py-2 px-6 rounded-full bg-gray-300 text-white text-[0.8rem] font-bold tracking-widest hover:bg-gray-400 hover:shadow-lg transition-all shadow-md no-underline"
               >
                 Browse all salons
               </Link>

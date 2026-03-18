@@ -341,9 +341,12 @@ export default function Categories() {
               </svg>
             </div>
             <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+            <div className="flex justify-center">
             <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[350px] mx-auto mb-6">
               To see salons in your area, please allow location access.
             </p>
+            </div>
+
             <button
               onClick={handleRetryLocation}
               className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all mb-4"

@@ -53,13 +53,13 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-beige p-6 py-12">
+    <div className="min-h-screen flex items-center justify-center p-6 py-12">
       <div className="w-full max-w-2xl">
         {/* Logo/Brand Section */}
         <div className="text-center mb-8 animate-fade-in">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
             <span className="material-symbols-outlined text-terracotta text-4xl">content_cut</span>
-            <span className="text-3xl font-extrabold tracking-tight text-earthy-brown">LUXE</span>
+            <span className="text-3xl font-extrabold tracking-tight text-earthy-brown">Fast Booking</span>
           </Link>
           <h1 className="text-2xl font-bold text-earthy-brown">
             {step === 1 ? "Get Started" : "Complete Your Profile"}
