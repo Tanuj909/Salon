@@ -217,9 +217,9 @@ export default function RecomendedSallon() {
             </div>
             <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
             <div className="flex justify-center">
-            <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[300px] mx-auto mb-6">
-              Please allow location access to discover premium salons in your area.
-            </p>
+              <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[300px] mx-auto mb-6">
+                Please allow location access to discover premium salons in your area.
+              </p>
             </div>
 
             <button
@@ -324,7 +324,7 @@ export default function RecomendedSallon() {
                 href="/salons"
                 className="w-full sm:w-auto text-center py-2 px-6 rounded-full bg-gray-300 text-white text-[0.8rem] font-bold tracking-widest hover:bg-gray-400 hover:shadow-lg transition-all shadow-md no-underline"
               >
-                Browse all salons
+                Browse salons
               </Link>
             </div>
           </div>
