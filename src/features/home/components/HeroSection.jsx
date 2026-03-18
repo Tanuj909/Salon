@@ -1,17 +1,75 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useActiveCategories from '../../../features/salons/hooks/useActiveServices';
 import { fetchDistinctServiceNames } from '@/features/salons/services/salonService';
+import Fuse from 'fuse.js';
+import { fuseData } from '../data/fuseData';
+
+const serviceData = fuseData.filter(item => item.type === 'service');
+const fuseOptions = {
+  keys: ["name", "synonyms"],
+  threshold: 0.35,
+};
+const fuse = new Fuse(serviceData, fuseOptions);
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [serviceSearch, setServiceSearch] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
-  
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setServiceSearch(val);
+    if (val.trim()) {
+      const results = fuse.search(val.trim()).slice(0, 5).map(result => result.item);
+      setSuggestions(results);
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (serviceName) => {
+    setServiceSearch(serviceName);
+    setShowSuggestions(false);
+  };
+
+  const handleSearchSubmit = () => {
+    const trimmed = serviceSearch.trim();
+    if (!trimmed) return;
+    
+    // Fuzzy search to find the closest matching correct name
+    const results = fuse.search(trimmed);
+    let finalSearchTerm = trimmed;
+    
+    if (results.length > 0) {
+      // Pick the exact best match name to bypass typos
+      finalSearchTerm = results[0].item.name;
+    }
+    
+    setServiceSearch(finalSearchTerm);
+    setShowSuggestions(false);
+    router.push(`/salons?serviceName=${encodeURIComponent(finalSearchTerm)}`);
+  };
+
   const [headingIndex, setHeadingIndex] = useState(0);
   const [headingFade, setHeadingFade] = useState(true);
   const [placeholderFade, setPlaceholderFade] = useState(true);
@@ -176,7 +234,7 @@ const HeroSection = () => {
           </p>
 
           {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
-          <div className="w-full max-w-4xl px-3 animate-fade-up [animation-delay:700ms] mt-5">
+          <div className="w-full max-w-4xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
             <div className="bg-white/95 backdrop-blur-xl p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
 
               {/* Category Select */}
@@ -245,34 +303,59 @@ const HeroSection = () => {
             </div>
 
             {/* Service Search Bar - Below Filter Bar */}
-            <div className="mt-4 md:mt-6 flex justify-center w-full">
-              <div className="w-full max-w-xl bg-white/95 backdrop-blur-xl p-1.5 md:p-2 rounded-full md:rounded-full shadow-2xl border border-white/20 flex items-center gap-2 group transition-all hover:bg-white">
-                <div className="flex-1 relative flex items-center pl-3">
-                  <span className="material-symbols-outlined text-[#B76E4B] text-xl mr-3">content_cut</span>
-                  <input
-                    type="text"
-                    className={`w-full bg-transparent text-[#4A3B2F] text-sm md:text-base font-medium outline-none placeholder:text-[#4A3B2F]/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
-                    placeholder={`${servicePlaceholders[placeholderIndex]}`}
-                    value={serviceSearch}
-                    onChange={(e) => setServiceSearch(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && serviceSearch.trim()) {
-                        router.push(`/salons?serviceName=${encodeURIComponent(serviceSearch.trim())}`);
-                      }
-                    }}
-                  />
+            <div className="mt-4 md:mt-6 flex justify-center w-full relative z-[100]">
+              <div className="w-full max-w-xl relative" ref={searchRef}>
+                <div className="w-full bg-white/95 backdrop-blur-xl p-1.5 md:p-2 rounded-full md:rounded-full shadow-2xl border border-white/20 flex items-center gap-2 group transition-all hover:bg-white relative z-[110]">
+                  <div className="flex-1 relative flex items-center pl-3">
+                    <span className="material-symbols-outlined text-[#B76E4B] text-xl mr-3">content_cut</span>
+                    <input
+                      type="text"
+                      className={`w-full bg-transparent text-[#4A3B2F] text-sm md:text-base font-medium outline-none placeholder:text-[#4A3B2F]/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
+                      placeholder={`${servicePlaceholders[placeholderIndex]}`}
+                      value={serviceSearch}
+                      onChange={handleSearchChange}
+                      onFocus={() => {
+                        if (serviceSearch.trim()) {
+                          setShowSuggestions(true);
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleSearchSubmit();
+                        }
+                      }}
+                    />
+                  </div>
+                  <button
+                    onClick={handleSearchSubmit}
+                    className="px-3 py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
+                  >
+                    <span className="material-symbols-outlined text-lg">search</span>
+                    <span className="hidden sm:inline">Search Service</span>
+                  </button>
                 </div>
-                <button
-                  onClick={() => {
-                    if (serviceSearch.trim()) {
-                      router.push(`/salons?serviceName=${encodeURIComponent(serviceSearch.trim())}`);
-                    }
-                  }}
-                  className="px-3 py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
-                >
-                  <span className="material-symbols-outlined text-lg">search</span>
-                  <span className="hidden sm:inline">Search Service</span>
-                </button>
+
+                {/* Suggestions Dropdown */}
+                {showSuggestions && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl overflow-hidden z-[120] border border-gray-100 flex flex-col">
+                    {suggestions.length > 0 ? (
+                      suggestions.map((item, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSuggestionClick(item.name)}
+                          className="w-full text-left px-5 py-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 flex items-center gap-3"
+                        >
+                          <span className="material-symbols-outlined text-gray-400 text-sm">search</span>
+                          <span className="text-[#4A3B2F] font-medium text-sm md:text-base">{item.name}</span>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="px-5 py-4 text-center text-gray-500 text-sm font-medium">
+                        No services found
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
