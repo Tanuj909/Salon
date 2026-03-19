@@ -7,9 +7,11 @@ import { TokenService } from "@/lib/tokenService";
 import { useAuthContext } from "@/features/auth/providers/AuthProvider";
 import apiClient from "@/services/apiClient";
 import { NOTIFICATION_ENDPOINTS } from "@/features/notifications/services/notificationEndpoints";
+import { useToast } from "@/context/ToastContext";
 
 export const useNotifications = () => {
   const { user, loading: authLoading } = useAuthContext();
+  const { showToast } = useToast();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [wsConnected, setWsConnected] = useState(false);
@@ -58,6 +60,9 @@ export const useNotifications = () => {
       console.log("[Notifications] NEW REAL-TIME MESSAGE:", notification);
       processedIds.current.add(notification.id);
 
+      // Trigger Toast Alert
+      showToast(notification.title || "New Notification", notification.message, "info");
+
       setNotifications((prev) => {
         const isDuplicate = prev.some(n => n.id === notification.id);
         if (isDuplicate) return prev;
@@ -67,7 +72,7 @@ export const useNotifications = () => {
     } catch (e) {
       console.error("[Notifications] Parse error:", e);
     }
-  }, []);
+  }, [showToast]);
 
   // ─── WebSocket Effect ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -95,11 +100,12 @@ export const useNotifications = () => {
         const subPaths = [
           "/user/queue/notifications",           // 1. Generic User Queue (Standard Spring)
           `/user/${user.id}/queue/notifications`, // 2. Literal ID Path
-          "/topic/notifications"                 // 3. Broadcast Fallback
+          "/topic/notifications",                // 3. Broadcast Fallback
+          "/user/topic/notifications"            // 4. User Topic (Alternative Spring config)
         ];
 
         if (user.email) {
-          subPaths.push(`/user/${user.email}/queue/notifications`); // 4. Email Path (Common for JWT)
+          subPaths.push(`/user/${user.email}/queue/notifications`); // 5. Email Path (Common for JWT)
         }
 
         subPaths.forEach(path => {
@@ -131,14 +137,21 @@ export const useNotifications = () => {
     };
   }, [user?.id, user?.email, authLoading, fetchUnread, handleIncomingNotification]);
 
-  // ─── Polling Fallback (Backup if WS fails) ────────────────────────────────
+  // ─── Polling Fallback & Safety Sync ───────────────────────────────────────
   useEffect(() => {
     let interval;
-    // If authenticated but WS is down, poll every 30s as a safety net
-    if (!wsConnected && user && !authLoading) {
-      console.log("[Notifications] WS down. Starting 30s polling fallback...");
-      interval = setInterval(fetchUnread, 30000);
+    if (!user || authLoading) return;
+
+    if (!wsConnected) {
+      // WS is down -> Poll frequently (15s)
+      console.log("[Notifications] WS down. Starting 15s polling fallback...");
+      interval = setInterval(fetchUnread, 15000);
+    } else {
+      // WS is up -> Safety sync every 60s (backup for silent failures)
+      console.log("[Notifications] WS live. Starting 60s safety sync...");
+      interval = setInterval(fetchUnread, 60000);
     }
+
     return () => interval && clearInterval(interval);
   }, [wsConnected, user, authLoading, fetchUnread]);
   
@@ -149,6 +162,8 @@ export const useNotifications = () => {
     const handleMessage = (event) => {
       if (event.data?.type === "NOTIFICATION_RECEIVED") {
         console.log("[Notifications] SW signaled new notification:", event.data.payload);
+        const { title, body } = event.data.payload;
+        showToast(title || "New Notification", body, "info");
         fetchUnread(); // Sync REST state immediately
       }
       
@@ -160,7 +175,7 @@ export const useNotifications = () => {
 
     navigator.serviceWorker.addEventListener("message", handleMessage);
     return () => navigator.serviceWorker.removeEventListener("message", handleMessage);
-  }, [fetchUnread]);
+  }, [fetchUnread, showToast]);
 
   // ─── Actions ─────────────────────────────────────────────────────────────
   const markAsRead = useCallback(async (id) => {
