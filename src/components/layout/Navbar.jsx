@@ -40,16 +40,13 @@ export default function Navbar() {
           <div className="flex items-center gap-4 lg:gap-8">
             <Link
               href="/"
-              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 md:py-2.5 bg-white/80 backdrop-blur-sm rounded-full shadow-sm"
+              className="flex items-center"
             >
               <img
                 src="/logo/fastbooking.png"
                 alt="Fast Booking Logo"
-                className="w-6 sm:w-8 md:w-9 h-auto object-contain"
+                className="w-12 sm:w-14 md:w-18 h-auto object-contain"
               />
-              <span className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-gray-700 whitespace-nowrap">
-                Fast Booking
-              </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-3">

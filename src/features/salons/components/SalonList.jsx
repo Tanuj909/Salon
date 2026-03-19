@@ -387,6 +387,54 @@ export default function SalonList() {
                     )}
                 </div>
             )}
+
+            {/* Mobile Service Search Bar */}
+            {!showFilters && (
+              <div className="md:hidden mt-3 w-full animate-in fade-in slide-in-from-top-2 duration-500">
+                <div className="relative group flex items-center gap-2">
+                  <div className="relative flex-1 flex items-center h-[42px] bg-white/70 backdrop-blur-md rounded-xl border border-[#3c143212] overflow-hidden shadow-sm focus-within:ring-4 focus-within:ring-[#7a2860]/5 focus-within:border-[#7a2860]/40 transition-all duration-300">
+                    <div className="flex items-center gap-1.5 px-3 border-r border-[#3c143208] bg-[#cd6133]/5">
+                      <Search size={12} className="text-[#cd6133]" />
+                      <span className="text-[8px] font-black uppercase tracking-wider text-[#cd6133]">Service</span>
+                    </div>
+                    <input
+                      className="flex-1 h-full px-3 text-[#2a1020] text-[0.8rem] outline-none bg-transparent font-[DM_Sans] placeholder:text-[#3c143240] placeholder:transition-all placeholder:duration-500"
+                      type="text"
+                      placeholder={servicePlaceholders[servicePlaceholderIndex]}
+                      value={draftParams.serviceName}
+                      onChange={(e) => setDraftParams(prev => ({ ...prev, serviceName: e.target.value }))}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !loading) {
+                          handleFetch();
+                        }
+                      }}
+                    />
+                    {draftParams.serviceName && (
+                      <button 
+                        onClick={() => {
+                          setDraftParams(prev => ({ ...prev, serviceName: "" }));
+                          setTimeout(handleFetch, 100);
+                        }}
+                        className="p-1.5 text-[#3c143240] hover:text-[#7a2860] transition-colors"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                  </div>
+                  <button 
+                    onClick={handleFetch}
+                    disabled={loading}
+                    className="h-[42px] w-[42px] shrink-0 flex items-center justify-center rounded-xl bg-[#1e0a18] text-white shadow-md active:scale-95 transition-all disabled:opacity-50"
+                  >
+                     {loading ? (
+                        <div className="w-3.5 h-3.5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                     ) : (
+                        <Search size={16} />
+                     )}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Filter Toggle (Desktop) */}
