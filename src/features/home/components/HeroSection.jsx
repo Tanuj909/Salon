@@ -1,18 +1,12 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import useActiveCategories from '../../../features/salons/hooks/useActiveServices';
 import { fetchDistinctServiceNames } from '@/features/salons/services/salonService';
 import Fuse from 'fuse.js';
 import { fuseData } from '../data/fuseData';
-
-const serviceData = fuseData.filter(item => item.type === 'service');
-const fuseOptions = {
-  keys: ["name", "synonyms"],
-  threshold: 0.35,
-};
-const fuse = new Fuse(serviceData, fuseOptions);
+import { enrichSynonyms, fuseOptions } from '../utils/searchUtils';
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
@@ -23,6 +17,36 @@ const HeroSection = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const searchRef = useRef(null);
+
+  const [headingIndex, setHeadingIndex] = useState(0);
+  const [headingFade, setHeadingFade] = useState(true);
+  const [placeholderFade, setPlaceholderFade] = useState(true);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+
+  const [distinctServices, setDistinctServices] = useState([]);
+  const [loadingServices, setLoadingServices] = useState(true);
+
+  // ─── Combined Service Data for Search ───
+  const combinedServiceData = useMemo(() => {
+    const staticServices = fuseData.filter(item => item.type === 'service');
+    const seenNames = new Set(staticServices.map(s => s.name.toLowerCase()));
+    
+    const apiServicesFormatted = distinctServices
+      .filter(name => name && !seenNames.has(name.toLowerCase()))
+      .map(name => ({
+        name: name.trim(), // Keep original case for display
+        synonyms: enrichSynonyms(name),
+        type: 'service',
+        isFromApi: true
+      }));
+
+    return [...staticServices, ...apiServicesFormatted];
+  }, [distinctServices]);
+
+  // ─── Initialize Fuse with Combined Data ───
+  const fuse = useMemo(() => {
+    return new Fuse(combinedServiceData, fuseOptions);
+  }, [combinedServiceData]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -35,11 +59,17 @@ const HeroSection = () => {
   }, []);
 
   const handleSearchChange = (e) => {
-    const val = e.target.value;
-    setServiceSearch(val);
-    if (val.trim()) {
-      const results = fuse.search(val.trim()).slice(0, 3).map(result => result.item);
-      setSuggestions(results);
+    const originalVal = e.target.value;
+    setServiceSearch(originalVal);
+    
+    const val = originalVal.toLowerCase().trim();
+    if (val) {
+      const results = fuse.search(val).slice(0, 3);
+      
+      // Verification log
+      console.log(`Searching for: ${val}`, results);
+      
+      setSuggestions(results.map(r => r.item));
       setShowSuggestions(true);
     } else {
       setSuggestions([]);
@@ -53,30 +83,36 @@ const HeroSection = () => {
   };
 
   const handleSearchSubmit = () => {
-    const trimmed = serviceSearch.trim();
+    const originalVal = serviceSearch;
+    const trimmed = originalVal.toLowerCase().trim();
     if (!trimmed) return;
     
-    // Fuzzy search to find the closest matching correct name
-    const results = fuse.search(trimmed);
-    let finalSearchTerm = trimmed;
+    // 1. Check for exact match (case-insensitive)
+    const exactMatch = combinedServiceData.find(
+      s => s.name.toLowerCase() === trimmed
+    );
     
-    if (results.length > 0) {
-      // Pick the exact best match name to bypass typos
-      finalSearchTerm = results[0].item.name;
+    let finalSearchTerm = originalVal.trim();
+    
+    if (exactMatch) {
+      finalSearchTerm = exactMatch.name;
+    } else {
+      // 2. Fuzzy search if no exact match
+      const results = fuse.search(trimmed);
+      if (results.length > 0) {
+        const bestMatch = results[0];
+        // 3. Validate using score threshold
+        // Spec: score < 0.3 for correction (lower is better)
+        if (bestMatch.score < 0.3) {
+          finalSearchTerm = bestMatch.item.name;
+        }
+      }
     }
     
-    setServiceSearch(finalSearchTerm);
     setShowSuggestions(false);
     router.push(`/salons?serviceName=${encodeURIComponent(finalSearchTerm)}`);
   };
 
-  const [headingIndex, setHeadingIndex] = useState(0);
-  const [headingFade, setHeadingFade] = useState(true);
-  const [placeholderFade, setPlaceholderFade] = useState(true);
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
-
-  const [distinctServices, setDistinctServices] = useState([]);
-  const [loadingServices, setLoadingServices] = useState(true);
 
   const headings = [
     "Experience Luxury Services Near You",

@@ -40,13 +40,16 @@ export default function Navbar() {
           <div className="flex items-center gap-4 lg:gap-8">
             <Link
               href="/"
-              className="flex items-center"
+              className="flex items-center gap-2"
             >
               <img
                 src="/logo/fastbooking.png"
                 alt="Fast Booking Logo"
                 className="w-12 sm:w-14 md:w-18 h-auto object-contain"
               />
+              <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#D98C5F] to-[#B06B4A] bg-clip-text text-transparent tracking-tight">
+                FastBooking
+              </span>
             </Link>
 
             <div className="hidden md:flex items-center gap-3">

@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import { MapPin, Navigation, Star, Search, X, SlidersHorizontal, ChevronDown } from "lucide-react";
+import Fuse from 'fuse.js';
+import { fuseData } from '@/features/home/data/fuseData';
+import { enrichSynonyms, fuseOptions } from '@/features/home/utils/searchUtils';
+import { fetchDistinctServiceNames } from "@/features/salons/services/salonService";
 // Local badge styles
 const badgeStyles = {
   "VERIFIED": {
@@ -166,6 +170,33 @@ export default function SalonList() {
 
   const [showTimeoutOptions, setShowTimeoutOptions] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [distinctServices, setDistinctServices] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const serviceSearchRef = useRef(null);
+  const mobileServiceSearchRef = useRef(null);
+
+  // ─── Combined Service Data for Search ───
+  const combinedServiceData = useMemo(() => {
+    const staticServices = fuseData.filter(item => item.type === 'service');
+    const seenNames = new Set(staticServices.map(s => s.name.toLowerCase()));
+    
+    const apiServicesFormatted = distinctServices
+      .filter(name => name && !seenNames.has(name.toLowerCase()))
+      .map(name => ({
+        name: name.trim(),
+        synonyms: enrichSynonyms(name),
+        type: 'service',
+        isFromApi: true
+      }));
+
+    return [...staticServices, ...apiServicesFormatted];
+  }, [distinctServices]);
+
+  // ─── Initialize Fuse ───
+  const fuse = useMemo(() => {
+    return new Fuse(combinedServiceData, fuseOptions);
+  }, [combinedServiceData]);
 
   // ─── Dynamic Placeholders ───
   const [salonPlaceholderIndex, setSalonPlaceholderIndex] = useState(0);
@@ -213,10 +244,27 @@ export default function SalonList() {
 
   React.useEffect(() => {
     fetchActiveCategories().then(data => {
-      // Depending on API response structure, it could be data.content or just data
       const catList = Array.isArray(data) ? data : (data.content || []);
       setCategories(catList);
     }).catch(console.error);
+
+    fetchDistinctServiceNames().then(data => {
+      setDistinctServices(data || []);
+    }).catch(console.error);
+  }, []);
+
+  // Handle outside click for suggestions
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        (serviceSearchRef.current && !serviceSearchRef.current.contains(event.target)) &&
+        (mobileServiceSearchRef.current && !mobileServiceSearchRef.current.contains(event.target))
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   React.useEffect(() => {
@@ -248,7 +296,46 @@ export default function SalonList() {
   }, [searchParams.lat, searchParams.lng, searchParams.radius, searchParams.address]);
 
   const handleFetch = () => {
-    updateParams(draftParams);
+    const originalVal = draftParams.serviceName;
+    const trimmed = originalVal.toLowerCase().trim();
+    
+    let finalSearchTerm = originalVal.trim();
+    
+    if (trimmed) {
+      const exactMatch = combinedServiceData.find(s => s.name.toLowerCase() === trimmed);
+      if (exactMatch) {
+        finalSearchTerm = exactMatch.name;
+      } else {
+        const results = fuse.search(trimmed);
+        if (results.length > 0 && results[0].score < 0.3) {
+          finalSearchTerm = results[0].item.name;
+        }
+      }
+    }
+
+    setShowSuggestions(false);
+    updateParams({ ...draftParams, serviceName: finalSearchTerm });
+  };
+
+  const handleServiceChange = (e) => {
+    const val = e.target.value;
+    setDraftParams(prev => ({ ...prev, serviceName: val }));
+    
+    const searchVal = val.toLowerCase().trim();
+    if (searchVal) {
+      const results = fuse.search(searchVal).slice(0, 4);
+      setSuggestions(results.map(r => r.item));
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSuggestionClick = (name) => {
+    setDraftParams(prev => ({ ...prev, serviceName: name }));
+    setShowSuggestions(false);
+    updateParams({ ...draftParams, serviceName: name });
   };
 
   const hasChanges =
@@ -390,9 +477,9 @@ export default function SalonList() {
 
             {/* Mobile Service Search Bar */}
             {!showFilters && (
-              <div className="md:hidden mt-3 w-full animate-in fade-in slide-in-from-top-2 duration-500">
+              <div className="md:hidden mt-3 w-full animate-in fade-in slide-in-from-top-2 duration-500 relative" ref={mobileServiceSearchRef}>
                 <div className="relative group flex items-center gap-2">
-                  <div className="relative flex-1 flex items-center h-[42px] bg-white/70 backdrop-blur-md rounded-xl border border-[#3c143212] overflow-hidden shadow-sm focus-within:ring-4 focus-within:ring-[#7a2860]/5 focus-within:border-[#7a2860]/40 transition-all duration-300">
+                  <div className="relative flex-1 flex items-center h-[42px] bg-white/70 backdrop-blur-md rounded-xl border border-[#3c143212] shadow-sm focus-within:ring-4 focus-within:ring-[#7a2860]/5 focus-within:border-[#7a2860]/40 transition-all duration-300">
                     <div className="flex items-center gap-1.5 px-3 border-r border-[#3c143208] bg-[#cd6133]/5">
                       <Search size={12} className="text-[#cd6133]" />
                       <span className="text-[8px] font-black uppercase tracking-wider text-[#cd6133]">Service</span>
@@ -402,13 +489,27 @@ export default function SalonList() {
                       type="text"
                       placeholder={servicePlaceholders[servicePlaceholderIndex]}
                       value={draftParams.serviceName}
-                      onChange={(e) => setDraftParams(prev => ({ ...prev, serviceName: e.target.value }))}
+                      onChange={handleServiceChange}
+                      onFocus={() => { if (draftParams.serviceName.trim()) setShowSuggestions(true); }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && !loading) {
                           handleFetch();
                         }
                       }}
                     />
+                    {showSuggestions && suggestions.length > 0 && (
+                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#3c143212] rounded-xl shadow-xl z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+                        {suggestions.map((s, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleSuggestionClick(s.name)}
+                            className="w-full text-left px-4 py-2.5 text-xs text-[#2a1020] hover:bg-[#cd6133]/5 transition-colors border-b border-[#3c143205] last:border-0"
+                          >
+                            {s.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                     {draftParams.serviceName && (
                       <button 
                         onClick={() => {
@@ -454,8 +555,8 @@ export default function SalonList() {
         </div>
 
         {/* ── Desktop Dual Search Bar ── */}
-        <div className={`hidden md:block overflow-hidden transition-all duration-300 ${!showFilters ? 'max-h-[100px] mb-8 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
-          <div className="flex items-center gap-4 p-2.5 bg-white/70 backdrop-blur-md rounded-[1.5rem] border border-[#3c143212] shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        <div className={`hidden md:block transition-all duration-300 relative z-[50] ${!showFilters ? 'max-h-[500px] mb-8 opacity-100 visible' : 'max-h-0 opacity-0 pointer-events-none invisible'}`} ref={serviceSearchRef}>
+          <div className="flex items-center gap-4 p-2.5 bg-white/70 backdrop-blur-md rounded-[1.5rem] border border-[#3c143212] shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-visible">
             {/* Salon Name Search */}
             <div className="relative flex-1 group">
               <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143260] transition-colors group-focus-within:text-[#7a2860]">
@@ -482,13 +583,27 @@ export default function SalonList() {
                 type="text"
                 placeholder={servicePlaceholders[servicePlaceholderIndex]}
                 value={draftParams.serviceName}
-                onChange={(e) => setDraftParams(prev => ({ ...prev, serviceName: e.target.value }))}
+                onChange={handleServiceChange}
+                onFocus={() => { if (draftParams.serviceName.trim()) setShowSuggestions(true); }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !loading) {
                     handleFetch();
                   }
                 }}
               />
+              {showSuggestions && suggestions.length > 0 && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#3c143212] rounded-xl shadow-2xl z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                  {suggestions.map((s, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleSuggestionClick(s.name)}
+                      className="w-full text-left px-5 py-3 text-sm text-[#2a1020] hover:bg-[#cd6133]/5 transition-colors border-b border-[#3c143205] last:border-0"
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Search Action Button */}
@@ -510,7 +625,7 @@ export default function SalonList() {
         </div>
 
         {/* ── Advanced Filter Control (Collapsible) ── */}
-        <div className={`overflow-hidden transition-all duration-500 ease-in-out ${showFilters ? 'max-h-[800px] mb-6 md:mb-10 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+        <div className={`transition-all duration-500 ease-in-out relative z-[100] ${showFilters ? 'max-h-[800px] mb-6 md:mb-10 opacity-100 overflow-visible' : 'max-h-0 opacity-0 pointer-events-none overflow-hidden'}`}>
           <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-[#3c143208] bg-white/40 backdrop-blur-sm">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end mb-4 md:mb-6">
               {/* Location Picker */}
@@ -576,7 +691,7 @@ export default function SalonList() {
               {/* Service Name Box */}
               <div className="lg:col-span-5 space-y-1.5 flex flex-col">
                 <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240] ml-1">Service Name</label>
-                <div className="relative">
+                <div className="relative overflow-visible">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3c143240]">
                     <Search size={14} />
                   </span>
@@ -585,15 +700,27 @@ export default function SalonList() {
                     type="text"
                     placeholder="e.g. Haircut, Facial..."
                     value={draftParams.serviceName}
-                    onChange={(e) => {
-                        setDraftParams(prev => ({ ...prev, serviceName: e.target.value }));
-                    }}
+                    onChange={handleServiceChange}
+                    onFocus={() => { if (draftParams.serviceName.trim()) setShowSuggestions(true); }}
                     onKeyDown={(e) => {
                        if (e.key === "Enter" && hasChanges && !loading) {
                          handleFetch();
                        }
                     }}
                   />
+                  {showSuggestions && suggestions.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#3c143212] rounded-xl shadow-xl z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+                      {suggestions.map((s, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSuggestionClick(s.name)}
+                          className="w-full text-left px-4 py-2.5 text-xs text-[#2a1020] hover:bg-[#cd6133]/5 transition-colors border-b border-[#3c143205] last:border-0"
+                        >
+                          {s.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 
