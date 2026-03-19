@@ -72,19 +72,17 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser]       = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshUser = useCallback(async () => {
+const refreshUser = useCallback(async () => {
     setLoading(true);
     try {
       const token = TokenService.getToken();
       if (!token) {
         setUser(null);
+        setLoading(false); // ← yahan explicitly set karo
         return;
       }
       const data = await getCurrentUser();
       setUser(data);
-
-      // ── Trigger push subscription after user is confirmed logged in ──
-      // Non-blocking — won't break login if push fails
       PushSubscriptionService.subscribe().catch((err) =>
         console.warn("[Push] Auto-subscribe failed:", err.message)
       );
