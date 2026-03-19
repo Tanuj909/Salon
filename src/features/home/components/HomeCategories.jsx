@@ -94,7 +94,7 @@ export default function HomeCategories() {
               {/* Pricing Section */}
               <div className="mt-4 sm:mt-5 flex flex-col items-center justify-center transition-opacity duration-500 opacity-90 group-hover:opacity-100">
                 <span className="text-xs sm:text-sm text-gray-500 font-medium tracking-wide uppercase">Starting from</span>
-                <span className="text-base sm:text-lg font-bold text-[#cd6133] mt-0.5">AED {cat.price}</span>
+                <span className="text-base sm:text-lg font-bold text-[#cd6133] mt-0.5">Starting at {cat.price}</span>
               </div>
             </Link>
           ))}

@@ -1131,7 +1131,21 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
                                         {availableTimeSlots.map((slot) => {
                                             const isSelected = startTime === slot.time && bookingDate === activeDate;
-                                            const isAvailable = slot.status === "AVAILABLE";
+                                            
+                                            // Check if slot is in the past for today
+                                            const now = new Date();
+                                            const isToday = activeDate === todayStr;
+                                            let isPast = false;
+                                            if (isToday) {
+                                                const [slotH, slotM] = slot.time.split(':').map(Number);
+                                                const currentH = now.getHours();
+                                                const currentM = now.getMinutes();
+                                                if (slotH < currentH || (slotH === currentH && slotM <= currentM)) {
+                                                    isPast = true;
+                                                }
+                                            }
+
+                                            const isAvailable = slot.status === "AVAILABLE" && !isPast;
 
                                             // Format for display (e.g. 09:00 AM)
                                             const [h, m] = slot.time.split(':');

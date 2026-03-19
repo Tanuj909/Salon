@@ -279,7 +279,7 @@ export default function BecomePartnerPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen pt-24 sm:pt-32 pb-12 sm:pb-24 font-[Jost,sans-serif] bg-[#f5f0eb]">
+    <div className="min-h-screen pt-24 sm:pt-32 pb-12 sm:pb-24 font-[Jost,sans-serif] ">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500;600&display=swap');
       `}</style>
@@ -314,7 +314,7 @@ export default function BecomePartnerPage() {
               <div className="md:w-1/3 p-6 sm:p-10 bg-[#1C1C1C] border-b md:border-b-0 md:border-r border-[#C8A951]/20">
                 <span className="block text-[8px] sm:text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-semibold mb-6">Partnership</span>
                 <h2 className="font-[Cormorant_Garamond] text-2xl sm:text-4xl text-white leading-tight mb-6">
-                  Grow Your <em className="italic text-[#C8A951]">Business</em> With Luxe
+                  Grow Your <em className="italic text-[#C8A951]">Business</em> With Fast Booking
                 </h2>
                 <p className="text-[#b5a99d] text-xs sm:text-sm leading-relaxed font-light mb-8 sm:mb-10">
                   Join an exclusive community of premium salons. Elevate your brand, reach more clients, and manage your bookings with ease.

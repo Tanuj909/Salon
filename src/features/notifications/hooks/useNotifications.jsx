@@ -22,7 +22,17 @@ export const useNotifications = () => {
       const res = await apiClient.get(NOTIFICATION_ENDPOINTS.UNREAD);
       if (res.data) {
         // Sort by newest first
-        const sorted = [...res.data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sorted = [...res.data].sort((a, b) => {
+          const parseSafe = (s) => {
+            if (!s) return 0;
+            if (s.includes(".") && s.includes("T")) {
+              const [main, frac] = s.split(".");
+              return new Date(`${main}.${frac.substring(0, 3)}${s.endsWith("Z") ? "Z" : ""}`).getTime();
+            }
+            return new Date(s).getTime();
+          };
+          return parseSafe(b.createdAt) - parseSafe(a.createdAt);
+        });
         setNotifications(sorted);
         setUnreadCount(sorted.filter((n) => !n.isRead).length);
         
@@ -131,6 +141,26 @@ export const useNotifications = () => {
     }
     return () => interval && clearInterval(interval);
   }, [wsConnected, user, authLoading, fetchUnread]);
+  
+  // ─── Service Worker Bridge ────────────────────────────────────────────────
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+
+    const handleMessage = (event) => {
+      if (event.data?.type === "NOTIFICATION_RECEIVED") {
+        console.log("[Notifications] SW signaled new notification:", event.data.payload);
+        fetchUnread(); // Sync REST state immediately
+      }
+      
+      if (event.data?.type === "NOTIFICATION_CLICKED") {
+        console.log("[Notifications] SW signaled notification click:", event.data.payload);
+        fetchUnread(); // Sync REST state immediately
+      }
+    };
+
+    navigator.serviceWorker.addEventListener("message", handleMessage);
+    return () => navigator.serviceWorker.removeEventListener("message", handleMessage);
+  }, [fetchUnread]);
 
   // ─── Actions ─────────────────────────────────────────────────────────────
   const markAsRead = useCallback(async (id) => {

@@ -36,7 +36,12 @@ export default function NotificationBell({ isScrolled }) {
       await markAsRead(notification.id);
     }
     if (notification.actionUrl) {
-      window.location.href = notification.actionUrl;
+      // Fix: If it's a booking link, redirect to profile since dedicated booking pages don't exist
+      if (notification.actionUrl.startsWith("/bookings/")) {
+        window.location.href = "/profile";
+      } else {
+        window.location.href = notification.actionUrl;
+      }
     }
   };
 
@@ -72,7 +77,7 @@ export default function NotificationBell({ isScrolled }) {
 
       {/* ── Dropdown ── */}
       {open && (
-        <div className="absolute right-0 sm:right-0 md:right-0 top-12 w-[calc(100vw-2rem)] sm:w-80 md:w-80 max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden transform md:translate-x-0 translate-x-[calc(50%-1.5rem)] xs:translate-x-[calc(50%-1.5rem)] right-1/2 sm:translate-x-0 sm:right-0 xl:translate-x-0">
+        <div className="absolute right-0 sm:right-0 md:right-0 top-12 w-[calc(100vw-2rem)] sm:w-80 md:w-80 max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 z-[1001] overflow-hidden transform md:translate-x-0 translate-x-[calc(50%-1.5rem)] xs:translate-x-[calc(50%-1.5rem)] right-1/2 sm:translate-x-0 sm:right-0 xl:translate-x-0">
           <div className="fixed inset-0 sm:hidden z-[-1]" onClick={() => setOpen(false)} />
           <div className="relative z-10 w-full h-full bg-white">
           {/* Header */}
@@ -87,15 +92,7 @@ export default function NotificationBell({ isScrolled }) {
                 <WifiOff size={12} className="text-gray-400" />
               )}
             </div>
-            {unreadCount > 0 && (
-              <button
-                onClick={markAllAsRead}
-                className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors"
-              >
-                <CheckCheck size={13} />
-                Mark all read
-              </button>
-            )}
+            {/* Removed Mark All Read as per request */}
           </div>
 
           {/* List */}
@@ -106,7 +103,16 @@ export default function NotificationBell({ isScrolled }) {
                 <p className="text-sm">No notifications yet</p>
               </div>
             ) : (
-              notifications.map((n) => (
+              [...notifications]
+                .sort((a, b) => {
+                  // Unread (isRead=false) comes before read (isRead=true)
+                  if (a.isRead !== b.isRead) {
+                    return a.isRead ? 1 : -1;
+                  }
+                  // Secondary sort by date (fallback for real-time consistency)
+                  return new Date(b.createdAt) - new Date(a.createdAt); // createdAt sort is already done in hook but good handle here for new items
+                })
+                .map((n) => (
                 <div
                   key={n.id}
                   onClick={() => handleNotificationClick(n)}
@@ -135,44 +141,34 @@ export default function NotificationBell({ isScrolled }) {
                       >
                         {n.title}
                       </p>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">
+                      {n.message}
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <p className="text-[11px] text-gray-400">
+                        {formatDistanceToNow(n.createdAt)}
+                      </p>
+                      
                       {!n.isRead && (
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             markAsRead(n.id);
                           }}
-                          className="flex-shrink-0 p-0.5 hover:text-blue-600 text-gray-400"
+                          className="text-[10px] font-bold text-blue-600 hover:text-blue-700 uppercase tracking-wider"
                         >
-                          <Check size={13} />
+                          Mark as Read
                         </button>
                       )}
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5 line-clamp-2">
-                      {n.message}
-                    </p>
-                    <p className="text-[11px] text-gray-400 mt-1">
-                      {formatDistanceToNow(n.createdAt)}
-                    </p>
                   </div>
                 </div>
               ))
             )}
           </div>
 
-          {/* Footer */}
-          {notifications.length > 0 && (
-            <div className="px-4 py-2.5 border-t border-gray-100 text-center">
-              <button
-                onClick={() => {
-                  setOpen(false);
-                  window.location.href = "/notifications";
-                }}
-                className="text-xs text-blue-600 hover:text-blue-700 font-medium"
-              >
-                View all notifications
-              </button>
-            </div>
-          )}
+          {/* Removed View All as per request */}
           </div>
         </div>
       )}

@@ -64,15 +64,35 @@ const reverseGeocode = async (lat, lng, setAddress) => {
 };
 
 const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
-    const [position, setPosition] = useState(initialPos || { lat: 25.2048, lng: 55.2708 });
+    // Default to a neutral location (e.g., center of map or a generic fallback) 
+    // but we will try to detect current location if initialPos is not provided.
+    const [position, setPosition] = useState(initialPos || { lat: 20, lng: 0 }); // Very zoomed out view or generic
     const [address, setAddress] = useState("Loading address...");
     const [isMounted, setIsMounted] = useState(false);
+    const [isLocating, setIsLocating] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
         if (initialPos && initialPos.lat && initialPos.lng) {
             setPosition(initialPos);
             reverseGeocode(initialPos.lat, initialPos.lng, setAddress).catch(() => { });
+        } else if (!initialPos && navigator.geolocation) {
+            // If no initial position, try to center on user's current location
+            setIsLocating(true);
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    setPosition(newPos);
+                    reverseGeocode(newPos.lat, newPos.lng, setAddress).catch(() => { });
+                    setIsLocating(false);
+                },
+                () => {
+                    setIsLocating(false);
+                    // Fallback to a sensible default if denied (e.g., a major city or stay neutral)
+                    // We'll keep the neutral {lat: 20, lng: 0} or similar
+                },
+                { enableHighAccuracy: true, timeout: 5000 }
+            );
         }
     }, [initialPos]);
 

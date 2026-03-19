@@ -35,13 +35,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md mt-6 sm:mt-0 mb-6 sm:mb-0">
         {/* Logo/Brand Section */}
         <div className="text-center mb-6 sm:mb-8 animate-fade-in">
-          <Link href="/" className="inline-flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+          <Link href="/" className="inline-flex items-center justify-center mb-6 sm:mb-8">
             <img 
               src="/logo/fastbooking.png" 
               alt="Fast Booking Logo" 
-              className="w-14 sm:w-16 h-auto object-contain" 
+              className="w-20 sm:w-28 h-auto object-contain" 
             />
-            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-earthy-brown">Fast Booking</span>
           </Link>
           {/* <h1 className="text-xl sm:text-2xl font-bold text-earthy-brown">Welcome Back</h1> */}
           <p className="text-xs sm:text-sm text-earthy-brown/60 mt-1 sm:mt-2">Sign in to your account to continue</p>

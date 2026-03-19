@@ -29,30 +29,32 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${isScrolled
+      className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300 ${isScrolled
         ? 'bg-[linear-gradient(135deg,#f5f3ff_0%,#f7f5ff_45%,#ffffff_100%)] backdrop-blur-md shadow-md py-3 md:py-4'
         : 'bg-transparent py-5 md:py-6'
         }`}
     >
       <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 mx-auto">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2 flex-nowrap">
           {/* Left Side: Logo & Primary Links */}
-          <div className="flex items-center gap-4 lg:gap-8">
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-6 min-w-0 flex-shrink">
             <Link
               href="/"
-              className="flex items-center gap-2"
+              className="flex items-center gap-1.5 sm:gap-2.5 lg:gap-3 group transition-all"
             >
               <img
                 src="/logo/fastbooking.png"
                 alt="Fast Booking Logo"
-                className="w-12 sm:w-14 md:w-18 h-auto object-contain"
+                className="w-12 sm:w-14 lg:w-20 h-auto object-contain transition-transform group-hover:scale-110 flex-shrink-0"
               />
-              <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#D98C5F] to-[#B06B4A] bg-clip-text text-transparent tracking-tight">
-                FastBooking
-              </span>
+              <div className="flex justify-center items-center relative px-2 py-1 md:px-3 lg:px-4 md:py-1.5 lg:py-2 rounded-xl lg:rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-sm group-hover:bg-white/90 transition-all">
+                <span className="text-sm sm:text-lg lg:text-2xl font-black bg-gradient-to-r from-[#B75F2B] to-[#7D472D] bg-clip-text text-transparent tracking-tighter whitespace-nowrap">
+                  FastBooking
+                </span>
+              </div>
             </Link>
 
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden lg:flex items-center gap-3">
               <Link
                 href="/"
                 className={`px-4 lg:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium transition-all shadow-sm ${isScrolled
@@ -158,9 +160,9 @@ export default function Navbar() {
 
             {/* Hamburger (Mobile) */}
             <button
-              className={`flex items-center justify-center md:hidden p-1.5 md:p-2.5 rounded-lg transition-all ${isScrolled
-                ? 'bg-black/5 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
-                : 'bg-white/20 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
+              className={`flex items-center justify-center lg:hidden p-1.5 md:p-2.5 rounded-lg transition-all ${isScrolled
+                ? 'bg-black/5 backdrop-blur-sm text-black hover:bg-[#D98C5F] hover:text-white'
+                : 'bg-white/20 backdrop-blur-sm text-black hover:bg-[#D98C5F] hover:text-white'
                 }`}
               onClick={() => {
                 setIsMenuOpen(!isMenuOpen);
@@ -175,7 +177,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <div className="absolute top-full inset-x-4 mt-2 p-4 md:hidden flex flex-col gap-3 shadow-2xl border border-[#D98C5F]/10 bg-white/95 backdrop-blur-2xl animate-in slide-in-from-top-4 duration-300 rounded-3xl">
+        <div className="absolute top-full inset-x-4 mt-2 p-4 lg:hidden flex flex-col gap-3 shadow-2xl border border-[#D98C5F]/10 bg-white/95 backdrop-blur-2xl animate-in slide-in-from-top-4 duration-300 rounded-3xl">
           <div className="flex flex-col gap-2 p-2">
             <Link
               href="/"

@@ -57,13 +57,12 @@ export default function SignupPage() {
       <div className="w-full max-w-2xl">
         {/* Logo/Brand Section */}
         <div className="text-center mb-8 animate-fade-in">
-          <Link href="/" className="inline-flex items-center gap-2 mb-4">
+          <Link href="/" className="inline-flex items-center justify-center mb-6 sm:mb-8">
             <img 
               src="/logo/fastbooking.png" 
               alt="Fast Booking Logo" 
-              className="w-14 sm:w-16 h-auto object-contain" 
+              className="w-20 sm:w-28 h-auto object-contain" 
             />
-            <span className="text-3xl font-extrabold tracking-tight text-earthy-brown">Fast Booking</span>
           </Link>
           <h1 className="text-2xl font-bold text-earthy-brown">
             {step === 1 ? "Get Started" : "Complete Your Profile"}

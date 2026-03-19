@@ -24,6 +24,16 @@ self.addEventListener("push", (event) => {
       badge: "/icons/badge-72.png",
       data:  { url },
       vibrate: [100, 50, 100],
+    }).then(() => {
+      // Notify all open tabs (clients) that a new notification arrived
+      return clients.matchAll({ type: "window", includeUncontrolled: true });
+    }).then((clientList) => {
+      clientList.forEach((client) => {
+        client.postMessage({
+          type: "NOTIFICATION_RECEIVED",
+          payload: { title, body, url }
+        });
+      });
     })
   );
 });
@@ -41,7 +51,14 @@ self.addEventListener("notificationclick", (event) => {
         for (const client of clientList) {
           if (client.url.includes(self.location.origin) && "focus" in client) {
             client.focus();
-            client.navigate(targetUrl);
+            if ("navigate" in client) {
+              client.navigate(targetUrl);
+            }
+            // Notify the specific client that it was opened via notification
+            client.postMessage({
+              type: "NOTIFICATION_CLICKED",
+              payload: { url: targetUrl }
+            });
             return;
           }
         }

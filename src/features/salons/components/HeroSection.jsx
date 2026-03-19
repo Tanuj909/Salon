@@ -72,12 +72,19 @@ function Badge({ children, variant = "gold" }) {
 const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
     const heroRef = useParallax();
 
+    const toTitleCase = (str) => {
+        if (!str) return "";
+        return str.toLowerCase().split(' ').map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
+    };
+
     return (
-        <section className="relative min-h-[60vh] md:h-[50vh] md:min-h-[450px] overflow-hidden flex flex-col pt-28 sm:pt-24 md:pt-[6.5%] pb-12">
+        <section className="relative min-h-[60vh] md:h-[50vh] md:min-h-[450px] overflow-hidden flex flex-col pt-28 sm:pt-24 md:pt-[7%] pb-12">
             <div ref={heroRef} className="absolute inset-0">
                 {salonImg && <img src={salonImg} alt={salon.name} className="w-full h-full object-cover" />}
-                {/* Subtle dark plum gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#4b3621]/90 via-[#4b3621]/60 to-[#4b3621]/90" />
+                {/* More prominent dark plum gradient overlay for better navbar contrast */}
+                <div className="absolute inset-0 bg-gradient-to-b from-[#4b3621]/95 via-[#4b3621]/80 to-[#4b3621]/95" />
             </div>
 
             <div className="relative z-10 flex items-center px-4 sm:px-10 md:px-16 lg:px-24">
@@ -100,9 +107,9 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                     </Reveal>
 
                     <Reveal delay={300}>
-                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 uppercase tracking-tight md:whitespace-nowrap"
+                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 tracking-tight md:whitespace-nowrap"
                             style={{ fontSize: "clamp(22px,5.5vw,56px)" }}>
-                            {salon.name}
+                            {toTitleCase(salon.name)}
                         </h1>
                     </Reveal>
 
