@@ -59,8 +59,10 @@ export default function RecomendedSallon() {
   useEffect(() => {
     if (location?.latitude && location?.longitude) {
       fetchSalons(location.latitude, location.longitude);
+    } else {
+      setSalons([]);
     }
-  }, [location?.latitude, location?.latitude]);
+  }, [location?.latitude, location?.longitude]);
 
   const handleRetryLocation = () => {
     window.location.reload();

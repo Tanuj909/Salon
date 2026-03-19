@@ -312,7 +312,7 @@ export default function Categories() {
         <div className="h-px mb-10 bg-[#3c143214]" />
 
         {/* ── Category rows ── */}
-        {loadingCats || (!manualLocation && locationLoading) ? (
+        {loadingCats || (!location && locationLoading) ? (
           // skeleton for category rows
           <div className="space-y-14">
             {[1, 2].map((i) => (
@@ -330,7 +330,7 @@ export default function Categories() {
               </div>
             ))}
           </div>
-        ) : (!manualLocation && error) ? (
+        ) : (!location && error) ? (
           // Location denied or error state
           <div className="text-center py-16 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
             <div className="w-16 h-16 bg-[#7a2860]/5 rounded-full flex items-center justify-center mx-auto mb-4">

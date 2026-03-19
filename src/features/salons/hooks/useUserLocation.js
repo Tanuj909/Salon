@@ -61,15 +61,25 @@ export const useUserLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         clearTimeout(timeoutId);
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+        setLocation(prev => {
+          // If we already have a manual location (set while this was pending), don't overwrite it
+          if (prev?.isManual) return prev;
+          return {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
         });
         setLoading(false);
       },
       (err) => {
         clearTimeout(timeoutId);
-        setError("Location permission denied");
+        setError(prevError => {
+          // If we already have a location (manual/stored), don't show an error
+          if (location || (typeof window !== "undefined" && localStorage.getItem(STORAGE_KEY))) {
+            return null;
+          }
+          return "Location permission denied";
+        });
         setLoading(false);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
