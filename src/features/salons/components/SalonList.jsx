@@ -151,7 +151,7 @@ function SalonCard({ salon }) {
 export default function SalonList() {
   const {
     salons, loading, error, isFallback,
-    searchParams, updateParams, useCurrentLocation, retry
+    searchParams, updateParams, saveManualLocation, useCurrentLocation, retry
   } = useNearbySalons();
 
   const [activeFilter, setActiveFilter] = useState("All");
@@ -373,6 +373,7 @@ export default function SalonList() {
                   onLocationSelect={(loc) => {
                     setDraftParams(prev => ({ ...prev, ...loc }));
                     updateParams({ ...draftParams, ...loc });
+                    saveManualLocation(loc.lat, loc.lng, loc.address);
                   }}
                   onDetectLocation={() => {
                     navigator.geolocation.getCurrentPosition(
@@ -384,6 +385,7 @@ export default function SalonList() {
                         };
                         setDraftParams(prev => ({ ...prev, ...newLoc }));
                         updateParams({ ...draftParams, ...newLoc });
+                        saveManualLocation(newLoc.lat, newLoc.lng, newLoc.address);
                       }
                     );
                   }}
@@ -637,16 +639,22 @@ export default function SalonList() {
                   currentAddress={draftParams.address}
                   lat={draftParams.lat}
                   lng={draftParams.lng}
-                  onLocationSelect={(loc) => setDraftParams(prev => ({ ...prev, ...loc }))}
+                  onLocationSelect={(loc) => {
+                    setDraftParams(prev => ({ ...prev, ...loc }));
+                    saveManualLocation(loc.lat, loc.lng, loc.address);
+                  }}
                   onDetectLocation={() => {
                     // Custom implementation of detect location to update draft state
                     navigator.geolocation.getCurrentPosition(
-                      (pos) => setDraftParams(prev => ({
-                        ...prev,
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude,
-                        address: "Detected Location"
-                      }))
+                      (pos) => {
+                        setDraftParams(prev => ({
+                          ...prev,
+                          lat: pos.coords.latitude,
+                          lng: pos.coords.longitude,
+                          address: "Detected Location"
+                        }));
+                        saveManualLocation(pos.coords.latitude, pos.coords.longitude, "Detected Location");
+                      }
                     );
                   }}
                 />

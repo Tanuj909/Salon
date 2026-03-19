@@ -35,93 +35,45 @@ const StarIcon = ({ filled }) => (
   </svg>
 );
 
+import { useUserLocation } from "@/features/salons/hooks/useUserLocation";
+
 export default function RecomendedSallon() {
   const [salons, setSalons] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [locationDenied, setLocationDenied] = useState(false);
-  const [locationStatus, setLocationStatus] = useState('idle'); // 'idle', 'getting', 'failed', 'success'
+  const [salonsLoading, setSalonsLoading] = useState(false);
+  const { location, error: locationError, loading: locationLoading, isTimeout, saveManualLocation } = useUserLocation();
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
-  const fetchSalonsWithLocation = () => {
-    setLoading(true);
-    setLocationStatus('getting');
-
-    if (!navigator.geolocation) {
-      console.warn("Geolocation not supported");
-      setLocationDenied(true);
-      setLoading(false);
-      setLocationStatus('failed');
-      return;
-    }
-
-    // Set a timeout for geolocation
-    const timeoutId = setTimeout(() => {
-      console.warn("Geolocation timeout");
-      setLocationDenied(true);
-      setLoading(false);
-      setLocationStatus('failed');
-    }, 8000); // 8 second timeout
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        clearTimeout(timeoutId);
-        setLocationDenied(false);
-        setLocationStatus('success');
-
-        try {
-          const data = await fetchNearbySalons(
-            position.coords.latitude,
-            position.coords.longitude,
-            50
-          );
-          setSalons(data || []);
-        } catch (error) {
-          console.error("Failed to fetch recommended salons:", error);
-          setLocationStatus('failed');
-        } finally {
-          setLoading(false);
-        }
-      },
-      (error) => {
-        clearTimeout(timeoutId);
-        console.warn("Location error:", error.code, error.message);
-        setLocationDenied(true);
-        setLocationStatus('failed');
-        setLoading(false);
-      },
-      {
-        enableHighAccuracy: false, // Set to false for faster response
-        timeout: 7000, // 7 second timeout
-        maximumAge: 300000 // Allow cached positions up to 5 minutes old
-      }
-    );
-  };
-
-  const fetchSalonsByCoordinates = async (lat, lng) => {
-    setLoading(true);
-    setLocationDenied(false);
-    setLocationStatus('success');
-
+  const fetchSalons = async (lat, lng) => {
+    if (!lat || !lng) return;
+    setSalonsLoading(true);
     try {
       const data = await fetchNearbySalons(lat, lng, 50);
       setSalons(data || []);
     } catch (error) {
       console.error("Failed to fetch recommended salons:", error);
-      setLocationStatus('failed');
     } finally {
-      setLoading(false);
+      setSalonsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchSalonsWithLocation();
-  }, []);
+    if (location?.latitude && location?.longitude) {
+      fetchSalons(location.latitude, location.longitude);
+    }
+  }, [location?.latitude, location?.latitude]);
+
+  const handleRetryLocation = () => {
+    window.location.reload();
+  };
+
+  const isLoading = locationLoading || salonsLoading;
+  const isLocationError = !!locationError || isTimeout;
 
   // Loading states
-  if (loading) {
+  if (isLoading) {
     return (
       <section className="py-10">
-        <div className="max-w-[1280px] mx-auto px-12">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-12">
           <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
             <div>
               <div className="flex items-center gap-2 mb-3">
@@ -139,7 +91,7 @@ export default function RecomendedSallon() {
           <div className="h-px mb-10 bg-[#3c143214]" />
           <div className="text-center py-12">
             <p className="text-[#3c143280]">
-              {locationStatus === 'getting' ? 'Getting your location...' : 'Loading recommendations...'}
+              {locationLoading ? 'Getting your location...' : 'Finding salons near you...'}
             </p>
           </div>
         </div>
@@ -170,7 +122,7 @@ export default function RecomendedSallon() {
               <span className="italic text-[#7a2860] ml-2">Salons</span>
             </h2>
             <p className="text-[0.82rem] md:text-[0.88rem] leading-relaxed mt-2 text-[#3c143280] font-[DM_Sans]">
-              {locationDenied
+              {isLocationError
                 ? "Location access required to show salons near you."
                 : "Top-rated spaces loved by our community — book a session today."}
             </p>
@@ -178,9 +130,9 @@ export default function RecomendedSallon() {
 
           {/* Actions */}
           <div className="flex items-center gap-4 flex-wrap">
-            {locationDenied && (
+            {isLocationError && (
               <button
-                onClick={fetchSalonsWithLocation}
+                onClick={handleRetryLocation}
                 className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] border-[#c4956a] bg-[#c4956a]/10 text-[#7a4020] text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] font-[DM_Sans] hover:bg-[#c4956a] hover:text-white"
               >
                 <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -206,8 +158,7 @@ export default function RecomendedSallon() {
         {/* Divider */}
         <div className="h-px mb-10 bg-[#3c143214]" />
 
-        {/* ── Cards Grid ── */}
-        {locationDenied ? (
+        {isLocationError ? (
           <div className="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
             <div className="w-16 h-16 bg-[#7a2860]/5 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg width={24} height={24} fill="none" stroke="#7a2860" strokeWidth={2} viewBox="0 0 24 24">
@@ -218,16 +169,24 @@ export default function RecomendedSallon() {
             <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
             <div className="flex justify-center">
               <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[300px] mx-auto mb-6">
-                Please allow location access to discover premium salons in your area.
+                Please allow location access or choose manually to discover premium salons in your area.
               </p>
             </div>
 
-            <button
-              onClick={fetchSalonsWithLocation}
-              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all shadow-md mt-5"
-            >
-              Allow Location
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4">
+              <button
+                onClick={handleRetryLocation}
+                className="w-full sm:w-auto py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all shadow-md"
+              >
+                Allow Location
+              </button>
+              <button
+                onClick={() => setIsMapModalOpen(true)}
+                className="w-full sm:w-auto py-2.5 px-8 rounded-full border border-[#7a2860] text-[#7a2860] text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:text-white transition-all shadow-sm"
+              >
+                Choose location manually
+              </button>
+            </div>
           </div>
         ) : recommendedSalons.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -335,7 +294,7 @@ export default function RecomendedSallon() {
           onClose={() => setIsMapModalOpen(false)}
           onSelect={(loc) => {
             setIsMapModalOpen(false);
-            fetchSalonsByCoordinates(loc.lat, loc.lng);
+            saveManualLocation(loc.lat, loc.lng, loc.address);
           }}
         />
       </div>

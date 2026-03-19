@@ -2,13 +2,48 @@
 
 import { useState, useEffect } from "react";
 
+const STORAGE_KEY = "user_preferred_location";
+
 export const useUserLocation = () => {
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isTimeout, setIsTimeout] = useState(false);
 
+  const saveManualLocation = (lat, lng, addr = "Selected Location") => {
+    const loc = { 
+      latitude: lat, 
+      longitude: lng, 
+      address: addr,
+      isManual: true,
+      timestamp: Date.now() 
+    };
+    setLocation(loc);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(loc));
+    }
+    setLoading(false);
+    setError(null);
+  };
+
   useEffect(() => {
+    // Initial check for stored location
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.latitude && parsed.longitude) {
+            setLocation(parsed);
+            setLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.error("Failed to parse stored location", e);
+        }
+      }
+    }
+
     if (!navigator.geolocation) {
       setError("Geolocation not supported");
       setLoading(false);
@@ -43,5 +78,5 @@ export const useUserLocation = () => {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  return { location, error, loading, isTimeout };
+  return { location, error, loading, isTimeout, saveManualLocation };
 };

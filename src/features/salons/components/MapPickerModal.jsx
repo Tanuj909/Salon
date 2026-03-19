@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { X, Check, MapPin, Loader2 } from 'lucide-react';
+import { X, Check, MapPin, Globe } from 'lucide-react';
 
 // Fix Leaflet default icon issues
 const DefaultIcon = L.icon({
@@ -15,6 +15,26 @@ const DefaultIcon = L.icon({
     iconAnchor: [12, 41]
 });
 L.Marker.prototype.options.icon = DefaultIcon;
+
+const COUNTRIES = {
+    "UAE": { lat: 24.4539, lng: 54.3773 },
+    "Saudi Arabia": { lat: 24.7136, lng: 46.6753 },
+    "Oman": { lat: 23.5859, lng: 58.4059 },
+    "Qatar": { lat: 25.2854, lng: 51.5310 },
+    "Iran": { lat: 35.6892, lng: 51.3890 },
+    "India": { lat: 28.6139, lng: 77.2090 },
+    "Kuwait": { lat: 29.3759, lng: 47.9774 }
+};
+
+const MapController = ({ center }) => {
+    const map = useMap();
+    useEffect(() => {
+        if (center) {
+            map.setView(center, map.getZoom());
+        }
+    }, [center, map]);
+    return null;
+};
 
 const LocationMarker = ({ position, setPosition, setAddress }) => {
     useMapEvents({
@@ -64,35 +84,46 @@ const reverseGeocode = async (lat, lng, setAddress) => {
 };
 
 const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
-    // Default to a neutral location (e.g., center of map or a generic fallback) 
-    // but we will try to detect current location if initialPos is not provided.
-    const [position, setPosition] = useState(initialPos || { lat: 20, lng: 0 }); // Very zoomed out view or generic
+    const [position, setPosition] = useState(initialPos || COUNTRIES.UAE);
     const [address, setAddress] = useState("Loading address...");
     const [isMounted, setIsMounted] = useState(false);
     const [isLocating, setIsLocating] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState("UAE");
 
     useEffect(() => {
         setIsMounted(true);
+
+        const useUAEFallback = () => {
+            const uae = COUNTRIES.UAE;
+            setPosition(uae);
+            setSelectedCountry("UAE");
+            reverseGeocode(uae.lat, uae.lng, setAddress).catch(() => { });
+        };
+
         if (initialPos && initialPos.lat && initialPos.lng) {
             setPosition(initialPos);
+            // We can optionally check if initialPos matches any of our capitals to update selectedCountry 
+            // but for now, simple reverse geocode is enough.
             reverseGeocode(initialPos.lat, initialPos.lng, setAddress).catch(() => { });
-        } else if (!initialPos && navigator.geolocation) {
-            // If no initial position, try to center on user's current location
+        } else if (navigator.geolocation) {
             setIsLocating(true);
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    const previousPos = position;
                     setPosition(newPos);
                     reverseGeocode(newPos.lat, newPos.lng, setAddress).catch(() => { });
                     setIsLocating(false);
                 },
-                () => {
+                (error) => {
+                    console.warn("Geolocation failed:", error.message);
                     setIsLocating(false);
-                    // Fallback to a sensible default if denied (e.g., a major city or stay neutral)
-                    // We'll keep the neutral {lat: 20, lng: 0} or similar
+                    useUAEFallback();
                 },
                 { enableHighAccuracy: true, timeout: 5000 }
             );
+        } else {
+            useUAEFallback();
         }
     }, [initialPos]);
 
@@ -102,14 +133,42 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="bg-white w-full max-w-4xl rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col h-[85vh] sm:h-[80vh]">
                 {/* Header */}
-                <div className="px-4 py-4 sm:px-8 sm:py-6 flex items-center justify-between border-b border-[#3c14320a]">
-                    <div>
-                        <h2 className="text-lg sm:text-xl font-bold text-[#1e0a18]">Pick Location</h2>
-                        <p className="text-xs sm:text-sm text-[#3c143260]">Click on the map to set your position</p>
+                <div className="px-4 py-4 sm:px-8 sm:py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#3c14320a]">
+                    <div className="flex items-center justify-between w-full sm:w-auto">
+                        <div>
+                            <h2 className="text-lg sm:text-xl font-bold text-[#1e0a18]">Pick Location</h2>
+                            <p className="text-xs sm:text-sm text-[#3c143260]">Select country or click on map</p>
+                        </div>
+                        <button onClick={onClose} className="sm:hidden p-1.5 hover:bg-[#f9f5f2] rounded-full transition-colors">
+                            <X size={20} className="text-[#3c143280]" />
+                        </button>
                     </div>
-                    <button onClick={onClose} className="p-1.5 sm:p-2 hover:bg-[#f9f5f2] rounded-full transition-colors">
-                        <X size={20} className="sm:w-6 sm:h-6 text-[#3c143280]" />
-                    </button>
+
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                        <div className="relative flex-1 sm:flex-none sm:min-w-[180px]">
+                            < Globe size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3c143260]" />
+                            <select 
+                                value={selectedCountry}
+                                onChange={(e) => {
+                                    const cName = e.target.value;
+                                    setSelectedCountry(cName);
+                                    const coords = COUNTRIES[cName];
+                                    if (coords) {
+                                        setPosition(coords);
+                                        reverseGeocode(coords.lat, coords.lng, setAddress);
+                                    }
+                                }}
+                                className="w-full pl-9 pr-4 py-2 bg-[#f9f5f2] border-none rounded-xl text-sm font-bold text-[#1e0a18] focus:ring-2 focus:ring-[#7a2860]/20 appearance-none cursor-pointer hover:bg-[#f0ece9] transition-colors"
+                            >
+                                {Object.keys(COUNTRIES).map(country => (
+                                    <option key={country} value={country}>{country}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <button onClick={onClose} className="hidden sm:block p-1.5 sm:p-2 hover:bg-[#f9f5f2] rounded-full transition-colors">
+                            <X size={20} className="sm:w-6 sm:h-6 text-[#3c143280]" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Map Area */}
@@ -120,6 +179,7 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
                         style={{ height: '100%', width: '100%' }}
                         scrollWheelZoom={true}
                     >
+                        <MapController center={position} />
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

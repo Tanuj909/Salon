@@ -259,9 +259,8 @@ function CategoryRow({ category, lat, lng }) {
 export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [loadingCats, setLoadingCats] = useState(true);
-  const { location, error, loading: locationLoading } = useUserLocation();
+  const { location, error, loading: locationLoading, saveManualLocation } = useUserLocation();
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
-  const [manualLocation, setManualLocation] = useState(null);
 
   const handleRetryLocation = () => {
     window.location.reload(); // Simple way to re-trigger for now since hook uses useEffect once
@@ -373,8 +372,8 @@ export default function Categories() {
             <CategoryRow
               key={cat.id}
               category={cat}
-              lat={manualLocation ? manualLocation.lat : location?.latitude}
-              lng={manualLocation ? manualLocation.lng : location?.longitude}
+              lat={location?.latitude}
+              lng={location?.longitude}
             />
           ))
         )}
@@ -384,7 +383,7 @@ export default function Categories() {
           onClose={() => setIsMapModalOpen(false)}
           onSelect={(loc) => {
             setIsMapModalOpen(false);
-            setManualLocation(loc);
+            saveManualLocation(loc.lat, loc.lng, loc.address);
           }}
         />
       </div>

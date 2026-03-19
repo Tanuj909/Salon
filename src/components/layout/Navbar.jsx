@@ -77,7 +77,7 @@ export default function Navbar() {
           </div>
 
           {/* Right Side: Actions */}
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 lg:gap-4 ml-auto">
             <Link
               href="/contact"
               className={`hidden sm:flex px-5 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all shadow-md active:scale-95 whitespace-nowrap ${isScrolled
@@ -106,13 +106,13 @@ export default function Navbar() {
                       setIsProfileOpen(!isProfileOpen);
                       setIsMenuOpen(false);
                     }}
-                    className={`flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full transition-all shadow-md border-2 ${isScrolled
+                    className={`flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full transition-all shadow-md border-2 ${isScrolled
                       ? 'bg-[#D98C5F] text-white hover:bg-[#C07B52] border-white/30'
                       : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border-white/50'
                       }`}
                     aria-label="User profile"
                   >
-                    <span className="material-symbols-outlined text-2xl">person</span>
+                    <span className="material-symbols-outlined text-xl md:text-2xl">person</span>
                   </button>
 
                   {isProfileOpen && (
@@ -169,7 +169,7 @@ export default function Navbar() {
                 setIsProfileOpen(false);
               }}
             >
-              <span className="material-symbols-outlined text-2xl">{isMenuOpen ? 'close' : 'menu'}</span>
+              <span className="material-symbols-outlined text-[21px] sm:text-2xl">{isMenuOpen ? 'close' : 'menu'}</span>
             </button>
           </div>
         </div>

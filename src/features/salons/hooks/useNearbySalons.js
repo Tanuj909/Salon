@@ -7,7 +7,13 @@ import { useUserLocation } from "./useUserLocation";
 import { useSearchParams } from "next/navigation";
 
 export const useNearbySalons = () => {
-  const { location: browserLocation, error: locationError, loading: locationLoading, isTimeout: locationTimeout } = useUserLocation();
+  const { 
+    location: browserLocation, 
+    error: locationError, 
+    loading: locationLoading, 
+    isTimeout: locationTimeout,
+    saveManualLocation 
+  } = useUserLocation();
   const urlParams = useSearchParams();
 
   const [salons, setSalons] = useState([]);
@@ -34,7 +40,7 @@ export const useNearbySalons = () => {
         ...prev,
         lat: browserLocation.latitude,
         lng: browserLocation.longitude,
-        address: "Current Location"
+        address: browserLocation.address || "Current Location"
       }));
       initialized.current = true;
     }
@@ -124,6 +130,7 @@ export const useNearbySalons = () => {
     isFallback,
     searchParams,
     updateParams,
+    saveManualLocation,
     useCurrentLocation,
     retry: () => loadSalons(searchParams)
   };

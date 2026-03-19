@@ -50,18 +50,18 @@ export default function NotificationBell({ isScrolled }) {
       {/* ── Bell Button ── */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className={`p-2 rounded-full transition-all duration-200 border ${
+        className={`p-1.5 sm:p-2 rounded-full transition-all duration-200 border ${
           open || unreadCount > 0 || isScrolled
             ? 'bg-[#D98C5F] text-white hover:bg-[#C07B52] border-white/30'
             : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border-white/50'
         }`}
         aria-label="Notifications"
       >
-        <Bell size={22} className="" />
+        <Bell size={20} className="" />
 
         {/* Unread badge */}
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-red-500 text-white text-[10px] font-semibold rounded-full leading-none">
+          <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] px-1 flex items-center justify-center bg-red-500 text-white text-[9px] font-semibold rounded-full leading-none">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
