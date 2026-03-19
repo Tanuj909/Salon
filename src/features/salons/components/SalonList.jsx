@@ -479,7 +479,7 @@ export default function SalonList() {
 
             {/* Mobile Service Search Bar */}
             {!showFilters && (
-              <div className="md:hidden mt-3 w-full animate-in fade-in slide-in-from-top-2 duration-500 relative" ref={mobileServiceSearchRef}>
+              <div className="md:hidden mt-3 w-full animate-in fade-in slide-in-from-top-2 duration-500 relative z-[100]" ref={mobileServiceSearchRef}>
                 <div className="relative group flex items-center gap-2">
                   <div className="relative flex-1 flex items-center h-[42px] bg-white/70 backdrop-blur-md rounded-xl border border-[#3c143212] shadow-sm focus-within:ring-4 focus-within:ring-[#7a2860]/5 focus-within:border-[#7a2860]/40 transition-all duration-300">
                     <div className="flex items-center gap-1.5 px-3 border-r border-[#3c143208] bg-[#cd6133]/5">

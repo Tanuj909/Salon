@@ -17,7 +17,7 @@ const DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const COUNTRIES = {
-    "UAE": { lat: 24.4539, lng: 54.3773 },
+    "UAE": { lat: 25.7971, lng: 56.0220 },
     "Saudi Arabia": { lat: 24.7136, lng: 46.6753 },
     "Oman": { lat: 23.5859, lng: 58.4059 },
     "Qatar": { lat: 25.2854, lng: 51.5310 },
@@ -71,15 +71,15 @@ const reverseGeocode = async (lat, lng, setAddress) => {
         clearTimeout(timeoutId);
 
         if (!res || !res.ok) {
-            setAddress(`Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+            setAddress(`Selected Location (${lat.toFixed(3)}, ${lng.toFixed(3)})`);
             return;
         }
 
         const data = await res.json();
-        setAddress(data.display_name || `Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+        setAddress(data.display_name || `Selected Location (${lat.toFixed(3)}, ${lng.toFixed(3)})`);
     } catch (err) {
         console.warn("Reverse geocoding suppressed:", err);
-        setAddress(`Coordinates: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+        setAddress(`Selected Location (${lat.toFixed(3)}, ${lng.toFixed(3)})`);
     }
 };
 
@@ -88,9 +88,13 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
     const [address, setAddress] = useState("Loading address...");
     const [isMounted, setIsMounted] = useState(false);
     const [isLocating, setIsLocating] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState("UAE");
+    const [selectedCountry, setSelectedCountry] = useState("");
 
     useEffect(() => {
+        if (!isOpen) {
+            setIsMounted(false);
+            return;
+        }
         setIsMounted(true);
 
         const useUAEFallback = () => {
@@ -100,19 +104,24 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
             reverseGeocode(uae.lat, uae.lng, setAddress).catch(() => { });
         };
 
+        // If we have an initial position, use it.
+        // If not, and we aren't already initialized, attempt geolocation.
         if (initialPos && initialPos.lat && initialPos.lng) {
             setPosition(initialPos);
-            // We can optionally check if initialPos matches any of our capitals to update selectedCountry 
-            // but for now, simple reverse geocode is enough.
             reverseGeocode(initialPos.lat, initialPos.lng, setAddress).catch(() => { });
         } else if (navigator.geolocation) {
             setIsLocating(true);
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     const newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                    const previousPos = position;
-                    setPosition(newPos);
-                    reverseGeocode(newPos.lat, newPos.lng, setAddress).catch(() => { });
+                    setPosition(prev => {
+                        // Guard: Only overwrite the position if it's still at the default UAE capital
+                        if (prev.lat === COUNTRIES.UAE.lat && prev.lng === COUNTRIES.UAE.lng) {
+                            reverseGeocode(newPos.lat, newPos.lng, setAddress).catch(() => { });
+                            return newPos;
+                        }
+                        return prev;
+                    });
                     setIsLocating(false);
                 },
                 (error) => {
@@ -125,7 +134,7 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
         } else {
             useUAEFallback();
         }
-    }, [initialPos]);
+    }, [isOpen]); // Only run when the modal opens/closes
 
     if (!isOpen || !isMounted) return null;
 
@@ -151,6 +160,7 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
                                 value={selectedCountry}
                                 onChange={(e) => {
                                     const cName = e.target.value;
+                                    if (!cName) return;
                                     setSelectedCountry(cName);
                                     const coords = COUNTRIES[cName];
                                     if (coords) {
@@ -160,6 +170,7 @@ const MapPickerModal = ({ isOpen, onClose, onSelect, initialPos }) => {
                                 }}
                                 className="w-full pl-9 pr-4 py-2 bg-[#f9f5f2] border-none rounded-xl text-sm font-bold text-[#1e0a18] focus:ring-2 focus:ring-[#7a2860]/20 appearance-none cursor-pointer hover:bg-[#f0ece9] transition-colors"
                             >
+                                <option value="">Select Country</option>
                                 {Object.keys(COUNTRIES).map(country => (
                                     <option key={country} value={country}>{country}</option>
                                 ))}

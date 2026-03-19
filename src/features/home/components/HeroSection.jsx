@@ -2,11 +2,17 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import useActiveCategories from '../../../features/salons/hooks/useActiveServices';
 import { fetchDistinctServiceNames } from '@/features/salons/services/salonService';
 import Fuse from 'fuse.js';
 import { fuseData } from '../data/fuseData';
 import { enrichSynonyms, fuseOptions } from '../utils/searchUtils';
+import { useUserLocation } from '@/features/salons/hooks/useUserLocation';
+
+const MapPickerModal = dynamic(() => import('@/features/salons/components/MapPickerModal'), {
+  ssr: false,
+});
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
@@ -25,6 +31,10 @@ const HeroSection = () => {
 
   const [distinctServices, setDistinctServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(true);
+
+  // ─── Location Integration ───
+  const { location, saveManualLocation, loading: locationLoading, refreshLocation } = useUserLocation();
+  const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   // ─── Combined Service Data for Search ───
   const combinedServiceData = useMemo(() => {
@@ -65,10 +75,6 @@ const HeroSection = () => {
     const val = originalVal.toLowerCase().trim();
     if (val) {
       const results = fuse.search(val).slice(0, 3);
-      
-      // Verification log
-      console.log(`Searching for: ${val}`, results);
-      
       setSuggestions(results.map(r => r.item));
       setShowSuggestions(true);
     } else {
@@ -87,7 +93,6 @@ const HeroSection = () => {
     const trimmed = originalVal.toLowerCase().trim();
     if (!trimmed) return;
     
-    // 1. Check for exact match (case-insensitive)
     const exactMatch = combinedServiceData.find(
       s => s.name.toLowerCase() === trimmed
     );
@@ -97,12 +102,9 @@ const HeroSection = () => {
     if (exactMatch) {
       finalSearchTerm = exactMatch.name;
     } else {
-      // 2. Fuzzy search if no exact match
       const results = fuse.search(trimmed);
       if (results.length > 0) {
         const bestMatch = results[0];
-        // 3. Validate using score threshold
-        // Spec: score < 0.3 for correction (lower is better)
         if (bestMatch.score < 0.3) {
           finalSearchTerm = bestMatch.item.name;
         }
@@ -112,7 +114,6 @@ const HeroSection = () => {
     setShowSuggestions(false);
     router.push(`/salons?serviceName=${encodeURIComponent(finalSearchTerm)}`);
   };
-
 
   const headings = [
     "Experience Luxury Services Near You",
@@ -134,7 +135,6 @@ const HeroSection = () => {
     { url: 'https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1600&q=80', label: '04' }
   ];
 
-  // ─── Background Cycle ───
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
@@ -142,7 +142,6 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // ─── Fetch Distinct Services ───
   useEffect(() => {
     fetchDistinctServiceNames()
       .then((data) => {
@@ -156,7 +155,6 @@ const HeroSection = () => {
       });
   }, []);
 
-  // ─── Heading Cycle (5s) ───
   useEffect(() => {
     const headingTimer = setInterval(() => {
       setHeadingFade(false);
@@ -168,7 +166,6 @@ const HeroSection = () => {
     return () => clearInterval(headingTimer);
   }, []);
 
-  // ─── Placeholder Cycle (3.5s) ───
   useEffect(() => {
     const placeholderTimer = setInterval(() => {
       setPlaceholderFade(false);
@@ -270,11 +267,11 @@ const HeroSection = () => {
           </p>
 
           {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
-          <div className="w-full max-w-4xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
+          <div className="w-full max-w-5xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
             <div className="bg-white/95 backdrop-blur-xl p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
 
               {/* Category Select */}
-              <div className="w-full lg:w-[28%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+              <div className="w-full lg:w-[18%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
                 <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2">category</span>
                 <select 
                   className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer"
@@ -294,7 +291,7 @@ const HeroSection = () => {
               </div>
 
               {/* Service Select */}
-              <div className="w-full lg:w-[24%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+              <div className="w-full lg:w-[18%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
                 <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2">content_cut</span>
                 <select 
                   className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer"
@@ -313,16 +310,34 @@ const HeroSection = () => {
                 <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
               </div>
 
-              {/* Location */}
-              <div className="w-full lg:w-[32%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group">
-                <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2 shrink-0">location_on</span>
-                <div className="flex flex-col text-left overflow-hidden">
-                  <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Nearby</span>
-                  <span className="text-xs lg:text-sm font-medium text-[#4A3B2F] truncate">Current Location</span>
+              {/* Current Location (Detect) */}
+              <div 
+                onClick={refreshLocation}
+                className="w-full lg:w-[22%] relative flex items-center bg-gray-100 rounded-full border border-gray-200 px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
+              >
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 text-[#B76E4B] group-hover:bg-[#B76E4B] group-hover:text-white transition-all">
+                  <span className={`material-symbols-outlined text-lg ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
                 </div>
-                <button className="ml-auto w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm hover:text-[#B76E4B] transition-colors">
-                  <span className="material-symbols-outlined text-[1rem] lg:text-lg">my_location</span>
-                </button>
+                <div className="flex flex-col text-left overflow-hidden">
+                  <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Automatic</span>
+                  <span className="text-xs lg:text-sm font-medium text-[#4A3B2F] truncate">
+                    {locationLoading ? "Detecting..." : (location?.address || "Current Location")}
+                  </span>
+                </div>
+              </div>
+
+              {/* Select Manually (Map) */}
+              <div 
+                onClick={() => setIsMapModalOpen(true)}
+                className="w-full lg:w-[22%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
+              >
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 text-[#B76E4B] group-hover:bg-[#B76E4B] group-hover:text-white transition-all">
+                  <span className="material-symbols-outlined text-lg">map</span>
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Manual</span>
+                  <span className="text-xs lg:text-sm font-medium text-[#4A3B2F]">Choose Manually</span>
+                </div>
               </div>
 
               {/* Search Trigger */}
@@ -331,7 +346,7 @@ const HeroSection = () => {
                   ...(selectedCategory && { categoryId: selectedCategory }),
                   ...(selectedService && { serviceName: selectedService }),
                 }).toString()}`}
-                className="w-full lg:w-[16%] py-3 lg:py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
+                className="w-full lg:w-[20%] py-3 lg:py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-lg">search</span>
                 <span>Search</span>
@@ -408,6 +423,21 @@ const HeroSection = () => {
           </div>
         </div>
       </section>
+
+      <MapPickerModal
+        isOpen={isMapModalOpen}
+        onClose={() => setIsMapModalOpen(false)}
+        onSelect={(pos) => {
+          saveManualLocation(pos.lat, pos.lng, pos.address);
+          setIsMapModalOpen(false);
+          // Hard refresh to ensure all components sync with new localStorage value
+          if (typeof window !== "undefined") {
+            window.location.reload();
+          }
+        }}
+        // Always default to UAE when picking manually as per user request
+        initialPos={null}
+      />
     </>
   );
 };

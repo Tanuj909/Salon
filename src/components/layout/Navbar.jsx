@@ -47,9 +47,12 @@ export default function Navbar() {
                 alt="Fast Booking Logo"
                 className="w-12 sm:w-14 lg:w-20 h-auto object-contain transition-transform group-hover:scale-110 flex-shrink-0"
               />
-              <div className="flex justify-center items-center relative px-2 py-1 md:px-3 lg:px-4 md:py-1.5 lg:py-2 rounded-xl lg:rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-sm group-hover:bg-white/90 transition-all">
-                <span className="text-sm sm:text-lg lg:text-2xl font-black bg-gradient-to-r from-[#B75F2B] to-[#7D472D] bg-clip-text text-transparent tracking-tighter whitespace-nowrap">
-                  FastBooking
+              <div className="flex flex-col leading-tight items-start px-2 py-1 md:px-3 lg:px-4 md:py-1.5 lg:py-2 rounded-xl lg:rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-sm group-hover:bg-white/90 transition-all">
+                <span className="text-sm sm:text-lg lg:text-xl font-black bg-gradient-to-r from-[#B75F2B] to-[#7D472D] bg-clip-text text-transparent tracking-tighter whitespace-nowrap leading-[1.1] pb-0.5">
+                  Fast Booking
+                </span>
+                <span className="text-[8px] sm:text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.2em] text-[#B75F2B]/80 -mt-0.5">
+                  Service
                 </span>
               </div>
             </Link>
