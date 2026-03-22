@@ -30,7 +30,7 @@ const FavoriteSalons = ({ salons }) => {
         return (
             <div className="px-8 mt-16 text-center py-20 bg-white rounded-xl border border-muted border-dashed">
                 <Heart className="mx-auto text-muted mb-4" size={48} />
-                <h3 className="text-xl font-bold footer-main-text">No favorite salons yet</h3>
+                <h3 className="text-xl font-bold profile-name-text">No favorite salons yet</h3>
                 <p className="text-muted mt-2">Explore our directory and save your favorite wellness spots!</p>
                 <button className="mt-6 px-8 py-3 footer-bg text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all">
                     Explore Salons
@@ -41,7 +41,7 @@ const FavoriteSalons = ({ salons }) => {
 
     return (
         <div className="px-8 mt-16">
-            <h2 className="text-2xl font-bold footer-main-text mb-8 font-[Cormorant_Garamond]">Favorite Creations</h2>
+            <h2 className="text-2xl font-bold profile-name-text mb-8 font-[Cormorant_Garamond]">Favorite Creations</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {displaySalons.map((salon) => (
                     <div key={salon.id} className="bg-white rounded-2xl overflow-hidden border hero-filter-input-bg shadow-sm group hover:shadow-xl transition-all">
@@ -63,14 +63,14 @@ const FavoriteSalons = ({ salons }) => {
                         </div>
 
                         <div className="p-6">
-                            <h4 className="font-bold text-xl mb-1 footer-main-text group-hover:salon-list-title-accent transition-colors font-[Cormorant_Garamond]">
+                            <h4 className="font-bold text-xl mb-1 profile-name-text group-hover:salon-list-title-accent transition-colors font-[Cormorant_Garamond]">
                                 {salon.name}
                             </h4>
-                            <div className="flex items-center gap-1.5 footer-link-text opacity-40 text-[0.7rem] mb-6 font-bold uppercase tracking-wider">
+                            <div className="flex items-center gap-1.5 profile-meta-text opacity-40 text-[0.7rem] mb-6 font-bold uppercase tracking-wider">
                                 <MapPin size={12} className="salon-list-title-accent opacity-40" />
                                 {salon.location}
                             </div>
-                            <button className="w-full py-3.5 bg-black/[0.05] hover:footer-bg hover:text-white transition-all rounded-xl font-black text-[9px] uppercase tracking-[0.2em] footer-main-text">
+                            <button className="w-full py-3.5 bg-black/[0.05] hover:footer-bg hover:text-white transition-all rounded-xl font-black text-[9px] uppercase tracking-[0.2em] profile-name-text">
                                 Visit Portfolio
                             </button>
                         </div>

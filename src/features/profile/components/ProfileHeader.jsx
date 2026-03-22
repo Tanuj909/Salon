@@ -57,12 +57,16 @@ const ProfileHeader = ({ user }) => {
 
     .ph-wrapper {
       font-family: 'DM Sans', sans-serif;
-      --gold: var(--accent);
-      --gold-light: var(--accent-light);
-      --ink: var(--text-main);
-      --ink-soft: var(--text-muted);
-      --surface: var(--bg-main);
-      --border: var(--border-light);
+      --accent: var(--profile-header-accent);
+      --accent-light: var(--profile-header-accent-light);
+      --accent-dark: var(--profile-header-accent-dark);
+      --accent-glow: var(--profile-header-accent-glow);
+      --text-main: var(--profile-header-text-main);
+      --text-muted: var(--profile-header-text-muted);
+      --bg-main: var(--profile-header-bg-main);
+      --bg-soft: var(--profile-header-bg-soft);
+      --bg-light: var(--profile-header-bg-light);
+      --border-light: var(--profile-header-border-light);
     }
 
     /* Banner */

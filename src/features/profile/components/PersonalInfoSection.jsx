@@ -239,16 +239,16 @@ const PersonalInfoSection = ({ user }) => {
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-0 sm:items-start mb-6 sm:mb-10">
                             <div>
                                 <h2 className="text-[0.55rem] sm:text-[0.6rem] font-black salon-list-title-accent uppercase tracking-[0.2em] mb-2">Member Profile</h2>
-                                <h1 className="text-xl sm:text-4xl font-bold tracking-tight footer-main-text font-[Cormorant_Garamond] break-words">
+                                <h1 className="text-xl sm:text-4xl font-bold tracking-tight profile-name-text font-[Cormorant_Garamond] break-words">
                                     {user?.user?.fullName || "User Name"}
                                 </h1>
                                 <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3 sm:mt-4">
-                                    <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-white/[0.05] border hero-filter-input-bg rounded-full footer-link-text opacity-50 text-[8px] sm:text-[10px] font-black uppercase tracking-wider">
+                                    <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 bg-white/[0.05] border hero-filter-input-bg rounded-full profile-meta-text opacity-50 text-[8px] sm:text-[10px] font-black uppercase tracking-wider">
                                         <UserCheck size={10} className="sm:w-3 sm:h-3" />
                                         {user?.user?.role || "CUSTOMER"}
                                     </div>
-                                    <span className="footer-link-text opacity-20 hidden sm:inline">•</span>
-                                    <span className="footer-link-text opacity-40 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+                                    <span className="profile-meta-text opacity-20 hidden sm:inline">•</span>
+                                    <span className="profile-meta-text opacity-40 text-[10px] sm:text-xs font-bold uppercase tracking-wider">
                                         Joined {formatDate(stats?.memberSince)}
                                     </span>
                                 </div>
@@ -269,8 +269,8 @@ const PersonalInfoSection = ({ user }) => {
                                     <Mail size={14} className="sm:w-4 sm:h-4" />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Email</p>
-                                    <p className="text-xs sm:text-sm footer-main-text font-bold truncate">{user?.user?.email || "Not provided"}</p>
+                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Email</p>
+                                    <p className="text-xs sm:text-sm profile-name-text font-bold truncate">{user?.user?.email || "Not provided"}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 sm:gap-4">
@@ -278,8 +278,8 @@ const PersonalInfoSection = ({ user }) => {
                                     <Phone size={14} className="sm:w-4 sm:h-4" />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Phone</p>
-                                    <p className="text-xs sm:text-sm footer-main-text font-bold truncate">{user?.user?.phoneNumber || "Not provided"}</p>
+                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Phone</p>
+                                    <p className="text-xs sm:text-sm profile-name-text font-bold truncate">{user?.user?.phoneNumber || "Not provided"}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 sm:gap-4">
@@ -287,8 +287,8 @@ const PersonalInfoSection = ({ user }) => {
                                     <Calendar size={14} className="sm:w-4 sm:h-4" />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Birth Date</p>
-                                    <p className="text-xs sm:text-sm footer-main-text font-bold truncate">{formatDate(user?.dateOfBirth)}</p>
+                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Birth Date</p>
+                                    <p className="text-xs sm:text-sm profile-name-text font-bold truncate">{formatDate(user?.dateOfBirth)}</p>
                                 </div>
                             </div>
                             <div className="flex items-start gap-3 sm:gap-4">
@@ -296,8 +296,8 @@ const PersonalInfoSection = ({ user }) => {
                                     <Award size={14} className="sm:w-4 sm:h-4" />
                                 </div>
                                 <div className="min-w-0 flex-1">
-                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Gender</p>
-                                    <p className="text-xs sm:text-sm footer-main-text font-bold capitalize truncate">{user?.gender || "Not Specified"}</p>
+                                    <p className="text-[0.55rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Gender</p>
+                                    <p className="text-xs sm:text-sm profile-name-text font-bold capitalize truncate">{user?.gender || "Not Specified"}</p>
                                 </div>
                             </div>
                         </div>
@@ -309,29 +309,29 @@ const PersonalInfoSection = ({ user }) => {
                             <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-white/[0.08] salon-list-title-accent flex items-center justify-center mb-3 sm:mb-4">
                                 <CalendarDays size={14} className="sm:w-[18px] sm:h-[18px]" />
                             </div>
-                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Total</p>
-                            <h3 className="text-base sm:text-xl font-bold footer-main-text">{stats?.totalBookings || 0}</h3>
+                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Total</p>
+                            <h3 className="text-base sm:text-xl font-bold profile-name-text">{stats?.totalBookings || 0}</h3>
                         </div>
                         <div className="bg-white p-4 sm:p-5 rounded-xl sm:rounded-[1.8rem] border hero-filter-input-bg shadow-sm">
                             <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-success/10 text-success flex items-center justify-center mb-3 sm:mb-4">
                                 <CheckCircle2 size={14} className="sm:w-[18px] sm:h-[18px]" />
                             </div>
-                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Done</p>
-                            <h3 className="text-base sm:text-xl font-bold footer-main-text">{stats?.completedBookings || 0}</h3>
+                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Done</p>
+                            <h3 className="text-base sm:text-xl font-bold profile-name-text">{stats?.completedBookings || 0}</h3>
                         </div>
                         <div className="bg-white p-4 sm:p-5 rounded-xl sm:rounded-[1.8rem] border hero-filter-input-bg shadow-sm">
                             <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-warning/10 text-warning flex items-center justify-center mb-3 sm:mb-4">
                                 <Timer size={14} className="sm:w-[18px] sm:h-[18px]" />
                             </div>
-                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Active</p>
-                            <h3 className="text-base sm:text-xl font-bold footer-main-text">{stats?.pendingBookings || 0}</h3>
+                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Active</p>
+                            <h3 className="text-base sm:text-xl font-bold profile-name-text">{stats?.pendingBookings || 0}</h3>
                         </div>
                         <div className="bg-white p-4 sm:p-5 rounded-xl sm:rounded-[1.8rem] border hero-filter-input-bg shadow-sm">
                             <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-danger/10 text-danger flex items-center justify-center mb-3 sm:mb-4">
                                 <XCircle size={14} className="sm:w-[18px] sm:h-[18px]" />
                             </div>
-                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Cancel</p>
-                            <h3 className="text-base sm:text-xl font-bold footer-main-text">{stats?.cancelledBookings || 0}</h3>
+                            <p className="text-[0.5rem] sm:text-[0.55rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Cancel</p>
+                            <h3 className="text-base sm:text-xl font-bold profile-name-text">{stats?.cancelledBookings || 0}</h3>
                         </div>
                     </div>
                 </div>
@@ -398,8 +398,8 @@ const PersonalInfoSection = ({ user }) => {
                         <History size={18} className="sm:w-[22px] sm:h-[22px]" />
                     </div>
                     <div className="min-w-0 flex-1 sm:flex-none">
-                        <h4 className="text-sm sm:text-base footer-main-text font-bold">Monthly Recap</h4>
-                        <p className="text-[0.65rem] sm:text-xs footer-link-text opacity-60 font-medium tracking-wide truncate">
+                        <h4 className="text-sm sm:text-base profile-name-text font-bold">Monthly Recap</h4>
+                        <p className="text-[0.65rem] sm:text-xs profile-meta-text opacity-60 font-medium tracking-wide truncate">
                             {new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' })}
                         </p>
                     </div>
@@ -407,16 +407,16 @@ const PersonalInfoSection = ({ user }) => {
 
                 <div className="grid grid-cols-3 gap-4 sm:flex sm:items-center sm:gap-12 w-full sm:w-auto">
                     <div className="text-center">
-                        <p className="text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Bookings</p>
-                        <p className="text-sm sm:text-lg font-bold footer-main-text">{stats?.currentMonthBookings || 0}</p>
+                        <p className="text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Bookings</p>
+                        <p className="text-sm sm:text-lg font-bold profile-name-text">{stats?.currentMonthBookings || 0}</p>
                     </div>
                     <div className="text-center">
-                        <p className="text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Spent</p>
-                        <p className="text-sm sm:text-lg font-bold footer-main-text tracking-tight">${stats?.currentMonthSpent?.toFixed(2) || "0.00"}</p>
+                        <p className="text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Spent</p>
+                        <p className="text-sm sm:text-lg font-bold profile-name-text tracking-tight">${stats?.currentMonthSpent?.toFixed(2) || "0.00"}</p>
                     </div>
                     <div className="text-center">
-                        <p className="text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black mb-1">Last</p>
-                        <p className="text-[0.6rem] sm:text-[0.75rem] font-bold footer-main-text tracking-wide">
+                        <p className="text-[0.5rem] sm:text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black mb-1">Last</p>
+                        <p className="text-[0.6rem] sm:text-[0.75rem] font-bold profile-name-text tracking-wide">
                             {stats?.lastBookingAt ? new Date(stats.lastBookingAt).toLocaleDateString() : 'N/A'}
                         </p>
                     </div>

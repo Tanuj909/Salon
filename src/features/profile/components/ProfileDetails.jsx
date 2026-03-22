@@ -48,7 +48,7 @@ const ProfileDetails = () => {
             {/* Subtle Background Pattern */}
             <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
             
-            <h3 className="text-2xl font-bold footer-main-text mb-8 relative z-10">Account Settings</h3>
+            <h3 className="text-2xl font-bold profile-name-text mb-8 relative z-10">Account Settings</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {settings.map((item, index) => (
                     <div 
@@ -59,8 +59,8 @@ const ProfileDetails = () => {
                             {item.icon}
                         </div>
                         <div>
-                            <h4 className="font-bold footer-main-text text-base group-hover:salon-list-title-accent transition-colors">{item.title}</h4>
-                            <p className="text-sm footer-link-text opacity-70">{item.desc}</p>
+                            <h4 className="font-bold profile-name-text text-base group-hover:salon-list-title-accent transition-colors">{item.title}</h4>
+                            <p className="text-sm profile-meta-text opacity-70">{item.desc}</p>
                         </div>
                     </div>
                 ))}

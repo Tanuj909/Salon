@@ -9,7 +9,7 @@ const RecentReviews = ({ reviews }) => {
     if (displayReviews.length === 0) {
         return (
             <div className="px-4 sm:px-8 mt-12 sm:mt-16">
-                <h2 className="text-2xl font-bold footer-main-text mb-8">Recent Reviews</h2>
+                <h2 className="text-2xl font-bold profile-name-text mb-8">Recent Reviews</h2>
                 <div className="bg-white p-12 rounded-xl border border-dashed border-border text-center">
                     <div className="w-16 h-16 bg-background-light rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                         <MessageSquare size={32} />
@@ -22,7 +22,7 @@ const RecentReviews = ({ reviews }) => {
 
     return (
         <div className="px-4 sm:px-8 mt-12 sm:mt-16">
-            <h2 className="text-xl sm:text-2xl font-bold footer-main-text mb-8 font-[Cormorant_Garamond]">Share Feedback</h2>
+            <h2 className="text-xl sm:text-2xl font-bold profile-name-text mb-8 font-[Cormorant_Garamond]">Share Feedback</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {displayReviews.map((review) => (
                     <div key={review.id} className="bg-white p-5 sm:p-6 rounded-2xl border hero-filter-input-bg shadow-sm hover:shadow-md transition-all">
@@ -32,8 +32,8 @@ const RecentReviews = ({ reviews }) => {
                                     {review.salonName?.charAt(0) || 'S'}
                                 </div>
                                 <div>
-                                    <h4 className="font-bold footer-main-text leading-tight font-[Cormorant_Garamond] text-md">{review.salonName || 'Premium Salon'}</h4>
-                                    <p className="text-[0.6rem] uppercase tracking-widest footer-link-text opacity-40 font-black">{review.serviceName || 'Service'}</p>
+                                    <h4 className="font-bold profile-name-text leading-tight font-[Cormorant_Garamond] text-md">{review.salonName || 'Premium Salon'}</h4>
+                                    <p className="text-[0.6rem] uppercase tracking-widest profile-meta-text opacity-40 font-black">{review.serviceName || 'Service'}</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-1 px-2 py-1 bg-accent/5 border border-accent/10 text-accent rounded-lg text-[10px] font-black">
@@ -41,10 +41,10 @@ const RecentReviews = ({ reviews }) => {
                                 {review.rating?.toFixed(1) || '0.0'}
                             </div>
                         </div>
-                        <p className="footer-link-text opacity-80 text-[0.85rem] italic mb-5 leading-relaxed">
+                        <p className="profile-meta-text opacity-80 text-[0.85rem] italic mb-5 leading-relaxed">
                             "{review.comment || review.content}"
                         </p>
-                        <div className="flex items-center gap-2 footer-link-text opacity-30 text-[0.55rem] uppercase font-black tracking-[0.15em] pt-4 border-t border-muted">
+                        <div className="flex items-center gap-2 profile-meta-text opacity-30 text-[0.55rem] uppercase font-black tracking-[0.15em] pt-4 border-t border-muted">
                             <Calendar size={10} />
                             {new Date(review.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                         </div>
