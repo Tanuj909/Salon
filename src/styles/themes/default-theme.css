@@ -1,0 +1,443 @@
+/* /styles/themes/default-theme.css */
+
+/* ==========================================================================
+   NAVBAR SECTION
+   ========================================================================== */
+.navbar-bg {
+    background: linear-gradient(135deg, #f5f3ff 0%, #f7f5ff 45%, #ffffff 100%);
+    backdrop-filter: blur(12px);
+}
+
+.navbar-bg-transparent {
+    background-color: transparent;
+}
+
+.navbar-logo-text {
+    background: linear-gradient(to right, #B75F2B, #7D472D);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.navbar-logo-subtext {
+    color: rgba(183, 95, 43, 0.8);
+}
+
+.navbar-link-text {
+    color: #6b7280; /* text-gray-500 */
+}
+
+.navbar-link-bg {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.navbar-link-bg-scrolled {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.navbar-link-hover-text {
+    color: #ffffff;
+}
+
+.navbar-link-hover-bg {
+    background-color: #D98C5F;
+}
+
+.navbar-link-hover-bg-alt {
+    background-color: #d1d5db; /* gray-300 */
+}
+
+.navbar-btn-primary-bg {
+    background-color: #D98C5F;
+}
+
+.navbar-btn-primary-text {
+    color: #ffffff;
+}
+
+.navbar-btn-primary-hover-bg {
+    background-color: #C6794C;
+}
+
+.navbar-btn-outline-bg {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-btn-outline-text {
+    color: #6b7280;
+}
+
+.navbar-btn-outline-border {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-icon-color {
+    color: #6b7280;
+}
+
+.navbar-icon-hover-color {
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   HOME PAGE
+   ========================================================================== */
+
+/* Hero Section */
+.hero-bg-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+}
+
+.hero-badge-bg {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.hero-badge-text {
+    color: #ffffff;
+}
+
+.hero-badge-dot {
+    background-color: #B76E4B;
+}
+
+.hero-title-text {
+    color: #ffffff;
+}
+
+.hero-title-accent {
+    color: #B76E4B;
+}
+
+.hero-subtitle-text {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-filter-bar-bg {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+}
+
+.hero-filter-input-bg {
+    background-color: #f9fafb; /* gray-50 */
+    border-color: #f3f4f6; /* gray-100 */
+}
+
+.hero-filter-input-text {
+    color: #4A3B2F;
+}
+
+.hero-filter-icon {
+    color: #B76E4B;
+}
+
+.hero-filter-btn-bg {
+    background-color: #B76E4B;
+}
+
+.hero-filter-btn-hover-bg {
+    background-color: #9E5A3A;
+}
+
+/* Categories Section */
+.category-card-bg {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.category-card-text {
+    color: #4b3621;
+}
+
+.category-card-hover-bg {
+    background-color: #fdf6f0;
+}
+
+/* Recommended Salons */
+.salon-card-bg {
+    background-color: #ffffff;
+    border-color: rgba(75, 54, 33, 0.1);
+}
+
+.salon-card-title {
+    color: #4b3621;
+}
+
+.salon-card-text {
+    color: rgba(90, 61, 43, 0.7);
+}
+
+.salon-card-btn-border {
+    border-color: #cd6133;
+}
+
+.salon-card-btn-text {
+    color: #cd6133;
+}
+
+.salon-card-btn-hover-bg {
+    background-color: #cd6133;
+}
+
+.salon-card-btn-hover-text {
+    color: #fef9f3;
+}
+
+/* About Us Section */
+.about-section-bg {
+    background-color: transparent;
+}
+
+.about-title-text {
+    color: #4b3621;
+}
+
+.about-body-text {
+    color: rgba(75, 54, 33, 0.8);
+}
+
+/* Reviews Section */
+.review-card-bg {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.review-text-main {
+    color: #4b3621;
+}
+
+.review-star-icon {
+    color: #cd6133;
+}
+
+/* ==========================================================================
+   SALON LIST PAGE
+   ========================================================================== */
+.salon-list-bg {
+    background-color: transparent;
+}
+
+.salon-list-title-text {
+    color: #1e0a18;
+}
+
+.salon-list-title-accent {
+    color: #cd6133;
+}
+
+.badge-verified-bg {
+    background-color: rgba(205, 97, 51, 0.1);
+}
+
+.badge-verified-text {
+    color: #cd6133;
+}
+
+.badge-verified-border {
+    border-color: rgba(205, 97, 51, 0.2);
+}
+
+.badge-new-bg {
+    background-color: rgba(75, 54, 33, 0.1);
+}
+
+.badge-new-text {
+    color: #4b3621;
+}
+
+.badge-new-border {
+    border-color: rgba(75, 54, 33, 0.2);
+}
+
+.badge-trending-bg {
+    background-color: rgba(200, 169, 81, 0.1);
+}
+
+.badge-trending-text {
+    color: #C8A951;
+}
+
+.badge-trending-border {
+    border-color: rgba(200, 169, 81, 0.2);
+}
+
+.star-icon-filled {
+    color: #cd6133;
+}
+
+.star-icon-empty {
+    color: #e0d0c8;
+}
+
+.filter-bar-item-bg {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-color: rgba(60, 20, 50, 0.07);
+}
+
+.filter-bar-item-hover-bg {
+    background-color: #ffffff;
+}
+
+.filter-active-bg {
+    background-color: #1e0a18;
+}
+
+.filter-active-text {
+    color: #ffffff;
+}
+
+.filter-active-icon {
+    color: #C8A951;
+}
+
+/* ==========================================================================
+   SALON DETAILS PAGE
+   ========================================================================== */
+.salon-detail-hero-overlay {
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+}
+
+.service-item-bg {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.service-item-hover-bg {
+    background-color: #fdf6f0;
+}
+
+.service-name-text {
+    color: #4b3621;
+}
+
+.service-price-text {
+    color: #cd6133;
+}
+
+.staff-card-bg {
+    background-color: #ffffff;
+}
+
+.staff-name-text {
+    color: #4b3621;
+}
+
+.timing-row-text {
+    color: #5a3d2b;
+}
+
+.btn-book-now {
+    background-color: #cd6133;
+    color: #ffffff;
+}
+
+.btn-book-now:hover {
+    background-color: #b45309;
+}
+
+/* ==========================================================================
+   PROFILE PAGE
+   ========================================================================== */
+.profile-card-bg {
+    background-color: #ffffff;
+    border-color: rgba(0,0,0,0.07);
+}
+
+.profile-name-text {
+    color: #0d0f12;
+}
+
+.profile-meta-text {
+    color: #6b7280;
+}
+
+.profile-meta-icon {
+    color: #c9a84c;
+}
+
+.profile-tier-bronze {
+    background: linear-gradient(135deg, #92400e, #b45309, #d97706);
+}
+
+.profile-tier-silver {
+    background: linear-gradient(135deg, #6b7280, #9ca3af, #d1d5db);
+}
+
+.profile-tier-gold {
+    background: linear-gradient(135deg, #a16207, #ca8a04, #eab308);
+}
+
+.profile-tier-platinum {
+    background: linear-gradient(135deg, #334155, #64748b, #cbd5e1);
+}
+
+/* ==========================================================================
+   FOOTER SECTION
+   ========================================================================== */
+.footer-bg {
+    background-color: #4b3621; /* --color-plum mapping */
+}
+
+.footer-main-text {
+    color: #fdf6f0;
+}
+
+.footer-link-text {
+    color: rgba(253, 246, 240, 0.55);
+}
+
+.footer-link-hover-text {
+    color: #c4956a;
+}
+
+.footer-social-btn-border {
+    border-color: rgba(253, 246, 240, 0.2);
+}
+
+.footer-social-btn-text {
+    color: rgba(253, 246, 240, 0.7);
+}
+
+.footer-social-btn-hover-bg {
+    background-color: #9b5876;
+    border-color: #9b5876;
+}
+
+.footer-social-btn-hover-text {
+    color: #fdf6f0;
+}
+
+.footer-divider {
+    border-color: rgba(253, 246, 240, 0.1);
+}
+
+/* ==========================================================================
+   GENERIC BUTTONS & COMPONENTS
+   ========================================================================== */
+.btn-primary {
+    background-color: #cd6133;
+    color: #ffffff;
+    border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+    background-color: #b45309;
+}
+
+.btn-secondary {
+    background-color: #4b3621;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #3d2b1a;
+}
+
+.icon-primary {
+    color: #cd6133;
+}
+
+.icon-secondary {
+    color: #c9a84c;
+}

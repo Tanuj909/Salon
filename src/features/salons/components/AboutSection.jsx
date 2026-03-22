@@ -104,18 +104,18 @@ const AboutSection = ({ description, image }) => {
                 {/* Left Side - Content (moved up) */}
                 <Reveal>
                     <div className="text-left lg:mt-[-20px]"> {/* Added negative margin to move content up */}
-                        <span className="block text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase text-[#cd6133] font-extrabold mb-4 sm:mb-5"> {/* Reduced mb-6 to mb-5 */}
+                        <span className="block text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase salon-list-title-accent font-extrabold mb-4 sm:mb-5"> {/* Reduced mb-6 to mb-5 */}
                             Our Legacy
                         </span>
-                        <h2 className="text-[26px] sm:text-4xl md:text-5xl text-[#5a3d2b] font-bold leading-tight mb-4 sm:mb-5 font-[Cormorant_Garamond,Georgia,serif] whitespace-nowrap">
-                            About <em className="italic font-light text-[#cd6133]">Us</em>
+                        <h2 className="text-[26px] sm:text-4xl md:text-5xl salon-list-title-text font-bold leading-tight mb-4 sm:mb-5 font-[Cormorant_Garamond,Georgia,serif] whitespace-nowrap">
+                            About <em className="italic font-light salon-list-title-accent">Us</em>
                         </h2>
-                        <p className="text-[#5a3d2b] text-sm sm:text-base md:text-lg leading-relaxed font-medium">
+                        <p className="salon-list-title-text text-sm sm:text-base md:text-lg leading-relaxed font-medium">
                             {description}
                         </p>
                         
                         {/* Decorative element - moved up slightly */}
-                        <div className="mt-5 sm:mt-6 w-12 sm:w-16 h-0.5 bg-[#cd6133]/30"></div> {/* Reduced mt-8 to mt-6 */}
+                        <div className="mt-5 sm:mt-6 w-12 sm:w-16 h-0.5 badge-verified-bg opacity-30"></div> {/* Reduced mt-8 to mt-6 */}
                     </div>
                 </Reveal>
 
@@ -134,8 +134,8 @@ const AboutSection = ({ description, image }) => {
                         </div>
 
                         {/* Decorative elements */}
-                        <div className="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 w-16 sm:w-20 h-16 sm:h-20 bg-[#cd6133]/10 rounded-full blur-xl -z-10"></div>
-                        <div className="absolute -bottom-2 sm:-bottom-3 -left-2 sm:-left-3 w-20 sm:w-24 h-20 sm:h-24 bg-[#5a3d2b]/5 rounded-full blur-xl -z-10"></div>
+                        <div className="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 w-16 sm:w-20 h-16 sm:h-20 badge-verified-bg rounded-full blur-xl -z-10 opacity-10"></div>
+                        <div className="absolute -bottom-2 sm:-bottom-3 -left-2 sm:-left-3 w-20 sm:w-24 h-20 sm:h-24 footer-bg rounded-full blur-xl -z-10 opacity-5"></div>
                     </div>
                 </Reveal>
             </div>

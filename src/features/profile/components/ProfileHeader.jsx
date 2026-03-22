@@ -57,12 +57,12 @@ const ProfileHeader = ({ user }) => {
 
     .ph-wrapper {
       font-family: 'DM Sans', sans-serif;
-      --gold: #c9a84c;
-      --gold-light: #e8c97a;
-      --ink: #0d0f12;
-      --ink-soft: #4b4f5a;
-      --surface: #ffffff;
-      --border: rgba(0,0,0,0.07);
+      --gold: var(--accent);
+      --gold-light: var(--accent-light);
+      --ink: var(--text-main);
+      --ink-soft: var(--text-muted);
+      --surface: var(--bg-main);
+      --border: var(--border-light);
     }
 
     /* Banner */
@@ -101,7 +101,7 @@ const ProfileHeader = ({ user }) => {
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 0%, #c9a84c 30%, #e8c97a 50%, #c9a84c 70%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, var(--accent) 30%, var(--accent-light) 50%, var(--accent) 70%, transparent 100%);
     }
 
     /* Card */
@@ -109,10 +109,10 @@ const ProfileHeader = ({ user }) => {
       position: relative;
       margin: 0 24px;
       margin-top: -88px;
-      background: #ffffff;
+      background: var(--bg-main);
       border-radius: 20px;
       box-shadow:
-        0 0 0 1px rgba(0,0,0,0.06),
+        0 0 0 1px var(--border-light),
         0 4px 6px rgba(0,0,0,0.04),
         0 24px 48px rgba(0,0,0,0.10);
       padding: 32px;
@@ -145,8 +145,8 @@ const ProfileHeader = ({ user }) => {
     .ph-avatar-ring {
       padding: 3px;
       border-radius: 18px;
-      background: linear-gradient(135deg, #c9a84c, #e8c97a, #a07830);
-      box-shadow: 0 0 24px rgba(201,168,76,0.35);
+      background: linear-gradient(135deg, var(--accent), var(--accent-light), var(--accent-dark));
+      box-shadow: 0 0 24px var(--accent-glow);
     }
 
     .ph-avatar {
@@ -155,16 +155,16 @@ const ProfileHeader = ({ user }) => {
       border-radius: 15px;
       object-fit: cover;
       display: block;
-      background: #f0ede8;
-      border: 3px solid #fff;
+      background: var(--bg-soft);
+      border: 3px solid var(--bg-main);
     }
 
     .ph-avatar-fallback {
       width: 120px;
       height: 120px;
       border-radius: 15px;
-      background: linear-gradient(135deg, #f3e9dc, #e8d9cc, #d4c2b2);
-      border: 3px solid #fff;
+      background: linear-gradient(135deg, var(--bg-light), var(--bg-soft), var(--bg-main));
+      border: 3px solid var(--bg-main);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -173,7 +173,7 @@ const ProfileHeader = ({ user }) => {
     .ph-avatar-fallback svg {
       width: 60px;
       height: 60px;
-      color: #a67c6b;
+      color: var(--text-muted);
       opacity: 0.7;
     }
 
@@ -184,12 +184,12 @@ const ProfileHeader = ({ user }) => {
       width: 32px;
       height: 32px;
       border-radius: 10px;
-      background: linear-gradient(135deg, #c9a84c, #f0c040);
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 3px solid #fff;
-      box-shadow: 0 2px 8px rgba(201,168,76,0.5);
+      border: 3px solid var(--bg-main);
+      box-shadow: 0 2px 8px var(--accent-glow);
     }
 
     /* Info */
@@ -210,7 +210,7 @@ const ProfileHeader = ({ user }) => {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.2rem;
       font-weight: 600;
-      color: #0d0f12;
+      color: var(--text-main);
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
@@ -220,12 +220,12 @@ const ProfileHeader = ({ user }) => {
       align-items: center;
       gap: 5px;
       padding: 3px 10px;
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
+      background: var(--bg-success-light);
+      border: 1px solid var(--border-success);
       border-radius: 100px;
       font-size: 0.7rem;
       font-weight: 600;
-      color: #166534;
+      color: var(--text-success);
       letter-spacing: 0.05em;
       text-transform: uppercase;
     }
@@ -262,7 +262,7 @@ const ProfileHeader = ({ user }) => {
 
     .ph-id-chip {
       font-size: 0.75rem;
-      color: #9ca3af;
+      color: var(--text-muted);
       font-weight: 400;
       letter-spacing: 0.03em;
     }
@@ -279,19 +279,19 @@ const ProfileHeader = ({ user }) => {
       align-items: center;
       gap: 5px;
       font-size: 0.82rem;
-      color: #6b7280;
+      color: var(--text-muted);
       font-weight: 400;
     }
 
     .ph-meta-icon {
-      color: #c9a84c;
+      color: var(--accent);
     }
 
     /* Divider */
     .ph-divider {
       width: 1px;
       height: 16px;
-      background: #e5e7eb;
+      background: var(--border-light);
     }
 
     /* Responsive */

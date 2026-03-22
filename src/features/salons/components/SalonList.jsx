@@ -10,19 +10,19 @@ import { fetchDistinctServiceNames } from "@/features/salons/services/salonServi
 // Local badge styles
 const badgeStyles = {
   "VERIFIED": {
-    bg: "bg-[#cd6133]/10",
-    text: "text-[#cd6133]",
-    border: "border-[#cd6133]/20"
+    bg: "badge-verified-bg",
+    text: "badge-verified-text",
+    border: "badge-verified-border"
   },
   "New": {
-    bg: "bg-[#4b3621]/10",
-    text: "text-[#4b3621]",
-    border: "border-[#4b3621]/20"
+    bg: "badge-new-bg",
+    text: "badge-new-text",
+    border: "badge-new-border"
   },
   "Trending": {
-    bg: "bg-[#C8A951]/10",
-    text: "text-[#C8A951]",
-    border: "border-[#C8A951]/20"
+    bg: "badge-trending-bg",
+    text: "badge-trending-text",
+    border: "badge-trending-border"
   }
 };
 import { useNearbySalons } from "@/features/salons/hooks/useNearbySalons";
@@ -31,7 +31,7 @@ import LocationPicker from "./LocationPicker";
 
 // ─── Star Icon ────────────────────────────────────────────────────────────────
 const StarIcon = ({ filled }) => (
-  <Star size={13} fill={filled ? "#cd6133" : "transparent"} color={filled ? "#cd6133" : "#e0d0c8"} />
+  <Star size={13} fill={filled ? "currentColor" : "transparent"} className={filled ? "star-icon-filled" : "star-icon-empty"} />
 );
 
 // ─── Salon Card ───────────────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ function SalonCard({ salon }) {
   return (
     <Link
       href={`/salons/${salon.id}`}
-      className="group block rounded-[20px] overflow-hidden border border-[#4b3621]/10 cursor-pointer shadow-[0_2px_16px_rgba(75,54,33,0.06)] no-underline h-full flex flex-col"
+      className="group block rounded-[20px] overflow-hidden border salon-card-bg cursor-pointer shadow-sm no-underline h-full flex flex-col"
     >
       {/* ── Image ── */}
       <div className="relative h-[210px] overflow-hidden shrink-0">
@@ -62,7 +62,7 @@ function SalonCard({ salon }) {
           className="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.08]"
         />
         {/* Subtle Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(75,54,33,0.6)]" />
+        <div className="absolute inset-0 z-[2] hero-bg-overlay/60" />
 
         {/* Badge */}
         {badge && bc && (
@@ -75,7 +75,7 @@ function SalonCard({ salon }) {
       font-bold
       tracking-[0.06em]
       font-['Manrope',sans-serif]
-      bg-[#cd6133]
+      hero-filter-btn-bg
       text-white
       border border-white/20
       shadow-md
@@ -86,28 +86,28 @@ function SalonCard({ salon }) {
         )}
 
         {/* Open/Closed Badge */}
-        <span className={`absolute top-3.5 right-3.5 px-3 py-1 rounded-full text-[0.7rem] font-bold tracking-[0.04em] backdrop-blur-[8px] ${salon.isOpen ? "bg-[#fdf6f0]/90 text-[#cd6133]" : "bg-[#f8d4d4]/90 text-[#7f1a1a]"} font-['Manrope',sans-serif]`}>
+        <span className={`absolute top-3.5 right-3.5 px-3 py-1 rounded-full text-[0.7rem] font-bold tracking-[0.04em] backdrop-blur-[8px] ${salon.isOpen ? "hero-filter-bar-bg hero-filter-icon" : "bg-red-100 text-red-800"} font-['Manrope',sans-serif]`}>
           {openBadge}
         </span>
       </div>
 
       {/* ── Body ── */}
       <div className="p-[22px_22px_20px] flex flex-col flex-1">
-        <h3 className="text-[1.15rem] font-bold leading-[1.3] mb-1.5 text-[#4b3621] font-[Cormorant_Garamond,Georgia,serif] line-clamp-1">
+        <h3 className="text-[1.15rem] font-bold leading-[1.3] mb-1.5 salon-card-title font-[Cormorant_Garamond,Georgia,serif] line-clamp-1">
           {salon.name}
         </h3>
 
-        <div className="flex items-center gap-1.5 text-[0.75rem] mb-3 text-[#5a3d2b]/70 font-['Manrope',sans-serif] font-medium">
-          <MapPin size={12} className="text-[#cd6133]" />
+        <div className="flex items-center gap-1.5 text-[0.75rem] mb-3 salon-card-text font-['Manrope',sans-serif] font-medium">
+          <MapPin size={12} className="hero-filter-icon" />
           {locationString || salon.address || "Location unavailable"}
         </div>
 
         {/* Divider */}
-        <div className="h-px mb-3 bg-[#4b3621]/10" />
+        <div className="h-px mb-3 hero-filter-input-bg" />
 
         {/* Description */}
         {salon.description && (
-          <p className="text-[0.8rem] text-[#5a3d2b]/80 mb-3 font-['Manrope',sans-serif] line-clamp-2 italic leading-relaxed">
+          <p className="text-[0.8rem] salon-card-text mb-3 font-['Manrope',sans-serif] line-clamp-2 italic leading-relaxed">
             {salon.description}
           </p>
         )}
@@ -120,7 +120,7 @@ function SalonCard({ salon }) {
         )}
 
         {/* Footer: Rating & Button */}
-        <div className="mt-4 pt-4 flex items-center justify-between border-t border-[#4b3621]/10">
+        <div className="mt-4 pt-4 flex items-center justify-between border-t hero-filter-input-bg">
           <div className="flex items-center gap-1.5">
             <div className="flex gap-0.5">
               {[1, 2, 3, 4, 5].map((i) => (
@@ -130,15 +130,15 @@ function SalonCard({ salon }) {
                 />
               ))}
             </div>
-            <span className="text-[0.85rem] font-bold text-[#4b3621] font-['Manrope',sans-serif]">
+            <span className="text-[0.85rem] font-bold salon-card-title font-['Manrope',sans-serif]">
               {(salon.averageRating || 0).toFixed(1)}
             </span>
-            <span className="text-[0.75rem] text-[#5a3d2b]/60 font-['Manrope',sans-serif] ml-0.5">
+            <span className="text-[0.75rem] salon-card-text font-['Manrope',sans-serif] ml-0.5">
               ({salon.totalReviews || 0})
             </span>
           </div>
 
-          <span className="py-2 px-[18px] rounded-full border-[1.5px] border-[#cd6133] text-[0.75rem] font-bold text-[#cd6133] tracking-[0.04em] font-['Manrope',sans-serif] transition-all duration-300 group-hover:bg-[#cd6133] group-hover:text-[#fef9f3] group-hover:shadow-[0_4px_16px_rgba(205,97,51,0.3)]">
+          <span className="py-2 px-[18px] rounded-full border-[1.5px] salon-card-btn-border text-[0.75rem] font-bold salon-card-btn-text tracking-[0.04em] font-['Manrope',sans-serif] transition-all duration-300 group-hover:salon-card-btn-hover-bg group-hover:salon-card-btn-hover-text group-hover:shadow-lg">
             Explore
           </span>
         </div>
@@ -348,14 +348,14 @@ export default function SalonList() {
 
   if (loading && !salons.length) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6 bg-white/30 backdrop-blur-sm">
         <div className="flex flex-col items-center gap-6 text-center max-w-md">
-          <div className="w-16 h-16 border-4 border-[#7a2860]/20 border-t-[#7a2860] rounded-full animate-spin" />
+          <div className="w-16 h-16 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin" />
           <div className="space-y-2">
-            <h2 className="text-xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">
+            <h2 className="text-xl font-bold salon-list-title-text font-[Cormorant_Garamond]">
               {showTimeoutOptions ? "Still searching for your location..." : "Finding best salons near you..."}
             </h2>
-            <p className="text-[#3c143280] font-medium font-[DM_Sans] text-sm">
+            <p className="footer-link-text font-medium font-[DM_Sans] text-sm opacity-80">
               {showTimeoutOptions
                 ? "It's taking a bit longer than expected. You can wait a moment or enter your location manually below."
                 : "We're locating the premium grooming spaces in your area."}
@@ -364,8 +364,8 @@ export default function SalonList() {
 
           {showTimeoutOptions && (
             <div className="w-full pt-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="p-4 bg-white/50 rounded-2xl border border-[#3c143208] shadow-sm">
-                <p className="text-[10px] uppercase tracking-widest font-bold text-[#7a2860] mb-3">Enter Manually</p>
+              <div className="p-4 hero-filter-bar-bg rounded-2xl border hero-filter-input-bg shadow-sm">
+                <p className="text-[10px] uppercase tracking-widest font-bold hero-filter-icon mb-3">Enter Manually</p>
                 <LocationPicker
                   currentAddress={draftParams.address}
                   lat={draftParams.lat}
@@ -422,27 +422,27 @@ export default function SalonList() {
           <div className="flex-1 w-full">
             {!showMobileSearch ? (
               <div 
-                className="flex items-center justify-between px-4 py-2 bg-white/60 backdrop-blur-md rounded-2xl border border-[#3c143208] shadow-sm w-full md:w-fit font-bold leading-none text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[0.85rem] sm:text-[1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block md:cursor-default"
+                className="flex items-center justify-between px-4 py-2 hero-filter-bar-bg backdrop-blur-md rounded-2xl border hero-filter-input-bg shadow-sm w-full md:w-fit font-bold leading-none salon-list-title-text font-[Cormorant_Garamond,Georgia,serif] text-[0.85rem] sm:text-[1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block md:cursor-default"
               >
                 <span 
                   onClick={() => setShowMobileSearch(true)} 
                   className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap overflow-hidden truncate"
                 >
                   Discover{" "}
-                  <span className={`inline-block transition-opacity duration-500 text-[#cd6133] ${headingFade ? "opacity-100" : "opacity-0"}`}>
+                  <span className={`inline-block transition-opacity duration-500 salon-list-title-accent ${headingFade ? "opacity-100" : "opacity-0"}`}>
                     {headings[headingIndex]}
                   </span>{" "}
                   Salons
                 </span>
                 <div className="flex items-center gap-2 sm:gap-3 md:hidden shrink-0 ml-2">
                     {!showFilters && (
-                      <Search size={18} className="text-[#7a2860] cursor-pointer" onClick={() => setShowMobileSearch(true)} />
+                      <Search size={18} className="hero-filter-icon cursor-pointer" onClick={() => setShowMobileSearch(true)} />
                     )}
-                    <div className="w-px h-4 bg-[#3c143212]" />
+                    <div className="w-px h-4 hero-filter-input-bg" />
                     <button onClick={() => setShowFilters(!showFilters)} className="relative">
-                        <SlidersHorizontal size={18} className="text-[#7a2860] cursor-pointer" />
+                        <SlidersHorizontal size={18} className="hero-filter-icon cursor-pointer" />
                         {hasChanges && (
-                            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[#cd6133] border-2 border-white" />
+                            <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full hero-filter-btn-bg border-2 border-white" />
                         )}
                     </button>
                 </div>
@@ -451,12 +451,12 @@ export default function SalonList() {
                 <div className="relative w-full flex items-center md:hidden">
                     {!showFilters && (
                       <>
-                        <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143259]">
+                        <span className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none footer-link-text">
                             <Search size={16} />
                         </span>
                         <input
                             autoFocus
-                            className={`w-full h-[46px] pr-[40px] pl-[38px] rounded-2xl border border-[#3c143230] bg-white/80 backdrop-blur-md text-[#2a1020] text-[0.85rem] outline-none transition-all duration-300 shadow-sm focus:border-[#7a2860] focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans] placeholder:text-[#3c143270] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
+                            className={`w-full h-[46px] pr-[40px] pl-[38px] rounded-2xl border hero-filter-input-bg hero-filter-bar-bg navbar-logo-subtext text-[0.85rem] outline-none transition-all duration-300 shadow-sm focus:border-[#cd6133] focus:ring-4 focus:ring-[#cd6133]/5 font-[DM_Sans] placeholder:text-[#3c143270] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
                             type="text"
                             placeholder={salonPlaceholders[salonPlaceholderIndex]}
                             value={search}
@@ -468,7 +468,7 @@ export default function SalonList() {
                                 setSearch("");
                                 setShowMobileSearch(false);
                             }}
-                            className="absolute right-[12px] top-1/2 -translate-y-1/2 p-1 text-[#3c143259] hover:text-[#7a2860]"
+                            className="absolute right-[12px] top-1/2 -translate-y-1/2 p-1 footer-link-text hover:hero-filter-icon"
                         >
                             <X size={16} />
                         </button>
@@ -481,13 +481,13 @@ export default function SalonList() {
             {!showFilters && (
               <div className="md:hidden mt-3 w-full animate-in fade-in slide-in-from-top-2 duration-500 relative z-[100]" ref={mobileServiceSearchRef}>
                 <div className="relative group flex items-center gap-2">
-                  <div className="relative flex-1 flex items-center h-[42px] bg-white/70 backdrop-blur-md rounded-xl border border-[#3c143212] shadow-sm focus-within:ring-4 focus-within:ring-[#7a2860]/5 focus-within:border-[#7a2860]/40 transition-all duration-300">
-                    <div className="flex items-center gap-1.5 px-3 border-r border-[#3c143208] bg-[#cd6133]/5">
-                      <Search size={12} className="text-[#cd6133]" />
-                      <span className="text-[8px] font-black uppercase tracking-wider text-[#cd6133]">Service</span>
+                  <div className="relative flex-1 flex items-center h-[42px] hero-filter-bar-bg backdrop-blur-md rounded-xl border hero-filter-input-bg shadow-sm focus-within:ring-4 focus-within:ring-[#cd6133]/5 focus-within:border-[#cd6133]/40 transition-all duration-300">
+                    <div className="flex items-center gap-1.5 px-3 border-r hero-filter-input-bg badge-verified-bg">
+                      <Search size={12} className="badge-verified-text" />
+                      <span className="text-[8px] font-black uppercase tracking-wider badge-verified-text">Service</span>
                     </div>
                     <input
-                      className="flex-1 h-full px-3 text-[#2a1020] text-[0.8rem] outline-none bg-transparent font-[DM_Sans] placeholder:text-[#3c143240] placeholder:transition-all placeholder:duration-500"
+                      className="flex-1 h-full px-3 salon-list-title-text text-[0.8rem] outline-none bg-transparent font-[DM_Sans] placeholder:text-[#3c143240] placeholder:transition-all placeholder:duration-500"
                       type="text"
                       placeholder={servicePlaceholders[servicePlaceholderIndex]}
                       value={draftParams.serviceName}
@@ -544,12 +544,12 @@ export default function SalonList() {
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`h-11 px-6 flex items-center gap-3 rounded-2xl border transition-all duration-300 font-bold text-[0.85rem] ${showFilters ? 'bg-[#1e0a18] text-white border-[#1e0a18] shadow-md' : 'bg-white/50 border-[#3c143212] text-[#4b3621] hover:bg-white hover:border-[#7a2860]/30 shadow-sm'}`}
+              className={`h-11 px-6 flex items-center gap-3 rounded-2xl border transition-all duration-300 font-bold text-[0.85rem] ${showFilters ? 'bg-[#1e0a18] text-white border-[#1e0a18] shadow-md' : 'hero-filter-bar-bg border hero-filter-input-bg salon-card-title hover:bg-white hover:border-[#cd6133]/30 shadow-sm'}`}
             >
-              <SlidersHorizontal size={16} className={showFilters ? 'text-[#C8A951]' : 'text-[#7a2860]'} />
+              <SlidersHorizontal size={16} className={showFilters ? 'text-[#C8A951]' : 'hero-filter-icon'} />
               <span>{showFilters ? 'Hide Filters' : 'Filters'}</span>
               {hasChanges && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[#cd6133] animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full hero-filter-btn-bg animate-pulse" />
               )}
               <ChevronDown size={14} className={`transition-transform duration-300 ${showFilters ? 'rotate-180' : ''}`} />
             </button>
@@ -558,14 +558,14 @@ export default function SalonList() {
 
         {/* ── Desktop Dual Search Bar ── */}
         <div className={`hidden md:block transition-all duration-300 relative z-[50] ${!showFilters ? 'max-h-[500px] mb-8 opacity-100 visible' : 'max-h-0 opacity-0 pointer-events-none invisible'}`} ref={serviceSearchRef}>
-          <div className="flex items-center gap-4 p-2.5 bg-white/70 backdrop-blur-md rounded-[1.5rem] border border-[#3c143212] shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-visible">
+          <div className="flex items-center gap-4 p-2.5 hero-filter-bar-bg backdrop-blur-md rounded-[1.5rem] border hero-filter-input-bg shadow-sm overflow-visible">
             {/* Salon Name Search */}
             <div className="relative flex-1 group">
-              <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143260] transition-colors group-focus-within:text-[#7a2860]">
+              <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none footer-link-text transition-colors group-focus-within:hero-filter-icon">
                 <Search size={18} />
               </span>
               <input
-                className={`w-full h-12 pr-[16px] pl-[48px] rounded-xl border border-[#3c143212] bg-white/95 text-[#2a1020] text-[0.9rem] outline-none transition-all duration-200 focus:bg-white focus:border-[#7a2860]/40 focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans] placeholder:text-[#3c143260] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
+                className={`w-full h-12 pr-[16px] pl-[48px] rounded-xl border hero-filter-input-bg hero-filter-bar-bg salon-list-title-text text-[0.9rem] outline-none transition-all duration-200 focus:bg-white focus:border-[#cd6133]/40 focus:ring-4 focus:ring-[#cd6133]/5 font-[DM_Sans] placeholder:text-[#3c143260] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
                 type="text"
                 placeholder={salonPlaceholders[salonPlaceholderIndex]}
                 value={search}
@@ -594,12 +594,12 @@ export default function SalonList() {
                 }}
               />
               {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#3c143212] rounded-xl shadow-2xl z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border hero-filter-input-bg rounded-xl shadow-2xl z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                   {suggestions.map((s, idx) => (
                     <button
                       key={idx}
                       onClick={() => handleSuggestionClick(s.name)}
-                      className="w-full text-left px-5 py-3 text-sm text-[#2a1020] hover:bg-[#cd6133]/5 transition-colors border-b border-[#3c143205] last:border-0"
+                      className="w-full text-left px-5 py-3 text-sm salon-list-title-text hover:bg-[#cd6133]/5 transition-colors border-b hero-filter-input-bg last:border-0"
                     >
                       {s.name}
                     </button>
@@ -612,7 +612,7 @@ export default function SalonList() {
             <button
               onClick={handleFetch}
               disabled={loading}
-              className={`h-12 px-6 flex items-center justify-center gap-2 rounded-xl bg-[#1e0a18] text-white font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:bg-[#7a2860] hover:shadow-lg hover:shadow-[#1e0a18]/10 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
+              className={`h-12 px-6 flex items-center justify-center gap-2 rounded-xl bg-[#1e0a18] text-white font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:hero-filter-btn-bg hover:shadow-lg hover:shadow-[#1e0a18]/10 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -628,12 +628,12 @@ export default function SalonList() {
 
         {/* ── Advanced Filter Control (Collapsible) ── */}
         <div className={`transition-all duration-500 ease-in-out relative z-[100] ${showFilters ? 'max-h-[800px] mb-6 md:mb-10 opacity-100 overflow-visible' : 'max-h-0 opacity-0 pointer-events-none overflow-hidden'}`}>
-          <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-[#3c143208] bg-white/40 backdrop-blur-sm">
+          <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-white/10 hero-filter-bar-bg backdrop-blur-sm shadow-xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end mb-4 md:mb-6">
               {/* Location Picker */}
               <div className="lg:col-span-8 space-y-1.5">
                 <div className="flex items-center justify-between px-1">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240]">Near Your Location</label>
+                  <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Near Your Location</label>
                 </div>
                 <LocationPicker
                   currentAddress={draftParams.address}
@@ -663,15 +663,15 @@ export default function SalonList() {
               {/* Radius Select */}
               <div className="lg:col-span-4 space-y-1.5">
                 <div className="flex items-center justify-between px-1">
-                  <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240]">Search Radius</label>
-                  <span className="text-[9px] font-black text-[#7a2860] bg-[#7a2860]/5 px-2 py-0.5 rounded-full">{draftParams.radius}km</span>
+                  <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Search Radius</label>
+                  <span className="text-[9px] font-black hero-filter-icon bg-[#7a2860]/5 px-2 py-0.5 rounded-full">{draftParams.radius}km</span>
                 </div>
-                <div className="flex items-center h-11 px-5 rounded-xl border border-[#3c143212] bg-[#fdfaf8]/50 group">
+                <div className="flex items-center h-11 px-5 rounded-xl border hero-filter-input-bg about-section-bg group">
                   <input
                     type="range" min="1" max="100"
                     value={draftParams.radius}
                     onChange={(e) => setDraftParams(prev => ({ ...prev, radius: parseInt(e.target.value) }))}
-                    className="w-full h-1 bg-[#7a2860]/10 rounded-lg appearance-none cursor-pointer accent-[#7a2860]"
+                    className="w-full h-1 hero-filter-icon/20 rounded-lg appearance-none cursor-pointer accent-[#cd6133]"
                   />
                 </div>
               </div>
@@ -680,10 +680,10 @@ export default function SalonList() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end">
               {/* Category Select */}
               <div className="lg:col-span-5 space-y-1.5 flex flex-col">
-                <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240] ml-1">Category</label>
+                <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text ml-1">Category</label>
                 <div className="relative">
                   <select
-                    className="w-full h-11 px-4 pr-10 rounded-xl border border-[#3c143212] bg-[#fdfaf8]/50 text-[#2a1020] text-[0.85rem] outline-none focus:border-[#7a2860] focus:ring-2 focus:ring-[#7a2860]/5 font-[DM_Sans] appearance-none"
+                    className="w-full h-11 px-4 pr-10 rounded-xl border hero-filter-input-bg about-section-bg salon-list-title-text text-[0.85rem] outline-none focus:border-[#cd6133] focus:ring-2 focus:ring-[#cd6133]/5 font-[DM_Sans] appearance-none"
                     value={draftParams.categoryId}
                     onChange={(e) => setDraftParams(prev => ({ ...prev, categoryId: e.target.value }))}
                   >
@@ -700,11 +700,11 @@ export default function SalonList() {
               <div className="lg:col-span-5 space-y-1.5 flex flex-col">
                 <label className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3c143240] ml-1">Service Name</label>
                 <div className="relative overflow-visible">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3c143240]">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 footer-link-text">
                     <Search size={14} />
                   </span>
                   <input
-                    className="w-full h-11 pl-9 pr-4 rounded-xl border border-[#3c143212] bg-[#fdfaf8]/50 text-[#2a1020] text-[0.85rem] outline-none focus:border-[#7a2860] focus:ring-2 focus:ring-[#7a2860]/5 font-[DM_Sans]"
+                    className="w-full h-11 pl-9 pr-4 rounded-xl border hero-filter-input-bg about-section-bg salon-list-title-text text-[0.85rem] outline-none focus:border-[#cd6133] focus:ring-2 focus:ring-[#cd6133]/5 font-[DM_Sans]"
                     type="text"
                     placeholder="e.g. Haircut, Facial..."
                     value={draftParams.serviceName}
@@ -737,7 +737,7 @@ export default function SalonList() {
                 <button
                   onClick={handleFetch}
                   disabled={loading || !hasChanges}
-                  className={`w-full h-11 rounded-xl font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${loading || !hasChanges ? "bg-[#3c143208] text-[#3c143230] cursor-not-allowed border border-[#3c143205]" : "bg-[#1e0a18] text-white hover:bg-[#7a2860] shadow-lg shadow-[#1e0a18]/10 hover:shadow-[#7a2860]/20 active:scale-95"}`}
+                  className={`w-full h-11 rounded-xl font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${loading || !hasChanges ? "bg-[#3c143208] text-[#3c143230] cursor-not-allowed border border-[#3c143205]" : "hero-filter-btn-bg text-white hover:hero-filter-btn-hover-bg shadow-lg shadow-[#1e0a18]/10 hover:shadow-[#7a2860]/20 active:scale-95"}`}
                 >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -763,49 +763,49 @@ export default function SalonList() {
                 <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Something went wrong</h3>
+            <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">Something went wrong</h3>
             <div className="flex justify-center">
-              <p className="text-[#3c143260] font-[DM_Sans] max-w-[400px] mx-auto">{error}</p>
+              <p className="footer-link-text font-[DM_Sans] max-w-[400px] mx-auto">{error}</p>
             </div>
             
             <button
               onClick={retry}
-              className="mt-6 px-8 py-3 bg-[#1e0a18] text-white rounded-xl font-bold hover:bg-[#7a2860] transition-colors font-[DM_Sans]"
+              className="mt-6 px-8 py-3 hero-filter-btn-bg text-white rounded-xl font-bold hover:hero-filter-btn-hover-bg transition-colors font-[DM_Sans]"
             >
               Try Again
             </button>
           </div>
         ) : salons.length === 0 ? (
-          <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed border-[#3c143220]">
+          <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed footer-divider">
             <div className="w-20 h-20 bg-[#3c1432]/5 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg width={32} height={32} fill="none" stroke="#7a2860" strokeWidth={1.5} viewBox="0 0 24 24">
+              <svg width={32} height={32} fill="none" stroke="#cd6133" strokeWidth={1.5} viewBox="0 0 24 24">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
             </div>
             <div className="flex flex-col items-center">
-              <h3 className="text-xl font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
-              <p className="text-[#3c143260] font-[DM_Sans] max-w-[400px] mx-auto mb-6">Please allow location access or search for a location manually to discover premium salons.</p>
+              <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+              <p className="footer-link-text font-[DM_Sans] max-w-[400px] mx-auto mb-6">Please allow location access or search for a location manually to discover premium salons.</p>
             </div>
             {error && error.includes("denied") && (
               <button
                 onClick={() => window.location.reload()}
-                className="px-8 py-3 bg-[#1e0a18] text-white rounded-xl font-bold hover:bg-[#7a2860] transition-colors font-[DM_Sans]"
+                className="px-8 py-3 hero-filter-btn-bg text-white rounded-xl font-bold hover:hero-filter-btn-hover-bg transition-colors font-[DM_Sans]"
               >
                 Retry Location Access
               </button>
             )}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed border-[#3c143220]">
+          <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed footer-divider">
             <div className="w-20 h-20 bg-[#3c1432]/5 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg width={32} height={32} fill="none" stroke="#3c1432" strokeWidth={1.5} viewBox="0 0 24 24" className="opacity-40">
+              <svg width={32} height={32} fill="none" stroke="#4b3621" strokeWidth={1.5} viewBox="0 0 24 24" className="opacity-40">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">No matches found</h3>
-            <p className="text-[#3c143260] font-[DM_Sans]">Try adjusting your search or filters within the current results.</p>
+            <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">No matches found</h3>
+            <p className="footer-link-text font-[DM_Sans]">Try adjusting your search or filters within the current results.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

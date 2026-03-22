@@ -30,8 +30,8 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300 ${isScrolled
-        ? 'bg-[linear-gradient(135deg,#f5f3ff_0%,#f7f5ff_45%,#ffffff_100%)] backdrop-blur-md shadow-md py-3 md:py-4'
-        : 'bg-transparent py-5 md:py-6'
+        ? 'navbar-bg shadow-md py-3 md:py-4'
+        : 'navbar-bg-transparent py-5 md:py-6'
         }`}
     >
       <div className="w-full px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 mx-auto">
@@ -47,11 +47,11 @@ export default function Navbar() {
                 alt="Fast Booking Logo"
                 className="w-12 sm:w-14 lg:w-20 h-auto object-contain transition-transform group-hover:scale-110 flex-shrink-0"
               />
-              <div className="flex flex-col leading-tight items-start px-2 py-1 md:px-3 lg:px-4 md:py-1.5 lg:py-2 rounded-xl lg:rounded-2xl bg-white/70 backdrop-blur-md border border-white/80 shadow-sm group-hover:bg-white/90 transition-all">
-                <span className="text-sm sm:text-lg lg:text-xl font-black bg-gradient-to-r from-[#B75F2B] to-[#7D472D] bg-clip-text text-transparent tracking-tighter whitespace-nowrap leading-[1.1] pb-0.5">
+              <div className="flex flex-col leading-tight items-start px-2 py-1 md:px-3 lg:px-4 md:py-1.5 lg:py-2 rounded-xl lg:rounded-2xl navbar-link-bg border border-white/80 shadow-sm group-hover:bg-white/90 transition-all">
+                <span className="text-sm sm:text-lg lg:text-xl font-black navbar-logo-text tracking-tighter whitespace-nowrap leading-[1.1] pb-0.5">
                   Fast Booking
                 </span>
-                <span className="text-[8px] sm:text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.2em] text-[#B75F2B]/80 -mt-0.5">
+                <span className="text-[8px] sm:text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.2em] navbar-logo-subtext -mt-0.5">
                   Service
                 </span>
               </div>
@@ -61,8 +61,8 @@ export default function Navbar() {
               <Link
                 href="/"
                 className={`px-4 lg:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium transition-all shadow-sm ${isScrolled
-                  ? 'bg-black/5 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
-                  : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-gray-300 hover:text-white'
+                  ? 'navbar-link-bg-scrolled navbar-link-text hover:navbar-link-hover-bg hover:navbar-link-hover-text'
+                  : 'navbar-link-bg navbar-link-text hover:navbar-link-hover-bg-alt hover:navbar-link-hover-text'
                   }`}
               >
                 Home
@@ -70,8 +70,8 @@ export default function Navbar() {
               <Link
                 href="/salons"
                 className={`px-4 lg:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium transition-all shadow-sm ${isScrolled
-                  ? 'bg-black/5 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white'
-                  : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-gray-300 hover:text-white'
+                  ? 'navbar-link-bg-scrolled navbar-link-text hover:navbar-link-hover-bg hover:navbar-link-hover-text'
+                  : 'navbar-link-bg navbar-link-text hover:navbar-link-hover-bg-alt hover:navbar-link-hover-text'
                   }`}
               >
                 Salons
@@ -84,8 +84,8 @@ export default function Navbar() {
             <Link
               href="/contact"
               className={`hidden sm:flex px-5 md:px-6 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all shadow-md active:scale-95 whitespace-nowrap ${isScrolled
-                ? 'bg-[#D98C5F] text-white hover:bg-[#C6794C]'
-                : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border border-white/30'
+                ? 'navbar-btn-primary-bg navbar-btn-primary-text hover:navbar-btn-primary-hover-bg'
+                : 'navbar-btn-outline-bg navbar-btn-outline-text hover:navbar-btn-primary-hover-bg hover:navbar-btn-primary-text navbar-btn-outline-border'
                 }`}
             >
               List Your Business
@@ -110,8 +110,8 @@ export default function Navbar() {
                       setIsMenuOpen(false);
                     }}
                     className={`flex items-center justify-center w-9 h-9 md:w-11 md:h-11 rounded-full transition-all shadow-md border-2 ${isScrolled
-                      ? 'bg-[#D98C5F] text-white hover:bg-[#C07B52] border-white/30'
-                      : 'bg-white/80 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border-white/50'
+                      ? 'navbar-btn-primary-bg navbar-btn-primary-text hover:navbar-btn-primary-hover-bg border-white/30'
+                      : 'navbar-btn-outline-bg navbar-btn-outline-text hover:navbar-btn-primary-bg hover:navbar-btn-primary-text border-white/50'
                       }`}
                     aria-label="User profile"
                   >
@@ -132,14 +132,14 @@ export default function Navbar() {
   z-50 mt-5">
                       <Link
                         href="/profile"
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors"
                         onClick={() => setIsProfileOpen(false)}
                       >
                         <span className="material-symbols-outlined text-lg">account_circle</span>
                         Profile
                       </Link>
                       <button
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-500 hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left"
                         onClick={handleLogout}
                       >
                         <span className="material-symbols-outlined text-lg">logout</span>
@@ -152,8 +152,8 @@ export default function Navbar() {
                 <Link
                   href="/login"
                   className={`px-5 md:px-7 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all shadow-md active:scale-95 whitespace-nowrap ${isScrolled
-                    ? 'bg-[#D98C5F] text-white hover:bg-[#C07B52]'
-                    : 'bg-white/20 backdrop-blur-sm text-gray-500 hover:bg-[#D98C5F] hover:text-white border border-white/30'
+                    ? 'navbar-btn-primary-bg navbar-btn-primary-text hover:navbar-btn-primary-hover-bg'
+                    : 'navbar-btn-outline-bg navbar-btn-outline-text hover:navbar-btn-primary-bg hover:navbar-btn-primary-text border border-white/30'
                     }`}
                 >
                   Login
@@ -164,8 +164,8 @@ export default function Navbar() {
             {/* Hamburger (Mobile) */}
             <button
               className={`flex items-center justify-center lg:hidden p-1.5 md:p-2.5 rounded-lg transition-all ${isScrolled
-                ? 'bg-black/5 backdrop-blur-sm text-black hover:bg-[#D98C5F] hover:text-white'
-                : 'bg-white/20 backdrop-blur-sm text-black hover:bg-[#D98C5F] hover:text-white'
+                ? 'navbar-link-bg-scrolled text-black hover:navbar-link-hover-bg hover:navbar-link-hover-text'
+                : 'navbar-btn-outline-bg text-black hover:navbar-link-hover-bg hover:navbar-link-hover-text'
                 }`}
               onClick={() => {
                 setIsMenuOpen(!isMenuOpen);
@@ -184,7 +184,7 @@ export default function Navbar() {
           <div className="flex flex-col gap-2 p-2">
             <Link
               href="/"
-              className="flex items-center gap-3 text-gray-600 font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
+              className="flex items-center gap-3 navbar-link-text font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="material-symbols-outlined text-xl">home</span>
@@ -192,7 +192,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/salons"
-              className="flex items-center gap-3 text-gray-600 font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
+              className="flex items-center gap-3 navbar-link-text font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="material-symbols-outlined text-xl">storefront</span>
@@ -203,7 +203,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className="flex items-center gap-3 text-gray-600 font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
+              className="flex items-center gap-3 navbar-link-text font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
               onClick={() => setIsMenuOpen(false)}
             >
               <span className="material-symbols-outlined text-xl">business_center</span>
@@ -213,7 +213,7 @@ export default function Navbar() {
             {!loading && !user && (
               <Link
                 href="/login"
-                className="mt-3 flex items-center justify-center gap-2 py-3.5 bg-[#D98C5F] hover:bg-[#C6794C] text-white rounded-2xl font-semibold shadow-lg shadow-[#D98C5F]/30 active:scale-[0.98] transition-all text-base"
+                className="mt-3 flex items-center justify-center gap-2 py-3.5 navbar-btn-primary-bg hover:navbar-btn-primary-hover-bg navbar-btn-primary-text rounded-2xl font-semibold shadow-lg shadow-[#D98C5F]/30 active:scale-[0.98] transition-all text-base"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span className="material-symbols-outlined text-xl">login</span>

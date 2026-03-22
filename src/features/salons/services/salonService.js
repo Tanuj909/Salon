@@ -41,7 +41,7 @@ export const fetchSalonById = async (id) => {
 };
 
 export const getAllSalonStaff = async (id) => {
-  const response = await apiClient.get(
+  const response = await publicApiClient.get(
     ENDPOINTS.SALON.STAFF(id)
   );
   return response.data.body.content;

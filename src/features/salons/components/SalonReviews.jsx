@@ -45,10 +45,10 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
 
     if (loading) {
         return (
-            <section className="py-12 bg-[#f7ede2]" id="reviews">
+            <section className="py-12" id="reviews">
                 <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-[#cd6133]/20 border-t-[#cd6133] rounded-full animate-spin mb-4" />
-                    <p className="text-[#5a3d2b] text-xs uppercase tracking-[0.3em] font-bold">Curating Experiences...</p>
+                    <div className="w-12 h-12 border-4 border-muted border-t-accent rounded-full animate-spin mb-4" />
+                    <p className="salon-list-title-text text-xs uppercase tracking-[0.3em] font-bold">Curating Experiences...</p>
                 </div>
             </section>
         );
@@ -56,9 +56,9 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
 
     if (error) {
         return (
-            <section className="py-12 bg-[#f7ede2]" id="reviews">
+            <section className="py-12" id="reviews">
                 <div className="max-w-7xl mx-auto px-8 text-center py-10">
-                    <p className="text-[#5a3d2b] text-sm italic">Unable to load reviews. Please try again later.</p>
+                    <p className="footer-link-text text-sm italic">Unable to load reviews. Please try again later.</p>
                 </div>
             </section>
         );
@@ -69,16 +69,16 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
             <div className="max-w-7xl mx-auto px-4 sm:px-8">
                 <Reveal>
                     <div className="text-center mb-12 sm:mb-24">
-                        <span className="block text-[9px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase text-[#cd6133] font-extrabold mb-4 sm:mb-6">Testimonials</span>
-                        <h2 className="text-[22px] sm:text-4xl md:text-6xl text-[#5a3d2b] font-bold leading-tight whitespace-nowrap tracking-tight">
+                        <span className="block text-[9px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase salon-list-title-accent font-extrabold mb-4 sm:mb-6">Testimonials</span>
+                        <h2 className="text-[22px] sm:text-4xl md:text-6xl salon-list-title-text font-bold leading-tight whitespace-nowrap tracking-tight">
                             What Our Clients <em className="italic font-light">Say</em>
                         </h2>
                     </div>
                 </Reveal>
 
                 {reviews.length === 0 ? (
-                    <div className="text-center py-16 sm:py-24 px-4 bg-white/30 rounded-[32px] sm:rounded-[40px] border border-[#cd6133]/10">
-                        <p className="text-[#5a3d2b]/60 italic text-lg sm:text-xl">No reviews yet. Be the first to share your experience.</p>
+                    <div className="text-center py-16 sm:py-24 px-4 bg-white/30 rounded-[32px] sm:rounded-[40px] border hero-filter-input-bg">
+                        <p className="footer-link-text opacity-70 italic text-lg sm:text-xl">No reviews yet. Be the first to share your experience.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
@@ -98,7 +98,7 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
                                                 <h4 className="font-bold text-[#5a3d2b] text-lg leading-tight">{review.customer?.fullName}</h4>
                                                 <div className="flex items-center gap-0.5">
                                                     {Array.from({ length: 5 }).map((_, starI) => (
-                                                        <svg key={starI} width={14} height={14} viewBox="0 0 24 24" fill={starI < review.rating ? "#cd6133" : "rgba(0,0,0,0.1)"}>
+                                                        <svg key={starI} width={14} height={14} viewBox="0 0 24 24" fill={starI < review.rating ? "currentColor" : "rgba(0,0,0,0.1)"} className={starI < review.rating ? "star-icon-filled" : "star-icon-empty"}>
                                                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                                         </svg>
                                                     ))}
@@ -116,11 +116,11 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
                                         </div>
                                     </div>
 
-                                    <p className="text-[#5a3d2b] text-sm sm:text-base leading-relaxed mb-6 italic flex-1 opacity-80 break-words line-clamp-4">
+                                    <p className="salon-list-title-text text-sm sm:text-base leading-relaxed mb-6 italic flex-1 opacity-80 break-words line-clamp-4">
                                         "{review.comment}"
                                     </p>
                                     
-                                    <div className="flex items-center justify-between pt-6 border-t border-[#cd6133]/5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[#5a3d2b]/40">
+                                    <div className="flex items-center justify-between pt-6 border-t hero-filter-input-bg text-[9px] sm:text-[10px] font-bold uppercase tracking-widest footer-link-text opacity-40">
                                         <span className="flex items-center gap-1.5">
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-green-600/60">
                                                 <polyline points="20 6 9 17 4 12" />
@@ -139,20 +139,20 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
                 {pagination.totalPages > 1 && (
                     <Reveal delay={300}>
                         <div className="flex justify-center items-center gap-4 sm:gap-10 mt-12 sm:mt-20">
-                            <button
+                             <button
                                 onClick={prevPage}
                                 disabled={pagination.isFirst}
-                                className="px-6 sm:px-10 py-3.5 sm:py-5 rounded-full border-2 border-[#cd6133]/20 text-[#cd6133] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all cursor-pointer whitespace-nowrap"
+                                className="px-6 sm:px-10 py-3.5 sm:py-5 rounded-full border-2 hero-filter-input-bg text-accent text-[9px] sm:text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:hero-filter-btn-bg hover:text-white transition-all cursor-pointer whitespace-nowrap"
                             >
                                 Previous
                             </button>
-                            <span className="text-[#5a3d2b] text-xs sm:text-sm font-bold tracking-widest whitespace-nowrap">
+                            <span className="salon-list-title-text text-xs sm:text-sm font-bold tracking-widest whitespace-nowrap">
                                 {pagination.currentPage + 1} / {pagination.totalPages}
                             </span>
                             <button
                                 onClick={nextPage}
                                 disabled={pagination.isLast}
-                                className="px-6 sm:px-10 py-3.5 sm:py-5 rounded-full border-2 border-[#cd6133]/20 text-[#cd6133] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:bg-[#cd6133] hover:text-[#fef9f3] transition-all cursor-pointer whitespace-nowrap"
+                                className="px-6 sm:px-10 py-3.5 sm:py-5 rounded-full border-2 hero-filter-input-bg text-accent text-[9px] sm:text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:hero-filter-btn-bg hover:text-white transition-all cursor-pointer whitespace-nowrap"
                             >
                                 Next
                             </button>

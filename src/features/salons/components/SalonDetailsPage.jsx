@@ -96,18 +96,18 @@ export default function SalonDetailsPage({ id }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F7F3EE] flex flex-col items-center justify-center gap-4 font-[Jost,sans-serif]">
-        <div className="w-12 h-12 border-4 border-[#C8A951]/20 border-t-[#C8A951] rounded-full animate-spin" />
-        <p className="text-[#7a7065] text-lg">Loading salon details...</p>
+      <div className="min-h-screen about-section-bg flex flex-col items-center justify-center gap-4 font-[Jost,sans-serif]">
+        <div className="w-12 h-12 border-4 border-muted/20 border-t-[#C8A951] rounded-full animate-spin" />
+        <p className="salon-card-text text-lg">Loading salon details...</p>
       </div>
     );
   }
 
   if (error || !salon) {
     return (
-      <div className="min-h-screen bg-[#F7F3EE] flex flex-col items-center justify-center gap-4 font-[Jost,sans-serif]">
-        <p className="text-[#7a7065] text-lg">{error || "Salon not found."}</p>
-        <Link href="/salons" className="text-[#C8A951] underline text-sm">
+      <div className="min-h-screen about-section-bg flex flex-col items-center justify-center gap-4 font-[Jost,sans-serif]">
+        <p className="salon-card-text text-lg">{error || "Salon not found."}</p>
+        <Link href="/salons" className="icon-secondary underline text-sm">
           ← Back to all salons
         </Link>
       </div>
@@ -122,7 +122,7 @@ export default function SalonDetailsPage({ id }) {
     .join(", ") || salon.address;
 
   return (
-    <div className="min-h-screen font-['Manrope',sans-serif] text-[#5a3d2b]">
+    <div className="min-h-screen font-['Manrope',sans-serif]">
       {/* ═══════════════════════════════════════════
           HERO SECTION
       ═══════════════════════════════════════════ */}
@@ -173,14 +173,14 @@ export default function SalonDetailsPage({ id }) {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     />
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#cd6133] -translate-y-1/2 translate-x-1/2 rotate-45 pointer-events-none group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute top-0 right-0 w-32 h-32 hero-filter-btn-bg -translate-y-1/2 translate-x-1/2 rotate-45 pointer-events-none group-hover:scale-110 transition-transform duration-500" />
                   </div>
-                ) : <div className="flex-1 rounded-[40px] bg-[#4b3621]/10 flex items-center justify-center min-h-[350px]"><span className="text-[#5a3d2b] font-bold tracking-widest uppercase text-xs">Map Unavailable</span></div>}
+                ) : <div className="flex-1 rounded-[40px] badge-new-bg flex items-center justify-center min-h-[350px]"><span className="salon-card-text font-bold tracking-widest uppercase text-xs">Map Unavailable</span></div>}
 
                 {/* Address Row Below Map */}
                 <div className="bg-[#4b3621] rounded-3xl sm:rounded-[32px] p-5 sm:p-8 text-[#fef9f3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shrink-0 mt-auto">
                   <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0">
-                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl bg-[#cd6133] flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl hero-filter-btn-bg flex items-center justify-center flex-shrink-0 shadow-lg">
                       <svg width={16} height={16} className="sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
                       </svg>
@@ -198,7 +198,7 @@ export default function SalonDetailsPage({ id }) {
                       href={`https://www.google.com/maps/dir/?api=1&destination=${salon.latitude},${salon.longitude}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 sm:px-6 py-2.5 rounded-full bg-[#cd6133] text-[#fef9f3] text-[9px] font-bold uppercase tracking-widest hover:bg-[#fef9f3] hover:text-[#4b3621] transition-all shadow-md group border-0 cursor-pointer text-center w-full sm:w-auto"
+                      className="px-4 sm:px-6 py-2.5 rounded-full hero-filter-btn-bg text-[#fef9f3] text-[9px] font-bold uppercase tracking-widest hover:bg-[#fef9f3] hover:text-[#4b3621] transition-all shadow-md group border-0 cursor-pointer text-center w-full sm:w-auto"
                     >
                       Navigate
                     </a>

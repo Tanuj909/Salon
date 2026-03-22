@@ -54,10 +54,10 @@ function Reveal({ children, delay = 0, className = "" }) {
 
 function Badge({ children, variant = "gold" }) {
     const variants = {
-        gold: "bg-[#cd6133] text-[#fef9f3]",
-        outline: "bg-transparent border border-[#cd6133] text-[#cd6133]",
+        gold: "badge-verified-bg badge-verified-text",
+        outline: "bg-transparent border salon-card-btn-border salon-card-btn-text",
         glass: "backdrop-blur-md bg-white/10 text-white border border-white/20",
-        plum: "bg-[#4b3621] text-[#fef9f3]",
+        plum: "footer-bg text-[#fef9f3]",
     };
 
     return (
@@ -84,7 +84,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
             <div ref={heroRef} className="absolute inset-0">
                 {salonImg && <img src={salonImg} alt={salon.name} className="w-full h-full object-cover" />}
                 {/* More prominent dark plum gradient overlay for better navbar contrast */}
-                <div className="absolute inset-0 bg-gradient-to-b from-[#4b3621]/95 via-[#4b3621]/80 to-[#4b3621]/95" />
+                <div className="absolute inset-0 salon-detail-hero-overlay" />
             </div>
 
             <div className="relative z-10 flex items-center px-4 sm:px-10 md:px-16 lg:px-24">
@@ -118,9 +118,9 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-10">
                                 {/* Premium Rating */}
                                 <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-1 text-[#C8A951]">
+                                    <div className="flex items-center gap-1 star-icon-filled">
                                         {Array.from({ length: 5 }).map((_, i) => (
-                                            <svg key={i} width={14} height={14} className="md:w-[16px] md:h-[16px]" viewBox="0 0 24 24" fill={i < Math.round(salon.averageRating || 0) ? "#cd6133" : "rgba(255,255,255,0.2)"}>
+                                            <svg key={i} width={14} height={14} className="md:w-[16px] md:h-[16px]" viewBox="0 0 24 24" fill={i < Math.round(salon.averageRating || 0) ? "currentColor" : "rgba(255,255,255,0.2)"}>
                                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                             </svg>
                                         ))}
@@ -154,7 +154,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-4 mt-2 md:mt-0">
                                     {salon.categories.map((cat, i) => (
                                         <div key={cat.id || i} className="flex items-center gap-1 sm:gap-1.5 md:gap-2 bg-black/20 backdrop-blur-md px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.2 md:py-1.5 rounded-full border border-white/10">
-                                            <span className="w-1 h-1 rounded-full bg-[#cd6133]" />
+                                            <span className="w-1 h-1 rounded-full hero-filter-btn-bg" />
                                             <span className="text-[7.5px] sm:text-[8.5px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-[#fef9f3]">{cat.name}</span>
                                         </div>
                                     ))}

@@ -233,26 +233,26 @@ const HeroSection = () => {
         </div>
 
         {/* Dynamic Overlays */}
-        <div className="absolute inset-0 z-[2] bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+        <div className="absolute inset-0 z-[2] hero-bg-overlay" />
         <div className="absolute inset-0 z-[4] opacity-[0.03] pointer-events-none hero-grain" />
 
         {/* Content Container - Shifted downward slightly to clear navbar */}
         <div className="relative z-[10] w-full max-w-7xl mx-auto flex flex-col items-center text-center mt-6 md:mt-16 lg:mt-8">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5 mb-6 animate-fade-up [animation-delay:100ms]">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#B76E4B] animate-pulse" />
-            <span className="text-[10px] md:text-xs tracking-[0.15em] uppercase text-white font-medium text-shadow">
+          <div className="inline-flex items-center gap-2 hero-badge-bg border rounded-full px-4 py-1.5 mb-6 animate-fade-up [animation-delay:100ms]">
+            <div className="w-1.5 h-1.5 rounded-full hero-badge-dot animate-pulse" />
+            <span className="text-[10px] md:text-xs tracking-[0.15em] uppercase hero-badge-text font-medium text-shadow">
               Premium Salon Experiences
             </span>
           </div>
 
           {/* Main Heading - Refined for single line */}
-          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(1.6rem,8vw,4.5rem)] text-white font-light leading-[1.1] tracking-tight mb-5 animate-fade-up [animation-delay:300ms] text-shadow-lg px-2 min-h-[1.2em]">
+          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(1.6rem,8vw,4.5rem)] hero-title-text font-light leading-[1.1] tracking-tight mb-5 animate-fade-up [animation-delay:300ms] text-shadow-lg px-2 min-h-[1.2em]">
             <span className={`inline-block transition-opacity duration-500 ${headingFade ? 'opacity-100' : 'opacity-0'}`}>
               {headings[headingIndex].split(' ').map((word, i) => (
                 <React.Fragment key={i}>
                   {word === 'Luxury' ? (
-                    <span className="italic text-[#B76E4B] font-normal">{word} </span>
+                    <span className="italic hero-title-accent font-normal">{word} </span>
                   ) : (
                     <>{word} </>
                   )}
@@ -268,13 +268,13 @@ const HeroSection = () => {
 
           {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
           <div className="w-full max-w-5xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
-            <div className="bg-white/95 backdrop-blur-xl p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
+            <div className="hero-filter-bar-bg p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
 
               {/* Category Select */}
-              <div className="w-full lg:w-[18%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
-                <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2">category</span>
+              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+                <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">category</span>
                 <select 
-                  className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer"
+                  className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 >
@@ -291,10 +291,10 @@ const HeroSection = () => {
               </div>
 
               {/* Service Select */}
-              <div className="w-full lg:w-[18%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
-                <span className="material-symbols-outlined text-[#B76E4B] text-lg mr-2">content_cut</span>
+              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+                <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">content_cut</span>
                 <select 
-                  className="w-full bg-transparent text-[#4A3B2F] text-sm font-medium outline-none appearance-none cursor-pointer"
+                  className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
                   value={selectedService}
                   onChange={(e) => setSelectedService(e.target.value)}
                 >
@@ -313,14 +313,14 @@ const HeroSection = () => {
               {/* Current Location (Detect) */}
               <div 
                 onClick={refreshLocation}
-                className="w-full lg:w-[22%] relative flex items-center bg-gray-100 rounded-full border border-gray-200 px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
+                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
               >
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 text-[#B76E4B] group-hover:bg-[#B76E4B] group-hover:text-white transition-all">
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
                   <span className={`material-symbols-outlined text-lg ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
                 </div>
                 <div className="flex flex-col text-left overflow-hidden">
                   <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Automatic</span>
-                  <span className="text-xs lg:text-sm font-medium text-[#4A3B2F] truncate">
+                  <span className="text-xs lg:text-sm font-medium hero-filter-input-text truncate">
                     {locationLoading ? "Detecting..." : (location?.address || "Current Location")}
                   </span>
                 </div>
@@ -329,14 +329,14 @@ const HeroSection = () => {
               {/* Select Manually (Map) */}
               <div 
                 onClick={() => setIsMapModalOpen(true)}
-                className="w-full lg:w-[22%] relative flex items-center bg-gray-50 rounded-full border border-gray-100 px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
+                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
               >
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 text-[#B76E4B] group-hover:bg-[#B76E4B] group-hover:text-white transition-all">
+                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
                   <span className="material-symbols-outlined text-lg">map</span>
                 </div>
                 <div className="flex flex-col text-left">
                   <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Manual</span>
-                  <span className="text-xs lg:text-sm font-medium text-[#4A3B2F]">Choose Manually</span>
+                  <span className="text-xs lg:text-sm font-medium hero-filter-input-text">Choose Manually</span>
                 </div>
               </div>
 
@@ -346,7 +346,7 @@ const HeroSection = () => {
                   ...(selectedCategory && { categoryId: selectedCategory }),
                   ...(selectedService && { serviceName: selectedService }),
                 }).toString()}`}
-                className="w-full lg:w-[20%] py-3 lg:py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
+                className="w-full lg:w-[20%] py-3 lg:py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-lg">search</span>
                 <span>Search</span>
@@ -356,12 +356,12 @@ const HeroSection = () => {
             {/* Service Search Bar - Below Filter Bar */}
             <div className="mt-4 md:mt-6 flex justify-center w-full relative z-[100]">
               <div className="w-full max-w-xl relative" ref={searchRef}>
-                <div className="w-full bg-white/95 backdrop-blur-xl p-1.5 md:p-2 rounded-full md:rounded-full shadow-2xl border border-white/20 flex items-center gap-2 group transition-all hover:bg-white relative z-[110]">
+                <div className="w-full hero-filter-bar-bg p-1.5 md:p-2 rounded-full md:rounded-full shadow-2xl border border-white/20 flex items-center gap-2 group transition-all hover:bg-white relative z-[110]">
                   <div className="flex-1 relative flex items-center pl-3">
-                    <span className="material-symbols-outlined text-[#B76E4B] text-xl mr-3">content_cut</span>
+                    <span className="material-symbols-outlined hero-filter-icon text-xl mr-3">content_cut</span>
                     <input
                       type="text"
-                      className={`w-full bg-transparent text-[#4A3B2F] text-sm md:text-base font-medium outline-none placeholder:text-[#4A3B2F]/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
+                      className={`w-full bg-transparent hero-filter-input-text text-sm md:text-base font-medium outline-none placeholder:text-[#4A3B2F]/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
                       placeholder={`${servicePlaceholders[placeholderIndex]}`}
                       value={serviceSearch}
                       onChange={handleSearchChange}
@@ -379,7 +379,7 @@ const HeroSection = () => {
                   </div>
                   <button
                     onClick={handleSearchSubmit}
-                    className="px-3 py-2.5 bg-[#B76E4B] hover:bg-[#9E5A3A] text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
+                    className="px-3 py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
                   >
                     <span className="material-symbols-outlined text-lg">search</span>
                     <span className="hidden sm:inline">Search Service</span>
@@ -415,7 +415,7 @@ const HeroSection = () => {
           <div className="mt-8 flex flex-wrap justify-center gap-4 animate-fade-up [animation-delay:900ms]">
             <Link
               href="/salons"
-              className="px-8 py-4 bg-[#B76E4B] hover:bg-[#9E5A3A] border-2 border-white/30 backdrop-blur-md rounded-full text-white font-bold tracking-widest uppercase text-[10px] transition-all flex items-center gap-2 group"
+              className="px-8 py-4 hero-filter-btn-bg hover:hero-filter-btn-hover-bg border-2 border-white/30 backdrop-blur-md rounded-full text-white font-bold tracking-widest uppercase text-[10px] transition-all flex items-center gap-2 group"
             >
               <span>Explore All</span>
               <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>

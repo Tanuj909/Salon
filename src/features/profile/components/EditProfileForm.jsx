@@ -113,12 +113,12 @@ const EditProfileForm = ({ user: initialUser }) => {
                     {/* Header Section */}
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-[#1C1C1C] rounded-xl flex items-center justify-center shadow-lg">
-                                <User className="w-6 h-6 text-[#C8A951]" />
+                            <div className="w-12 h-12 footer-bg rounded-xl flex items-center justify-center shadow-lg">
+                                <User className="w-6 h-6 salon-list-title-accent" />
                             </div>
                             <div>
-                                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Profile Settings</h1>
-                                <p className="text-sm text-gray-500">Manage your personal identity and salon preferences.</p>
+                                <h1 className="text-3xl font-bold footer-main-text tracking-tight">Profile Settings</h1>
+                                <p className="text-sm footer-link-text opacity-60">Manage your personal identity and salon preferences.</p>
                             </div>
                         </div>
                     </div>
@@ -157,35 +157,35 @@ const EditProfileForm = ({ user: initialUser }) => {
                                         <Camera size={20} />
                                     </button>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-900">{formData.fullName || "Your Name"}</h3>
-                                <p className="text-sm text-gray-500 mb-6">{fetchedProfile?.user?.email || "email@example.com"}</p>
+                                <h3 className="text-xl font-bold footer-main-text">{formData.fullName || "Your Name"}</h3>
+                                <p className="text-sm footer-link-text opacity-60 mb-6">{fetchedProfile?.user?.email || "email@example.com"}</p>
                                 
-                                <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t border-gray-50">
+                                <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t hero-filter-input-bg">
                                     <div className="p-4 bg-gray-50 rounded-2xl text-center">
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Status</p>
-                                        <p className="text-sm font-bold text-gray-900">{fetchedProfile?.membershipLevel || "BRONZE"}</p>
+                                        <p className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest mb-1">Status</p>
+                                        <p className="text-sm font-bold footer-main-text">{fetchedProfile?.membershipLevel || "BRONZE"}</p>
                                     </div>
                                     <div className="p-4 bg-gray-50 rounded-2xl text-center">
-                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Points</p>
-                                        <p className="text-sm font-bold text-gray-900">{fetchedProfile?.loyaltyPoints || 0}</p>
+                                        <p className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest mb-1">Points</p>
+                                        <p className="text-sm font-bold footer-main-text">{fetchedProfile?.loyaltyPoints || 0}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-[#1C1C1C] p-8 rounded-[2.5rem] text-white relative overflow-hidden">
+                            <div className="footer-bg p-8 rounded-[2.5rem] text-white relative overflow-hidden">
                                 <div className="relative z-10">
-                                    <h4 className="text-[10px] font-bold text-[#C8A951] uppercase tracking-[0.2em] mb-4">Membership Card</h4>
+                                    <h4 className="text-[10px] font-bold salon-list-title-accent uppercase tracking-[0.2em] mb-4">Membership Card</h4>
                                     <div className="flex justify-between items-end">
                                         <div>
                                             <p className="text-2xl font-bold mb-1">{formData.fullName || "VALUED GUEST"}</p>
-                                            <p className="text-xs text-gray-400">Member since 2024</p>
+                                            <p className="text-xs opacity-60">Member since 2024</p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-xs text-[#C8A951] font-bold italic">FAST BOOKING</p>
+                                            <p className="text-xs salon-list-title-accent font-bold italic">FAST BOOKING</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="absolute top-[-20%] right-[-10%] w-32 h-32 bg-[#C8A951]/10 rounded-full blur-3xl"></div>
+                                <div className="absolute top-[-20%] right-[-10%] w-32 h-32 salon-list-title-accent/10 rounded-full blur-3xl"></div>
                             </div>
                         </div>
 
@@ -195,63 +195,63 @@ const EditProfileForm = ({ user: initialUser }) => {
                             <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
                                 <div className="flex items-center gap-3 mb-8">
                                     <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
-                                        <User className="w-5 h-5 text-[#C8A951]" />
+                                        <User className="w-5 h-5 salon-list-title-accent" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900">Personal Information</h3>
+                                    <h3 className="text-xl font-bold footer-main-text">Personal Information</h3>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Full Name</label>
                                         <div className="relative group">
-                                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 footer-link-text" />
                                             <input
                                                 type="text"
                                                 name="fullName"
                                                 value={formData.fullName}
                                                 onChange={handleChange}
-                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold"
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold"
                                                 placeholder="Enter full name"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Phone Number</label>
                                         <div className="relative group">
-                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 footer-link-text" />
                                             <input
                                                 type="tel"
                                                 name="phoneNumber"
                                                 value={formData.phoneNumber}
                                                 onChange={handleChange}
-                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold"
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold"
                                                 placeholder="+91 00000 00000"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Date of Birth</label>
+                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Date of Birth</label>
                                         <div className="relative group">
-                                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 footer-link-text" />
                                             <input
                                                 type="date"
                                                 name="dateOfBirth"
                                                 value={formData.dateOfBirth}
                                                 onChange={handleChange}
-                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold"
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Gender</label>
+                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Gender</label>
                                         <select
                                             name="gender"
                                             value={formData.gender}
                                             onChange={handleChange}
-                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold appearance-none cursor-pointer"
+                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold appearance-none cursor-pointer"
                                         >
                                             <option value="">Select Gender</option>
                                             <option value="MALE">Male</option>
@@ -265,12 +265,12 @@ const EditProfileForm = ({ user: initialUser }) => {
 
                             {/* Address & Preferences Grid */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+                                <div className="bg-white p-8 rounded-[2.5rem] border hero-filter-input-bg shadow-sm">
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
-                                            <MapPinned className="w-5 h-5 text-[#C8A951]" />
+                                            <MapPinned className="w-5 h-5 salon-list-title-accent" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-900">Address</h3>
+                                        <h3 className="text-xl font-bold footer-main-text">Address</h3>
                                     </div>
                                     <div className="space-y-4">
                                         <input
@@ -278,7 +278,7 @@ const EditProfileForm = ({ user: initialUser }) => {
                                             name="defaultAddress.addressLine1"
                                             value={formData.defaultAddress.addressLine1}
                                             onChange={handleChange}
-                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold text-sm"
+                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold text-sm"
                                             placeholder="Street Address"
                                         />
                                         <div className="grid grid-cols-2 gap-4">
@@ -302,19 +302,19 @@ const EditProfileForm = ({ user: initialUser }) => {
                                     </div>
                                 </div>
 
-                                <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm">
+                                <div className="bg-white p-8 rounded-[2.5rem] border hero-filter-input-bg shadow-sm">
                                     <div className="flex items-center gap-3 mb-6">
                                         <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
-                                            <Info className="w-5 h-5 text-[#C8A951]" />
+                                            <Info className="w-5 h-5 salon-list-title-accent" />
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-900">Style Notes</h3>
+                                        <h3 className="text-xl font-bold footer-main-text">Style Notes</h3>
                                     </div>
                                     <textarea
                                         name="preferences"
                                         value={formData.preferences}
                                         onChange={handleChange}
                                         rows={4}
-                                        className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:border-[#C8A951] outline-none transition-all text-gray-900 font-semibold resize-none text-sm"
+                                        className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold resize-none text-sm"
                                         placeholder="Allergies or preferences..."
                                     />
                                 </div>
@@ -339,7 +339,7 @@ const EditProfileForm = ({ user: initialUser }) => {
                                 <button
                                     type="submit"
                                     disabled={updating}
-                                    className="w-full sm:w-auto min-w-[240px] px-10 py-5 bg-[#1C1C1C] text-white font-bold rounded-2xl shadow-xl shadow-gray-100 hover:bg-[#C8A951] hover:text-[#1C1C1C] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                                    className="w-full sm:w-auto min-w-[240px] px-10 py-5 footer-bg text-white font-bold rounded-2xl shadow-xl hover:hero-filter-btn-bg active:scale-[0.98] transition-all flex items-center justify-center gap-3"
                                 >
                                     {updating ? <Loader2 size={20} className="animate-spin" /> : <Save size={20} />}
                                     {updating ? "Saving Changes..." : "Save Changes"}
@@ -352,8 +352,8 @@ const EditProfileForm = ({ user: initialUser }) => {
 
             {/* Success Toast */}
             {showToast && (
-                <div className="fixed bottom-10 right-10 z-[100] px-8 py-5 bg-[#1C1C1C] text-white shadow-2xl rounded-[1.5rem] flex items-center gap-4 animate-in fade-in slide-in-from-right-8 duration-500">
-                    <div className="w-10 h-10 bg-[#C8A951] text-[#1C1C1C] rounded-full flex items-center justify-center shadow-lg">
+                <div className="fixed bottom-10 right-10 z-[100] px-8 py-5 footer-bg text-white shadow-2xl rounded-[1.5rem] flex items-center gap-4 animate-in fade-in slide-in-from-right-8 duration-500">
+                    <div className="w-10 h-10 hero-filter-btn-bg text-white rounded-full flex items-center justify-center shadow-lg">
                         <CheckCircle size={24} />
                     </div>
                     <div>

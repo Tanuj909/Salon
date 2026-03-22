@@ -44,23 +44,23 @@ const ProfileDetails = () => {
     ];
 
     return (
-        <div className="bg-white rounded-3xl p-8 shadow-md border border-terracotta/5 overflow-hidden relative">
+        <div className="salon-card-bg rounded-3xl p-8 shadow-md border hero-filter-input-bg overflow-hidden relative">
             {/* Subtle Background Pattern */}
             <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/paper-fibers.png')] pointer-events-none" />
             
-            <h3 className="text-2xl font-bold text-earthy-brown mb-8 relative z-10">Account Settings</h3>
+            <h3 className="text-2xl font-bold footer-main-text mb-8 relative z-10">Account Settings</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {settings.map((item, index) => (
                     <div 
                         key={index} 
-                        className="p-6 rounded-2xl bg-beige/30 hover:bg-beige/50 transition-all duration-300 cursor-pointer flex items-center gap-4 border border-terracotta/10 hover:border-terracotta/30 hover:shadow-md group"
+                        className="p-6 rounded-2xl bg-beige/30 hover:bg-beige/50 transition-all duration-300 cursor-pointer flex items-center gap-4 border hero-filter-input-bg hover:salon-list-title-accent/[0.2] hover:shadow-md group"
                     >
-                        <div className="p-3 bg-white rounded-xl text-terracotta shadow-sm group-hover:shadow-md transition-shadow transform group-hover:scale-110 duration-300">
+                        <div className="p-3 bg-white rounded-xl salon-list-title-accent shadow-sm group-hover:shadow-md transition-shadow transform group-hover:scale-110 duration-300">
                             {item.icon}
                         </div>
                         <div>
-                            <h4 className="font-bold text-earthy-brown text-base group-hover:text-terracotta transition-colors">{item.title}</h4>
-                            <p className="text-sm text-earthy-brown/70">{item.desc}</p>
+                            <h4 className="font-bold footer-main-text text-base group-hover:salon-list-title-accent transition-colors">{item.title}</h4>
+                            <p className="text-sm footer-link-text opacity-70">{item.desc}</p>
                         </div>
                     </div>
                 ))}

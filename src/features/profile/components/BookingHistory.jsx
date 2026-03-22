@@ -50,42 +50,42 @@ const BookingHistory = ({ businessId }) => {
     };
 
     const getStatusStyle = (status) => {
-        if (!status) return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
+        if (!status) return "bg-muted text-muted border-muted";
         switch (status.toUpperCase()) {
             case 'PENDING':
             case 'CONFIRMED':
             case 'BROADCASTED':
-                return "bg-[#7a286010] text-[#7a2860] border-[#7a286020]";
+                return "bg-accent/10 text-accent border-accent/20";
             case 'COMPLETED':
-                return "bg-[#10b98110] text-[#10b981] border-[#10b98120]";
+                return "bg-success/10 text-success border-success/20";
             case 'CANCELLED_BY_CUSTOMER':
             case 'CANCELLED_BY_SALON':
             case 'CANCELLED':
             case 'REJECTED':
-                return "bg-[#ef444410] text-[#ef4444] border-[#ef444420]";
+                return "bg-danger/10 text-danger border-danger/20";
             case 'NO_SHOW':
-                return "bg-[#f9731610] text-[#f97316] border-[#f9731620]";
+                return "bg-warning/10 text-warning border-warning/20";
             case 'CHECKED_IN':
             case 'IN_PROGRESS':
-                return "bg-[#3b82f610] text-[#3b82f6] border-[#3b82f620]";
+                return "bg-info/10 text-info border-info/20";
             default:
-                return "bg-[#3c143205] text-[#3c143260] border-[#3c14320a]";
+                return "bg-muted text-muted border-muted";
         }
     };
 
     const getPaymentStatusStyle = (status) => {
-        if (!status) return "text-[#3c143260]";
+        if (!status) return "text-muted";
         switch (status.toUpperCase()) {
             case 'PAID':
-                return "text-[#10b981]";
+                return "text-success";
             case 'PENDING':
-                return "text-[#f59e0b]";
+                return "text-warning";
             case 'REFUNDED':
-                return "text-[#3b82f6]";
+                return "text-info";
             case 'FAILED':
-                return "text-[#ef4444]";
+                return "text-danger";
             default:
-                return "text-[#3c143260]";
+                return "text-muted";
         }
     };
 
@@ -138,11 +138,11 @@ const BookingHistory = ({ businessId }) => {
         return (
             <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
+                    <h2 className="text-2xl font-bold footer-main-text font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
                 <div className="flex items-center justify-center py-16">
-                    <Loader2 className="w-8 h-8 text-[#7a2860] animate-spin" />
-                    <span className="ml-3 text-[#3c143280] font-medium">Loading bookings...</span>
+                    <Loader2 className="w-8 h-8 salon-list-title-accent animate-spin" />
+                    <span className="ml-3 footer-link-text opacity-50 font-medium">Loading bookings...</span>
                 </div>
             </div>
         );
@@ -153,7 +153,7 @@ const BookingHistory = ({ businessId }) => {
         return (
             <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
+                    <h2 className="text-2xl font-bold footer-main-text font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
                 <div className="bg-red-50 border border-red-100 rounded-2xl p-8 text-center">
                     <AlertCircle className="w-10 h-10 text-primary mx-auto mb-3" />
@@ -163,13 +163,13 @@ const BookingHistory = ({ businessId }) => {
             </div>
         );
     }
-
+    
     // Empty state
     if (!bookings || bookings.length === 0) {
         return (
             <div className="px-4 sm:px-8 mt-12 sm:mt-16">
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
+                    <h2 className="text-2xl font-bold footer-main-text font-[Cormorant_Garamond]">Recent Appointments</h2>
                 </div>
                 <div className="bg-white p-12 rounded-xl border border-dashed border-border text-center">
                     <div className="w-16 h-16 bg-background-light rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
@@ -186,8 +186,8 @@ const BookingHistory = ({ businessId }) => {
         <div className="px-3 sm:px-8 mt-10 sm:mt-16">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                 <div>
-                    <h2 className="text-xl sm:text-2xl font-bold text-[#1e0a18] font-[Cormorant_Garamond]">Recent Appointments</h2>
-                    <p className="text-[#3c143250] text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1">
+                    <h2 className="text-xl sm:text-2xl font-bold footer-main-text font-[Cormorant_Garamond]">Recent Appointments</h2>
+                    <p className="footer-link-text opacity-50 text-[10px] sm:text-xs font-bold uppercase tracking-widest mt-1">
                         {pagination.totalElements} {pagination.totalElements === 1 ? 'Booking' : 'Bookings'} Found
                     </p>
                 </div>
@@ -196,17 +196,17 @@ const BookingHistory = ({ businessId }) => {
                         <button
                             onClick={prevPage}
                             disabled={pagination.isFirst}
-                            className="w-9 h-9 rounded-xl border border-[#3c143210] flex items-center justify-center text-[#3c1432] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#7a286008] hover:border-[#7a286020] transition-all"
+                            className="w-9 h-9 rounded-xl border hero-filter-input-bg flex items-center justify-center footer-main-text disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/[0.05] transition-all"
                         >
                             <ChevronLeft size={16} />
                         </button>
-                        <span className="text-[#3c143260] text-xs font-bold tracking-wider">
+                        <span className="footer-link-text opacity-60 text-xs font-bold tracking-wider">
                             {pagination.currentPage + 1} / {pagination.totalPages}
                         </span>
                         <button
                             onClick={nextPage}
                             disabled={pagination.isLast}
-                            className="w-9 h-9 rounded-xl border border-[#3c143210] flex items-center justify-center text-[#3c1432] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#7a286008] hover:border-[#7a286020] transition-all"
+                            className="w-9 h-9 rounded-xl border hero-filter-input-bg flex items-center justify-center footer-main-text disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/[0.05] transition-all"
                         >
                             <ChevronRight size={16} />
                         </button>
@@ -219,16 +219,16 @@ const BookingHistory = ({ businessId }) => {
                 {bookings.map((booking) => (
                     <div
                         key={booking.id}
-                        className="bg-white p-4 sm:p-6 rounded-2xl border border-[#3c143208] shadow-sm hover:shadow-md transition-all group"
+                        className="bg-white p-4 sm:p-6 rounded-2xl border hero-filter-input-bg shadow-sm hover:shadow-md transition-all group"
                     >
                         {/* Top Row: Booking Number + Status */}
                         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                             <div className="flex items-center gap-2 sm:gap-3">
-                                <span className="text-[#3c143230] text-[0.6rem] sm:text-[0.65rem] font-black uppercase tracking-widest">
+                                <span className="footer-link-text opacity-30 text-[0.6rem] sm:text-[0.65rem] font-black uppercase tracking-widest">
                                     {booking.bookingNumber}
                                 </span>
                                 {booking.paymentMethod && (
-                                    <span className="flex items-center gap-1 text-[#3c143230] text-[0.55rem] sm:text-[0.6rem] font-bold uppercase tracking-wider">
+                                    <span className="flex items-center gap-1 footer-link-text opacity-30 text-[0.55rem] sm:text-[0.6rem] font-bold uppercase tracking-wider">
                                         <CreditCard size={10} />
                                         {booking.paymentMethod}
                                     </span>
@@ -243,24 +243,24 @@ const BookingHistory = ({ businessId }) => {
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
                             {/* Left: Service + Date Info */}
                             <div className="flex items-start gap-5">
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center text-[#7a2860]/40 border border-[#3c143205] shrink-0">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#fdfaf8] flex items-center justify-center salon-list-title-accent opacity-40 border hero-filter-input-bg shrink-0">
                                     <Scissors size={20} className="sm:w-[22px] sm:h-[22px]" strokeWidth={1.5} />
                                 </div>
                                 <div className="min-w-0">
-                                    <h4 className="font-bold text-base sm:text-lg text-[#1e0a18] group-hover:text-[#7a2860] transition-colors font-[Cormorant_Garamond] leading-tight">
+                                    <h4 className="font-bold text-base sm:text-lg footer-main-text group-hover:salon-list-title-accent transition-colors font-[Cormorant_Garamond] leading-tight">
                                         {getServiceNames(booking.services)}
                                     </h4>
                                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-2">
-                                        <span className="flex items-center gap-1.5 text-[#3c143260] text-[10px] sm:text-xs font-medium">
+                                        <span className="flex items-center gap-1.5 footer-link-text opacity-60 text-[10px] sm:text-xs font-medium">
                                             <Calendar size={12} />
                                             {formatDate(booking.bookingDate)}
                                         </span>
-                                        <span className="flex items-center gap-1.5 text-[#3c143240] text-[10px] sm:text-xs font-medium">
+                                        <span className="flex items-center gap-1.5 footer-link-text opacity-40 text-[10px] sm:text-xs font-medium">
                                             <Clock size={12} />
                                             {formatTime(booking.startTime)} — {formatTime(booking.endTime)}
                                         </span>
                                         {getTotalDuration(booking.services) && (
-                                            <span className="text-[#3c143230] text-[10px] sm:text-xs font-medium">
+                                            <span className="footer-link-text opacity-30 text-[10px] sm:text-xs font-medium">
                                                 ({getTotalDuration(booking.services)})
                                             </span>
                                         )}
@@ -269,16 +269,16 @@ const BookingHistory = ({ businessId }) => {
                                     {/* Staff & Customer Info */}
                                     <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-2.5">
                                         {booking.staff && (
-                                            <span className="flex items-center gap-1.5 text-[#3c143250] text-[0.7rem] font-medium">
+                                            <span className="flex items-center gap-1.5 footer-link-text opacity-50 text-[0.7rem] font-medium">
                                                 <User size={11} />
                                                 {booking.staff.fullName}
                                                 {booking.staff.designation && (
-                                                    <span className="text-[#3c143225]">• {booking.staff.designation}</span>
+                                                    <span className="footer-link-text opacity-25">• {booking.staff.designation}</span>
                                                 )}
                                             </span>
                                         )}
                                         {booking.customer && (
-                                            <span className="flex items-center gap-1.5 text-[#3c143250] text-[0.7rem] font-medium">
+                                            <span className="flex items-center gap-1.5 footer-link-text opacity-50 text-[0.7rem] font-medium">
                                                 <User size={11} />
                                                 {booking.customer.fullName}
                                             </span>
@@ -287,7 +287,7 @@ const BookingHistory = ({ businessId }) => {
 
                                     {/* Customer Notes */}
                                     {booking.customerNotes && (
-                                        <p className="mt-2 text-[#3c143240] text-xs italic border-l-2 border-[#7a286015] pl-3">
+                                        <p className="mt-2 text-muted text-xs italic border-l-2 border-accent rounded-sm pl-3">
                                             "{booking.customerNotes}"
                                         </p>
                                     )}
@@ -295,26 +295,26 @@ const BookingHistory = ({ businessId }) => {
                             </div>
 
                             {/* Right: Pricing & Actions */}
-                            <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-3 md:min-w-[180px] pt-4 md:pt-0 border-t md:border-t-0 border-[#3c143208]">
+                            <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-4 md:gap-3 md:min-w-[180px] pt-4 md:pt-0 border-t md:border-t-0 border-muted">
                                 <div className="text-left md:text-right">
-                                    <p className="text-[#3c143230] text-[0.5rem] sm:text-[0.55rem] uppercase font-black tracking-widest mb-0.5">Amount</p>
+                                    <p className="footer-link-text opacity-30 text-[0.5rem] sm:text-[0.55rem] uppercase font-black tracking-widest mb-0.5">Amount</p>
                                     <div className="flex flex-col md:items-end">
                                         {booking.discountAmount > 0 ? (
                                             <>
                                                 <div className="flex items-center gap-2 md:flex-row-reverse">
-                                                    <p className="text-[#3c143230] text-[10px] sm:text-xs line-through">
+                                                    <p className="footer-link-text opacity-30 text-[10px] sm:text-xs line-through">
                                                         ₹{booking.totalAmount?.toFixed(2)}
                                                     </p>
-                                                    <p className="font-bold text-base sm:text-lg text-[#1e0a18] tracking-tight">
+                                                    <p className="font-bold text-base sm:text-lg footer-main-text tracking-tight">
                                                         ₹{booking.finalAmount?.toFixed(2)}
                                                     </p>
                                                 </div>
-                                                <p className="text-[#10b981] text-[0.55rem] sm:text-[0.6rem] font-bold">
+                                                <p className="text-success text-[0.55rem] sm:text-[0.6rem] font-bold">
                                                     −₹{booking.discountAmount?.toFixed(2)} off
                                                 </p>
                                             </>
                                         ) : (
-                                            <p className="font-bold text-base sm:text-lg text-[#1e0a18] tracking-tight">
+                                            <p className="font-bold text-base sm:text-lg footer-main-text tracking-tight">
                                                 ₹{booking.finalAmount?.toFixed(2) || booking.totalAmount?.toFixed(2) || 'N/A'}
                                             </p>
                                         )}
@@ -329,7 +329,7 @@ const BookingHistory = ({ businessId }) => {
                                         <button
                                             onClick={() => handleCancel(booking.id)}
                                             disabled={isCanceling}
-                                            className="px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg border border-[#ef444420] text-[#ef4444] text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#ef444410] transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-center"
+                                            className="px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg border border-danger/20 text-danger text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-wider hover:bg-danger/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full text-center"
                                         >
                                             Cancel
                                         </button>
@@ -338,7 +338,7 @@ const BookingHistory = ({ businessId }) => {
                                     {booking.status?.toUpperCase() === 'COMPLETED' && (
                                         <button
                                             onClick={() => handleOpenReviewModal(booking)}
-                                            className="px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg border border-[#10b98120] text-[#10b981] text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-wider hover:bg-[#10b98110] transition-colors w-full text-center flex items-center justify-center gap-1.5"
+                                            className="px-3 sm:px-4 py-2 sm:py-1.5 rounded-lg border border-success/20 text-success text-[0.6rem] sm:text-[0.65rem] font-bold uppercase tracking-wider hover:bg-success/10 transition-colors w-full text-center flex items-center justify-center gap-1.5"
                                         >
                                             <Star size={10} className="sm:w-3 sm:h-3" />
                                             <span>Review</span>
@@ -357,17 +357,17 @@ const BookingHistory = ({ businessId }) => {
                     <button
                         onClick={prevPage}
                         disabled={pagination.isFirst}
-                        className="px-4 py-2 rounded-xl border border-[#3c143210] text-xs font-bold uppercase tracking-wider text-[#3c1432] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#7a286008] transition-all"
+                        className="px-4 py-2 rounded-xl border hero-filter-input-bg text-xs font-bold uppercase tracking-wider footer-main-text disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/[0.05] transition-all"
                     >
                         ← Previous
                     </button>
-                    <span className="text-[#3c143250] text-xs font-bold">
+                    <span className="footer-link-text opacity-50 text-xs font-bold">
                         Page {pagination.currentPage + 1} of {pagination.totalPages}
                     </span>
                     <button
                         onClick={nextPage}
                         disabled={pagination.isLast}
-                        className="px-4 py-2 rounded-xl border border-[#3c143210] text-xs font-bold uppercase tracking-wider text-[#3c1432] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#7a286008] transition-all"
+                        className="px-4 py-2 rounded-xl border hero-filter-input-bg text-xs font-bold uppercase tracking-wider footer-main-text disabled:opacity-30 disabled:cursor-not-allowed hover:bg-black/[0.05] transition-all"
                     >
                         Next →
                     </button>
@@ -380,7 +380,7 @@ const BookingHistory = ({ businessId }) => {
                     <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
                         <button
                             onClick={() => setShowReviewModal(false)}
-                            className="absolute top-6 right-6 text-[#3c143260] hover:text-[#1e0a18] transition-colors"
+                            className="absolute top-6 right-6 footer-link-text opacity-60 hover:footer-main-text transition-colors"
                             type="button"
                         >
                             <svg width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -388,19 +388,19 @@ const BookingHistory = ({ businessId }) => {
                             </svg>
                         </button>
 
-                        <h3 className="font-[Cormorant_Garamond] text-3xl font-bold text-[#1e0a18] mb-2">Share Your Experience</h3>
-                        <p className="text-[#3c143260] text-sm mb-6">Your feedback helps us maintain our standard of luxury.</p>
+                        <h3 className="font-[Cormorant_Garamond] text-3xl font-bold footer-main-text mb-2">Share Your Experience</h3>
+                        <p className="footer-link-text opacity-60 text-sm mb-6">Your feedback helps us maintain our standard of luxury.</p>
 
                         <form onSubmit={handleReviewSubmit} className="space-y-4">
                             <div>
-                                <label className="block text-[10px] uppercase tracking-widest text-[#3c143280] font-bold mb-2">Rating *</label>
+                                <label className="block text-[10px] uppercase tracking-widest footer-link-text opacity-80 font-black mb-2">Rating *</label>
                                 <div className="flex gap-2">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <button
                                             key={star}
                                             type="button"
                                             onClick={() => setNewReview({ ...newReview, rating: star })}
-                                            className={`text-3xl transition-colors focus:outline-none ${star <= newReview.rating ? 'text-[#C8A951]' : 'text-[#e5d9c5]'}`}
+                                            className={`text-3xl transition-colors focus:outline-none ${star <= newReview.rating ? 'text-accent' : 'text-muted'}`}
                                         >
                                             ★
                                         </button>
@@ -409,37 +409,37 @@ const BookingHistory = ({ businessId }) => {
                             </div>
 
                             <div>
-                                <label htmlFor="review-comment" className="block text-[10px] uppercase tracking-widest text-[#3c143280] font-bold mb-2">Comments *</label>
+                                <label htmlFor="review-comment" className="block text-[10px] uppercase tracking-widest footer-link-text opacity-80 font-black mb-2">Comments *</label>
                                 <textarea
                                     id="review-comment"
                                     required
                                     rows={4}
                                     value={newReview.comment}
                                     onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
-                                    className="w-full px-4 py-3 rounded-xl border border-[#3c143210] bg-[#fdfaf8] focus:outline-none focus:border-[#7a286040] transition-colors text-sm resize-none"
+                                    className="w-full px-4 py-3 rounded-xl border hero-filter-input-bg bg-[#fdfaf8] focus:outline-none focus:border-accent/40 transition-colors text-sm resize-none"
                                     placeholder="Tell us about your service..."
                                 />
                             </div>
 
                             <label className="flex items-center gap-3 cursor-pointer group">
-                                <div className="relative flex items-center justify-center w-5 h-5 border border-[#3c143220] rounded group-hover:border-[#7a2860] transition-colors">
+                                <div className="relative flex items-center justify-center w-5 h-5 border hero-filter-input-bg rounded group-hover:border-accent transition-colors">
                                     <input
                                         type="checkbox"
                                         checked={newReview.isAnonymous}
                                         onChange={(e) => setNewReview({ ...newReview, isAnonymous: e.target.checked })}
                                         className="appearance-none absolute w-full h-full cursor-pointer peer"
                                     />
-                                    <svg className="w-3 h-3 text-[#7a2860] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                                    <svg className="w-3 h-3 text-accent opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
                                         <polyline points="20 6 9 17 4 12" />
                                     </svg>
                                 </div>
-                                <span className="text-[#3c143260] text-sm select-none">Submit anonymously</span>
+                                <span className="footer-link-text opacity-60 text-sm select-none">Submit anonymously</span>
                             </label>
 
                             <button
                                 type="submit"
                                 disabled={isSubmittingReview}
-                                className="w-full mt-6 py-4 rounded-xl bg-[#1e0a18] text-white text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-[#7a2860] disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full mt-6 py-4 rounded-xl footer-bg text-white text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {isSubmittingReview ? "Submitting..." : "Post Review"}
                             </button>

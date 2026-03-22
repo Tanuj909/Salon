@@ -13,17 +13,7 @@ const Footer = () => {
   };
 
   return (
-    // <footer className="bg-[#3c1432] text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
-    <footer className="bg-plum text-[#fdf6f0] pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
-      {/* Scoped styles only for pseudo-elements and hover effects Tailwind can't do in JSX */}
-      <style>{`
-        .ft-link:hover { color: #c4956a; }
-        .ft-social-btn:hover { background: #9b5876; border-color: #9b5876; color: #fdf6f0; }
-        .ft-input::placeholder { color: rgba(253,246,240,0.3); }
-        .ft-input:focus { border-color: rgba(155,88,118,0.6); background: rgba(253,246,240,0.09); }
-        .ft-subscribe:hover { opacity: 0.88; transform: translateY(-1px); }
-        .ft-bottom-link:hover { color: #fdf6f0; }
-      `}</style>
+    <footer className="footer-bg footer-main-text pt-20 pb-10 px-6" style={{ fontFamily: "'Georgia', serif" }}>
 
       <div className="max-w-[1200px] mx-auto">
 
@@ -43,22 +33,22 @@ const Footer = () => {
       alt="Fast Booking Logo" 
       className="w-14 md:w-16 lg:w-[72px] h-auto object-contain shrink-0" 
     />
-    <span className="text-2xl lg:text-3xl font-extrabold tracking-[0.05em] text-[#fdf6f0] leading-tight break-words">
+    <span className="text-2xl lg:text-3xl font-extrabold tracking-[0.05em] footer-main-text leading-tight break-words">
       Fast Booking
     </span>
   </Link>
 </div>
 
             {/* Tagline */}
-            <p className="text-[0.8rem] md:text-[0.86rem] leading-[1.7] mb-6 max-w-[280px]" style={{ color: 'rgba(253,246,240,0.52)' }}>
+            <p className="text-[0.8rem] md:text-[0.86rem] leading-[1.7] mb-6 max-w-[280px] footer-link-text" style={{ fontFamily: "'Georgia', serif" }}>
               Dedicated to the art of luxury grooming and holistic well-being. Redefining elegance since 2010.
             </p>
 
             {/* Social buttons */}
             <div className="flex gap-4 md:gap-3 mt-1 justify-center md:justify-start">
               {/* Instagram */}
-              <a href="#" className="ft-social-btn w-10 h-10 rounded-full border flex items-center justify-center cursor-pointer transition-all no-underline"
-                style={{ borderColor: 'rgba(253,246,240,0.2)', color: 'rgba(253,246,240,0.7)', background: 'transparent' }}
+              <a href="#" className="footer-social-btn-text footer-social-btn-border footer-social-btn-hover-bg footer-social-btn-hover-text w-10 h-10 rounded-full border flex items-center justify-center cursor-pointer transition-all no-underline"
+                style={{ background: 'transparent' }}
                 aria-label="Instagram">
                 <svg width={16} height={16} fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                   <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4.5" /><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
@@ -85,12 +75,12 @@ const Footer = () => {
 
           {/* Col 2 — Explore */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Explore</h4>
+            <h4 className="text-base font-bold mb-6 tracking-[0.02em] footer-main-text">Explore</h4>
             
             <Link
               href="/salons"
-              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
-              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+              className="footer-link-text footer-link-hover-text block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ fontFamily: "'Georgia', serif" }}
             >
               Our Salons
             </Link>
@@ -114,15 +104,15 @@ const Footer = () => {
 
           {/* Col 3 — Categories */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Categories</h4>
+            <h4 className="text-base font-bold mb-6 tracking-[0.02em] footer-main-text">Categories</h4>
 
             {/* Dynamic Category Links */}
             {['Men', 'Women', 'Kids', 'Pets'].map((catName) => (
               <Link
                 key={catName}
                 href={getCategoryLink(catName)}
-                className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
-                style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+                className="footer-link-text footer-link-hover-text block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+                style={{ fontFamily: "'Georgia', serif" }}
               >
                 {catName}
               </Link>
@@ -131,39 +121,31 @@ const Footer = () => {
 
           {/* Col 4 — Business */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-base font-bold mb-6 tracking-[0.02em] text-[#fdf6f0]">Partner With Us</h4>
+            <h4 className="text-base font-bold mb-6 tracking-[0.02em] footer-main-text">Partner With Us</h4>
             
             <Link
               href="/contact"
-              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
-              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
+              className="footer-link-text footer-link-hover-text block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ fontFamily: "'Georgia', serif" }}
             >
               List your Business
             </Link>
-            
-            {/* <a
-              href="#"
-              className="ft-link block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
-              style={{ color: 'rgba(253,246,240,0.55)', fontFamily: "'Georgia', serif" }}
-            >
-              Partner Portal
-            </a> */}
           </div>
 
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 pt-7 border-t" style={{ borderColor: 'rgba(253,246,240,0.1)' }}>
-          <p className="text-[0.78rem] w-full md:w-auto" style={{ color: 'rgba(253,246,240,0.35)', fontFamily: "'Georgia', serif" }}>
+        <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 pt-7 border-t footer-divider">
+          <p className="text-[0.78rem] w-full md:w-auto footer-link-text" style={{ fontFamily: "'Georgia', serif" }}>
             © 2024 Luxe Salon &amp; Spa. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 w-full md:w-auto">
-            <a href="#" className="ft-bottom-link text-[0.78rem] no-underline transition-colors duration-200"
-              style={{ color: 'rgba(253,246,240,0.35)', fontFamily: "'Georgia', serif" }}>
+            <a href="#" className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200"
+              style={{ fontFamily: "'Georgia', serif" }}>
               Privacy Policy
             </a>
-            <a href="#" className="ft-bottom-link text-[0.78rem] no-underline transition-colors duration-200"
-              style={{ color: 'rgba(253,246,240,0.35)', fontFamily: "'Georgia', serif" }}>
+            <a href="#" className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200"
+              style={{ fontFamily: "'Georgia', serif" }}>
               Terms of Service
             </a>
           </div>
