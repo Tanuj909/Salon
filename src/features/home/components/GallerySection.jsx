@@ -77,10 +77,10 @@ const GallerySection = () => {
     : galleryItems.filter(item => item.category === activeFilter);
 
   return (
-    <section className="py-24 px-6 max-w-[1200px] mx-auto bg-creamy/30">
+    <section className="py-24 px-6 max-w-[1280px] mx-auto">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight text-earthy-brown">Our Gallery</h2>
-        <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-3 mb-8"></div>
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-tight rec-section-heading font-[Cormorant_Garamond,serif]">Our Gallery</h2>
+        <div className="w-20 h-1 rec-section-divider mx-auto rounded-full mt-3 mb-8"></div>
         
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -88,7 +88,7 @@ const GallerySection = () => {
             <button
               key={category.id}
               onClick={() => setActiveFilter(category.id)}
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${ activeFilter === category.id ? 'bg-primary text-creamy shadow-lg scale-105' : 'bg-white text-plum hover:bg-primary/10 hover:scale-105' }`}
+              className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 font-[DM_Sans] ${ activeFilter === category.id ? 'rec-btn-primary shadow-lg scale-105' : 'bg-white border rec-btn-outline hover:scale-105' }`}
             >
               {category.label}
             </button>
@@ -101,29 +101,29 @@ const GallerySection = () => {
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="group relative h-[350px] overflow-hidden rounded-2xl cursor-pointer gallery-item"
+            className="group relative h-[350px] overflow-hidden rounded-2xl cursor-pointer border rec-card-border"
           >
             <img
               alt={item.title}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               src={item.image}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-plum/90 via-plum/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1C3152]/90 via-[#1C3152]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             
             {/* Category Tag */}
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-plum px-3 py-1 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rec-card-title px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-[DM_Sans]">
               {categories.find(cat => cat.id === item.category)?.label}
             </div>
             
             {/* Content Overlay */}
             <div className="absolute bottom-0 left-0 p-6 w-full transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-              <h3 className="text-creamy text-xl font-bold mb-1 drop-shadow-md">
+              <h3 className="text-white text-xl font-bold mb-1 drop-shadow-md font-[Cormorant_Garamond,serif]">
                 {item.title}
               </h3>
-              <p className="text-creamy/90 text-xs mb-3">
+              <p className="text-white/90 text-xs mb-3 font-[DM_Sans]">
                 {item.description}
               </p>
-              <button className="bg-primary text-creamy px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white hover:text-primary transition-colors mt-3">
+              <button className="rec-btn-primary border border-white/30 text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white hover:text-[#1C3152] transition-colors mt-3 font-[DM_Sans]">
                 View Details
               </button>
             </div>
@@ -134,18 +134,9 @@ const GallerySection = () => {
       {/* Empty State */}
       {filteredItems.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-plum/60 text-lg">No items found in this category.</p>
+          <p className="rec-section-subtext text-lg font-[DM_Sans]">No items found in this category.</p>
         </div>
       )}
-
-      {/* Load More Button (optional) */}
-      {/* {filteredItems.length > 0 && (
-        <div className="text-center mt-12">
-          <button className="bg-transparent border-2 border-primary text-primary px-8 py-3 rounded-full text-sm font-bold hover:bg-primary hover:text-creamy transition-all duration-300">
-            Load More
-          </button>
-        </div>
-      )} */}
     </section>
   );
 };

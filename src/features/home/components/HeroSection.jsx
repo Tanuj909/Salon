@@ -40,7 +40,7 @@ const HeroSection = () => {
   const combinedServiceData = useMemo(() => {
     const staticServices = fuseData.filter(item => item.type === 'service');
     const seenNames = new Set(staticServices.map(s => s.name.toLowerCase()));
-    
+
     const apiServicesFormatted = distinctServices
       .filter(name => name && !seenNames.has(name.toLowerCase()))
       .map(name => ({
@@ -71,7 +71,7 @@ const HeroSection = () => {
   const handleSearchChange = (e) => {
     const originalVal = e.target.value;
     setServiceSearch(originalVal);
-    
+
     const val = originalVal.toLowerCase().trim();
     if (val) {
       const results = fuse.search(val).slice(0, 3);
@@ -92,13 +92,13 @@ const HeroSection = () => {
     const originalVal = serviceSearch;
     const trimmed = originalVal.toLowerCase().trim();
     if (!trimmed) return;
-    
+
     const exactMatch = combinedServiceData.find(
       s => s.name.toLowerCase() === trimmed
     );
-    
+
     let finalSearchTerm = originalVal.trim();
-    
+
     if (exactMatch) {
       finalSearchTerm = exactMatch.name;
     } else {
@@ -110,7 +110,7 @@ const HeroSection = () => {
         }
       }
     }
-    
+
     setShowSuggestions(false);
     router.push(`/salons?serviceName=${encodeURIComponent(finalSearchTerm)}`);
   };
@@ -183,8 +183,8 @@ const HeroSection = () => {
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap');
         
         :root {
-          --gold: #C9A96E;
-          --terracotta: #B76E4B;
+          --gold: #C49B66;
+          --terracotta: #1C3152;
         }
 
         .hero-grain {
@@ -271,9 +271,9 @@ const HeroSection = () => {
             <div className="hero-filter-bar-bg p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
 
               {/* Category Select */}
-              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20">
                 <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">category</span>
-                <select 
+                <select
                   className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
@@ -291,9 +291,9 @@ const HeroSection = () => {
               </div>
 
               {/* Service Select */}
-              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#B76E4B]/20">
+              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20">
                 <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">content_cut</span>
-                <select 
+                <select
                   className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
                   value={selectedService}
                   onChange={(e) => setSelectedService(e.target.value)}
@@ -311,9 +311,9 @@ const HeroSection = () => {
               </div>
 
               {/* Current Location (Detect) */}
-              <div 
+              <div
                 onClick={refreshLocation}
-                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
+                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
               >
                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
                   <span className={`material-symbols-outlined text-lg ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
@@ -327,9 +327,9 @@ const HeroSection = () => {
               </div>
 
               {/* Select Manually (Map) */}
-              <div 
+              <div
                 onClick={() => setIsMapModalOpen(true)}
-                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#B76E4B]/30"
+                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
               >
                 <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
                   <span className="material-symbols-outlined text-lg">map</span>
@@ -346,10 +346,10 @@ const HeroSection = () => {
                   ...(selectedCategory && { categoryId: selectedCategory }),
                   ...(selectedService && { serviceName: selectedService }),
                 }).toString()}`}
-                className="w-full lg:w-[20%] py-3 lg:py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#B76E4B]/30 flex items-center justify-center gap-2"
+                className="w-full lg:w-[20%] py-3 lg:py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#1C3152]/30 flex items-center justify-center gap-2"
               >
-                <span className="material-symbols-outlined text-lg">search</span>
-                <span>Search</span>
+                <span className="material-symbols-outlined text-lg text-white">search</span>
+                <span className="text-white">Search</span>
               </Link>
             </div>
 
@@ -381,8 +381,8 @@ const HeroSection = () => {
                     onClick={handleSearchSubmit}
                     className="px-3 py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
                   >
-                    <span className="material-symbols-outlined text-lg">search</span>
-                    <span className="hidden sm:inline">Search Service</span>
+                    <span className="material-symbols-outlined text-lg text-white">search</span>
+                    <span className="hidden sm:inline text-white">Search Service</span>
                   </button>
                 </div>
 
@@ -417,8 +417,8 @@ const HeroSection = () => {
               href="/salons"
               className="px-8 py-4 hero-filter-btn-bg hover:hero-filter-btn-hover-bg border-2 border-white/30 backdrop-blur-md rounded-full text-white font-bold tracking-widest uppercase text-[10px] transition-all flex items-center gap-2 group"
             >
-              <span>Explore All</span>
-              <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              <span className="text-white">Explore All</span>
+              <span className="material-symbols-outlined text-sm text-white group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </Link>
           </div>
         </div>

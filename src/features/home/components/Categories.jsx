@@ -23,7 +23,6 @@ const CATEGORY_IMAGES = {
 };
 
 function getCategoryImage(category) {
-  // Use iconUrl from API if it looks like a real URL (not example.com placeholder)
   if (category.iconUrl && !category.iconUrl.includes("example.com")) {
     return category.iconUrl;
   }
@@ -31,26 +30,26 @@ function getCategoryImage(category) {
   return CATEGORY_IMAGES[key] || CATEGORY_IMAGES.DEFAULT;
 }
 
-// ─── Star icon ───────────────────────────────────────────────────────────────
+// ─── Star icon (Using theme colors) ──────────────────────────────────────────
 const StarIcon = ({ filled }) => (
-  <svg width={13} height={13} viewBox="0 0 20 20" fill={filled ? "#c4956a" : "#e0d0c8"}>
+  <svg width={13} height={13} viewBox="0 0 20 20" fill={filled ? "#C49B66" : "#E2E8F0"}>
     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
   </svg>
 );
 
-// ─── Salon card ──────────────────────────────────────────────────────────────
+// ─── Salon card (Using rec-* classes from blue-gold-theme.css) ──────────────
 function SalonCard({ salon }) {
   const img =
     salon.imageUrls?.[0] ||
     salon.bannerImageUrl ||
     "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=60";
-  const rating = salon.averageRating;
+  const rating = salon.averageRating || 4.5;
   const badge = salon.verificationStatus === "VERIFIED" ? "Top Rated" : null;
 
   return (
     <Link
       href={`/salons/${salon.id}`}
-      className="group block bg-white rounded-[20px] overflow-hidden border border-[#3c143212] cursor-pointer shadow-[0_2px_16px_rgba(60,20,50,0.06)] no-underline w-[280px] flex-shrink-0"
+      className="group block bg-white rounded-[20px] overflow-hidden border rec-card-border cursor-pointer no-underline w-[280px] flex-shrink-0 h-full"
     >
       {/* Image */}
       <div className="relative h-[200px] overflow-hidden">
@@ -61,11 +60,11 @@ function SalonCard({ salon }) {
           loading="lazy"
         />
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[rgba(30,10,25,0.45)]" />
+        <div className="absolute inset-0 rec-card-overlay" />
 
         {/* Badge */}
         {badge && (
-          <span className="absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border bg-[#7a2860]/60 text-[#ffffff] border-[#7a2860]/20 font-[DM_Sans]">
+          <span className="absolute top-3.5 left-3.5 px-[11px] py-1 rounded-full text-[0.68rem] font-semibold tracking-[0.06em] backdrop-blur-[8px] border rec-badge-top-rated-bg font-[DM_Sans]">
             {badge}
           </span>
         )}
@@ -73,8 +72,8 @@ function SalonCard({ salon }) {
         {/* Open Status */}
         <span
           className={`absolute top-3.5 right-3.5 px-2.5 py-1 rounded-full text-[0.72rem] font-semibold tracking-[0.04em] backdrop-blur-[8px] font-[DM_Sans] ${salon.isOpen
-            ? "bg-[#fdf6f0e0] text-[#7a4020]"
-            : "bg-red-50/90 text-primary"
+            ? "rec-status-open"
+            : "rec-status-closed"
             }`}
         >
           {salon.isOpen ? "Open" : "Closed"}
@@ -84,11 +83,11 @@ function SalonCard({ salon }) {
       {/* Body */}
       <div className="p-[20px_20px_18px] flex flex-col justify-between h-[calc(100%-200px)]">
         <div>
-          <h4 className="text-[1.18rem] font-bold leading-[1.2] mb-1 text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] line-clamp-1">
+          <h4 className="text-[1.18rem] font-bold leading-[1.2] mb-1 rec-card-title font-[Cormorant_Garamond,Georgia,serif] line-clamp-1">
             {salon.name}
           </h4>
 
-          <div className="flex items-center gap-1 text-[0.76rem] mb-3 text-[#3c143280] font-[DM_Sans]">
+          <div className="flex items-center gap-1 text-[0.76rem] mb-3 rec-card-meta font-[DM_Sans]">
             <svg width={11} height={11} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
               <circle cx="12" cy="10" r="3" />
@@ -97,9 +96,9 @@ function SalonCard({ salon }) {
           </div>
 
           {/* Divider */}
-          <div className="h-px mb-3 bg-[#3c143212]" />
+          <div className="h-px mb-3 rec-card-inner-divider" />
 
-          <p className="text-[0.76rem] font-normal mb-3 text-[#3c14328c] font-[DM_Sans] line-clamp-2 italic">
+          <p className="text-[0.76rem] font-normal mb-3 rec-card-desc font-[DM_Sans] line-clamp-2 italic">
             {salon.description || "Luxury salon offering premium beauty services."}
           </p>
         </div>
@@ -112,11 +111,11 @@ function SalonCard({ salon }) {
                 <StarIcon key={i} filled={i <= Math.round(rating)} />
               ))}
             </div>
-            <span className="text-[0.8rem] font-semibold text-[#1e0a18] font-[DM_Sans]">
+            <span className="text-[0.8rem] font-semibold rec-card-title font-[DM_Sans]">
               {rating.toFixed(1)}
             </span>
           </div>
-          <span className="py-[7px] px-[16px] rounded-full border-[1.5px] border-[#3c14322e] text-[0.73rem] font-semibold text-[#3c1432] tracking-[0.04em] font-[DM_Sans] transition-all duration-[220ms] group-hover:bg-gradient-to-br group-hover:from-[#3c1432] group-hover:to-[#7a2860] group-hover:border-transparent group-hover:text-[#fdf6f0] group-hover:shadow-[0_4px_16px_rgba(60,20,50,0.22)]">
+          <span className="py-[7px] px-[16px] rounded-full rec-btn-primary text-[0.73rem] font-semibold tracking-[0.04em] font-[DM_Sans]">
             View
           </span>
         </div>
@@ -128,12 +127,12 @@ function SalonCard({ salon }) {
 // ─── Skeleton card ───────────────────────────────────────────────────────────
 function SalonCardSkeleton() {
   return (
-    <div className="flex-shrink-0 w-[280px] rounded-[20px] overflow-hidden border border-[#3c143210] bg-white shadow-sm animate-pulse">
-      <div className="h-[200px] bg-[#f0e8ee]" />
+    <div className="flex-shrink-0 w-[280px] rounded-[20px] overflow-hidden border rec-card-border bg-white shadow-sm animate-pulse">
+      <div className="h-[200px] bg-gray-100" />
       <div className="p-[20px_20px_18px] space-y-2">
-        <div className="h-4 bg-[#f0e8ee] rounded w-3/4" />
-        <div className="h-3 bg-[#f0e8ee] rounded w-1/2" />
-        <div className="h-3 bg-[#f0e8ee] rounded w-1/3" />
+        <div className="h-4 bg-gray-100 rounded w-3/4" />
+        <div className="h-3 bg-gray-100 rounded w-1/2" />
+        <div className="h-3 bg-gray-100 rounded w-1/3" />
       </div>
     </div>
   );
@@ -162,32 +161,32 @@ function CategoryRow({ category, lat, lng }) {
   return (
     <div className="mb-16 last:mb-0">
       {/* Row header */}
-      <div className="flex items-end justify-between mb-6 flex-wrap gap-4">
-        <div className="flex items-center gap-4">
-          {/* Eyebrow with circle */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
+          {/* Eyebrow with divider line */}
           <div className="flex items-center gap-2">
-            <span className="w-6 h-px inline-block bg-[#c4956a]" />
-            <span className="text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-[#c4956a] font-[DM_Sans]">
+            <span className="w-6 h-px inline-block rec-section-divider" />
+            <span className="text-[0.72rem] font-semibold tracking-[0.12em] uppercase rec-section-eyebrow font-[DM_Sans]">
               {category.name.charAt(0) + category.name.slice(1).toLowerCase()}
             </span>
           </div>
 
           <div className="flex items-center gap-4">
             {/* Circle category badge */}
-            <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden border-[3px] border-[#FAF7F2] shadow-md flex-shrink-0">
+            <div className="relative w-[50px] h-[50px] rounded-full overflow-hidden border-[3px] border-white shadow-md flex-shrink-0">
               <img
                 src={getCategoryImage(category)}
                 alt={category.name}
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-b from-black/10 to-black/50" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-b from-black/10 to-black/40" />
             </div>
             <div>
-              <h3 className="font-bold leading-[1.1] text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.1rem,2vw,1.6rem)] capitalize">
-                {category.name} Salons
+              <h3 className="font-bold leading-[1.1] rec-section-heading font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.1rem,2vw,1.6rem)] capitalize">
+                {category.name} <span className="rec-section-heading-accent italic">Salons</span>
               </h3>
-              <p className="text-[0.85rem] leading-[1.65] mt-1 max-w-[380px] text-[#3c143280] font-[DM_Sans] line-clamp-1">
+              <p className="text-[0.85rem] leading-[1.65] mt-1 max-w-[380px] rec-section-subtext font-[DM_Sans] line-clamp-1">
                 {category.description || `${category.businessCount || 0} salons available in your area`}
               </p>
             </div>
@@ -199,7 +198,7 @@ function CategoryRow({ category, lat, lng }) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll(-1)}
-              className="w-8 h-8 rounded-full border border-[#3c14322e] flex items-center justify-center text-[#3c1432] hover:bg-[#3c1432] hover:text-white transition-colors duration-200"
+              className="w-8 h-8 rounded-full border rec-btn-outline flex items-center justify-center transition-colors duration-200"
               aria-label="Scroll left"
             >
               <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -208,7 +207,7 @@ function CategoryRow({ category, lat, lng }) {
             </button>
             <button
               onClick={() => scroll(1)}
-              className="w-8 h-8 rounded-full border border-[#3c14322e] flex items-center justify-center text-[#3c1432] hover:bg-[#3c1432] hover:text-white transition-colors duration-200"
+              className="w-8 h-8 rounded-full border rec-btn-outline flex items-center justify-center transition-colors duration-200"
               aria-label="Scroll right"
             >
               <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -218,7 +217,7 @@ function CategoryRow({ category, lat, lng }) {
           </div>
           <Link
             href={`/salons?categoryId=${category.id}`}
-            className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] border-[#3c14322e] bg-white text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] text-[#3c1432] no-underline font-[DM_Sans] hover:bg-gradient-to-br hover:from-[#3c1432] hover:to-[#7a2860] hover:border-transparent hover:text-[#fdf6f0] hover:shadow-[0_6px_24px_rgba(60,20,50,0.22)]"
+            className="flex items-center gap-2 py-[9px] px-5 rounded-full border-[1.5px] rec-btn-outline text-[0.75rem] font-semibold tracking-[0.04em] cursor-pointer no-underline font-[DM_Sans] transition-all"
           >
             See All
             <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -230,7 +229,7 @@ function CategoryRow({ category, lat, lng }) {
       </div>
 
       {/* Divider */}
-      <div className="h-px mb-10 bg-[#3c143214]" />
+      <div className="h-px mb-10 rec-section-divider-line" />
 
       {/* Horizontal scroll row */}
       <div
@@ -243,14 +242,14 @@ function CategoryRow({ category, lat, lng }) {
           : salons.length > 0
             ? salons.map((salon) => <SalonCard key={salon.id} salon={salon} />)
             : (
-              <div className="flex-1 py-10 text-center text-[#3c143260] text-sm font-[DM_Sans] bg-white/60 rounded-2xl">
+              <div className="flex-1 py-10 text-center rec-section-subtext text-sm font-[DM_Sans] bg-white/40 rounded-2xl border border-dashed rec-card-border">
                 No salons found nearby for this category.
               </div>
             )}
       </div>
 
-      {/* Divider */}
-      <div className="h-px mt-10 bg-gradient-to-r from-transparent via-[#3c143218] to-transparent" />
+      {/* Bottom Row Divider */}
+      <div className="h-px mt-10 rec-section-divider-line opacity-50" />
     </div>
   );
 }
@@ -263,7 +262,7 @@ export default function Categories() {
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   const handleRetryLocation = () => {
-    window.location.reload(); // Simple way to re-trigger for now since hook uses useEffect once
+    window.location.reload();
   };
 
   // ── Fetch categories ────────────────────────────────────────────────────────
@@ -275,30 +274,30 @@ export default function Categories() {
   }, []);
 
   return (
-    <section className="w-full bg-plum/5 py-10 relative font-['Georgia',serif]">
+    <section className="w-full py-10 relative font-[DM_Sans]">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
         {/* ── Section header ── */}
-        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="w-6 h-px inline-block bg-[#c4956a]" />
-              <span className="text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-[#c4956a] font-[DM_Sans]">
+              <span className="w-6 h-px inline-block rec-section-divider" />
+              <span className="text-[0.72rem] font-semibold tracking-[0.12em] uppercase rec-section-eyebrow">
                 Tailored For You
               </span>
             </div>
-            <h2 className="font-bold leading-[1.1] text-[#1e0a18] font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.75rem,3vw,2.6rem)]">
+            <h2 className="font-bold leading-[1.1] rec-section-heading font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.75rem,3vw,2.6rem)]">
               Browse By
-              <span className="italic text-[#7a2860] ml-2">Category</span>
+              <span className="italic rec-section-heading-accent ml-2">Category</span>
             </h2>
-            <p className="text-[0.85rem] leading-[1.65] mt-2 max-w-[380px] text-[#3c143280] font-[DM_Sans]">
+            <p className="text-[0.85rem] leading-[1.65] mt-2 max-w-[380px] rec-section-subtext">
               Discover the best salons near you, organised by what you need.
             </p>
           </div>
 
           <Link
             href="/salons"
-            className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] border-[#3c14322e] bg-white text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] text-[#3c1432] no-underline font-[DM_Sans] hover:bg-gradient-to-br hover:from-[#3c1432] hover:to-[#7a2860] hover:border-transparent hover:text-[#fdf6f0] hover:shadow-[0_6px_24px_rgba(60,20,50,0.22)]"
+            className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] rec-btn-outline text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all no-underline"
           >
             View All Categories
             <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -309,19 +308,18 @@ export default function Categories() {
         </div>
 
         {/* Divider */}
-        <div className="h-px mb-10 bg-[#3c143214]" />
+        <div className="h-px mb-10 rec-section-divider-line" />
 
         {/* ── Category rows ── */}
         {loadingCats || (!location && locationLoading) ? (
-          // skeleton for category rows
           <div className="space-y-14">
             {[1, 2].map((i) => (
               <div key={i} className="animate-pulse">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-[50px] h-[50px] rounded-full bg-[#f0e8ee]" />
+                  <div className="w-[50px] h-[50px] rounded-full bg-gray-100" />
                   <div className="space-y-2">
-                    <div className="h-5 bg-[#f0e8ee] rounded w-36" />
-                    <div className="h-3 bg-[#f0e8ee] rounded w-52" />
+                    <div className="h-5 bg-gray-100 rounded w-36" />
+                    <div className="h-3 bg-gray-100 rounded w-52" />
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -331,39 +329,38 @@ export default function Categories() {
             ))}
           </div>
         ) : (!location && error) ? (
-          // Location denied or error state
-          <div className="text-center py-16 bg-white/50 rounded-2xl border border-dashed border-[#7a2860]/20">
-            <div className="w-16 h-16 bg-[#7a2860]/5 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg width={24} height={24} fill="none" stroke="#7a2860" strokeWidth={2} viewBox="0 0 24 24">
+          <div className="text-center py-16 bg-white/50 rounded-2xl border border-dashed rec-empty-border">
+            <div className="w-16 h-16 rec-empty-icon-bg rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg width={24} height={24} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" className="icon-primary">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
             </div>
-            <h3 className="text-lg font-bold text-[#1e0a18] mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
+            <h3 className="text-lg font-bold rec-empty-heading mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
             <div className="flex justify-center">
-            <p className="text-[#3c143280] font-[DM_Sans] text-sm max-w-[350px] mx-auto mb-6">
-              To see salons in your area, please allow location access.
-            </p>
+              <p className="rec-section-subtext text-sm max-w-[350px] mx-auto mb-6">
+                To see salons in your area, please allow location access or choose manually.
+              </p>
             </div>
 
-            <button
-              onClick={handleRetryLocation}
-              className="py-2.5 px-8 rounded-full bg-[#1e0a18] text-white text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] transition-all mb-4"
-            >
-              Retry Location
-            </button>
-            <div className="flex justify-center">
-               <button
-                  onClick={() => setIsMapModalOpen(true)}
-                  className="py-2 px-6 rounded-full border border-[#7a2860] text-[#7a2860] text-[0.8rem] font-bold tracking-widest hover:bg-[#7a2860] hover:text-white transition-all shadow-sm"
-                >
-                  Choose location manually
-                </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4">
+              <button
+                onClick={handleRetryLocation}
+                className="w-full sm:w-auto py-2.5 px-8 rounded-full rec-btn-primary text-[0.8rem] font-bold tracking-widest shadow-md"
+              >
+                Retry Location
+              </button>
+              <button
+                onClick={() => setIsMapModalOpen(true)}
+                className="w-full sm:w-auto py-2.5 px-8 rounded-full border rec-btn-gold-outline text-[0.8rem] font-bold tracking-widest shadow-sm"
+              >
+                Choose location manually
+              </button>
             </div>
           </div>
         ) : categories.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-[#3c143260] font-[DM_Sans]">
+            <p className="rec-section-subtext font-[DM_Sans]">
               No categories available at the moment.
             </p>
           </div>

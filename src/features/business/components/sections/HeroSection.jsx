@@ -89,62 +89,34 @@ const HeroSection = () => {
                 {/* Badge - Reduced top margin */}
                 <motion.div
                     variants={contentVariants}
-                    style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 8,
-                        padding: '5px 14px 5px 8px',
-                        background: '#D4E9E6',
-                        border: '1px solid rgba(30,92,82,0.18)',
-                        borderRadius: 100,
-                        marginBottom: 16,
-                    }}
+                    className="rec-badge-top-rated-bg inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 shadow-sm border border-[#C8A951]/20"
                 >
                     <motion.span
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring", stiffness: 500, damping: 15, delay: 0.2 }}
-                        style={{
-                            width: 20, height: 20,
-                            background: '#1E5C52',
-                            borderRadius: '50%',
-                            display: 'grid', placeItems: 'center',
-                            flexShrink: 0,
-                        }}
+                        className="w-5 h-5 bg-[#C8A951] rounded-full grid place-items-center flex-shrink-0"
                     >
                         <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                            <path d="M5 1L6.5 4H9.5L7 6L8 9L5 7.5L2 9L3 6L0.5 4H3.5L5 1Z" fill="white" />
+                            <path d="M5 1L6.5 4H9.5L7 6L8 9L5 7.5L2 9L3 6L0.5 4H3.5L5 1Z" fill="#1C3152" />
                         </svg>
                     </motion.span>
-                    <span style={{ fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.09em', textTransform: 'uppercase', color: '#1E5C52' }}>
+                    <span className="text-[10px] font-bold tracking-[0.1em] uppercase text-white">
                         Trusted by 5,000+ salons worldwide
                     </span>
                 </motion.div>
 
                 {/* Headline - Improved for mobile wrapping */}
-                <motion.div variants={contentVariants} style={{ marginBottom: 12, textAlign: 'center', width: '100%' }}>
-                    <h1 style={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontSize: 'clamp(2rem, 8vw, 4.2rem)',
-                        fontWeight: 400,
-                        lineHeight: 1.1,
-                        color: '#1C1410',
-                        letterSpacing: '-0.01em',
-                    }}>
-                        Run your salon with <em style={{ fontStyle: 'italic', color: '#1E5C52' }}>effortless</em> clarity
+                <motion.div variants={contentVariants} className="mb-3 text-center w-full">
+                    <h1 className="font-[Cormorant_Garamond,serif] text-4xl sm:text-5xl md:text-6xl font-bold rec-section-heading leading-tight tracking-tight">
+                        Run your salon with <em className="italic font-light rec-section-heading-accent">effortless</em> clarity
                     </h1>
                 </motion.div>
 
                 {/* Description - Responsive wrapping */}
                 <motion.p
                     variants={contentVariants}
-                    style={{
-                        fontSize: 'max(0.9rem, 0.97rem)',
-                        fontWeight: 300,
-                        lineHeight: 1.6,
-                        color: '#967E6E',
-                        margin: '0 auto 32px',
-                        textAlign: 'center',
-                        maxWidth: '600px'
-                    }}
+                    className="text-sm sm:text-base rec-section-subtext mb-8 text-center max-w-[600px] mx-auto font-medium"
                 >
                     Bookings, staff & revenue — all in one place. The modern operating system for salons and spas.
                 </motion.p>
@@ -152,7 +124,7 @@ const HeroSection = () => {
                 {/* CTA Button - Reduced margin */}
                 <motion.div
                     variants={contentVariants}
-                    style={{ display: 'flex', justifyContent: 'center', marginBottom: 40 }}
+                    className="flex justify-center mb-10"
                 >
                     <motion.div
                         whileHover={{ scale: 1.05, y: -2 }}
@@ -160,20 +132,7 @@ const HeroSection = () => {
                     >
                         <Link
                             href="/partner"
-                            style={{
-                                display: 'inline-flex', alignItems: 'center', gap: 8,
-                                padding: '16px 42px',
-                                borderRadius: 100,
-                                background: '#1E5C52',
-                                color: '#fff',
-                                fontWeight: 500,
-                                fontSize: '0.9rem',
-                                letterSpacing: '0.07em',
-                                textTransform: 'uppercase',
-                                textDecoration: 'none',
-                                boxShadow: '0 8px 30px rgba(30,92,82,0.32)',
-                                transition: 'all 0.3s cubic-bezier(0.22,1,0.36,1)',
-                            }}
+                            className="inline-flex items-center gap-2 px-10 py-4 rounded-full rec-btn-primary font-bold text-[10px] tracking-[0.2em] uppercase transition-all shadow-xl"
                         >
                             Start Free Trial
                         </Link>
@@ -195,13 +154,7 @@ const HeroSection = () => {
                             zIndex: 1,
                         }}
                     >
-                        <div style={{
-                            borderRadius: 16,
-                            overflow: 'hidden',
-                            background: 'white',
-                            boxShadow: '0 2px 8px rgba(28,20,16,0.04), 0 12px 40px rgba(28,20,16,0.10), 0 32px 80px rgba(28,20,16,0.07)',
-                            border: '1px solid rgba(212,200,188,0.4)',
-                        }}>
+                        <div className="rounded-2xl overflow-hidden bg-white shadow-2xl border rec-card-border">
                             <Image
                                 src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                                 alt="Analytics Dashboard"
@@ -233,20 +186,13 @@ const HeroSection = () => {
                             variants={chipVariants}
                             animate="visible"
                             whileHover="float"
-                            className="absolute -top-4 -right-2 md:top-[-18px] md:right-[28px] p-2.5 md:p-[10px_14px]"
-                            style={{
-                                background: 'white',
-                                borderRadius: 12,
-                                boxShadow: '0 6px 28px rgba(28,20,16,0.13), 0 1px 4px rgba(28,20,16,0.07)',
-                                border: '1px solid rgba(212,200,188,0.3)',
-                                zIndex: 20,
-                            }}
+                            className="absolute -top-4 -right-2 md:top-[-18px] md:right-[28px] p-3 md:p-4 bg-white rounded-2xl shadow-2xl border rec-card-border z-20"
                         >
-                            <div style={{ fontSize: '0.55rem md:0.62rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#B8A898', marginBottom: 3 }}>
+                            <div className="text-[9px] font-bold tracking-widest uppercase rec-section-subtext mb-1">
                                 Today's Revenue
                             </div>
-                            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '1rem md:1.25rem', fontWeight: 500, color: '#1C1410', lineHeight: 1 }}>
-                                $4,120
+                            <div className="font-[Cormorant_Garamond,serif] text-xl font-bold rec-section-heading leading-none">
+                                ₹35,000
                             </div>
                         </motion.div>
 
@@ -255,29 +201,17 @@ const HeroSection = () => {
                             variants={chipVariants}
                             animate="visible"
                             whileHover="float"
-                            className="absolute -bottom-4 -left-2 md:bottom-[28px] md:left-[-24px] p-2.5 md:p-[10px_14px]"
-                            style={{
-                                background: 'white',
-                                borderRadius: 12,
-                                boxShadow: '0 6px 28px rgba(28,20,16,0.13), 0 1px 4px rgba(28,20,16,0.07)',
-                                border: '1px solid rgba(212,200,188,0.3)',
-                                zIndex: 20,
-                            }}
+                            className="absolute -bottom-4 -left-2 md:bottom-[28px] md:left-[-24px] p-3 md:p-4 bg-white rounded-2xl shadow-2xl border rec-card-border z-20"
                         >
-                            <div style={{ fontSize: '0.55rem md:0.62rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#B8A898', marginBottom: 3 }}>
+                            <div className="text-[9px] font-bold tracking-widest uppercase rec-section-subtext mb-1">
                                 Up Next · 2:30 PM
                             </div>
-                            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: '0.9rem md:1rem', fontWeight: 500, color: '#1E5C52', lineHeight: 1 }}>
+                            <div className="font-[Cormorant_Garamond,serif] text-lg font-bold rec-section-heading-accent leading-none">
                                 Sarah M.
                             </div>
                         </motion.div>
 
-                        <div style={{
-                            borderRadius: 18,
-                            overflow: 'hidden',
-                            background: 'white',
-                            boxShadow: '0 4px 16px rgba(28,20,16,0.06), 0 20px 60px rgba(28,20,16,0.14), 0 60px 120px rgba(28,20,16,0.10), 0 0 0 1px rgba(212,200,188,0.3)',
-                        }}>
+                        <div className="rounded-[2.5rem] overflow-hidden bg-white shadow-2xl border rec-card-border">
                             <Image
                                 src="/images/business/banner.png"
                                 alt="Salon booking platform preview"

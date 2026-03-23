@@ -104,18 +104,18 @@ const AboutSection = ({ description, image }) => {
                 {/* Left Side - Content (moved up) */}
                 <Reveal>
                     <div className="text-left lg:mt-[-20px]"> {/* Added negative margin to move content up */}
-                        <span className="block text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase salon-list-title-accent font-extrabold mb-4 sm:mb-5"> {/* Reduced mb-6 to mb-5 */}
+                        <span className="block text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase rec-section-heading-accent font-extrabold mb-4 sm:mb-5">
                             Our Legacy
                         </span>
-                        <h2 className="text-[26px] sm:text-4xl md:text-5xl salon-list-title-text font-bold leading-tight mb-4 sm:mb-5 font-[Cormorant_Garamond,Georgia,serif] whitespace-nowrap">
-                            About <em className="italic font-light salon-list-title-accent">Us</em>
+                        <h2 className="text-[26px] sm:text-4xl md:text-5xl rec-section-heading font-bold leading-tight mb-4 sm:mb-5 font-[Cormorant_Garamond,Georgia,serif]">
+                            About <em className="italic font-light rec-section-heading-accent">Us</em>
                         </h2>
-                        <p className="salon-list-title-text text-sm sm:text-base md:text-lg leading-relaxed font-medium">
+                        <p className="rec-section-subtext text-sm sm:text-base md:text-lg leading-relaxed font-medium">
                             {description}
                         </p>
                         
-                        {/* Decorative element - moved up slightly */}
-                        <div className="mt-5 sm:mt-6 w-12 sm:w-16 h-0.5 badge-verified-bg opacity-30"></div> {/* Reduced mt-8 to mt-6 */}
+                        {/* Decorative element */}
+                        <div className="mt-5 sm:mt-6 w-12 sm:w-16 h-0.5 rec-section-divider"></div>
                     </div>
                 </Reveal>
 

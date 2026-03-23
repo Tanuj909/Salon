@@ -65,7 +65,7 @@ function SalonCard({ salon }) {
         <div className="absolute inset-0 z-[2] hero-bg-overlay/60" />
 
         {/* Badge */}
-        {badge && bc && (
+        {badge && (
           <span
             className="
       absolute top-3.5 left-3.5
@@ -75,9 +75,8 @@ function SalonCard({ salon }) {
       font-bold
       tracking-[0.06em]
       font-['Manrope',sans-serif]
-      hero-filter-btn-bg
-      text-white
-      border border-white/20
+      rec-badge-top-rated-bg
+      border
       shadow-md
     "
           >
@@ -120,7 +119,7 @@ function SalonCard({ salon }) {
         )}
 
         {/* Footer: Rating & Button */}
-        <div className="mt-4 pt-4 flex items-center justify-between border-t hero-filter-input-bg">
+        <div className="mt-4 pt-4 flex items-center justify-between border-t rec-section-border">
           <div className="flex items-center gap-1.5">
             <div className="flex gap-0.5">
               {[1, 2, 3, 4, 5].map((i) => (
@@ -138,7 +137,7 @@ function SalonCard({ salon }) {
             </span>
           </div>
 
-          <span className="py-2 px-[18px] rounded-full border-[1.5px] salon-card-btn-border text-[0.75rem] font-bold salon-card-btn-text tracking-[0.04em] font-['Manrope',sans-serif] transition-all duration-300 group-hover:salon-card-btn-hover-bg group-hover:salon-card-btn-hover-text group-hover:shadow-lg">
+          <span className="py-2 px-[18px] rounded-full border-[1.5px] rec-card-btn text-[0.75rem] font-bold tracking-[0.04em] font-['Manrope',sans-serif] transition-all duration-300 group-hover:rec-btn-primary group-hover:shadow-lg">
             Explore
           </span>
         </div>
@@ -429,7 +428,7 @@ export default function SalonList() {
                   className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap overflow-hidden truncate"
                 >
                   Discover{" "}
-                  <span className={`inline-block transition-opacity duration-500 salon-list-title-accent ${headingFade ? "opacity-100" : "opacity-0"}`}>
+                  <span className={`inline-block transition-opacity duration-500 rec-section-heading-accent ${headingFade ? "opacity-100" : "opacity-0"}`}>
                     {headings[headingIndex]}
                   </span>{" "}
                   Salons
@@ -612,7 +611,7 @@ export default function SalonList() {
             <button
               onClick={handleFetch}
               disabled={loading}
-              className={`h-12 px-6 flex items-center justify-center gap-2 rounded-xl bg-[#1e0a18] text-white font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:hero-filter-btn-bg hover:shadow-lg hover:shadow-[#1e0a18]/10 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed`}
+              className="h-12 px-6 flex items-center justify-center gap-2 rounded-xl rec-btn-primary font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -666,12 +665,12 @@ export default function SalonList() {
                   <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Search Radius</label>
                   <span className="text-[9px] font-black hero-filter-icon bg-[#7a2860]/5 px-2 py-0.5 rounded-full">{draftParams.radius}km</span>
                 </div>
-                <div className="flex items-center h-11 px-5 rounded-xl border hero-filter-input-bg about-section-bg group">
+                <div className="flex items-center h-11 px-5 rounded-xl border border-[#3c143212] bg-white group">
                   <input
                     type="range" min="1" max="100"
                     value={draftParams.radius}
                     onChange={(e) => setDraftParams(prev => ({ ...prev, radius: parseInt(e.target.value) }))}
-                    className="w-full h-1 hero-filter-icon/20 rounded-lg appearance-none cursor-pointer accent-[#cd6133]"
+                    className="w-full h-1.5 bg-[#1C3152]/10 rounded-lg appearance-none cursor-pointer accent-[#1C3152] slider-thumb-premium"
                   />
                 </div>
               </div>
@@ -737,7 +736,7 @@ export default function SalonList() {
                 <button
                   onClick={handleFetch}
                   disabled={loading || !hasChanges}
-                  className={`w-full h-11 rounded-xl font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${loading || !hasChanges ? "bg-[#3c143208] text-[#3c143230] cursor-not-allowed border border-[#3c143205]" : "hero-filter-btn-bg text-white hover:hero-filter-btn-hover-bg shadow-lg shadow-[#1e0a18]/10 hover:shadow-[#7a2860]/20 active:scale-95"}`}
+                  className={`w-full h-11 rounded-xl font-bold text-[0.7rem] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2 ${loading || !hasChanges ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "rec-btn-primary hover:shadow-lg active:scale-95"}`}
                 >
                   {loading ? (
                     <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />

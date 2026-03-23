@@ -2,29 +2,29 @@
 
 :root {
     /* Profile Header Variables */
-    --profile-header-accent: #1a56db;
-    --profile-header-accent-light: #c8d9f8;
-    --profile-header-accent-dark: #0f2a6b;
-    --profile-header-accent-glow: rgba(26, 86, 219, 0.15);
-    --profile-header-text-main: #0a0f1e;
-    --profile-header-text-muted: #4b5563;
+    --profile-header-accent: #1C3152;
+    --profile-header-accent-light: #E2E8F0;
+    --profile-header-accent-dark: #16263F;
+    --profile-header-accent-glow: rgba(28, 49, 82, 0.15);
+    --profile-header-text-main: #222222;
+    --profile-header-text-muted: #6B6B6B;
     --profile-header-bg-main: #ffffff;
-    --profile-header-bg-soft: #f5f8ff;
-    --profile-header-bg-light: #eef2ff;
-    --profile-header-border-light: rgba(0, 0, 0, 0.07);
+    --profile-header-bg-soft: #F4F7FB;
+    --profile-header-bg-light: #EBF0F8;
+    --profile-header-border-light: #E2E8F0;
 
     /* Profile Card Variables */
     --profile-card-bg-color: #ffffff;
-    --profile-card-border-color: rgba(0, 0, 0, 0.07);
-    --profile-name-text-color: #0a0f1e;
-    --profile-meta-text-color: #1a3a6b;
+    --profile-card-border-color: #E2E8F0;
+    --profile-name-text-color: #222222;
+    --profile-meta-text-color: #1C3152;
 }
 
 /* ==========================================================================
    NAVBAR SECTION
    ========================================================================== */
 .navbar-bg {
-    background: linear-gradient(135deg, #eef2ff 0%, #f0f4ff 45%, #ffffff 100%);
+    background: linear-gradient(135deg, #F4F7FB 0%, #EBF0F8 45%, #ffffff 100%);
     backdrop-filter: blur(12px);
 }
 
@@ -33,18 +33,18 @@
 }
 
 .navbar-logo-text {
-    background: linear-gradient(to right, #1a56db, #0f2a6b);
+    background: linear-gradient(to right, #1C3152, #16263F);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
 
 .navbar-logo-subtext {
-    color: rgba(26, 86, 219, 0.8);
+    color: rgba(28, 49, 82, 0.8);
 }
 
 .navbar-link-text {
-    color: #6b7280;
+    color: #6B6B6B;
 }
 
 .navbar-link-bg {
@@ -61,7 +61,7 @@
 }
 
 .navbar-link-hover-bg {
-    background-color: #1a56db;
+    background-color: #1C3152;
 }
 
 .navbar-link-hover-bg-alt {
@@ -69,7 +69,7 @@
 }
 
 .navbar-btn-primary-bg {
-    background-color: #1a56db;
+    background-color: #1C3152;
 }
 
 .navbar-btn-primary-text {
@@ -77,7 +77,7 @@
 }
 
 .navbar-btn-primary-hover-bg {
-    background-color: #1445b5;
+    background-color: #16263F;
 }
 
 .navbar-btn-outline-bg {
@@ -85,7 +85,7 @@
 }
 
 .navbar-btn-outline-text {
-    color: #6b7280;
+    color: #6B6B6B;
 }
 
 .navbar-btn-outline-border {
@@ -93,7 +93,7 @@
 }
 
 .navbar-icon-color {
-    color: #6b7280;
+    color: #6B6B6B;
 }
 
 .navbar-icon-hover-color {
@@ -106,7 +106,7 @@
 
 /* Hero Section */
 .hero-bg-overlay {
-    background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8));
 }
 
 .hero-badge-bg {
@@ -119,7 +119,7 @@
 }
 
 .hero-badge-dot {
-    background-color: #c9a84c;
+    background-color: #C49B66;
 }
 
 .hero-title-text {
@@ -127,7 +127,7 @@
 }
 
 .hero-title-accent {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 .hero-subtitle-text {
@@ -140,24 +140,26 @@
 }
 
 .hero-filter-input-bg {
-    background-color: #f5f8ff;
-    border-color: #eef2ff;
+    background-color: #F4F7FB;
+    border-color: #E2E8F0;
 }
 
 .hero-filter-input-text {
-    color: #1a3a6b;
+    color: #1C3152;
 }
 
 .hero-filter-icon {
-    color: #1a56db;
+    color: #1C3152;
 }
 
 .hero-filter-btn-bg {
-    background-color: #1a56db;
+    background-color: #1C3152;
+    color: #ffffff;
 }
 
 .hero-filter-btn-hover-bg {
-    background-color: #1445b5;
+    background-color: #16263F;
+    color: #ffffff;
 }
 
 /* Categories Section */
@@ -167,41 +169,41 @@
 }
 
 .category-card-text {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .category-card-hover-bg {
-    background-color: #f0f4ff;
+    background-color: #F4F7FB;
 }
 
 /* Recommended Salons */
 .salon-card-bg {
     background-color: #ffffff;
-    border-color: rgba(26, 86, 219, 0.1);
+    border-color: rgba(28, 49, 82, 0.1);
 }
 
 .salon-card-title {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .salon-card-text {
-    color: rgba(26, 58, 107, 0.7);
+    color: rgba(28, 49, 82, 0.7);
 }
 
 .salon-card-btn-border {
-    border-color: #1a56db;
+    border-color: #1C3152;
 }
 
 .salon-card-btn-text {
-    color: #1a56db;
+    color: #1C3152;
 }
 
 .salon-card-btn-hover-bg {
-    background-color: #1a56db;
+    background-color: #1C3152;
 }
 
 .salon-card-btn-hover-text {
-    color: #f0f4ff;
+    color: #F4F7FB;
 }
 
 /* About Us Section */
@@ -210,11 +212,11 @@
 }
 
 .about-title-text {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .about-body-text {
-    color: rgba(15, 42, 107, 0.8);
+    color: rgba(28, 49, 82, 0.8);
 }
 
 /* Reviews Section */
@@ -224,11 +226,11 @@
 }
 
 .review-text-main {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .review-star-icon {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 /* ==========================================================================
@@ -239,60 +241,60 @@
 }
 
 .salon-list-title-text {
-    color: #0a0f1e;
+    color: #222222;
 }
 
 .salon-list-title-accent {
-    color: #1a56db;
+    color: #1C3152;
 }
 
 .badge-verified-bg {
-    background-color: rgba(26, 86, 219, 0.1);
+    background-color: rgba(28, 49, 82, 0.1);
 }
 
 .badge-verified-text {
-    color: #1a56db;
+    color: #1C3152;
 }
 
 .badge-verified-border {
-    border-color: rgba(26, 86, 219, 0.2);
+    border-color: rgba(28, 49, 82, 0.2);
 }
 
 .badge-new-bg {
-    background-color: rgba(15, 42, 107, 0.1);
+    background-color: rgba(28, 49, 82, 0.1);
 }
 
 .badge-new-text {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .badge-new-border {
-    border-color: rgba(15, 42, 107, 0.2);
+    border-color: rgba(28, 49, 82, 0.2);
 }
 
 .badge-trending-bg {
-    background-color: rgba(201, 168, 76, 0.1);
+    background-color: rgba(196, 155, 102, 0.1);
 }
 
 .badge-trending-text {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 .badge-trending-border {
-    border-color: rgba(201, 168, 76, 0.2);
+    border-color: rgba(196, 155, 102, 0.2);
 }
 
 .star-icon-filled {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 .star-icon-empty {
-    color: #c8d9f8;
+    color: #E2E8F0;
 }
 
 .filter-bar-item-bg {
     background-color: rgba(255, 255, 255, 0.5);
-    border-color: rgba(26, 86, 219, 0.07);
+    border-color: rgba(28, 49, 82, 0.07);
 }
 
 .filter-bar-item-hover-bg {
@@ -300,7 +302,7 @@
 }
 
 .filter-active-bg {
-    background-color: #0a0f1e;
+    background-color: #222222;
 }
 
 .filter-active-text {
@@ -308,14 +310,14 @@
 }
 
 .filter-active-icon {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 /* ==========================================================================
    SALON DETAILS PAGE
    ========================================================================== */
 .salon-detail-hero-overlay {
-    background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
 }
 
 .service-item-bg {
@@ -324,15 +326,15 @@
 }
 
 .service-item-hover-bg {
-    background-color: #f0f4ff;
+    background-color: #F4F7FB;
 }
 
 .service-name-text {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .service-price-text {
-    color: #1a56db;
+    color: #597FAB;
 }
 
 .staff-card-bg {
@@ -340,20 +342,20 @@
 }
 
 .staff-name-text {
-    color: #0f2a6b;
+    color: #1C3152;
 }
 
 .timing-row-text {
-    color: #1a3a6b;
+    color: #6B6B6B;
 }
 
 .btn-book-now {
-    background-color: #1a56db;
+    background-color: #1C3152;
     color: #ffffff;
 }
 
 .btn-book-now:hover {
-    background-color: #1445b5;
+    background-color: #16263F;
 }
 
 /* ==========================================================================
@@ -373,7 +375,7 @@
 }
 
 .profile-meta-icon {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 .profile-tier-bronze {
@@ -396,68 +398,363 @@
    FOOTER SECTION
    ========================================================================== */
 .footer-bg {
-    background-color: #0f2a6b;
+    background-color: #1C3152;
 }
 
 .footer-main-text {
-    color: #f0f4ff;
+    color: #F4F7FB;
 }
 
 .footer-link-text {
-    color: rgba(240, 244, 255, 0.55);
+    color: rgba(244, 247, 251, 0.55);
 }
 
 .footer-link-hover-text {
-    color: #c9a84c;
+    color: #C49B66;
 }
 
 .footer-social-btn-border {
-    border-color: rgba(240, 244, 255, 0.2);
+    border-color: rgba(244, 247, 251, 0.2);
 }
 
 .footer-social-btn-text {
-    color: rgba(240, 244, 255, 0.7);
+    color: rgba(244, 247, 251, 0.7);
 }
 
 .footer-social-btn-hover-bg {
-    background-color: #1a56db;
-    border-color: #1a56db;
+    background-color: #597FAB;
+    border-color: #597FAB;
 }
 
 .footer-social-btn-hover-text {
-    color: #f0f4ff;
+    color: #F4F7FB;
 }
 
 .footer-divider {
-    border-color: rgba(240, 244, 255, 0.1);
+    border-color: rgba(244, 247, 251, 0.1);
 }
 
 /* ==========================================================================
    GENERIC BUTTONS & COMPONENTS
    ========================================================================== */
 .btn-primary {
-    background-color: #1a56db;
+    background-color: #1C3152;
     color: #ffffff;
     border: 1px solid transparent;
 }
 
 .btn-primary:hover {
-    background-color: #1445b5;
+    background-color: #16263F;
 }
 
 .btn-secondary {
-    background-color: #0f2a6b;
+    background-color: #597FAB;
     color: #ffffff;
 }
 
 .btn-secondary:hover {
-    background-color: #0a1f52;
+    background-color: #4a6f9a;
 }
 
 .icon-primary {
-    color: #1a56db;
+    color: #1C3152;
 }
 
 .icon-secondary {
-    color: #c9a84c;
+    color: #C49B66;
+}
+
+/* ==========================================================================
+   SERVICE CARD
+   ========================================================================== */
+.service-card-bg {
+    background-color: #ffffff;
+    border-color: #E2E8F0;
+    box-shadow: 0 2px 16px rgba(28, 49, 82, 0.10);
+}
+
+.service-card-header-bg {
+    background-color: #1C3152;
+}
+
+.service-card-logo-bg {
+    background-color: #C49B66;
+}
+
+.service-card-salon-name {
+    color: #C49B66;
+}
+
+.service-card-salon-sub {
+    color: rgba(196, 155, 102, 0.6);
+}
+
+.service-card-badge-popular {
+    background-color: #597FAB;
+    color: #ffffff;
+}
+
+.service-card-badge-discount {
+    background-color: #C49B66;
+    color: #1C3152;
+}
+
+.service-card-label {
+    color: #6B6B6B;
+}
+
+.service-card-title {
+    color: #222222;
+}
+
+.service-card-accent {
+    color: #597FAB;
+}
+
+.service-card-divider {
+    border-color: #E2E8F0;
+}
+
+.service-card-duration-bg {
+    background-color: #F4F7FB;
+    border-color: #E2E8F0;
+}
+
+.service-card-price-bg {
+    background-color: #F4F7FB;
+    border-color: #E2E8F0;
+}
+
+.service-card-price-text {
+    color: #222222;
+}
+
+.service-card-price-original {
+    color: #6B6B6B;
+    text-decoration: line-through;
+}
+
+.service-card-cta {
+    background-color: #1C3152;
+    color: #ffffff;
+}
+
+.service-card-cta:hover {
+    background-color: #16263F;
+}
+
+.service-card-footer-text {
+    color: #6B6B6B;
+}
+
+.service-section-badge {
+    background-color: rgba(28, 49, 82, 0.10);
+    color: #1C3152;
+}
+
+.service-section-divider {
+    background-color: rgba(28, 49, 82, 0.20);
+}
+
+.service-section-dot {
+    background-color: #C49B66;
+}
+
+/* ==========================================================================
+   ADDRESS BLOCK (SALON DETAILS PAGE)
+   ========================================================================== */
+.address-block-bg {
+    background-color: #1C3152;
+    color: #ffffff;
+}
+
+.address-icon-bg {
+    background-color: #C49B66;
+}
+
+.address-label-text {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.address-navigate-btn {
+    background-color: #C49B66;
+    color: #1C3152;
+}
+
+.address-navigate-btn:hover {
+    background-color: #ffffff;
+    color: #1C3152;
+}
+
+/* ==========================================================================
+   RECOMMENDED SALONS SECTION
+   ========================================================================== */
+.rec-section-eyebrow {
+    color: #C49B66;
+}
+
+.rec-section-divider {
+    background-color: rgba(196, 155, 102, 0.4);
+}
+
+.rec-section-heading {
+    color: #1C3152;
+}
+
+.rec-section-heading-accent {
+    color: #C49B66;
+}
+
+.rec-section-subtext {
+    color: rgba(28, 49, 82, 0.55);
+}
+
+.rec-section-divider-line {
+    background-color: rgba(28, 49, 82, 0.07);
+}
+
+.rec-section-border {
+    border-color: rgba(28, 49, 82, 0.1);
+}
+
+/* Salon Card */
+.rec-card-border {
+    border-color: rgba(28, 49, 82, 0.10);
+    box-shadow: 0 2px 16px rgba(28, 49, 82, 0.06);
+}
+
+.rec-card-overlay {
+    background: linear-gradient(to bottom, transparent, transparent, rgba(28, 49, 82, 0.45));
+}
+
+.rec-card-title {
+    color: #1C3152;
+}
+
+.rec-card-meta {
+    color: rgba(28, 49, 82, 0.55);
+}
+
+.rec-card-desc {
+    color: rgba(28, 49, 82, 0.55);
+}
+
+.rec-card-inner-divider {
+    background-color: rgba(28, 49, 82, 0.07);
+}
+
+/* Card Badges */
+.rec-badge-top-rated-bg {
+    background-color: #1C3152;
+    color: #C49B66;
+    border-color: rgba(196, 155, 102, 0.3);
+}
+
+.rec-badge-new-bg {
+    background-color: rgba(89, 127, 171, 0.15);
+    color: #597FAB;
+    border-color: rgba(89, 127, 171, 0.2);
+}
+
+.rec-badge-trending-bg {
+    background-color: rgba(196, 155, 102, 0.15);
+    color: #C49B66;
+    border-color: rgba(196, 155, 102, 0.2);
+}
+
+/* Open/Closed status */
+.rec-status-open {
+    background-color: #1C3152;
+    color: #ffffff;
+}
+
+.rec-status-closed {
+    background-color: rgba(254, 242, 242, 0.9);
+    color: #dc2626;
+}
+
+/* Card CTA button */
+.rec-card-btn {
+    border-color: rgba(28, 49, 82, 0.18);
+    color: #1C3152;
+}
+
+.rec-card-btn-hover {
+    /* Applied via group-hover in JSX */
+    background-color: #1C3152;
+    color: #F4F7FB;
+}
+
+/* Section Buttons */
+.rec-btn-primary {
+    background-color: #1C3152;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.rec-btn-primary:hover {
+    background-color: #16263F;
+}
+
+.rec-btn-outline {
+    background-color: #ffffff;
+    color: #1C3152;
+    border-color: rgba(28, 49, 82, 0.18);
+}
+
+.rec-btn-outline:hover {
+    background-color: #1C3152;
+    color: #F4F7FB;
+    border-color: transparent;
+}
+
+.rec-btn-gold-outline {
+    background-color: rgba(196, 155, 102, 0.08);
+    color: #1C3152;
+    border-color: #C49B66;
+}
+
+.rec-btn-gold-outline:hover {
+    background-color: #C49B66;
+    color: #ffffff;
+}
+
+/* Error/Empty state */
+.rec-empty-border {
+    border-color: rgba(28, 49, 82, 0.15);
+}
+
+.rec-empty-icon-bg {
+    background-color: rgba(28, 49, 82, 0.05);
+}
+
+.rec-empty-heading {
+    color: #1C3152;
+}
+
+/* ==========================================================================
+   HOME CATEGORIES SECTION
+   ========================================================================== */
+.cat-section-label {
+    color: #1C3152;
+}
+
+.cat-section-heading {
+    color: #222222;
+}
+
+.cat-section-heading-accent {
+    color: #1C3152;
+}
+
+.cat-price-text {
+    color: #1C3152;
+}
+
+.cat-circle-shadow {
+    box-shadow: 0 20px 60px rgba(28, 49, 82, 0.15);
+}
+
+.cat-circle-ring {
+    box-shadow: 0 0 0 1px rgba(28, 49, 82, 0.10);
 }

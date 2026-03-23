@@ -9,19 +9,19 @@ const MarketingSection = () => {
         {
             label: 'Exquisite customizable message templates',
             icon: <BsMegaphone size={16} />,
-            color: '#c4956a',
+            color: '#C8A951',
             description: 'Create beautiful campaigns in minutes'
         },
         {
             label: 'Advanced precision client targeting',
             icon: <HiOutlineUserGroup size={16} />,
-            color: '#7a2860',
+            color: '#1C3152',
             description: 'Reach the right clients at the right time'
         },
         {
-            label: 'Automated reminders & post-visit follow-ups',
+            label: 'Automated reminders & follow-ups',
             icon: <HiOutlineBell size={16} />,
-            color: '#c4956a',
+            color: '#C8A951',
             description: 'Reduce no-shows by up to 40% automatically'
         },
     ];
@@ -58,16 +58,7 @@ const MarketingSection = () => {
             position: 'relative',
         }}>
             {/* Background decoration */}
-            <div style={{
-                position: 'absolute',
-                top: '20%',
-                right: '10%',
-                width: '400px',
-                height: '400px',
-                background: 'radial-gradient(circle, rgba(196,149,106,0.03) 0%, transparent 70%)',
-                pointerEvents: 'none',
-                zIndex: 0,
-            }} />
+            <div className="absolute top-[20%] right-[10%] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(200,169,81,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
 
             <motion.div
                 initial="hidden"
@@ -85,42 +76,18 @@ const MarketingSection = () => {
                     {/* Badge */}
                     <motion.div
                         variants={itemVariants}
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 10,
-                            marginBottom: 24,
-                            background: 'rgba(122,40,96,0.03)',
-                            padding: '6px 14px 6px 8px',
-                            borderRadius: 100,
-                            border: '1px solid rgba(196,149,106,0.15)',
-                        }}
+                        className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full hero-filter-input-bg border rec-card-border shadow-sm mb-6"
                     >
                         <motion.div
                             initial={{ scale: 0 }}
                             whileInView={{ scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ type: "spring", stiffness: 500, damping: 15, delay: 0.3 }}
-                            style={{
-                                width: 24,
-                                height: 24,
-                                borderRadius: 8,
-                                background: 'linear-gradient(135deg, #c4956a, #7a2860)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: 'white',
-                            }}
+                            className="w-6 h-6 rounded-lg bg-[#C8A951] flex items-center justify-center text-[#1C3152] shadow-md"
                         >
                             <BsChatDots size={14} />
                         </motion.div>
-                        <span style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 600,
-                            letterSpacing: '0.1em',
-                            textTransform: 'uppercase',
-                            color: '#7a2860',
-                        }}>
+                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase rec-section-heading-accent">
                             Marketing Automation
                         </span>
                     </motion.div>
@@ -128,15 +95,7 @@ const MarketingSection = () => {
                     {/* Headline */}
                     <motion.h2
                         variants={itemVariants}
-                        style={{
-                            fontFamily: "'Cormorant Garamond', serif",
-                            fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
-                            fontWeight: 600,
-                            color: '#1e0a18',
-                            lineHeight: 1.1,
-                            letterSpacing: '-0.02em',
-                            marginBottom: 20,
-                        }}
+                        className="font-[Cormorant_Garamond,serif] text-4xl sm:text-5xl md:text-6xl font-bold rec-section-heading leading-tight tracking-tight mb-5"
                     >
                         Stay in touch with{' '}
                         <motion.span
@@ -144,12 +103,7 @@ const MarketingSection = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.6 }}
-                            style={{
-                                color: '#7a2860',
-                                fontStyle: 'italic',
-                                position: 'relative',
-                                display: 'inline-block',
-                            }}
+                            className="rec-section-heading-accent italic inline-block relative"
                         >
                             smart
                             <motion.div
@@ -157,15 +111,7 @@ const MarketingSection = () => {
                                 whileInView={{ width: '100%' }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: 0.8 }}
-                                style={{
-                                    position: 'absolute',
-                                    bottom: 4,
-                                    left: 0,
-                                    height: 6,
-                                    background: 'rgba(196,149,106,0.15)',
-                                    borderRadius: 3,
-                                    zIndex: -1,
-                                }}
+                                className="absolute bottom-1 left-0 h-2 bg-[#C8A951]/20 rounded-full -z-[1]"
                             />
                         </motion.span>{' '}
                         campaigns
@@ -174,13 +120,7 @@ const MarketingSection = () => {
                     {/* Description */}
                     <motion.p
                         variants={itemVariants}
-                        style={{
-                            fontSize: '1rem',
-                            color: 'rgba(60,20,50,0.6)',
-                            lineHeight: 1.7,
-                            marginBottom: 36,
-                            maxWidth: 480,
-                        }}
+                        className="text-base sm:text-lg rec-section-subtext leading-relaxed mb-10 max-w-lg font-medium"
                     >
                         Engage clients effortlessly with personalized messaging that feels human, not automated. Build lasting relationships and watch your retention soar.
                     </motion.p>
@@ -188,12 +128,7 @@ const MarketingSection = () => {
                     {/* Feature List */}
                     <motion.div
                         variants={containerVariants}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 24,
-                            marginBottom: 32,
-                        }}
+                        className="flex flex-col gap-6 mb-8"
                     >
                         {points.map((item, i) => (
                             <motion.div
@@ -201,46 +136,24 @@ const MarketingSection = () => {
                                 variants={itemVariants}
                                 whileHover={{ x: 5 }}
                                 transition={{ duration: 0.2 }}
-                                style={{
-                                    display: 'flex',
-                                    gap: 16,
-                                }}
+                                className="flex gap-4"
                             >
                                 <motion.div
                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                     transition={{ duration: 0.2 }}
+                                    className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg border rec-card-border"
                                     style={{
-                                        width: 44,
-                                        height: 44,
-                                        borderRadius: 14,
-                                        background: `linear-gradient(135deg, ${item.color}12, ${item.color}05)`,
-                                        border: `1px solid ${item.color}25`,
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
+                                        background: `linear-gradient(135deg, ${item.color}15, ${item.color}05)`,
                                         color: item.color,
-                                        flexShrink: 0,
-                                        boxShadow: `0 6px 12px -8px ${item.color}`,
                                     }}
                                 >
                                     {item.icon}
                                 </motion.div>
                                 <div>
-                                    <span style={{
-                                        fontSize: '1rem',
-                                        color: '#1e0a18',
-                                        fontWeight: 600,
-                                        letterSpacing: '-0.01em',
-                                        display: 'block',
-                                        marginBottom: 4,
-                                    }}>
+                                    <span className="text-lg font-bold rec-section-heading tracking-tight mb-1 block">
                                         {item.label}
                                     </span>
-                                    <span style={{
-                                        fontSize: '0.85rem',
-                                        color: 'rgba(60,20,50,0.5)',
-                                        lineHeight: 1.5,
-                                    }}>
+                                    <span className="text-sm rec-section-subtext leading-relaxed font-medium">
                                         {item.description}
                                     </span>
                                 </div>
@@ -299,15 +212,7 @@ const MarketingSection = () => {
                     <motion.div
                         whileHover={{ y: -8 }}
                         transition={{ duration: 0.3 }}
-                        style={{
-                            position: 'relative',
-                            width: '100%',
-                            maxWidth: 480,
-                            borderRadius: 32,
-                            overflow: 'hidden',
-                            boxShadow: '0 30px 60px -20px rgba(122,40,96,0.3), 0 0 0 1px rgba(196,149,106,0.15)',
-                            zIndex: 2,
-                        }}
+                        className="relative w-full max-w-[480px] rounded-[2.5rem] overflow-hidden shadow-2xl border rec-card-border z-[2]"
                     >
                         <motion.div
                             whileHover={{ scale: 1.03 }}
@@ -346,33 +251,10 @@ const MarketingSection = () => {
                         whileInView={{ opacity: 1, scale: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.8 }}
-                        style={{
-                            background: '#1e0a18',
-                            borderRadius: 100,
-                            padding: '12px 24px',
-                            boxShadow: '0 20px 40px -10px rgba(30,10,24,0.4)',
-                            zIndex: 4,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 12,
-                            border: '1px solid rgba(196,149,106,0.3)',
-                            marginTop: 24,
-                        }}
+                        className="bg-[#1C3152] rounded-full px-8 py-3.5 shadow-2xl z-[4] flex items-center gap-3 border border-[#C8A951]/30 mt-8"
                     >
-                        <div style={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: '50%',
-                            background: '#c4956a',
-                            boxShadow: '0 0 12px #c4956a',
-                        }} />
-                        <span style={{
-                            fontSize: '0.75rem',
-                            fontWeight: 600,
-                            color: 'white',
-                            letterSpacing: '0.08em',
-                            textTransform: 'uppercase'
-                        }}>
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#C8A951] shadow-[0_0_15px_#C8A951] animate-pulse" />
+                        <span className="text-[10px] font-bold text-white tracking-[0.2em] uppercase">
                             Auto-Pilot Active
                         </span>
                     </motion.div>

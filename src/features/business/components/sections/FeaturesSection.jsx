@@ -98,15 +98,9 @@ const FeaturesSection = () => {
                         whileInView={{ width: 32 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.3 }}
-                        style={{ height: 1, background: '#c4956a' }}
+                        className="h-[1px] bg-[#C8A951]"
                     />
-                    <span style={{
-                        fontSize: '0.7rem',
-                        fontWeight: 500,
-                        letterSpacing: '0.15em',
-                        textTransform: 'uppercase',
-                        color: '#7a2860',
-                    }}>
+                    <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.2em] uppercase rec-section-heading-accent">
                         Everything You Need
                     </span>
                     <motion.div
@@ -114,7 +108,7 @@ const FeaturesSection = () => {
                         whileInView={{ width: 32 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.3 }}
-                        style={{ height: 1, background: '#c4956a' }}
+                        className="h-[1px] bg-[#C8A951]"
                     />
                 </motion.div>
 
@@ -123,15 +117,7 @@ const FeaturesSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.4 }}
-                    style={{
-                        fontFamily: "'Cormorant Garamond', serif",
-                        fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                        fontWeight: 600,
-                        color: '#1e0a18',
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.02em',
-                        marginBottom: 16,
-                    }}
+                    className="font-[Cormorant_Garamond,serif] text-3xl sm:text-4xl md:text-5xl font-bold rec-section-heading leading-tight tracking-tight mb-4"
                 >
                     A full solution to manage and{' '}
                     <motion.span
@@ -139,11 +125,7 @@ const FeaturesSection = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.6 }}
-                        style={{
-                            color: '#7a2860',
-                            fontStyle: 'italic',
-                            display: 'inline-block',
-                        }}
+                        className="rec-section-heading-accent italic inline-block"
                     >
                         grow
                     </motion.span>{' '}
@@ -155,13 +137,7 @@ const FeaturesSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    style={{
-                        fontSize: '0.95rem',
-                        color: 'rgba(60,20,50,0.6)',
-                        maxWidth: 540,
-                        margin: '0 auto',
-                        lineHeight: 1.6,
-                    }}
+                    className="text-sm sm:text-base rec-section-subtext max-w-[540px] mx-auto leading-relaxed font-medium"
                 >
                     Packed with essential tools to boost sales, manage your calendar seamlessly,
                     and retain elite clients.
@@ -219,26 +195,12 @@ const FeaturesSection = () => {
                             />
 
                             {/* Icon - Inside motion div */}
-                            <motion.div
+                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
-                                style={{
-                                    position: 'absolute',
-                                    bottom: 16,
-                                    left: 16,
-                                    width: 42,
-                                    height: 42,
-                                    borderRadius: 12,
-                                    background: 'white',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    color: '#7a2860',
-                                    boxShadow: '0 8px 20px rgba(0,0,0,0.08)',
-                                    zIndex: 2,
-                                }}
+                                className="absolute bottom-4 left-4 w-11 h-11 rounded-xl bg-white flex items-center justify-center rec-section-heading shadow-xl z-[2] border rec-card-border"
                             >
                                 {feature.icon}
                             </motion.div>
@@ -255,13 +217,7 @@ const FeaturesSection = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
-                                style={{
-                                    fontSize: '1.1rem',
-                                    fontWeight: 600,
-                                    color: '#1e0a18',
-                                    letterSpacing: '-0.01em',
-                                    marginBottom: 8,
-                                }}
+                                className="text-lg font-bold rec-section-heading tracking-tight mb-2"
                             >
                                 {feature.title}
                             </motion.h3>
@@ -271,12 +227,7 @@ const FeaturesSection = () => {
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
-                                style={{
-                                    fontSize: '0.85rem',
-                                    color: 'rgba(60,20,50,0.65)',
-                                    lineHeight: 1.6,
-                                    margin: 0,
-                                }}
+                                className="text-sm rec-section-subtext leading-relaxed font-medium"
                             >
                                 {feature.description}
                             </motion.p>

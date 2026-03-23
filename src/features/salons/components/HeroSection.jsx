@@ -54,10 +54,10 @@ function Reveal({ children, delay = 0, className = "" }) {
 
 function Badge({ children, variant = "gold" }) {
     const variants = {
-        gold: "badge-verified-bg badge-verified-text",
-        outline: "bg-transparent border salon-card-btn-border salon-card-btn-text",
+        gold: "rec-badge-top-rated-bg",
+        outline: "bg-transparent border rec-card-btn rec-card-btn-text",
         glass: "backdrop-blur-md bg-white/10 text-white border border-white/20",
-        plum: "footer-bg text-[#fef9f3]",
+        plum: "rec-btn-primary",
     };
 
     return (
@@ -107,7 +107,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                     </Reveal>
 
                     <Reveal delay={300}>
-                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 tracking-tight md:whitespace-nowrap"
+                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 tracking-tight font-[Cormorant_Garamond,Georgia,serif]"
                             style={{ fontSize: "clamp(22px,5.5vw,56px)" }}>
                             {toTitleCase(salon.name)}
                         </h1>
@@ -118,14 +118,14 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-10">
                                 {/* Premium Rating */}
                                 <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-1 star-icon-filled">
+                                    <div className="flex items-center gap-1 rec-section-heading-accent">
                                         {Array.from({ length: 5 }).map((_, i) => (
                                             <svg key={i} width={14} height={14} className="md:w-[16px] md:h-[16px]" viewBox="0 0 24 24" fill={i < Math.round(salon.averageRating || 0) ? "currentColor" : "rgba(255,255,255,0.2)"}>
                                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                             </svg>
                                         ))}
                                     </div>
-                                    <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-[#fef9f3]/80">
+                                    <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-white/80">
                                         {salon.totalReviews > 0 ? `${salon.averageRating.toFixed(1)} / ${salon.totalReviews} Reviews` : "New Experience"}
                                     </span>
                                 </div>
@@ -153,9 +153,9 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                             {salon.categories && salon.categories.length > 0 && (
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-4 mt-2 md:mt-0">
                                     {salon.categories.map((cat, i) => (
-                                        <div key={cat.id || i} className="flex items-center gap-1 sm:gap-1.5 md:gap-2 bg-black/20 backdrop-blur-md px-2 sm:px-2.5 md:px-3 py-1 sm:py-1.2 md:py-1.5 rounded-full border border-white/10">
-                                            <span className="w-1 h-1 rounded-full hero-filter-btn-bg" />
-                                            <span className="text-[7.5px] sm:text-[8.5px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-[#fef9f3]">{cat.name}</span>
+                                        <div key={cat.id || i} className="flex items-center gap-1.5 sm:gap-2 bg-black/30 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full border border-white/10">
+                                            <span className="w-1.5 h-1.5 rounded-full rec-badge-top-rated-bg" />
+                                            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">{cat.name}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -167,14 +167,14 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mt-0">
                             <button
                                 onClick={handleBookButtonClick}
-                                className="w-full sm:w-auto group relative px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-[#cd6133] text-[#fef9f3] text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.2em] uppercase overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_-10px_rgba(205,97,51,0.5)] hover:-translate-y-1 border-0 cursor-pointer text-center"
+                                className="w-full sm:w-auto group relative px-8 py-3.5 rounded-full rec-btn-primary text-white text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 border-0 cursor-pointer text-center"
                             >
                                 <span className="relative z-10">Book Appointment</span>
-                                <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                             </button>
                             <a
                                 href="#services"
-                                className="w-full sm:w-auto flex items-center justify-center group px-5 sm:px-6 py-2.5 sm:py-3 rounded-full border border-[#fef9f3]/30 text-[#fef9f3] text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.2em] uppercase transition-all duration-500 hover:bg-[#fef9f3] hover:text-[#4b3621] hover:border-[#fef9f3] text-center"
+                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/30 text-white text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:text-[#1C3152] hover:border-white text-center"
                             >
                                 <span>View Services</span>
                             </a>
@@ -185,8 +185,8 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
 
             {/* Scroll Indicator */}
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 hidden md:block">
-                <div className="w-px h-24 bg-gradient-to-b from-[#fef9f3]/40 to-transparent relative">
-                    <div className="absolute top-0 left-0 w-full h-full bg-[#cd6133] origin-top animate-[scroll_2s_infinite]" />
+                <div className="w-px h-24 bg-gradient-to-b from-white/40 to-transparent relative">
+                    <div className="absolute top-0 left-0 w-full h-full hero-filter-btn-bg origin-top animate-[scroll_2s_infinite]" />
                 </div>
             </div>
 

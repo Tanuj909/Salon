@@ -65,7 +65,7 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-[#4b3621]/80 backdrop-blur-md animate-fadeIn" />
+      <div className="absolute inset-0 bg-[#1C3152]/80 backdrop-blur-md animate-fadeIn" />
       <div
         className="relative w-full max-w-xl bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-[40px] overflow-hidden shadow-2xl animate-slideUp border border-white/20 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
@@ -87,7 +87,7 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
               <div className="relative w-28 h-28 mb-6 group">
                 <div className="absolute inset-0 hero-filter-btn-bg rounded-[32px] rotate-6 scale-105 opacity-20 group-hover:rotate-12 transition-transform duration-500" />
                 <div className="relative w-full h-full rounded-[32px] overflow-hidden border-2 border-white shadow-xl">
-                  <img src={profile.userProfileImageUrl || `https://ui-avatars.com/api/?name=${profile.userFullName}&background=cd6133&color=fef9f3`} alt={profile.userFullName} className="w-full h-full object-cover" />
+                  <img src={profile.userProfileImageUrl || `https://ui-avatars.com/api/?name=${profile.userFullName}&background=1C3152&color=ffffff`} alt={profile.userFullName} className="w-full h-full object-cover" />
                 </div>
               </div>
               <h3 className="text-3xl font-bold footer-main-text mb-1">{profile.userFullName}</h3>
@@ -117,7 +117,7 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
               <div className="badge-verified-bg border hero-filter-input-bg p-5 sm:p-8 rounded-2xl sm:rounded-[32px] flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-0 text-center sm:text-left">
                 <div className="flex flex-col">
                   <span className="text-[8px] uppercase tracking-widest badge-verified-text font-bold mb-1.5 opacity-60">Availability</span>
-                  <p className="text-lg font-bold text-[#4b3621]">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
+                  <p className="text-lg font-bold salon-list-title-text">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
                 </div>
                 <div className={`px-4 py-1.5 rounded-full text-[8px] font-bold uppercase tracking-widest text-white shadow-lg ${profile.isAvailable ? 'hero-filter-btn-bg' : 'bg-red-500'}`}>
                   {profile.isAvailable ? 'Active' : 'Busy'}
@@ -140,7 +140,7 @@ function StaffCard({ member, index, onBook }) {
         <div className="relative mb-5 mt-2 w-full flex justify-center">
           <div className="w-28 h-28 rounded-full overflow-hidden border-[3px] hero-filter-input-bg shadow-md relative z-10 bg-[#f7ede2] group-hover:border-accent/40 transition-colors duration-500">
             <img
-              src={member.userProfileImageUrl || member.image || `https://ui-avatars.com/api/?name=${name}&background=cd6133&color=fef9f3`}
+              src={member.userProfileImageUrl || member.image || `https://ui-avatars.com/api/?name=${name}&background=1C3152&color=ffffff`}
               alt={name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               style={{ objectPosition: "top" }}
@@ -165,7 +165,7 @@ function StaffCard({ member, index, onBook }) {
 
         <button
           onClick={onBook}
-          className="w-full py-3 rounded-xl border-2 hero-filter-btn-bg text-white text-[9px] font-bold uppercase tracking-widest hover:hero-filter-btn-hover-bg transition-all duration-300 active:scale-95 cursor-pointer mt-auto"
+          className="w-full py-3.5 rounded-xl border-0 rec-btn-primary text-white text-[10px] font-bold uppercase tracking-widest hover:shadow-xl transition-all duration-300 active:scale-95 cursor-pointer mt-auto"
         >
           Book Now
         </button>
@@ -211,16 +211,16 @@ const SalonStaff = ({ id, onBookStaff }) => {
 
   return (
     <>
-      <section className="py-8 sm:py-12" id="staff">
+      <section className="py-8 sm:py-12" id="reviews">
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
-          <Reveal>
-            <div className="text-center mb-16 sm:mb-32">
-              <span className="block text-[9px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.5em] uppercase salon-list-title-accent font-extrabold mb-4 sm:mb-8">Master Artisans</span>
-              <h2 className="text-[24px] sm:text-5xl md:text-6xl salon-list-title-text font-bold leading-tight whitespace-nowrap">
-                Meet Our <em className="italic font-light">Experts</em>
-              </h2>
-            </div>
-          </Reveal>
+                <Reveal>
+                    <div className="text-center mb-16 sm:mb-24">
+                        <span className="block text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase rec-section-heading-accent font-extrabold mb-4 sm:mb-6">Master Artisans</span>
+                        <h2 className="text-[24px] sm:text-5xl md:text-6xl rec-section-heading font-bold leading-tight font-[Cormorant_Garamond,serif]">
+                            Meet Our <em className="italic font-light rec-section-heading-accent">Experts</em>
+                        </h2>
+                    </div>
+                </Reveal>
 
           {(!staff || staff.length === 0) ? (
             <div className="bg-white/30 rounded-2xl sm:rounded-[48px] p-8 sm:p-24 text-center border hero-filter-input-bg italic footer-link-text opacity-60">

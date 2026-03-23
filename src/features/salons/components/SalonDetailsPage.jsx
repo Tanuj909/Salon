@@ -96,11 +96,14 @@ export default function SalonDetailsPage({ id }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen about-section-bg flex flex-col items-center justify-center gap-4 font-[Jost,sans-serif]">
-        <div className="w-12 h-12 border-4 border-muted/20 border-t-[#C8A951] rounded-full animate-spin" />
-        <p className="salon-card-text text-lg">Loading salon details...</p>
-      </div>
-    );
+            <div className="min-h-screen hero-filter-input-bg flex flex-col items-center justify-center gap-6">
+                <div className="w-16 h-16 border-4 border-[#1C3152]/10 border-t-[#C49B66] rounded-full animate-spin shadow-lg" />
+                <div className="flex flex-col items-center gap-2">
+                    <h2 className="text-xl sm:text-2xl font-bold rec-section-heading font-[Cormorant_Garamond,serif] tracking-wider uppercase">Loading <em className="italic font-light rec-section-heading-accent">Excellence</em></h2>
+                    <p className="text-[10px] uppercase tracking-[0.4em] rec-section-subtext font-bold">Curating your experience</p>
+                </div>
+            </div>
+        );
   }
 
   if (error || !salon) {
@@ -140,7 +143,7 @@ export default function SalonDetailsPage({ id }) {
       {/* ═══════════════════════════════════════════
           SERVICES SECTION (PAGINATED API)
       ═══════════════════════════════════════════ */}
-      <SalonServices id={id} onBookService={handleBookService} />
+      <SalonServices id={id} salon={salon} onBookService={handleBookService} />
 
       {/* ═══════════════════════════════════════════
           SALON STAFF SECTION
@@ -173,32 +176,32 @@ export default function SalonDetailsPage({ id }) {
                       loading="lazy"
                       referrerPolicy="no-referrer-when-downgrade"
                     />
-                    <div className="absolute top-0 right-0 w-32 h-32 hero-filter-btn-bg -translate-y-1/2 translate-x-1/2 rotate-45 pointer-events-none group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute top-0 right-0 w-32 h-32 rec-badge-top-rated-bg -translate-y-1/2 translate-x-1/2 rotate-45 pointer-events-none group-hover:scale-110 transition-transform duration-500 opacity-20" />
                   </div>
-                ) : <div className="flex-1 rounded-[40px] badge-new-bg flex items-center justify-center min-h-[350px]"><span className="salon-card-text font-bold tracking-widest uppercase text-xs">Map Unavailable</span></div>}
+                ) : <div className="flex-1 rounded-[40px] bg-gray-100 flex items-center justify-center min-h-[350px]"><span className="rec-section-subtext font-bold tracking-widest uppercase text-xs">Map Unavailable</span></div>}
 
                 {/* Address Row Below Map */}
-                <div className="bg-[#4b3621] rounded-3xl sm:rounded-[32px] p-5 sm:p-8 text-[#fef9f3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shrink-0 mt-auto">
-                  <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0">
-                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl hero-filter-btn-bg flex items-center justify-center flex-shrink-0 shadow-lg">
-                      <svg width={16} height={16} className="sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <div className="bg-[#1C3152]/5 border rec-card-border rounded-3xl sm:rounded-[32px] p-6 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shrink-0 mt-auto">
+                  <div className="flex items-center gap-4 sm:gap-6 flex-1 min-w-0">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl rec-badge-top-rated-bg flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <svg width={18} height={18} className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2.5}>
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
                       </svg>
                     </div>
                     <div>
-                      <h4 className="text-[9px] uppercase tracking-[0.4em] text-[#fef9f3]/50 font-extrabold mb-1">The Address</h4>
-                      <p className="text-sm font-bold leading-relaxed line-clamp-2">{locationText}</p>
+                      <h4 className="rec-section-heading-accent text-[10px] uppercase tracking-[0.4em] font-bold mb-1.5">The Location</h4>
+                      <p className="rec-section-heading text-sm sm:text-base font-bold leading-relaxed line-clamp-2 font-[Cormorant_Garamond,serif] tracking-wide">{locationText}</p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col items-start sm:items-end sm:border-l sm:border-white/10 sm:pl-6 w-full sm:w-auto">
-                    <h4 className="text-[8px] sm:text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#fef9f3]/50 font-extrabold mb-1">Connect</h4>
-                    <p className="text-xs sm:text-sm font-bold mb-3">{salon.phoneNumber}</p>
+                  <div className="flex flex-col items-start sm:items-end sm:border-l rec-card-border sm:pl-8 w-full sm:w-auto">
+                    <h4 className="rec-section-heading-accent text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold mb-1.5">Connect</h4>
+                    <p className="rec-section-heading text-sm sm:text-base font-bold mb-4">{salon.phoneNumber}</p>
                     <a
                       href={`https://www.google.com/maps/dir/?api=1&destination=${salon.latitude},${salon.longitude}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-4 sm:px-6 py-2.5 rounded-full hero-filter-btn-bg text-[#fef9f3] text-[9px] font-bold uppercase tracking-widest hover:bg-[#fef9f3] hover:text-[#4b3621] transition-all shadow-md group border-0 cursor-pointer text-center w-full sm:w-auto"
+                      className="rec-btn-primary px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all shadow-md border-0 cursor-pointer text-center w-full sm:w-auto"
                     >
                       Navigate
                     </a>

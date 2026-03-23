@@ -75,26 +75,8 @@ const TestimonialSection = () => {
         }}>
 
             {/* Background decoration */}
-            <div style={{
-                position: 'absolute',
-                top: '20%',
-                left: '5%',
-                width: '300px',
-                height: '300px',
-                background: 'radial-gradient(circle, rgba(196,149,106,0.03) 0%, transparent 70%)',
-                pointerEvents: 'none',
-                zIndex: 0,
-            }} />
-            <div style={{
-                position: 'absolute',
-                bottom: '10%',
-                right: '5%',
-                width: '400px',
-                height: '400px',
-                background: 'radial-gradient(circle, rgba(122,40,96,0.02) 0%, transparent 70%)',
-                pointerEvents: 'none',
-                zIndex: 0,
-            }} />
+            <div className="absolute top-[20%] left-[5%] w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(200,169,81,0.04)_0%,transparent_70%)] pointer-events-none z-0" />
+            <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(28,49,82,0.03)_0%,transparent_70%)] pointer-events-none z-0" />
 
             <div style={{ position: 'relative', zIndex: 2 }}>
 
@@ -106,38 +88,23 @@ const TestimonialSection = () => {
                     viewport={{ once: true }}
                     style={{ textAlign: 'center', marginBottom: 60 }}
                 >
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 12,
-                        marginBottom: 16
-                    }}>
+                    <div className="flex items-center justify-center gap-4 mb-6">
                         <motion.div
                             initial={{ width: 0 }}
-                            whileInView={{ width: 40 }}
+                            whileInView={{ width: 50 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ height: 2, background: 'linear-gradient(90deg, transparent, #c4956a)' }}
+                            className="h-[1px] bg-gradient-to-r from-transparent to-[#C8A951]"
                         />
-                        <span style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 600,
-                            letterSpacing: '0.15em',
-                            textTransform: 'uppercase',
-                            color: '#7a2860',
-                            background: 'rgba(122,40,96,0.03)',
-                            padding: '4px 12px',
-                            borderRadius: 100,
-                        }}>
+                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase rec-section-heading-accent hero-filter-input-bg px-4 py-1.5 rounded-full border rec-card-border shadow-sm">
                             Client Stories
                         </span>
                         <motion.div
                             initial={{ width: 0 }}
-                            whileInView={{ width: 40 }}
+                            whileInView={{ width: 50 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ height: 2, background: 'linear-gradient(90deg, #c4956a, transparent)' }}
+                            className="h-[1px] bg-gradient-to-r from-[#C8A951] to-transparent"
                         />
                     </div>
 
@@ -146,14 +113,7 @@ const TestimonialSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        style={{
-                            fontFamily: "'Cormorant Garamond', serif",
-                            fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-                            fontWeight: 600,
-                            color: '#1e0a18',
-                            letterSpacing: '-0.02em',
-                            marginBottom: 12,
-                        }}
+                        className="font-[Cormorant_Garamond,serif] text-4xl sm:text-5xl md:text-6xl font-bold rec-section-heading leading-tight tracking-tight mb-4"
                     >
                         Loved by{' '}
                         <motion.span
@@ -161,12 +121,7 @@ const TestimonialSection = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.5 }}
-                            style={{
-                                color: '#7a2860',
-                                fontStyle: 'italic',
-                                position: 'relative',
-                                display: 'inline-block',
-                            }}
+                            className="rec-section-heading-accent italic inline-block relative"
                         >
                             professionals
                             <motion.div
@@ -174,15 +129,7 @@ const TestimonialSection = () => {
                                 whileInView={{ width: '100%' }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: 0.7 }}
-                                style={{
-                                    position: 'absolute',
-                                    bottom: 4,
-                                    left: 0,
-                                    height: 4,
-                                    background: 'rgba(196,149,106,0.15)',
-                                    borderRadius: 2,
-                                    zIndex: -1,
-                                }}
+                                className="absolute bottom-1.5 left-0 h-2 bg-[#C8A951]/20 rounded-full -z-[1]"
                             />
                         </motion.span>{' '}
                         worldwide
@@ -193,13 +140,7 @@ const TestimonialSection = () => {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        style={{
-                            fontSize: '0.95rem',
-                            color: 'rgba(60,20,50,0.6)',
-                            maxWidth: 500,
-                            margin: '0 auto',
-                            fontWeight: 300,
-                        }}
+                        className="text-base sm:text-lg rec-section-subtext leading-relaxed max-w-lg mx-auto font-medium"
                     >
                         Join thousands of satisfied salon owners who trust our platform
                     </motion.p>
@@ -225,45 +166,15 @@ const TestimonialSection = () => {
                                 y: -8,
                                 transition: { duration: 0.3 }
                             }}
-                            style={{
-                                borderRadius: 28,
-                                background: 'white',
-                                border: '1px solid rgba(196,149,106,0.12)',
-                                padding: '32px 28px',
-                                position: 'relative',
-                                overflow: 'hidden',
-                                boxShadow: '0 10px 30px -15px rgba(0,0,0,0.05)',
-                                transition: 'box-shadow 0.3s ease',
-                                cursor: 'default',
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.boxShadow = '0 25px 50px -12px rgba(122,40,96,0.2)';
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.boxShadow = '0 10px 30px -15px rgba(0,0,0,0.05)';
-                            }}
+                            className="relative bg-white rounded-[2rem] border rec-card-border p-8 overflow-hidden shadow-xl transition-shadow duration-300 hover:shadow-2xl hover:shadow-[#1C3152]/10"
                         >
                             {/* Quote icon background */}
-                            <div style={{
-                                position: 'absolute',
-                                top: 20,
-                                right: 20,
-                                fontSize: '5rem',
-                                fontFamily: "'Cormorant Garamond', serif",
-                                lineHeight: 1,
-                                color: 'rgba(196,149,106,0.08)',
-                                fontWeight: 700,
-                                pointerEvents: 'none',
-                            }}>
+                            <div className="absolute top-4 right-6 text-8xl font-[Cormorant_Garamond,serif] text-[#C8A951]/10 font-bold pointer-events-none select-none">
                                 "
                             </div>
 
                             {/* Rating */}
-                            <div style={{
-                                display: 'flex',
-                                gap: 3,
-                                marginBottom: 20
-                            }}>
+                            <div className="flex gap-1 mb-5">
                                 {[...Array(5)].map((_, i) => (
                                     <motion.div
                                         key={i}
@@ -277,7 +188,7 @@ const TestimonialSection = () => {
                                     >
                                         <HiStar
                                             size={18}
-                                            color={i < testimonial.rating ? '#c4956a' : '#e0d6ce'}
+                                            className={i < testimonial.rating ? "text-[#C8A951]" : "text-[#1C3152]/10"}
                                         />
                                     </motion.div>
                                 ))}
@@ -289,15 +200,7 @@ const TestimonialSection = () => {
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.4 }}
-                                style={{
-                                    fontSize: '0.95rem',
-                                    color: '#3c1432',
-                                    lineHeight: 1.7,
-                                    marginBottom: 28,
-                                    position: 'relative',
-                                    zIndex: 2,
-                                    fontWeight: 400,
-                                }}
+                                className="text-base rec-section-heading leading-relaxed mb-8 relative z-[2] font-medium"
                             >
                                 "{testimonial.quote}"
                             </motion.p>
@@ -308,64 +211,29 @@ const TestimonialSection = () => {
                                 whileInView={{ opacity: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.5 }}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 14,
-                                    borderTop: '1px solid rgba(196,149,106,0.1)',
-                                    paddingTop: 20,
-                                }}
+                                className="flex items-center gap-4 border-t rec-card-border/50 pt-6"
                             >
                                 {/* Avatar with image */}
                                 <motion.div
                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                     transition={{ duration: 0.2 }}
-                                    style={{
-                                        width: 48,
-                                        height: 48,
-                                        borderRadius: '50%',
-                                        overflow: 'hidden',
-                                        border: '2px solid white',
-                                        boxShadow: '0 4px 10px rgba(122,40,96,0.1)',
-                                        flexShrink: 0,
-                                    }}
+                                    className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-lg flex-shrink-0"
                                 >
                                     <img
                                         src={testimonial.image}
                                         alt={testimonial.name}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                        }}
+                                        className="w-full h-full object-cover"
                                     />
                                 </motion.div>
 
                                 <div>
-                                    <div style={{
-                                        fontSize: '1rem',
-                                        fontWeight: 600,
-                                        color: '#1e0a18',
-                                        marginBottom: 2,
-                                    }}>
+                                    <div className="text-base font-bold rec-section-heading mb-0.5">
                                         {testimonial.name}
                                     </div>
-                                    <div style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 6,
-                                        fontSize: '0.75rem',
-                                        color: '#7a2860',
-                                        fontWeight: 500,
-                                    }}>
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C8A951]">
                                         <span>{testimonial.business}</span>
-                                        <span style={{
-                                            width: 3,
-                                            height: 3,
-                                            background: '#c4956a',
-                                            borderRadius: '50%',
-                                        }} />
-                                        <span style={{ color: 'rgba(60,20,50,0.5)' }}>
+                                        <span className="w-1 h-1 bg-[#1C3152]/30 rounded-full" />
+                                        <span className="rec-section-subtext normal-case tracking-normal font-medium">
                                             {testimonial.location}
                                         </span>
                                     </div>

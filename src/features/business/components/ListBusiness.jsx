@@ -17,7 +17,7 @@ import DownloadAppSection from './sections/DownloadAppSection';
  */
 const ListBusiness = () => {
     return (
-        <div className="bg-plum/5 font-[DM_Sans] text-[#3c1432] min-h-screen pt-12 md:pt-14">
+        <div className="hero-filter-input-bg font-[DM_Sans] text-[#1C3152] min-h-screen pt-12 md:pt-14">
             {/* ── Hero Section ── */}
             <HeroSection />
 

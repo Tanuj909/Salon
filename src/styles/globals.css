@@ -1,5 +1,6 @@
 @import 'tailwindcss';
-@import './themes/default-theme.css';
+/* @import './themes/default-theme.css'; */
+@import './themes/blue-gold-theme.css';
 
 @theme {
   --color-primary: #cd6133;

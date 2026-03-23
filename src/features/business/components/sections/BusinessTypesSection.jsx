@@ -65,17 +65,7 @@ const BusinessTypesSection = () => {
         }}>
 
             {/* Background decoration */}
-            <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '100%',
-                height: '100%',
-                background: 'radial-gradient(circle at 50% 50%, rgba(196,149,106,0.03) 0%, transparent 70%)',
-                pointerEvents: 'none',
-                zIndex: 0,
-            }} />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(200,169,81,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
 
             <div style={{ position: 'relative', zIndex: 1 }}>
 
@@ -87,38 +77,23 @@ const BusinessTypesSection = () => {
                     transition={{ duration: 0.6 }}
                     style={{ marginBottom: 40 }}
                 >
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: 12,
-                        marginBottom: 16
-                    }}>
+                    <div className="flex items-center justify-center gap-4 mb-6">
                         <motion.div
                             initial={{ width: 0 }}
-                            whileInView={{ width: 40 }}
+                            whileInView={{ width: 50 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ height: 2, background: 'linear-gradient(90deg, transparent, #c4956a)' }}
+                            className="h-[1px] bg-gradient-to-r from-transparent to-[#C8A951]"
                         />
-                        <span style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 600,
-                            letterSpacing: '0.15em',
-                            textTransform: 'uppercase',
-                            color: '#7a2860',
-                            background: 'rgba(122,40,96,0.03)',
-                            padding: '4px 12px',
-                            borderRadius: 100,
-                        }}>
+                        <span className="text-[10px] font-bold tracking-[0.2em] uppercase rec-section-heading-accent hero-filter-input-bg px-4 py-1.5 rounded-full border rec-card-border shadow-sm">
                             Built for Your Industry
                         </span>
                         <motion.div
                             initial={{ width: 0 }}
-                            whileInView={{ width: 40 }}
+                            whileInView={{ width: 50 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            style={{ height: 2, background: 'linear-gradient(90deg, #c4956a, transparent)' }}
+                            className="h-[1px] bg-gradient-to-r from-[#C8A951] to-transparent"
                         />
                     </div>
 
@@ -127,14 +102,7 @@ const BusinessTypesSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        style={{
-                            fontFamily: "'Cormorant Garamond', serif",
-                            fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',
-                            fontWeight: 600,
-                            color: '#1e0a18',
-                            letterSpacing: '-0.02em',
-                            marginBottom: 12,
-                        }}
+                        className="font-[Cormorant_Garamond,serif] text-4xl sm:text-5xl font-bold rec-section-heading leading-tight tracking-tight mb-4"
                     >
                         Tailored for{' '}
                         <motion.span
@@ -142,12 +110,7 @@ const BusinessTypesSection = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.5, delay: 0.5 }}
-                            style={{
-                                color: '#7a2860',
-                                fontStyle: 'italic',
-                                position: 'relative',
-                                display: 'inline-block',
-                            }}
+                            className="rec-section-heading-accent italic inline-block relative"
                         >
                             your
                             <motion.div
@@ -155,15 +118,7 @@ const BusinessTypesSection = () => {
                                 whileInView={{ width: '100%' }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: 0.7 }}
-                                style={{
-                                    position: 'absolute',
-                                    bottom: 2,
-                                    left: 0,
-                                    height: 4,
-                                    background: 'rgba(196,149,106,0.15)',
-                                    borderRadius: 2,
-                                    zIndex: -1,
-                                }}
+                                className="absolute bottom-1.5 left-0 h-2 bg-[#C8A951]/20 rounded-full -z-[1]"
                             />
                         </motion.span>{' '}
                         business
@@ -174,12 +129,7 @@ const BusinessTypesSection = () => {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        style={{
-                            fontSize: '0.88rem',
-                            color: 'rgba(60,20,50,0.55)',
-                            fontWeight: 400,
-                            letterSpacing: '0.01em',
-                        }}
+                        className="text-base sm:text-lg rec-section-subtext leading-relaxed max-w-xl mx-auto font-medium"
                     >
                         Elite software purpose-built for beauty & wellness professionals
                     </motion.p>
@@ -212,28 +162,28 @@ const BusinessTypesSection = () => {
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: 8,
-                                padding: '8px 18px',
+                                padding: '10px 24px',
                                 borderRadius: 40,
-                                border: '1px solid rgba(196,149,106,0.15)',
+                                border: '1px solid rgba(200,169,81,0.2)',
                                 background: 'white',
-                                color: '#3c1432',
-                                fontSize: '0.82rem',
-                                fontWeight: 500,
-                                cursor: 'pointer',
-                                boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-                                transition: 'all 0.2s ease',
+                                color: '#1C3152',
+                                fontSize: '0.85rem',
+                                fontWeight: 600,
+                                cursor: 'default',
+                                boxShadow: '0 4px 15px rgba(0,0,0,0.03)',
+                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                             }}
                             onMouseEnter={e => {
-                                e.currentTarget.style.background = 'linear-gradient(135deg, #c4956a, #7a2860)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, #1C3152, #2A4570)';
                                 e.currentTarget.style.color = '#fff';
                                 e.currentTarget.style.borderColor = 'transparent';
-                                e.currentTarget.style.boxShadow = '0 8px 20px -8px rgba(122,40,96,0.4)';
+                                e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(28,49,82,0.3)';
                             }}
                             onMouseLeave={e => {
                                 e.currentTarget.style.background = 'white';
-                                e.currentTarget.style.color = '#3c1432';
-                                e.currentTarget.style.borderColor = 'rgba(196,149,106,0.15)';
-                                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.02)';
+                                e.currentTarget.style.color = '#1C3152';
+                                e.currentTarget.style.borderColor = 'rgba(200,169,81,0.2)';
+                                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.03)';
                             }}
                         >
                             <motion.span
@@ -260,26 +210,14 @@ const BusinessTypesSection = () => {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.8 }}
-                    style={{
-                        marginTop: 36,
-                        fontSize: '0.8rem',
-                        color: 'rgba(60,20,50,0.4)',
-                        letterSpacing: '0.02em',
-                    }}
+                    className="mt-10 text-sm rec-section-subtext font-medium"
                 >
                     Don't see your category?{' '}
                     <motion.a
                         href="/contact"
                         whileHover={{ x: 3 }}
                         transition={{ duration: 0.2 }}
-                        style={{
-                            color: '#c4956a',
-                            fontWeight: 600,
-                            textDecoration: 'none',
-                            borderBottom: '1px dashed rgba(196,149,106,0.3)',
-                            paddingBottom: 2,
-                            display: 'inline-block',
-                        }}
+                        className="rec-section-heading-accent font-bold hover:underline decoration-dashed transition-all"
                     >
                         Get in touch →
                     </motion.a>
