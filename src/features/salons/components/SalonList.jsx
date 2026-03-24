@@ -450,8 +450,8 @@ export default function SalonList() {
                 <div className="relative w-full flex items-center md:hidden">
                     {!showFilters && (
                       <>
-                        <span className="absolute left-[5%] top-1/2 -translate-y-1/2 pointer-events-none footer-link-text">
-                            <Search size={18} strokeWidth={2} />
+                        <span className="absolute left-[5%] top-1/2 -translate-y-1/2 pointer-events-none text-[#1C3152]">
+                            <Search size={18} strokeWidth={2.5} />
                         </span>
                         <input
                             autoFocus
@@ -480,12 +480,12 @@ export default function SalonList() {
             {!showFilters && (
               <div className="md:hidden mt-6 w-full animate-in fade-in slide-in-from-top-3 duration-500 relative z-[100]" ref={mobileServiceSearchRef}>
                 <div className="absolute -top-2.5 left-4 z-[2]">
-                    <span className="px-2 py-0.5 rounded-md bg-[#1e0a18] text-white text-[8px] font-black uppercase tracking-[0.15em] shadow-sm border border-white/10">Service</span>
+                    <span className="px-2.5 py-1 rounded-md bg-[#1C3152] text-[#C8A951] text-[8px] font-black uppercase tracking-[0.15em] shadow-sm border border-[#C8A951]/20">Service</span>
                 </div>
                 <div className="relative group flex items-center gap-2.5">
                   <div className="relative flex-1 flex items-center h-[54px] hero-filter-bar-bg backdrop-blur-lg rounded-2xl border hero-filter-input-bg shadow-md focus-within:ring-4 focus-within:ring-[#cd6133]/10 focus-within:border-[#cd6133]/60 transition-all duration-300">
-                    <div className="flex items-center pl-[5%] pr-1 text-[#3c143240]">
-                        <Search size={16} />
+                    <div className="flex items-center pl-[5%] pr-1 text-[#1C3152]/70">
+                        <Search size={16} strokeWidth={2.5} />
                     </div>
                     <input
                       className="flex-1 h-full px-3 salon-list-title-text text-[0.9rem] outline-none bg-transparent font-[DM_Sans] placeholder:text-[#3c143240] placeholder:transition-all placeholder:duration-500"
@@ -528,7 +528,7 @@ export default function SalonList() {
                   <button 
                     onClick={handleFetch}
                     disabled={loading}
-                    className="h-[54px] w-[54px] shrink-0 flex items-center justify-center rounded-2xl bg-[#1e0a18] text-white shadow-lg active:scale-95 transition-all duration-300 disabled:opacity-50 hover:bg-[#2a1020]"
+                    className="h-[54px] w-[54px] shrink-0 flex items-center justify-center rounded-2xl bg-[#1C3152] text-white shadow-lg active:scale-95 transition-all duration-300 disabled:opacity-50 hover:bg-[#1C3152]/90"
                   >
                      {loading ? (
                         <div className="w-5 h-5 border-[2.5px] border-white/20 border-t-white rounded-full animate-spin" />
@@ -579,10 +579,10 @@ export default function SalonList() {
             {/* Service Name Search */}
             <div className="relative flex-1 group">
               <div className="absolute -top-2.5 left-4 z-[2]">
-                  <span className="px-2 py-0.5 rounded-md bg-[#1e0a18] text-white text-[8px] font-black uppercase tracking-[0.15em] shadow-sm border border-white/10">Service</span>
+                  <span className="px-2.5 py-1 rounded-md bg-[#1C3152] text-[#C8A951] text-[8px] font-black uppercase tracking-[0.15em] shadow-sm border border-[#C8A951]/20">Service</span>
               </div>
-              <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none text-[#3c143260] transition-colors group-focus-within:text-[#7a2860]">
-                <Search size={18} />
+              <span className="absolute left-[18px] top-1/2 -translate-y-1/2 pointer-events-none text-[#1C3152]/60 transition-colors group-focus-within:text-[#1C3152]">
+                <Search size={18} strokeWidth={2.5} />
               </span>
               <input
                 className={`w-full h-12 pr-[16px] pl-[48px] rounded-xl border border-[#3c143212] bg-white/95 text-[#2a1020] text-[0.9rem] outline-none transition-all duration-200 focus:bg-white focus:border-[#7a2860]/40 focus:ring-4 focus:ring-[#7a2860]/5 font-[DM_Sans] placeholder:text-[#3c143260] placeholder:transition-all placeholder:duration-500 ${placeholderFade ? "placeholder:opacity-100 placeholder:translate-x-0" : "placeholder:opacity-0 placeholder:-translate-x-4"}`}
@@ -622,7 +622,7 @@ export default function SalonList() {
                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <Search size={18} />
+                  <Search size={18} strokeWidth={2.5} />
                   <span>Search</span>
                 </>
               )}
