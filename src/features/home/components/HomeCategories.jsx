@@ -53,7 +53,7 @@ export default function HomeCategories() {
             <span className="w-8 sm:w-12 h-px service-section-divider" />
           </div>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold cat-section-heading font-[Cormorant_Garamond,serif] leading-tight">
-            Browse by <em className="italic font-light cat-section-heading-accent">Category</em>
+            Browse by <em className="italic font-light rec-section-heading-accent">Category</em>
           </h2>
         </div>
 
