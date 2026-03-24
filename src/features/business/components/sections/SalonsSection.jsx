@@ -37,9 +37,12 @@ const SalonsSection = () => {
                 <h2 className="text-3xl md:text-5xl font-bold rec-section-heading font-[Cormorant_Garamond,serif] leading-tight tracking-tight">
                     Join a community of <span className="italic rec-section-heading-accent font-light">Excellence</span>
                 </h2>
+                <div className='flex justify-center item-center'>
                 <p className="text-sm sm:text-base rec-section-subtext mt-4 max-w-xl mx-auto font-medium">
                     Trusted by the most prestigious salons and wellness centers across the globe.
                 </p>
+                </div>
+
             </div>
 
             <div className="flex relative overflow-hidden group">

@@ -131,8 +131,9 @@ const FeaturesSection = () => {
                     </motion.span>{' '}
                     your business
                 </motion.h2>
-
-                <motion.p
+                
+                <div className='flex justify-center items-center'>
+                    <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -142,6 +143,8 @@ const FeaturesSection = () => {
                     Packed with essential tools to boost sales, manage your calendar seamlessly,
                     and retain elite clients.
                 </motion.p>
+                </div>
+
             </motion.div>
 
             {/* Feature grid */}

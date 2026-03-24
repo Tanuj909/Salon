@@ -113,7 +113,7 @@ const TestimonialSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="font-[Cormorant_Garamond,serif] text-4xl sm:text-5xl md:text-6xl font-bold rec-section-heading leading-tight tracking-tight mb-4"
+                        className="font-[Cormorant_Garamond,serif] text-3xl sm:text-5xl md:text-6xl font-bold rec-section-heading leading-tight tracking-tight mb-4"
                     >
                         Loved by{' '}
                         <motion.span
@@ -134,7 +134,8 @@ const TestimonialSection = () => {
                         </motion.span>{' '}
                         worldwide
                     </motion.h2>
-
+                    
+                    <div className="flex items-center justify-center gap-4 mb-6">
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -144,6 +145,7 @@ const TestimonialSection = () => {
                     >
                         Join thousands of satisfied salon owners who trust our platform
                     </motion.p>
+                    </div>
                 </motion.div>
 
                 {/* Testimonials Grid */}

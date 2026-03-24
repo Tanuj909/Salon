@@ -123,7 +123,8 @@ const BusinessTypesSection = () => {
                         </motion.span>{' '}
                         business
                     </motion.h2>
-
+                    
+                    <div className='flex justify-center items-center'>
                     <motion.p
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
@@ -133,6 +134,7 @@ const BusinessTypesSection = () => {
                     >
                         Elite software purpose-built for beauty & wellness professionals
                     </motion.p>
+                    </div>
                 </motion.div>
 
                 {/* Tags Grid */}
