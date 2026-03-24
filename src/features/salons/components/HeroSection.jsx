@@ -107,7 +107,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                     </Reveal>
 
                     <Reveal delay={300}>
-                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 tracking-tight font-[Cormorant_Garamond,Georgia,serif]"
+                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 tracking-tight font-[Cormorant_Garamond,Georgia,serif] hero-title-accent"
                             style={{ fontSize: "clamp(22px,5.5vw,56px)" }}>
                             {toTitleCase(salon.name)}
                         </h1>

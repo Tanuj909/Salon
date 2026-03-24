@@ -83,7 +83,8 @@ body {
   margin: 0;
   font-family: var(--font-display);
   /* background: var(--body-bg); */
-  background: linear-gradient(135deg, #f5f3ff 0%, #f7f5ff 45%, #ffffff 100%);
+  /* background: linear-gradient(135deg, #f5f3ff 0%, #f7f5ff 45%, #ffffff 100%); */
+  background-color: #ffffff;
   color: #1e0a18; /* Dark text for light background */
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
