@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useAuthContext } from '@/features/auth/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import NotificationBell from "@/components/layout/NotificationBell";
+import { useMyBusiness } from '@/features/business/hooks/useMyBusiness';
 
 
 export default function Navbar() {
@@ -11,6 +12,7 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, loading, logout } = useAuthContext();
+  const { business, loading: businessLoading } = useMyBusiness();
   const router = useRouter();
 
   useEffect(() => {
@@ -76,6 +78,17 @@ export default function Navbar() {
               >
                 Salons
               </Link>
+              {business && (
+                <Link
+                  href="/partner/documents"
+                  className={`px-4 lg:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium transition-all shadow-sm ${isScrolled
+                    ? 'navbar-link-bg-scrolled navbar-link-text hover:navbar-link-hover-bg hover:navbar-link-hover-text'
+                    : 'navbar-link-bg navbar-link-text hover:navbar-link-hover-bg-alt hover:navbar-link-hover-text'
+                    }`}
+                >
+                  Documents
+                </Link>
+              )}
             </div>
           </div>
 
@@ -138,6 +151,16 @@ export default function Navbar() {
                         <span className="material-symbols-outlined text-lg">account_circle</span>
                         Profile
                       </Link>
+                      {business && (
+                        <Link
+                          href="/partner/documents"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-lg">description</span>
+                          Documents
+                        </Link>
+                      )}
                       <button
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left"
                         onClick={handleLogout}
@@ -198,6 +221,17 @@ export default function Navbar() {
               <span className="material-symbols-outlined text-xl">storefront</span>
               Salons
             </Link>
+
+            {business && (
+              <Link
+                href="/partner/documents"
+                className="flex items-center gap-3 navbar-link-text font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="material-symbols-outlined text-xl">description</span>
+                Documents
+              </Link>
+            )}
 
             <div className="h-px w-full bg-gray-100 my-2" />
 

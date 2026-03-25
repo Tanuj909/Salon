@@ -56,5 +56,8 @@ export const ENDPOINTS = {
   BUSINESS: {
     REGISTER: "/businesses/register",
     LIST: "/businesses",
+    MY_BUSINESS: "/business/my-business",
+    UPLOAD_DOCUMENT: (id) => `/businesses/verification/${id}/documents`,
+    GET_DOCUMENTS: (id) => `/businesses/verification/${id}/documents`,
   },
 };

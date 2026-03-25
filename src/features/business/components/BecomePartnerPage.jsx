@@ -298,14 +298,14 @@ export default function BecomePartnerPage() {
                   Application <em className="italic rec-section-heading-accent font-light">Received</em>
                 </h2>
                 <p className="rec-section-subtext text-lg max-w-lg mx-auto mb-10 font-medium leading-relaxed">
-                  Thank you for choosing Luxe. Our curation team will review your business details and get back to you within 48 hours.
+                  Thank you for choosing Luxe. Please upload your business documents to complete the verification process.
                 </p>
               </div>
               <button
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/partner/documents")}
                 className="px-8 sm:px-10 py-3.5 sm:py-4 bg-[#1C3152] text-[#C8A951] rounded-lg text-[10px] sm:text-sm font-bold tracking-widest uppercase hover:bg-[#2a4570] transition-all shadow-lg mt-5 border border-[#C8A951]/30"
               >
-                Return Home
+                Continue to Documents
               </button>
             </div>
           ) : (
