@@ -421,7 +421,7 @@ export default function SalonList() {
           <div className="flex-1 w-full">
             {!showMobileSearch ? (
               <div 
-                className="flex items-center justify-between px-4 py-2 hero-filter-bar-bg backdrop-blur-md rounded-2xl border hero-filter-input-bg shadow-sm w-full md:w-fit font-bold leading-none salon-list-title-text font-[Cormorant_Garamond,Georgia,serif] text-[0.85rem] sm:text-[1rem] md:text-[2.5rem] md:bg-transparent md:border-none md:shadow-none md:px-0 md:py-0 md:mb-1.5 md:block md:cursor-default"
+                className="flex items-center justify-between w-full md:w-fit font-bold leading-none salon-list-title-text font-[Cormorant_Garamond,Georgia,serif] text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] md:mb-1.5 md:block md:cursor-default"
               >
                 <span 
                   onClick={() => setShowMobileSearch(true)} 
@@ -437,7 +437,7 @@ export default function SalonList() {
                     {!showFilters && (
                       <Search size={18} className="hero-filter-icon cursor-pointer" onClick={() => setShowMobileSearch(true)} />
                     )}
-                    <div className="w-px h-4 hero-filter-input-bg" />
+
                     <button onClick={() => setShowFilters(!showFilters)} className="relative">
                         <SlidersHorizontal size={18} className="hero-filter-icon cursor-pointer" />
                         {hasChanges && (
