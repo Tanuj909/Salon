@@ -84,6 +84,14 @@ const Footer = () => {
             >
               Our Salons
             </Link>
+
+            <Link
+              href="/about"
+              className="footer-link-text footer-link-hover-text block text-[0.88rem] mb-3.5 no-underline transition-colors duration-200"
+              style={{ fontFamily: "'Georgia', serif" }}
+            >
+              About Us
+            </Link>
             
             {/* <a
               href="#"
