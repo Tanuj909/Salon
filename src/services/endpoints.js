@@ -4,6 +4,10 @@ export const ENDPOINTS = {
     REGISTER: "/auth/register",
     ME: "/auth/me",
   },
+  
+  USER: {
+    PROFILE_IMAGE: "/users/me/profile-image",
+  },
 
   OTP: {
     SEND: "/auth/send-otp"
@@ -59,5 +63,6 @@ export const ENDPOINTS = {
     MY_BUSINESS: "/businesses/my-business",
     UPLOAD_DOCUMENT: (id) => `/businesses/verification/${id}/documents`,
     GET_DOCUMENTS: (id) => `/businesses/verification/${id}/documents`,
+    MESSAGES: (id) => `/businesses/verification/${id}/messages`,
   },
 };

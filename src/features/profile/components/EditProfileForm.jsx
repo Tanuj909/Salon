@@ -1,7 +1,8 @@
-import { Camera, Save, X, Phone, User, Mail, Calendar, MapPin, Loader2, AlertCircle, CheckCircle, Info, Home, Building2, MapPinned } from 'lucide-react';
+import { Camera, Save, X, Phone, User, Mail, Calendar, MapPin, Loader2, AlertCircle, CheckCircle, Info, Home, Building2, MapPinned, Trash2 } from 'lucide-react';
 import { useUpdateProfile } from '../hooks/useUpdateProfile';
 import { useCustomerProfile } from '../../customer/hooks/useCustomerProfile';
-import { useState, useEffect } from 'react';
+import { uploadProfileImage, deleteProfileImage } from '../services/profileService';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -9,6 +10,9 @@ const EditProfileForm = ({ user: initialUser }) => {
     const { profile: fetchedProfile, loading: fetching, error: fetchError } = useCustomerProfile();
     const { updateProfile, loading: updating, error: updateError, success, reset } = useUpdateProfile();
     const [showToast, setShowToast] = useState(false);
+    const [imageLoading, setImageLoading] = useState(false);
+    const [imageError, setImageError] = useState(null);
+    const fileInputRef = useRef(null);
 
     // Handle Success Toast
     useEffect(() => {
@@ -92,6 +96,52 @@ const EditProfileForm = ({ user: initialUser }) => {
         await updateProfile(formData);
     };
 
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Size limit: 5MB
+        if (file.size > 5 * 1024 * 1024) {
+            setImageError("Image size must be less than 5MB");
+            return;
+        }
+
+        try {
+            setImageLoading(true);
+            setImageError(null);
+            const data = await uploadProfileImage(file);
+            // After successful upload, backend returns the updated profile
+            // Find the image URL from the response or re-fetch profile
+            const newUrl = data.profileImageUrl || data.user?.profileImageUrl;
+            if (newUrl) {
+                setFormData(prev => ({ ...prev, profileImageUrl: newUrl }));
+            }
+            setShowToast(true);
+        } catch (err) {
+            console.error("Upload failed:", err);
+            setImageError(err.response?.data?.message || "Failed to upload image");
+        } finally {
+            setImageLoading(false);
+        }
+    };
+
+    const handleRemovePhoto = async () => {
+        if (!window.confirm("Are you sure you want to remove your profile photo?")) return;
+
+        try {
+            setImageLoading(true);
+            setImageError(null);
+            await deleteProfileImage();
+            setFormData(prev => ({ ...prev, profileImageUrl: "" }));
+            setShowToast(true);
+        } catch (err) {
+            console.error("Delete failed:", err);
+            setImageError(err.response?.data?.message || "Failed to remove image");
+        } finally {
+            setImageLoading(false);
+        }
+    };
+
     if (fetching) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
@@ -114,11 +164,11 @@ const EditProfileForm = ({ user: initialUser }) => {
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 footer-bg rounded-xl flex items-center justify-center shadow-lg">
-                                <User className="w-6 h-6 salon-list-title-accent" />
+                                <User className="w-6 h-6 text-[#C8A951]" />
                             </div>
                             <div>
-                                <h1 className="text-3xl font-bold footer-main-text tracking-tight">Profile Settings</h1>
-                                <p className="text-sm footer-link-text opacity-60">Manage your personal identity and salon preferences.</p>
+                                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Profile Settings</h1>
+                                <p className="text-sm text-gray-500 opacity-60">Manage your personal identity and salon preferences.</p>
                             </div>
                         </div>
                     </div>
@@ -129,8 +179,8 @@ const EditProfileForm = ({ user: initialUser }) => {
                         {/* Profile & Loyalty Card (Span 4) */}
                         <div className="lg:col-span-4 space-y-6">
                             <div className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm flex flex-col items-center text-center">
-                                <div className="relative group mb-6">
-                                    <div className="w-40 h-40 rounded-full ring-8 ring-gray-50 overflow-hidden bg-gray-100">
+                                <div className="relative mb-6">
+                                    <div className="w-40 h-40 rounded-full ring-8 ring-gray-50 overflow-hidden bg-gray-100 relative">
                                         {formData.profileImageUrl ? (
                                             <Image
                                                 src={formData.profileImageUrl}
@@ -145,29 +195,60 @@ const EditProfileForm = ({ user: initialUser }) => {
                                                 <User className="w-16 h-16 text-gray-300" />
                                             </div>
                                         )}
+
+                                        {imageLoading && (
+                                            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                                                <Loader2 className="w-8 h-8 text-white animate-spin" />
+                                            </div>
+                                        )}
                                     </div>
+
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        className="hidden"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                    />
+
+                                    {/* Edit/Upload Button */}
                                     <button
                                         type="button"
-                                        onClick={() => {
-                                            const url = window.prompt("Enter image URL:", formData.profileImageUrl);
-                                            if (url !== null) setFormData(prev => ({ ...prev, profileImageUrl: url }));
-                                        }}
-                                        className="absolute bottom-1 right-1 p-3 bg-[#1C1C1C] text-[#C8A951] rounded-2xl shadow-xl hover:scale-105 transition-all border-4 border-white"
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="absolute bottom-1 right-1 p-3 bg-[#1C1C1C] text-[#C8A951] rounded-2xl shadow-xl hover:scale-105 transition-all border-4 border-white group"
+                                        title="Change Photo"
                                     >
-                                        <Camera size={20} />
+                                        <Camera size={20} className="group-hover:rotate-12 transition-transform" />
                                     </button>
+
+                                    {/* Delete Button */}
+                                    {formData.profileImageUrl && !imageLoading && (
+                                        <button
+                                            type="button"
+                                            onClick={handleRemovePhoto}
+                                            className="absolute top-1 right-1 p-2 bg-red-500 text-white rounded-xl shadow-lg hover:scale-105 transition-all border-2 border-white hover:bg-red-600 group"
+                                            title="Remove Photo"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    )}
                                 </div>
-                                <h3 className="text-xl font-bold footer-main-text">{formData.fullName || "Your Name"}</h3>
-                                <p className="text-sm footer-link-text opacity-60 mb-6">{fetchedProfile?.user?.email || "email@example.com"}</p>
                                 
-                                <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t hero-filter-input-bg">
-                                    <div className="p-4 bg-gray-50 rounded-2xl text-center">
-                                        <p className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest mb-1">Status</p>
-                                        <p className="text-sm font-bold footer-main-text">{fetchedProfile?.membershipLevel || "BRONZE"}</p>
+                                {imageError && (
+                                    <p className="mt-2 text-xs text-red-500 font-bold bg-red-50 px-3 py-1 rounded-full mb-4">{imageError}</p>
+                                )}
+                                
+                                <h3 className="text-xl font-bold text-gray-900">{formData.fullName || "Your Name"}</h3>
+                                <p className="text-sm text-gray-500 opacity-60 mb-6">{fetchedProfile?.user?.email || "email@example.com"}</p>
+                                
+                                <div className="w-full grid grid-cols-2 gap-4 pt-6 border-t border-gray-100">
+                                    <div className="p-4 bg-gray-50/80 rounded-2xl text-center border border-gray-100/50 shadow-sm transition-all hover:bg-white hover:shadow-md group">
+                                        <p className="text-[10px] font-bold text-gray-500 opacity-70 uppercase tracking-widest mb-1 group-hover:text-[#C8A951] transition-colors">Status</p>
+                                        <p className="text-sm font-bold text-gray-900">{fetchedProfile?.membershipLevel || "BRONZE"}</p>
                                     </div>
-                                    <div className="p-4 bg-gray-50 rounded-2xl text-center">
-                                        <p className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest mb-1">Points</p>
-                                        <p className="text-sm font-bold footer-main-text">{fetchedProfile?.loyaltyPoints || 0}</p>
+                                    <div className="p-4 bg-gray-50/80 rounded-2xl text-center border border-gray-100/50 shadow-sm transition-all hover:bg-white hover:shadow-md group">
+                                        <p className="text-[10px] font-bold text-gray-500 opacity-70 uppercase tracking-widest mb-1 group-hover:text-[#C8A951] transition-colors">Points</p>
+                                        <p className="text-sm font-bold text-gray-900">{fetchedProfile?.loyaltyPoints || 0}</p>
                                     </div>
                                 </div>
                             </div>
@@ -197,61 +278,61 @@ const EditProfileForm = ({ user: initialUser }) => {
                                     <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
                                         <User className="w-5 h-5 salon-list-title-accent" />
                                     </div>
-                                    <h3 className="text-xl font-bold footer-main-text">Personal Information</h3>
+                                    <h3 className="text-xl font-bold text-gray-900">Personal Information</h3>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Full Name</label>
+                                        <label className="text-[10px] font-bold text-gray-500 opacity-70 uppercase tracking-widest ml-1">Full Name</label>
                                         <div className="relative group">
-                                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 footer-link-text" />
+                                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                                             <input
                                                 type="text"
                                                 name="fullName"
                                                 value={formData.fullName}
                                                 onChange={handleChange}
-                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold"
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all text-gray-900 font-semibold"
                                                 placeholder="Enter full name"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Phone Number</label>
+                                        <label className="text-[10px] font-bold text-gray-500 opacity-70 uppercase tracking-widest ml-1">Phone Number</label>
                                         <div className="relative group">
-                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 footer-link-text" />
+                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                                             <input
                                                 type="tel"
                                                 name="phoneNumber"
                                                 value={formData.phoneNumber}
                                                 onChange={handleChange}
-                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold"
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all text-gray-900 font-semibold"
                                                 placeholder="+91 00000 00000"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Date of Birth</label>
+                                        <label className="text-[10px] font-bold text-gray-500 opacity-70 uppercase tracking-widest ml-1">Date of Birth</label>
                                         <div className="relative group">
-                                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 footer-link-text" />
+                                            <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                                             <input
                                                 type="date"
                                                 name="dateOfBirth"
                                                 value={formData.dateOfBirth}
                                                 onChange={handleChange}
-                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold"
+                                                className="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all text-gray-900 font-semibold"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold footer-link-text opacity-40 uppercase tracking-widest ml-1">Gender</label>
+                                        <label className="text-[10px] font-bold text-gray-500 opacity-70 uppercase tracking-widest ml-1">Gender</label>
                                         <select
                                             name="gender"
                                             value={formData.gender}
                                             onChange={handleChange}
-                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold appearance-none cursor-pointer"
+                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all text-gray-900 font-semibold appearance-none cursor-pointer"
                                         >
                                             <option value="">Select Gender</option>
                                             <option value="MALE">Male</option>
@@ -270,7 +351,7 @@ const EditProfileForm = ({ user: initialUser }) => {
                                         <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
                                             <MapPinned className="w-5 h-5 salon-list-title-accent" />
                                         </div>
-                                        <h3 className="text-xl font-bold footer-main-text">Address</h3>
+                                        <h3 className="text-xl font-bold text-gray-900">Address</h3>
                                     </div>
                                     <div className="space-y-4">
                                         <input
@@ -278,7 +359,7 @@ const EditProfileForm = ({ user: initialUser }) => {
                                             name="defaultAddress.addressLine1"
                                             value={formData.defaultAddress.addressLine1}
                                             onChange={handleChange}
-                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold text-sm"
+                                            className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:salon-list-title-accent outline-none transition-all text-gray-900 font-semibold text-sm"
                                             placeholder="Street Address"
                                         />
                                         <div className="grid grid-cols-2 gap-4">
@@ -307,14 +388,14 @@ const EditProfileForm = ({ user: initialUser }) => {
                                         <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center">
                                             <Info className="w-5 h-5 salon-list-title-accent" />
                                         </div>
-                                        <h3 className="text-xl font-bold footer-main-text">Style Notes</h3>
+                                        <h3 className="text-xl font-bold text-gray-900">Style Notes</h3>
                                     </div>
                                     <textarea
                                         name="preferences"
                                         value={formData.preferences}
                                         onChange={handleChange}
                                         rows={4}
-                                        className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:salon-list-title-accent outline-none transition-all footer-main-text font-semibold resize-none text-sm"
+                                        className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] focus:bg-white focus:salon-list-title-accent outline-none transition-all text-gray-900 font-semibold resize-none text-sm"
                                         placeholder="Allergies or preferences..."
                                     />
                                 </div>

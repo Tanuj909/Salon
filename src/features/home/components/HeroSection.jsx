@@ -216,21 +216,28 @@ const HeroSection = () => {
 
       <section className="relative w-full min-h-[100svh] overflow-hidden font-['DM_Sans',sans-serif] flex flex-col justify-center py-20 px-4">
         {/* Animated Background Slides */}
-        <div className="absolute inset-0 z-0">
           {slides.map((slide, index) => (
             <div
               key={index}
-              className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${index === current ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+              className={`absolute inset-0 transition-opacity duration-[2500ms] ease-in-out ${index === current ? 'opacity-100' : 'opacity-0'
                 }`}
               style={{
                 backgroundImage: `url('${slide.url}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                transition: 'opacity 1.5s ease-in-out, transform 8s linear'
               }}
-            />
+            >
+              {/* Ken Burns Zoom Effect Layer */}
+              <div 
+                className={`absolute inset-0 transition-transform duration-[10000ms] ease-out ${index === current ? 'scale-110' : 'scale-100'}`}
+                style={{
+                  backgroundImage: `url('${slide.url}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
+            </div>
           ))}
-        </div>
 
         {/* Dynamic Overlays */}
         <div className="absolute inset-0 z-[2] hero-bg-overlay" />
@@ -247,17 +254,21 @@ const HeroSection = () => {
           </div>
 
           {/* Main Heading - Refined for single line */}
-          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(1.6rem,8vw,4.5rem)] hero-title-text font-light leading-[1.1] tracking-tight mb-5 animate-fade-up [animation-delay:300ms] text-shadow-lg px-2 min-h-[1.2em]">
-            <span className={`inline-block transition-opacity duration-500 ${headingFade ? 'opacity-100' : 'opacity-0'}`}>
-              {headings[headingIndex].split(' ').map((word, i) => (
-                <React.Fragment key={i}>
-                  {word === 'Luxury' ? (
-                    <span className="italic hero-title-accent font-normal">{word} </span>
-                  ) : (
-                    <>{word} </>
-                  )}
-                </React.Fragment>
-              ))}
+          <h1 className="font-['Cormorant_Garamond',serif] text-[clamp(1.4rem,4.5vw,3.6rem)] text-gray-900 font-light leading-tight mb-5 animate-fade-up [animation-delay:300ms] px-7 py-1.5 bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-xl border border-white/20 inline-flex items-center justify-center">
+            <span className={`transition-opacity duration-500 ${headingFade ? 'opacity-100' : 'opacity-0'}`}>
+              {headings[headingIndex].split(' ').map((word, i) => {
+                const accentedWords = ['Luxury', 'Perfect', 'Grooming', 'Beauty'];
+                return (
+                  <span key={i}>
+                    {accentedWords.includes(word) ? (
+                      <span className="italic hero-title-accent font-normal px-1">{word}</span>
+                    ) : (
+                      <span>{word}</span>
+                    )}
+                    {i < headings[headingIndex].split(' ').length - 1 && ' '}
+                  </span>
+                );
+              })}
             </span>
           </h1>
 

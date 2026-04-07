@@ -245,7 +245,7 @@ export default function DocumentUploadPage() {
                 <button
                   type="submit"
                   disabled={isUploading || !selectedFile || !selectedType}
-                  className="w-full h-14 bg-[#1C3152] text-[#C8A951] rounded-xl font-bold tracking-[0.2em] uppercase transition-all hover:bg-[#2a4570] hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 border border-[#C8A951]/30"
+                  className="w-full h-14 bg-[#1C3152] text-[#C8A951] rounded-xl font-bold tracking-normal sm:tracking-[0.2em] text-[10px] sm:text-sm uppercase transition-all hover:bg-[#2a4570] hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 border border-[#C8A951]/30"
                 >
                   {isUploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
                   {isUploading ? "Uploading..." : "Submit Verification Document"}
