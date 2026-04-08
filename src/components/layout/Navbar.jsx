@@ -34,7 +34,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-300 ${isScrolled
-        ? 'navbar-bg shadow-md py-3 md:py-4'
+        ? 'bg-white shadow-md py-3 md:py-4'
         : 'navbar-bg-transparent py-5 md:py-6'
         }`}
     >

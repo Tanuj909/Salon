@@ -91,7 +91,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                 <div className="max-w-5xl text-[#fef9f3] w-full">
 
                     <Reveal delay={200}>
-                        <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-4 md:mb-2">
+                        <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-4 md:mb-2 text-white">
                             {salon.verificationStatus === "VERIFIED" && (
                                 <Badge variant="gold">
                                     <svg width={12} height={12} viewBox="0 0 24 24" fill="currentColor">
@@ -107,59 +107,61 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                     </Reveal>
 
                     <Reveal delay={300}>
-                        <h1 className="font-bold leading-[1.1] mb-2 sm:mb-3 md:mb-3 tracking-tight font-[Cormorant_Garamond,Georgia,serif] hero-title-accent"
-                            style={{ fontSize: "clamp(22px,5.5vw,56px)" }}>
-                            {toTitleCase(salon.name)}
-                        </h1>
+                        <div className="inline-block rec-badge-top-rated-bg px-6 py-1.5 rounded-[2rem] border-2 mb-4">
+                            <h1 className="font-bold leading-[1.1] tracking-tight font-[Cormorant_Garamond,Georgia,serif] m-0"
+                                style={{ fontSize: "clamp(20px,4.5vw,48px)", color: "#C49B66" }}>
+                                {toTitleCase(salon.name)}
+                            </h1>
+                        </div>
                     </Reveal>
 
                     <Reveal delay={400}>
-                        <div className="flex flex-col gap-4 md:gap-8 mb-6 md:mb-8">
+                        <div className="flex flex-col gap-4 md:gap-6 mb-6 md:mb-8">
                             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-10">
-                                {/* Premium Rating */}
-                                <div className="flex items-center gap-3">
-                                    <div className="flex items-center gap-1 rec-section-heading-accent">
+                                {/* Premium Rating with Background */}
+                                <div className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 w-fit">
+                                    <div className="flex items-center gap-1 text-[#C49B66]">
                                         {Array.from({ length: 5 }).map((_, i) => (
                                             <svg key={i} width={14} height={14} className="md:w-[16px] md:h-[16px]" viewBox="0 0 24 24" fill={i < Math.round(salon.averageRating || 0) ? "currentColor" : "rgba(255,255,255,0.2)"}>
                                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                             </svg>
                                         ))}
                                     </div>
-                                    <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-white/80">
+                                    <span className="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-white">
                                         {salon.totalReviews > 0 ? `${salon.averageRating.toFixed(1)} / ${salon.totalReviews} Reviews` : "New Experience"}
                                     </span>
                                 </div>
-
-                                {/* Location & Contact */}
-                                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 backdrop-blur-md bg-black/20 p-2 sm:p-3 md:p-3.5 rounded-xl sm:rounded-2xl border border-white/10 w-fit">
-                                    {salon.city && (
-                                        <div className="flex items-center gap-2.5 sm:gap-3 text-[#fef9f3]/90 min-w-0">
-                                            <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
-                                                <svg className="w-3 h-3 md:w-3.5 md:h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                                                    <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" />
-                                                    <circle cx="12" cy="10" r="3" />
-                                                </svg>
-                                            </div>
-                                            <div className="flex flex-col min-w-0 flex-1">
-                                                <span className="text-[7px] md:text-[8px] uppercase tracking-widest text-[#fef9f3]/50 font-bold mb-0.5">Location</span>
-                                                <span className="text-[9px] sm:text-[10px] md:text-[13px] font-medium line-clamp-1 break-words">{salon.address}, {salon.city}</span>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
                             </div>
 
-                            {/* Inline Categories */}
-                            {salon.categories && salon.categories.length > 0 && (
-                                <div className="flex flex-wrap gap-1.5 sm:gap-2 md:gap-4 mt-2 md:mt-0">
-                                    {salon.categories.map((cat, i) => (
-                                        <div key={cat.id || i} className="flex items-center gap-1.5 sm:gap-2 bg-black/30 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-full border border-white/10">
-                                            <span className="w-1.5 h-1.5 rounded-full rec-badge-top-rated-bg" />
-                                            <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">{cat.name}</span>
+                            {/* Location & Categories Row */}
+                            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                                {/* Compact Location Tag */}
+                                {salon.city && (
+                                    <div className="flex items-center gap-2.5 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 group hover:bg-black/60 transition-all">
+                                        <div className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shrink-0">
+                                            <svg className="w-2.5 h-2.5 text-[#C49B66]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}>
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                                <circle cx="12" cy="10" r="3" />
+                                            </svg>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
+                                        <span className="text-[9px] sm:text-[10px] md:text-[12px] font-bold uppercase tracking-widest text-white whitespace-nowrap">
+                                            {salon.city}, {salon.country}
+                                        </span>
+                                    </div>
+                                )}
+
+                                {/* Inline Categories */}
+                                {salon.categories && salon.categories.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 md:gap-3">
+                                        {salon.categories.map((cat, i) => (
+                                            <div key={cat.id || i} className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#C49B66]" />
+                                                <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">{cat.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </Reveal>
 
@@ -174,9 +176,9 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                             </button>
                             <a
                                 href="#services"
-                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/30 text-white text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white hover:text-[#1C3152] hover:border-white text-center"
+                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/40 text-white text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white text-center"
                             >
-                                <span>View Services</span>
+                                <span className="transition-colors duration-300 group-hover:text-black">View Services</span>
                             </a>
                         </div>
                     </Reveal>

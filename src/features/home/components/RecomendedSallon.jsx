@@ -26,27 +26,7 @@ const StarIcon = ({ filled }) => (
 import { useUserLocation } from "@/features/salons/hooks/useUserLocation";
 
 // Shared Section Header used in loading and main render
-const SectionHeader = ({ isLocationError }) => (
-  <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
-    <div className="max-w-[500px]">
-      <div className="flex items-center gap-2 mb-2 md:mb-3">
-        <span className="w-6 h-px inline-block rec-section-divider" />
-        <span className="text-[0.65rem] md:text-[0.72rem] font-semibold tracking-[0.12em] uppercase rec-section-eyebrow font-[DM_Sans]">
-          Handpicked For You
-        </span>
-      </div>
-      <h2 className="font-bold leading-[1.1] rec-section-heading font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.6rem,4vw,2.6rem)]">
-        Recommended
-        <span className="italic rec-section-heading-accent ml-2">Salons</span>
-      </h2>
-      <p className="text-[0.82rem] md:text-[0.88rem] leading-relaxed mt-2 rec-section-subtext font-[DM_Sans]">
-        {isLocationError
-          ? "Location access required to show salons near you."
-          : "Top-rated spaces loved by our community — book a session today."}
-      </p>
-    </div>
-  </div>
-);
+
 
 export default function RecomendedSallon() {
   const [salons, setSalons] = useState([]);
@@ -87,7 +67,7 @@ export default function RecomendedSallon() {
     return (
       <section className="py-10">
         <div className="max-w-[1280px] mx-auto px-6 md:px-12">
-          <SectionHeader isLocationError={false} />
+          {/* SectionHeader removed */}
           <div className="h-px mb-10 rec-section-divider-line" />
           <div className="text-center py-12">
             <p className="rec-section-subtext">
@@ -99,33 +79,19 @@ export default function RecomendedSallon() {
     );
   }
 
-  const recommendedSalons = salons.slice(0, 4);
+  const recommendedSalons = salons.slice(0, 20);
 
   return (
     <section className="py-10">
       <div className="max-w-[1280px] mx-auto px-6 md:px-12">
 
-        {/* ── Section Header ── */}
+        {/* ── Section Header Removed as per user request ── */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-10 gap-4">
           <div className="max-w-[500px]">
-            <div className="flex items-center gap-2 mb-2 md:mb-3">
-              <span className="w-6 h-px inline-block rec-section-divider" />
-              <span className="text-[0.65rem] md:text-[0.72rem] font-semibold tracking-[0.12em] uppercase rec-section-eyebrow font-[DM_Sans]">
-                Handpicked For You
-              </span>
-            </div>
-            <h2 className="font-bold leading-[1.1] rec-section-heading font-[Cormorant_Garamond,Georgia,serif] text-[clamp(1.6rem,4vw,2.6rem)]">
-              Recommended
-              <span className="italic rec-section-heading-accent ml-2">Salons</span>
-            </h2>
-            <p className="text-[0.82rem] md:text-[0.88rem] leading-relaxed mt-2 rec-section-subtext font-[DM_Sans]">
-              {isLocationError
-                ? "Location access required to show salons near you."
-                : "Top-rated spaces loved by our community — book a session today."}
-            </p>
+            {/* Heading and subtext removed */}
           </div>
 
-          {/* Actions */}
+          {/* Actions - View All Salons Button removed */}
           <div className="flex items-center gap-4 flex-wrap">
             {isLocationError && (
               <button
@@ -139,16 +105,6 @@ export default function RecomendedSallon() {
                 Retry Location
               </button>
             )}
-            <Link
-              href="/salons"
-              className="flex items-center gap-2 py-[11px] px-6 rounded-full border-[1.5px] rec-btn-outline text-[0.8rem] font-semibold tracking-[0.04em] cursor-pointer transition-all duration-[220ms] no-underline font-[DM_Sans]"
-            >
-              View All Salons
-              <svg width={14} height={14} fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </Link>
           </div>
         </div>
 

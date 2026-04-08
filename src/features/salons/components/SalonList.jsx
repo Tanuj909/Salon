@@ -207,10 +207,8 @@ export default function SalonList() {
   const [headingIndex, setHeadingIndex] = useState(0);
   const headings = [
     "premium",
-    "elite",
     "luxury",
-    "Deluxe",
-    "Finest"
+    "Budget",
   ];
 
   const [placeholderFade, setPlaceholderFade] = useState(true);
