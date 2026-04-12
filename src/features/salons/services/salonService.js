@@ -81,3 +81,10 @@ export const fetchDistinctServiceNames = async () => {
   );
   return response.data;
 };
+
+export const getSalonTimings = async (id) => {
+  const response = await publicApiClient.get(
+    ENDPOINTS.SALON.TIMINGS(id)
+  );
+  return response.data;
+};

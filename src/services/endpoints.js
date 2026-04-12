@@ -39,6 +39,7 @@ export const ENDPOINTS = {
     STAFF_PROFILE: (id) => `/staff/${id}`,
     STAFF_BY_SERVICE: (serviceId) => `/staff/service/${serviceId}`,
     SERVICES: (id) => `/services/business/${id}/active`,
+    TIMINGS: (id) => `/business-timings/business/${id}`,
   },
 
   REVIEWS: {

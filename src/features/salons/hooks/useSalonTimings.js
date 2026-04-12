@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { getSalonTimings } from '../services/salonService';
 
 export const useSalonTimings = ({ id }) => {
     const [timings, setTimings] = useState([]);
@@ -12,9 +12,8 @@ export const useSalonTimings = ({ id }) => {
         const fetchTimings = async () => {
             try {
                 setLoading(true);
-                // The API endpoint from the user request
-                const response = await axios.get(`http://72.62.231.235:8080/api/business-timings/business/${id}`);
-                setTimings(response.data);
+                const data = await getSalonTimings(id);
+                setTimings(data);
                 setError(null);
             } catch (err) {
                 console.error("Failed to fetch salon timings:", err);
