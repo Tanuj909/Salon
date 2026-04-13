@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from 'react';
-import { useSalonStaff } from '../hooks/useSalonStaff';
 import { useStaffProfile } from '../hooks/useStaffProfile';
 
 // ─── Reveal Animation Hook ────────────────────────────────────────────────
@@ -175,8 +174,7 @@ function StaffCard({ member, index, onBook }) {
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────
-const SalonStaff = ({ id, onBookStaff }) => {
-  const { staff: allStaff, loading, error } = useSalonStaff({ id });
+const SalonStaff = ({ staff: allStaff, onBookStaff }) => {
   const { profile, loading: profileLoading, error: profileError, fetchProfile, clearProfile } = useStaffProfile();
   const [showModal, setShowModal] = useState(false);
 
@@ -197,17 +195,6 @@ const SalonStaff = ({ id, onBookStaff }) => {
     setShowModal(false);
     clearProfile();
   };
-
-  if (loading) {
-    return (
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center gap-6">
-          <div className="w-12 h-12 border-4 border-muted border-t-accent rounded-full animate-spin" />
-          <p className="salon-card-text text-[10px] font-bold uppercase tracking-widest">Gathering Excellence...</p>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <>

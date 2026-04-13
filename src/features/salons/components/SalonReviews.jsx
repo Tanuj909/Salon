@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { useSalonReviews } from "../hooks/useSalonReviews";
 
 // ─── Reveal Animation ──────────────────────────────────────────────────────────
 function useReveal() {
@@ -40,29 +39,8 @@ function Reveal({ children, delay = 0, className = "" }) {
 }
 
 // ─── Main Component ────────────────────────────────────────────────────────────
-const SalonReviews = ({ id, overallRating, totalReviews }) => {
-    const { reviews, loading, error, pagination, nextPage, prevPage } = useSalonReviews(id);
-
-    if (loading) {
-        return (
-            <section className="py-12" id="reviews">
-                <div className="max-w-7xl mx-auto px-8 flex flex-col items-center justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-muted border-t-accent rounded-full animate-spin mb-4" />
-                    <p className="salon-list-title-text text-xs uppercase tracking-[0.3em] font-bold">Curating Experiences...</p>
-                </div>
-            </section>
-        );
-    }
-
-    if (error) {
-        return (
-            <section className="py-12" id="reviews">
-                <div className="max-w-7xl mx-auto px-8 text-center py-10">
-                    <p className="footer-link-text text-sm italic">Unable to load reviews. Please try again later.</p>
-                </div>
-            </section>
-        );
-    }
+const SalonReviews = ({ reviews }) => {
+    if (!reviews) return null;
 
     return (
         <section className="py-8 sm:py-12" id="reviews">
@@ -142,30 +120,7 @@ const SalonReviews = ({ id, overallRating, totalReviews }) => {
                     </div>
                 )}
 
-                {/* Pagination Controls */}
-                {pagination.totalPages > 1 && (
-                    <Reveal delay={300}>
-                        <div className="flex justify-center items-center gap-4 sm:gap-10 mt-12 sm:mt-20">
-                             <button
-                                onClick={prevPage}
-                                disabled={pagination.isFirst}
-                                className="px-8 sm:px-12 py-3.5 sm:py-4 rounded-full border-0 rec-btn-primary text-white text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:shadow-xl transition-all cursor-pointer whitespace-nowrap"
-                            >
-                                Previous
-                            </button>
-                            <span className="rec-section-heading text-sm font-bold tracking-widest whitespace-nowrap">
-                                {pagination.currentPage + 1} / {pagination.totalPages}
-                            </span>
-                            <button
-                                onClick={nextPage}
-                                disabled={pagination.isLast}
-                                className="px-8 sm:px-12 py-3.5 sm:py-4 rounded-full border-0 rec-btn-primary text-white text-[10px] font-bold uppercase tracking-widest disabled:opacity-20 disabled:cursor-not-allowed hover:shadow-xl transition-all cursor-pointer whitespace-nowrap"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </Reveal>
-                )}
+
             </div>
         </section>
     );

@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { Clock } from "lucide-react";
-import { useSalonTimings } from "../hooks/useSalonTimings";
 
 // ─── Reveal Animation ──────────────────────────────────────────────────────────
 function useReveal() {
@@ -51,19 +50,8 @@ const formatTime = (timeString) => {
     return `${hours}:${minutes} ${ampm}`;
 };
 
-const BusinessTimings = ({ id, compact = false }) => {
-    const { timings, loading, error } = useSalonTimings({ id });
-
-    if (loading) {
-        return (
-            <div className={`${compact ? 'py-12' : 'py-32'} flex justify-center items-center gap-6`}>
-                <div className="w-10 h-10 border-4 border-[#1C3152]/10 border-t-[#1C3152] rounded-full animate-spin" />
-                <span className="text-[10px] font-bold uppercase tracking-widest rec-section-heading">Aligning Moments...</span>
-            </div>
-        );
-    }
-
-    if (error || !timings || timings.length === 0) return null;
+const BusinessTimings = ({ timings, compact = false }) => {
+    if (!timings || timings.length === 0) return null;
 
     const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
     const currentDay = new Date().toLocaleDateString("en-US", { weekday: "long" }).toUpperCase();

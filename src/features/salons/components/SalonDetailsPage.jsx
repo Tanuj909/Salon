@@ -4,7 +4,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useSalonDetails } from "../hooks/useSalonDetails";
 import SalonStaff from "./SalonStaff";
 import SalonServices from "./SalonServices";
 import BookAppointmentModal from "./BookAppointmentModal";
@@ -52,10 +51,9 @@ function Reveal({ children, delay = 0, className = "" }) {
 
 const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-export default function SalonDetailsPage({ id }) {
+export default function SalonDetailsPage({ salon, services, staff, reviews, timings, id }) {
   const router = useRouter();
   const { user } = useAuth();
-  const { salon, loading, error } = useSalonDetails(id);
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [preSelectedService, setPreSelectedService] = useState(null);
@@ -94,22 +92,10 @@ export default function SalonDetailsPage({ id }) {
     setPreSelectedStaff(null);
   };
 
-  if (loading) {
-    return (
-            <div className="min-h-screen hero-filter-input-bg flex flex-col items-center justify-center gap-6">
-                <div className="w-16 h-16 border-4 border-[#1C3152]/10 border-t-[#C49B66] rounded-full animate-spin shadow-lg" />
-                <div className="flex flex-col items-center gap-2">
-                    <h2 className="text-xl sm:text-2xl font-bold rec-section-heading font-[Cormorant_Garamond,serif] tracking-wider uppercase">Loading <em className="italic font-light rec-section-heading-accent">Excellence</em></h2>
-                    <p className="text-[10px] uppercase tracking-[0.4em] rec-section-subtext font-bold">Curating your experience</p>
-                </div>
-            </div>
-        );
-  }
-
-  if (error || !salon) {
+  if (!salon) {
     return (
       <div className="min-h-screen about-section-bg flex flex-col items-center justify-center gap-4 font-[Jost,sans-serif]">
-        <p className="salon-card-text text-lg">{error || "Salon not found."}</p>
+        <p className="salon-card-text text-lg">Salon not found.</p>
         <Link href="/salons" className="icon-secondary underline text-sm">
           ← Back to all salons
         </Link>
@@ -143,12 +129,12 @@ export default function SalonDetailsPage({ id }) {
       {/* ═══════════════════════════════════════════
           SERVICES SECTION (PAGINATED API)
       ═══════════════════════════════════════════ */}
-      <SalonServices id={id} salon={salon} onBookService={handleBookService} />
+      <SalonServices services={services} salon={salon} onBookService={handleBookService} />
 
       {/* ═══════════════════════════════════════════
           SALON STAFF SECTION
       ═══════════════════════════════════════════ */}
-      <SalonStaff id={id} onBookStaff={handleBookStaff} />
+      <SalonStaff staff={staff} onBookStaff={handleBookStaff} />
 
 
 
@@ -161,7 +147,7 @@ export default function SalonDetailsPage({ id }) {
             {/* Left: Business Timings */}
             <Reveal className="h-full">
               <div className="h-full flex flex-col">
-                <BusinessTimings id={id} compact={true} />
+                <BusinessTimings timings={timings} compact={true} />
               </div>
             </Reveal>
 
@@ -215,12 +201,7 @@ export default function SalonDetailsPage({ id }) {
               {/* ═══════════════════════════════════════════
           REVIEWS SECTION
       ═══════════════════════════════════════════ */}
-      <SalonReviews
-        id={id}
-        overallRating={salon.averageRating}
-        totalReviews={salon.totalReviews}
-        ratingBreakdown={salon.ratingBreakdown}
-      />
+      <SalonReviews reviews={reviews} />
       </section>
 
 

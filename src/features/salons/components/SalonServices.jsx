@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { useSalonServices } from "../hooks/useSalonServices";
 
 // ─── Reveal Animation ──────────────────────────────────────────────────────────
 function useReveal() {
@@ -136,23 +135,8 @@ function ServiceCard({ service, index, onBookNow, salon }) {
 }
 
 // ─── Main Component ────────────────────────────────────────────────────────────
-const SalonServices = ({ id, onBookService, salon }) => {
-    const { services, loading, error } = useSalonServices({ id });
-
-    if (loading) {
-        return (
-            <section className="py-6 sm:py-8" id="services">
-                <div className="max-w-7xl mx-auto px-4 sm:px-8">
-                    <div className="flex flex-col items-center justify-center gap-4 py-12">
-                        <div className="w-10 h-10 border-4 hero-filter-input-bg border-t-[#1C3152] rounded-full animate-spin" />
-                        <p className="service-card-label text-xs uppercase tracking-[0.2em] font-bold">Curating Services...</p>
-                    </div>
-                </div>
-            </section>
-        );
-    }
-
-    if (error || !services || services.length === 0) {
+const SalonServices = ({ services, salon, onBookService }) => {
+    if (!services || services.length === 0) {
         return null;
     }
 
