@@ -124,7 +124,7 @@ export default function SalonDetailsPage({ salon, services, staff, reviews, timi
       {/* ═══════════════════════════════════════════
           ABOUT SECTION
       ═══════════════════════════════════════════ */}
-      <AboutSection description={salon.description} />
+      <AboutSection description={salon.description} images={salon.imageUrls} />
 
       {/* ═══════════════════════════════════════════
           SERVICES SECTION (PAGINATED API)

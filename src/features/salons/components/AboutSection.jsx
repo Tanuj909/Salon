@@ -92,18 +92,22 @@ function Reveal({ children, delay = 0, className = "" }) {
     );
 }
 
-const AboutSection = ({ description, image }) => {
-    // Default image if none provided
-    const defaultImage = "https://images.unsplash.com/photo-1560066984-13812e8c6e6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80";
+const AboutSection = ({ description, images }) => {
+    // Default images if none provided
+    const defaultImages = [
+        "https://images.unsplash.com/photo-1560066984-13812e8c6e6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    ];
 
-    const salonImage = image || defaultImage;
+    const displayImages = images && images.length >= 2 ? images.slice(0, 2) : 
+                          (images && images.length === 1 ? [images[0], defaultImages[1]] : defaultImages);
 
     return (
         <section className="py-8 sm:py-12 px-4 sm:px-8 max-w-7xl mx-auto overflow-hidden" id="about">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
-                {/* Left Side - Content (moved up) */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
+                {/* Left Side - Content (Adjusted slightly down) */}
                 <Reveal>
-                    <div className="text-left lg:mt-[-20px]"> {/* Added negative margin to move content up */}
+                    <div className="text-left lg:mt-[-20px]">
                         <span className="block text-[10px] sm:text-[11px] tracking-[0.3em] sm:tracking-[0.4em] uppercase rec-section-heading-accent font-extrabold mb-4 sm:mb-5">
                             Our Legacy
                         </span>
@@ -119,23 +123,33 @@ const AboutSection = ({ description, image }) => {
                     </div>
                 </Reveal>
 
-                {/* Right Side - Image (with slight adjustment) */}
+                {/* Right Side - Two Images with 15% overlap */}
                 <Reveal delay={200}>
-                    <div className="relative flex justify-center lg:justify-end lg:mt-[-10px] mt-4 sm:mt-0"> {/* Slight negative margin to balance */}
-                        <div className="relative overflow-hidden rounded-2xl shadow-xl w-full max-w-[260px] sm:max-w-xs mx-auto lg:mx-0">
-                            <div className="aspect-[4/5] w-full">
-                                <img 
-                                    src={salonImage} 
-                                    alt="Salon interior"
-                                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
-                                />
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative h-[350px] sm:h-[450px] w-full max-w-[500px] mx-auto lg:mx-0 mt-8 lg:mt-0 px-4">
+                        {/* Second Image (Bottom Layer, Left-ish) */}
+                        <div className="absolute top-8 left-0 w-[58%] aspect-[4/5] overflow-hidden rounded-2xl shadow-xl z-10 border-4 border-white">
+                            <img 
+                                src={displayImages[1]} 
+                                alt="Salon ambiance"
+                                className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                         </div>
 
-                        {/* Decorative elements */}
-                        <div className="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 w-16 sm:w-20 h-16 sm:h-20 badge-verified-bg rounded-full blur-xl -z-10 opacity-10"></div>
-                        <div className="absolute -bottom-2 sm:-bottom-3 -left-2 sm:-left-3 w-20 sm:w-24 h-20 sm:h-24 footer-bg rounded-full blur-xl -z-10 opacity-5"></div>
+                        {/* First Image (Top Layer, Right-ish, overlapping by 15%) */}
+                        {/* Overlap calculation: Left at 42%, Width 58% -> 42 + 58 = 100. Overlap = 58 - 42 = 16% */}
+                        <div className="absolute top-0 left-[42%] w-[58%] aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl z-20 border-4 border-white">
+                            <img 
+                                src={displayImages[0]} 
+                                alt="Salon service"
+                                className="w-full h-full object-cover hover:scale-110 transition-transform duration-1000"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
+                        </div>
+
+                        {/* Subtle decorative elements */}
+                        <div className="absolute -top-4 -right-4 w-24 h-24 badge-verified-bg rounded-full blur-2xl -z-10 opacity-10"></div>
+                        <div className="absolute -bottom-4 -left-4 w-24 h-24 rec-section-heading-accent rounded-full blur-2xl -z-10 opacity-5"></div>
                     </div>
                 </Reveal>
             </div>

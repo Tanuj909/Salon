@@ -1,11 +1,13 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import useActiveCategories from '@/features/salons/hooks/useActiveServices';
+import TermsAndCondition from '@/components/TermsAndCondition';
 
 const Footer = () => {
   const { categories } = useActiveCategories();
+  const [showTerms, setShowTerms] = useState(false);
 
   const getCategoryLink = (name) => {
     const match = categories?.find(c => c.name.toLowerCase() === name.toLowerCase());
@@ -148,18 +150,25 @@ const Footer = () => {
             © 2024 Luxe Salon &amp; Spa. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 w-full md:w-auto">
-            <a href="#" className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200"
+            {/* <a href="#" className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200"
               style={{ fontFamily: "'Georgia', serif" }}>
               Privacy Policy
-            </a>
-            <a href="#" className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200"
+            </a> */}
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                setShowTerms(true);
+              }}
+              className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
               style={{ fontFamily: "'Georgia', serif" }}>
-              Terms of Service
-            </a>
+              Terms & condition
+            </button>
           </div>
         </div>
 
       </div>
+
+      {showTerms && <TermsAndCondition onClose={() => setShowTerms(false)} />}
     </footer>
   );
 };

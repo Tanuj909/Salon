@@ -715,89 +715,65 @@ const HeroSection = () => {
 
           {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
           <div className="w-full max-w-5xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
-            <div className="hero-filter-bar-bg border border-gray-200 p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 md:grid-cols-2 lg:flex lg:flex-row items-center gap-3 lg:gap-2">
+            <div className="relative group">
+              <div className="hero-filter-bar-bg border border-gray-200 p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 lg:flex lg:flex-row items-center gap-3 lg:gap-2 pr-12 lg:pr-14">
 
-              {/* Category Select */}
-              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20">
-                <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">category</span>
-                <select
-                  className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                {/* Service Select */}
+                <div className="w-full lg:w-[40%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20">
+                  <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">content_cut</span>
+                  <select
+                    className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
+                    value={selectedService}
+                    onChange={(e) => setSelectedService(e.target.value)}
+                  >
+                    <option value="">Select Service</option>
+                    {loadingServices ? (
+                      <option disabled>Loading...</option>
+                    ) : (
+                      distinctServices.map((service, idx) => (
+                        <option key={idx} value={service}>{service}</option>
+                      ))
+                    )}
+                  </select>
+                  <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
+                </div>
+
+                {/* Choose Manually (Map) */}
+                <div
+                  onClick={() => setIsMapModalOpen(true)}
+                  className="w-full lg:w-[35%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
                 >
-                  <option value="">Categories</option>
-                  {loading ? (
-                    <option disabled>Loading...</option>
-                  ) : (
-                    categories?.map((cat) => (
-                      <option key={cat.id} value={cat.id}>{cat.name}</option>
-                    ))
-                  )}
-                </select>
-                <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
+                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
+                    <span className="material-symbols-outlined text-lg">map</span>
+                  </div>
+                  <div className="flex flex-col text-left overflow-hidden">
+                    <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Location</span>
+                    <span className="text-xs lg:text-sm font-medium hero-filter-input-text truncate">
+                      {location?.address || "Choose Manually"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Search Trigger */}
+                <Link
+                  href={`/salons?${new URLSearchParams({
+                    ...(selectedService && { serviceName: selectedService }),
+                  }).toString()}`}
+                  className="w-full lg:w-[25%] py-3 lg:py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#1C3152]/30 flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-lg text-white">search</span>
+                  <span className="text-white">Search</span>
+                </Link>
               </div>
 
-              {/* Service Select */}
-              <div className="w-full lg:w-[18%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20">
-                <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">content_cut</span>
-                <select
-                  className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                >
-                  <option value="">Services</option>
-                  {loadingServices ? (
-                    <option disabled>Loading...</option>
-                  ) : (
-                    distinctServices.map((service, idx) => (
-                      <option key={idx} value={service}>{service}</option>
-                    ))
-                  )}
-                </select>
-                <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
-              </div>
-
-              {/* Current Location (Detect) */}
-              <div
+              {/* Current Location Icon (Shifted to corner) */}
+              <button
                 onClick={refreshLocation}
-                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
+                title="Detect My Location"
+                className="absolute right-3 lg:right-4 top-1/2 -translate-y-1/2 w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full bg-white border border-gray-100 shadow-md text-gray-400 hover:text-[#1C3152] hover:shadow-lg transition-all active:scale-95 z-[10]"
               >
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
-                  <span className={`material-symbols-outlined text-lg ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
-                </div>
-                <div className="flex flex-col text-left overflow-hidden">
-                  <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Automatic</span>
-                  <span className="text-xs lg:text-sm font-medium hero-filter-input-text truncate">
-                    {locationLoading ? "Detecting..." : (location?.address || "Current Location")}
-                  </span>
-                </div>
-              </div>
-
-              {/* Select Manually (Map) */}
-              <div
-                onClick={() => setIsMapModalOpen(true)}
-                className="w-full lg:w-[22%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
-              >
-                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
-                  <span className="material-symbols-outlined text-lg">map</span>
-                </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Manual</span>
-                  <span className="text-xs lg:text-sm font-medium hero-filter-input-text">Choose Manually</span>
-                </div>
-              </div>
-
-              {/* Search Trigger */}
-              <Link
-                href={`/salons?${new URLSearchParams({
-                  ...(selectedCategory && { categoryId: selectedCategory }),
-                  ...(selectedService && { serviceName: selectedService }),
-                }).toString()}`}
-                className="w-full lg:w-[20%] py-3 lg:py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#1C3152]/30 flex items-center justify-center gap-2"
-              >
-                <span className="material-symbols-outlined text-lg text-white">search</span>
-                <span className="text-white">Search</span>
-              </Link>
+                <span className={`material-symbols-outlined text-lg ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
+              </button>
             </div>
 
             {/* Service Search Bar - Below Filter Bar */}

@@ -1,16 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function TermsAndCondition({ onClose }) {
   const router = useRouter();
-  const [agreed, setAgreed] = useState(false);
 
   const handleProceed = () => {
-    if (agreed) {
-      router.push("/signup");
-    }
+    router.push("/signup");
   };
 
   return (
@@ -25,7 +21,7 @@ export default function TermsAndCondition({ onClose }) {
         <div className="p-5 border-b border-gray-100 flex justify-between items-center bg-[#f9fafb]">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold font-[Cormorant_Garamond,serif] tracking-tight text-[#1C3152]">
-              Terms & Conditions
+              Terms & condition
             </h2>
             <p className="text-[10px] uppercase tracking-widest text-[#1C3152]/60 font-bold mt-1">
               Fast Booking Service
@@ -131,31 +127,10 @@ export default function TermsAndCondition({ onClose }) {
         </div>
 
         {/* Footer actions */}
-        <div className="p-6 border-t border-gray-100 bg-[#f9fafb] flex flex-col sm:flex-row justify-between items-center gap-4">
-          <label className="flex items-center gap-3 cursor-pointer group flex-1">
-            <div className="relative flex items-center justify-center">
-              <input
-                type="checkbox"
-                id="terms-checkbox"
-                className="peer sr-only"
-                checked={agreed}
-                onChange={(e) => setAgreed(e.target.checked)}
-              />
-              <div className="w-6 h-6 border-2 border-[#1C3152]/30 rounded-lg flex items-center justify-center peer-checked:bg-[#B59154] peer-checked:border-[#B59154] transition-all group-hover:border-[#B59154]/50">
-                <span className="material-symbols-outlined text-white text-[18px] opacity-0 peer-checked:opacity-100 font-bold pointer-events-none">
-                  check
-                </span>
-              </div>
-            </div>
-            <span className="text-xs sm:text-sm text-gray-700 font-semibold select-none group-hover:text-[#1C3152] transition-colors">
-              I have read and agree to the Terms & Conditions
-            </span>
-          </label>
-          
+        <div className="p-6 border-t border-gray-100 bg-[#f9fafb] flex justify-center items-center">
           <button
             onClick={handleProceed}
-            disabled={!agreed}
-            className="w-full sm:w-auto px-10 py-3.5 rounded-xl font-bold transition-all active:scale-[0.98] disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.2em] shadow-xl bg-[#1C3152] text-white hover:bg-[#1C3152]/90 hover:shadow-2xl"
+            className="w-full sm:w-auto px-12 py-3.5 rounded-xl font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.2em] shadow-xl bg-[#1C3152] text-white hover:bg-[#1C3152]/90 hover:shadow-2xl"
           >
             <span>Proceed</span>
             <span className="material-symbols-outlined text-base">arrow_forward</span>
