@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { loginUser } from "@/features/auth/services/authService";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import TermsAndCondition from "@/components/TermsAndCondition";
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function LoginPage() {
   const redirect = searchParams.get("redirect");
   const { refreshUser } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [showTerms, setShowTerms] = useState(false);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -110,7 +110,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <button 
               type="button" 
-              onClick={() => setShowTerms(true)}
+              onClick={() => router.push("/signup")}
               className="rec-section-heading-accent font-bold hover:underline ml-1 uppercase tracking-widest text-[10px]"
             >
               Register now
@@ -119,7 +119,7 @@ export default function LoginPage() {
         </div>
       </div>
       
-      {showTerms && <TermsAndCondition onClose={() => setShowTerms(false)} />}
+
     </div>
   );
 }

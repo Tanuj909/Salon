@@ -1,13 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+
 
 export default function TermsAndCondition({ onClose }) {
-  const router = useRouter();
-
-  const handleProceed = () => {
-    router.push("/signup");
-  };
 
   return (
     <div 
@@ -124,17 +119,6 @@ export default function TermsAndCondition({ onClose }) {
             <h3 className="font-bold text-[#1C3152] text-base mb-2">10. Changes to Terms</h3>
             <p>We reserve the right to update these terms at any time without prior notice.</p>
           </section>
-        </div>
-
-        {/* Footer actions */}
-        <div className="p-6 border-t border-gray-100 bg-[#f9fafb] flex justify-center items-center">
-          <button
-            onClick={handleProceed}
-            className="w-full sm:w-auto px-12 py-3.5 rounded-xl font-bold transition-all active:scale-[0.98] flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.2em] shadow-xl bg-[#1C3152] text-white hover:bg-[#1C3152]/90 hover:shadow-2xl"
-          >
-            <span>Proceed</span>
-            <span className="material-symbols-outlined text-base">arrow_forward</span>
-          </button>
         </div>
       </div>
     </div>
