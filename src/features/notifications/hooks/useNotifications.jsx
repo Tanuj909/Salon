@@ -5,12 +5,14 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { TokenService } from "@/lib/tokenService";
 import { useAuthContext } from "@/features/auth/providers/AuthProvider";
+import { useMyBusiness } from "@/features/business/hooks/useMyBusiness";
 import apiClient from "@/services/apiClient";
 import { NOTIFICATION_ENDPOINTS } from "@/features/notifications/services/notificationEndpoints";
 import { useToast } from "@/context/ToastContext";
 
 export const useNotifications = () => {
   const { user, loading: authLoading } = useAuthContext();
+  const { business } = useMyBusiness();
   const { showToast } = useToast();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -21,7 +23,8 @@ export const useNotifications = () => {
   // ─── Fetch unread from REST (Manual fallback & Sync) ──────────────────────
   const fetchUnread = useCallback(async () => {
     try {
-      const res = await apiClient.get(NOTIFICATION_ENDPOINTS.UNREAD);
+      // Add timestamp for cache busting
+      const res = await apiClient.get(`${NOTIFICATION_ENDPOINTS.UNREAD}?_t=${Date.now()}`);
       if (res.data) {
         // Sort by newest first
         const sorted = [...res.data].sort((a, b) => {
@@ -104,6 +107,13 @@ export const useNotifications = () => {
           "/user/topic/notifications"            // 4. User Topic (Alternative Spring config)
         ];
 
+        // 5. Business-specific notifications (Crucial for Salon Owners)
+        if (business?.id) {
+          subPaths.push(`/topic/business/${business.id}/notifications`);
+          subPaths.push(`/queue/business/${business.id}/notifications`);
+          console.log("[Notifications] Subscribing to business channel:", business.id);
+        }
+
         if (user.email) {
           subPaths.push(`/user/${user.email}/queue/notifications`); // 5. Email Path (Common for JWT)
         }
@@ -135,7 +145,7 @@ export const useNotifications = () => {
       clientRef.current = null;
       setWsConnected(false);
     };
-  }, [user?.id, user?.email, authLoading, fetchUnread, handleIncomingNotification]);
+  }, [user?.id, user?.email, business?.id, authLoading, fetchUnread, handleIncomingNotification]);
 
   // ─── Polling Fallback & Safety Sync ───────────────────────────────────────
   useEffect(() => {

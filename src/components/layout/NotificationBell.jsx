@@ -15,7 +15,7 @@ const TYPE_COLORS = {
 };
 
 export default function NotificationBell({ isScrolled }) {
-  const { notifications, unreadCount, wsConnected, markAsRead, markAllAsRead } =
+  const { notifications, unreadCount, wsConnected, markAsRead, markAllAsRead, refetch } =
     useNotifications();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -69,9 +69,9 @@ export default function NotificationBell({ isScrolled }) {
         {/* WS connection dot */}
         <span
           className={`absolute bottom-1 right-1 w-2 h-2 rounded-full border border-white ${
-            wsConnected ? "bg-green-400" : "bg-gray-300"
+            wsConnected ? "bg-green-400 animate-pulse" : "bg-gray-300"
           }`}
-          title={wsConnected ? "Live" : "Reconnecting..."}
+          title={wsConnected ? "Live Connection" : "Offline - Polling active"}
         />
       </button>
 
@@ -92,7 +92,18 @@ export default function NotificationBell({ isScrolled }) {
                 <WifiOff size={12} className="text-gray-400" />
               )}
             </div>
-            {/* Removed Mark All Read as per request */}
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  refetch();
+                }}
+                className="p-1 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-[#D98C5F]"
+                title="Refresh notifications"
+              >
+                <span className="material-symbols-outlined text-sm">refresh</span>
+              </button>
+            </div>
           </div>
 
           {/* List */}
