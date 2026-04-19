@@ -26,10 +26,23 @@ export const ENDPOINTS = {
     NEARBY: (lat, lng, radius) => `/businesses/nearby?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}`,
     NEARBY_BY_CATEGORY: (categoryId, lat, lng, radius, size) =>
       `/businesses/nearby/category/${categoryId}?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}&size=${size}&page=0`,
-    SEARCH_NEARBY: (lat, lng, radius, serviceName, categoryId, page = 0, size = 20) => {
-      let url = `/businesses/nearby/search?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}&page=${page}&size=${size}`;
+    SEARCH_NEARBY: (params) => {
+      const { 
+        lat, lng, radius, serviceName, categoryId, 
+        minRating, isOpen, date, startTime, endTime,
+        page = 0, size = 20, sortBy = 'distance', sortDirection = 'ASC' 
+      } = params;
+      
+      let url = `/businesses/nearby/search?latitude=${lat}&longitude=${lng}&radiusInKm=${radius}&page=${page}&size=${size}&sortBy=${sortBy}&sortDirection=${sortDirection}`;
+      
       if (serviceName) url += `&serviceName=${encodeURIComponent(serviceName)}`;
       if (categoryId) url += `&categoryId=${categoryId}`;
+      if (minRating) url += `&minRating=${minRating}`;
+      if (isOpen !== undefined) url += `&isOpen=${isOpen}`;
+      if (date) url += `&date=${date}`;
+      if (startTime) url += `&startTime=${startTime}`;
+      if (endTime) url += `&endTime=${endTime}`;
+      
       return url;
     },
 

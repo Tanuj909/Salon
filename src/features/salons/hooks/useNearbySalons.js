@@ -27,7 +27,12 @@ export const useNearbySalons = () => {
     radius: 20,
     address: "",
     serviceName: urlParams?.get("serviceName") || "",
-    categoryId: urlParams?.get("categoryId") || ""
+    categoryId: urlParams?.get("categoryId") || "",
+    date: urlParams?.get("date") || "",
+    startTime: urlParams?.get("startTime") || "",
+    endTime: urlParams?.get("endTime") || "",
+    minRating: urlParams?.get("minRating") || "",
+    isOpen: urlParams?.get("isOpen") || undefined
   });
 
   // Track if we've already initialized with browser location
@@ -69,13 +74,7 @@ export const useNearbySalons = () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await searchNearbySalons(
-        params.lat,
-        params.lng,
-        params.radius,
-        params.serviceName,
-        params.categoryId
-      );
+      const data = await searchNearbySalons(params);
 
       setSalons(data || []);
       // If we got an empty array, it's not exactly an error but a state we should handle
@@ -93,7 +92,17 @@ export const useNearbySalons = () => {
     if (searchParams.lat && searchParams.lng) {
       loadSalons(searchParams);
     }
-  }, [searchParams.lat, searchParams.lng, searchParams.radius, searchParams.serviceName, searchParams.categoryId, loadSalons]);
+  }, [
+    searchParams.lat, 
+    searchParams.lng, 
+    searchParams.radius, 
+    searchParams.serviceName, 
+    searchParams.categoryId,
+    searchParams.date,
+    searchParams.startTime,
+    searchParams.endTime,
+    loadSalons
+  ]);
 
   const updateParams = (newParams) => {
     setSearchParams(prev => ({ ...prev, ...newParams }));

@@ -9,9 +9,9 @@ export const fetchNearbySalons = async (lat, lng, radius = 20) => {
   return response.data;
 };
 
-export const searchNearbySalons = async (lat, lng, radius = 20, serviceName, categoryId) => {
+export const searchNearbySalons = async (params) => {
   const response = await publicApiClient.get(
-    ENDPOINTS.SALON.SEARCH_NEARBY(lat, lng, radius, serviceName, categoryId)
+    ENDPOINTS.SALON.SEARCH_NEARBY(params)
   );
   return response.data.content || response.data; // fallback for paginated response
 };

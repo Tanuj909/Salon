@@ -460,7 +460,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import useActiveCategories from '../../../features/salons/hooks/useActiveServices';
+
 import { fetchDistinctServiceNames } from '@/features/salons/services/salonService';
 import Fuse from 'fuse.js';
 import { fuseData } from '../data/fuseData';
@@ -473,13 +473,17 @@ const MapPickerModal = dynamic(() => import('@/features/salons/components/MapPic
 
 const HeroSection = () => {
   const [current, setCurrent] = useState(0);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedService, setSelectedService] = useState("");
+
   const [serviceSearch, setServiceSearch] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const searchRef = useRef(null);
+  const timeRef = useRef(null);
 
   const [headingIndex, setHeadingIndex] = useState(0);
   const [headingFade, setHeadingFade] = useState(true);
@@ -520,6 +524,9 @@ const HeroSection = () => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setShowSuggestions(false);
       }
+      if (timeRef.current && !timeRef.current.contains(event.target)) {
+        setIsTimeModalOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -548,7 +555,6 @@ const HeroSection = () => {
   const handleSearchSubmit = () => {
     const originalVal = serviceSearch;
     const trimmed = originalVal.toLowerCase().trim();
-    if (!trimmed) return;
 
     const exactMatch = combinedServiceData.find(
       s => s.name.toLowerCase() === trimmed
@@ -569,7 +575,14 @@ const HeroSection = () => {
     }
 
     setShowSuggestions(false);
-    router.push(`/salons?serviceName=${encodeURIComponent(finalSearchTerm)}`);
+    
+    const params = new URLSearchParams();
+    if (finalSearchTerm) params.append("serviceName", finalSearchTerm);
+    if (date) params.append("date", date);
+    if (startTime) params.append("startTime", startTime);
+    if (endTime) params.append("endTime", endTime);
+
+    router.push(`/salons?${params.toString()}`);
   };
 
   const headings = [
@@ -583,7 +596,7 @@ const HeroSection = () => {
     "Haircut", "Manicure", "Beard Trim", "Facial", "Hair Coloring", "Massage", "Spa Treatment"
   ];
 
-  const { categories, loading, error } = useActiveCategories();
+
 
   const slides = [
     { url: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1600&q=80', label: '01' },
@@ -714,124 +727,167 @@ const HeroSection = () => {
           </p>
 
           {/* Filter Bar (Optimized for Narrow Mobile and Tablet) */}
-          <div className="w-full max-w-5xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
+          <div className="w-full max-w-7xl px-3 animate-fade-up [animation-delay:700ms] mt-5 relative z-[100]">
             <div className="relative group">
-              <div className="hero-filter-bar-bg border border-gray-200 p-3 md:p-4 lg:p-2 rounded-[2rem] lg:rounded-full shadow-2xl grid grid-cols-1 lg:flex lg:flex-row items-center gap-3 lg:gap-2 pr-12 lg:pr-14">
+              <div className="hero-filter-bar-bg border border-gray-200 p-4 md:p-5 lg:p-3 rounded-[2.5rem] lg:rounded-full shadow-2xl grid grid-cols-1 lg:flex lg:flex-row items-center gap-3 lg:gap-2 lg:pr-16">
 
-                {/* Service Select */}
-                <div className="w-full lg:w-[40%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-3 lg:py-2 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20">
-                  <span className="material-symbols-outlined hero-filter-icon text-lg mr-2">content_cut</span>
-                  <select
-                    className="w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none appearance-none cursor-pointer"
-                    value={selectedService}
-                    onChange={(e) => setSelectedService(e.target.value)}
+                {/* Service Search Input */}
+                <div className="w-full lg:w-[30%] relative flex items-center hero-filter-input-bg rounded-full border px-5 py-4 lg:py-3 transition-all hover:bg-white focus-within:ring-2 focus-within:ring-[#1C3152]/20" ref={searchRef}>
+                  <span className="material-symbols-outlined hero-filter-icon text-xl mr-3">content_cut</span>
+                  <input
+                    type="text"
+                    className={`w-full bg-transparent hero-filter-input-text text-sm font-medium outline-none placeholder:text-[#4A3B2F]/50`}
+                    placeholder={`${servicePlaceholders[placeholderIndex]}`}
+                    value={serviceSearch}
+                    onChange={handleSearchChange}
+                    onFocus={() => {
+                      if (serviceSearch.trim()) {
+                        setShowSuggestions(true);
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSearchSubmit();
+                      }
+                    }}
+                  />
+                  
+                  {/* Suggestions Dropdown */}
+                  {showSuggestions && (
+                    <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-2xl overflow-hidden z-[120] border border-gray-100 flex flex-col">
+                      {suggestions.length > 0 ? (
+                        suggestions.map((item, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleSuggestionClick(item.name)}
+                            className="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 flex items-center gap-4"
+                          >
+                            <span className="material-symbols-outlined text-gray-400 text-lg">search</span>
+                            <span className="text-[#4A3B2F] font-medium text-sm md:text-base">{item.name}</span>
+                          </button>
+                        ))
+                      ) : (
+                        <div className="px-6 py-5 text-center text-gray-500 text-sm font-medium">
+                          No services found
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Time Selection (Modal Trigger) */}
+                <div className="w-full lg:w-[35%] relative" ref={timeRef}>
+                  <div 
+                    onClick={() => setIsTimeModalOpen(!isTimeModalOpen)}
+                    className="flex items-center gap-3 hero-filter-input-bg rounded-full border px-5 py-3 lg:py-2.5 transition-all hover:bg-white cursor-pointer group"
                   >
-                    <option value="">Select Service</option>
-                    {loadingServices ? (
-                      <option disabled>Loading...</option>
-                    ) : (
-                      distinctServices.map((service, idx) => (
-                        <option key={idx} value={service}>{service}</option>
-                      ))
-                    )}
-                  </select>
-                  <span className="material-symbols-outlined text-gray-400 text-sm absolute right-4 pointer-events-none">expand_more</span>
+                    <span className="material-symbols-outlined hero-filter-icon text-xl">calendar_today</span>
+                    <div className="flex flex-col text-left overflow-hidden">
+                      <span className="text-[8px] uppercase font-bold text-gray-400 tracking-tighter leading-none mb-1">Appointment Time</span>
+                      <span className="text-[11px] font-bold hero-filter-input-text truncate leading-none">
+                        {date ? `${date} ${startTime ? `@ ${startTime}` : ''}` : "Choose Date & Time"}
+                      </span>
+                    </div>
+                    <span className={`material-symbols-outlined text-gray-400 text-lg ml-auto transition-transform duration-300 ${isTimeModalOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                  </div>
+
+                  {/* Time Modal/Popover */}
+                  {isTimeModalOpen && (
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 mt-3 w-[280px] bg-white rounded-3xl shadow-2xl p-6 z-[130] border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
+                      <div className="space-y-5">
+                        <div className="space-y-2">
+                          <label className="text-[9px] uppercase font-black text-gray-400 tracking-widest ml-1">Select Date</label>
+                          <div className="relative flex items-center bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100 focus-within:border-[#1C3152]/30 transition-all">
+                            <span className="material-symbols-outlined text-gray-400 text-lg mr-3">event</span>
+                            <input 
+                              type="date" 
+                              className="bg-transparent text-sm font-bold outline-none w-full text-[#1C3152]"
+                              value={date}
+                              onChange={(e) => setDate(e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-[9px] uppercase font-black text-gray-400 tracking-widest ml-1">Start</label>
+                            <div className="relative flex items-center bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100 focus-within:border-[#1C3152]/30 transition-all">
+                              <input 
+                                type="time" 
+                                className="bg-transparent text-sm font-bold outline-none w-full text-[#1C3152]"
+                                value={startTime}
+                                onChange={(e) => setStartTime(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-[9px] uppercase font-black text-gray-400 tracking-widest ml-1">End</label>
+                            <div className="relative flex items-center bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100 focus-within:border-[#1C3152]/30 transition-all">
+                              <input 
+                                type="time" 
+                                className="bg-transparent text-sm font-bold outline-none w-full text-[#1C3152]"
+                                value={endTime}
+                                onChange={(e) => setEndTime(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <button 
+                          onClick={() => setIsTimeModalOpen(false)}
+                          className="w-full py-3 bg-[#1C3152] text-white rounded-2xl font-bold text-xs shadow-lg hover:shadow-[#1C3152]/20 transition-all active:scale-95"
+                        >
+                          Confirm Time
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Choose Manually (Map) */}
                 <div
                   onClick={() => setIsMapModalOpen(true)}
-                  className="w-full lg:w-[35%] relative flex items-center hero-filter-input-bg rounded-full border px-4 py-2.5 lg:py-2 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
+                  className="w-full lg:w-[25%] relative flex items-center hero-filter-input-bg rounded-full border px-5 py-3 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
                 >
-                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-2 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
+                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-3 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
                     <span className="material-symbols-outlined text-lg">map</span>
                   </div>
                   <div className="flex flex-col text-left overflow-hidden">
-                    <span className="text-[7px] lg:text-[8px] uppercase font-bold text-gray-400 tracking-tighter">Location</span>
-                    <span className="text-xs lg:text-sm font-medium hero-filter-input-text truncate">
+                    <span className="text-[8px] uppercase font-bold text-gray-400 tracking-tighter leading-none mb-1">Location</span>
+                    <span className="text-[11px] font-bold hero-filter-input-text truncate leading-none">
                       {location?.address || "Choose Manually"}
                     </span>
                   </div>
                 </div>
 
-                {/* Search Trigger */}
-                <Link
-                  href={`/salons?${new URLSearchParams({
-                    ...(selectedService && { serviceName: selectedService }),
-                  }).toString()}`}
-                  className="w-full lg:w-[25%] py-3 lg:py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold text-sm tracking-wide transition-all shadow-lg hover:shadow-[#1C3152]/30 flex items-center justify-center gap-2"
-                >
-                  <span className="material-symbols-outlined text-lg text-white">search</span>
-                  <span className="text-white">Search</span>
-                </Link>
+                {/* Search & Mobile Location Trigger */}
+                <div className="w-full lg:w-[10%] flex items-center gap-2">
+                  <button
+                    onClick={refreshLocation}
+                    title="Detect My Location"
+                    className="lg:hidden w-12 h-12 flex items-center justify-center rounded-full bg-white border border-gray-200 shadow-lg text-gray-500 active:scale-95 transition-all"
+                  >
+                    <span className={`material-symbols-outlined text-xl ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
+                  </button>
+                  <button
+                    onClick={handleSearchSubmit}
+                    className="flex-1 lg:w-full h-12 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold transition-all shadow-xl hover:shadow-[#1C3152]/30 flex items-center justify-center"
+                  >
+                    <span className="material-symbols-outlined text-2xl text-white">search</span>
+                  </button>
+                </div>
               </div>
 
-              {/* Current Location Icon (Shifted to corner) */}
+              {/* Current Location Icon (Desktop only - Shifted to corner) */}
               <button
                 onClick={refreshLocation}
                 title="Detect My Location"
-                className="absolute right-3 lg:right-4 top-1/2 -translate-y-1/2 w-8 h-8 lg:w-9 lg:h-9 flex items-center justify-center rounded-full bg-white border border-gray-100 shadow-md text-gray-400 hover:text-[#1C3152] hover:shadow-lg transition-all active:scale-95 z-[10]"
+                className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 items-center justify-center rounded-full bg-white border border-gray-100 shadow-md text-gray-400 hover:text-[#1C3152] hover:shadow-lg transition-all active:scale-95 z-[10]"
               >
                 <span className={`material-symbols-outlined text-lg ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
               </button>
             </div>
 
-            {/* Service Search Bar - Below Filter Bar */}
-            <div className="mt-4 md:mt-6 flex justify-center w-full relative z-[100]">
-              <div className="w-full max-w-xl relative" ref={searchRef}>
-                <div className="w-full hero-filter-bar-bg p-1.5 md:p-2 rounded-full md:rounded-full shadow-2xl border border-gray-200 flex items-center gap-2 group transition-all hover:bg-white relative z-[110]">
-                  <div className="flex-1 relative flex items-center pl-3">
-                    <span className="material-symbols-outlined hero-filter-icon text-xl mr-3">content_cut</span>
-                    <input
-                      type="text"
-                      className={`w-full bg-transparent hero-filter-input-text text-sm md:text-base font-medium outline-none placeholder:text-[#4A3B2F]/50 placeholder:transition-all placeholder:duration-500 ${placeholderFade ? 'placeholder:opacity-100 placeholder:translate-x-0' : 'placeholder:opacity-0 placeholder:-translate-x-4'}`}
-                      placeholder={`${servicePlaceholders[placeholderIndex]}`}
-                      value={serviceSearch}
-                      onChange={handleSearchChange}
-                      onFocus={() => {
-                        if (serviceSearch.trim()) {
-                          setShowSuggestions(true);
-                        }
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          handleSearchSubmit();
-                        }
-                      }}
-                    />
-                  </div>
-                  <button
-                    onClick={handleSearchSubmit}
-                    className="px-3 py-2.5 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full md:rounded-full font-bold text-sm tracking-wide transition-all flex items-center gap-2 active:scale-95 shrink-0"
-                  >
-                    <span className="material-symbols-outlined text-lg text-white">search</span>
-                    <span className="hidden sm:inline text-white">Search Service</span>
-                  </button>
-                </div>
-
-                {/* Suggestions Dropdown */}
-                {showSuggestions && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl overflow-hidden z-[120] border border-gray-100 flex flex-col">
-                    {suggestions.length > 0 ? (
-                      suggestions.map((item, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleSuggestionClick(item.name)}
-                          className="w-full text-left px-5 py-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 flex items-center gap-3"
-                        >
-                          <span className="material-symbols-outlined text-gray-400 text-sm">search</span>
-                          <span className="text-[#4A3B2F] font-medium text-sm md:text-base">{item.name}</span>
-                        </button>
-                      ))
-                    ) : (
-                      <div className="px-5 py-4 text-center text-gray-500 text-sm font-medium">
-                        No services found
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
 
           {/* Quick Actions (Hero Bottom) */}

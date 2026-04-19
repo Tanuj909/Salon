@@ -164,16 +164,21 @@ export default function SalonList() {
     radius: searchParams.radius,
     address: searchParams.address,
     serviceName: searchParams.serviceName || "",
-    categoryId: searchParams.categoryId || ""
+    categoryId: searchParams.categoryId || "",
+    date: searchParams.date || "",
+    startTime: searchParams.startTime || "",
+    endTime: searchParams.endTime || ""
   });
 
   const [showTimeoutOptions, setShowTimeoutOptions] = useState(false);
+  const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [distinctServices, setDistinctServices] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const serviceSearchRef = useRef(null);
   const mobileServiceSearchRef = useRef(null);
+  const timeRef = useRef(null);
 
   // ─── Combined Service Data for Search ───
   const combinedServiceData = useMemo(() => {
@@ -259,6 +264,9 @@ export default function SalonList() {
       ) {
         setShowSuggestions(false);
       }
+      if (timeRef.current && !timeRef.current.contains(event.target)) {
+        setIsTimeModalOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -286,7 +294,10 @@ export default function SalonList() {
         radius: searchParams.radius,
         address: searchParams.address,
         serviceName: searchParams.serviceName || "",
-        categoryId: searchParams.categoryId || ""
+        categoryId: searchParams.categoryId || "",
+        date: searchParams.date || "",
+        startTime: searchParams.startTime || "",
+        endTime: searchParams.endTime || ""
       });
       hasInitialized.current = true;
     }
@@ -486,7 +497,7 @@ export default function SalonList() {
                         <Search size={16} strokeWidth={2.5} />
                     </div>
                     <input
-                      className="flex-1 h-full px-3 salon-list-title-text text-[0.9rem] outline-none bg-transparent font-[DM_Sans] placeholder:text-[#3c143240] placeholder:transition-all placeholder:duration-500"
+                      className="flex-1 h-full pl-3 pr-10 salon-list-title-text text-[0.9rem] outline-none bg-transparent font-[DM_Sans] placeholder:text-[#3c143240] placeholder:transition-all placeholder:duration-500"
                       type="text"
                       placeholder={servicePlaceholders[servicePlaceholderIndex]}
                       value={draftParams.serviceName}
@@ -517,7 +528,7 @@ export default function SalonList() {
                           setDraftParams(prev => ({ ...prev, serviceName: "" }));
                           setTimeout(handleFetch, 100);
                         }}
-                        className="p-2 text-[#3c143240] hover:text-[#7a2860] transition-colors"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-[#3c143240] hover:text-[#7a2860] transition-colors"
                       >
                         <X size={18} />
                       </button>
@@ -595,6 +606,17 @@ export default function SalonList() {
                   }
                 }}
               />
+              {draftParams.serviceName && (
+                <button 
+                  onClick={() => {
+                    setDraftParams(prev => ({ ...prev, serviceName: "" }));
+                    setTimeout(handleFetch, 100);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-[#3c143240] hover:text-[#7a2860] transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              )}
               {showSuggestions && suggestions.length > 0 && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white border hero-filter-input-bg rounded-xl shadow-2xl z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
                   {suggestions.map((s, idx) => (
@@ -614,7 +636,7 @@ export default function SalonList() {
             <button
               onClick={handleFetch}
               disabled={loading}
-              className="h-12 px-6 flex items-center justify-center gap-2 rounded-xl rec-btn-primary font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-12 px-5 flex items-center justify-center gap-2 rounded-xl rec-btn-primary font-bold text-[0.85rem] tracking-wide transition-all duration-300 hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
@@ -633,7 +655,7 @@ export default function SalonList() {
           <div className="p-4 md:p-6 rounded-[1.2rem] md:rounded-[1.5rem] border border-white/10 hero-filter-bar-bg backdrop-blur-sm shadow-xl">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-end mb-4 md:mb-6">
               {/* Location Picker */}
-              <div className="lg:col-span-8 space-y-1.5">
+              <div className="lg:col-span-6 space-y-1.5">
                 <div className="flex items-center justify-between px-1">
                   <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Near Your Location</label>
                 </div>
@@ -663,7 +685,7 @@ export default function SalonList() {
               </div>
 
               {/* Radius Select */}
-              <div className="lg:col-span-4 space-y-1.5">
+              <div className="lg:col-span-3 space-y-1.5">
                 <div className="flex items-center justify-between px-1">
                   <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Search Radius</label>
                   <span className="text-[9px] font-black hero-filter-icon bg-[#7a2860]/5 px-2 py-0.5 rounded-full">{draftParams.radius}km</span>
@@ -676,6 +698,76 @@ export default function SalonList() {
                     className="w-full h-1.5 bg-[#1C3152]/10 rounded-lg appearance-none cursor-pointer accent-[#1C3152] slider-thumb-premium"
                   />
                 </div>
+              </div>
+
+              {/* Time Select (Modal Trigger) */}
+              <div className="lg:col-span-3 space-y-1.5 flex flex-col relative" ref={timeRef}>
+                <div className="flex items-center justify-between px-1">
+                  <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Appointment Time</label>
+                </div>
+                <div 
+                  onClick={() => setIsTimeModalOpen(!isTimeModalOpen)}
+                  className="flex items-center justify-between gap-1 h-11 px-4 rounded-xl border border-[#3c143212] bg-white cursor-pointer hover:border-[#cd6133]/30 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <span className="material-symbols-outlined text-gray-400 text-sm">calendar_today</span>
+                    <span className="text-[10px] font-bold text-[#1C3152] truncate">
+                      {draftParams.date ? `${draftParams.date} ${draftParams.startTime ? `@ ${draftParams.startTime}` : ''}` : "Choose Date & Time"}
+                    </span>
+                  </div>
+                  <span className={`material-symbols-outlined text-gray-400 text-sm transition-transform duration-300 ${isTimeModalOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                </div>
+
+                {/* Time Modal/Popover */}
+                {isTimeModalOpen && (
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 lg:right-0 lg:left-auto lg:translate-x-0 mt-2 w-[260px] bg-white rounded-3xl shadow-2xl p-5 z-[130] border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="space-y-4">
+                      <div className="space-y-1.5">
+                        <label className="text-[8px] uppercase font-black text-gray-400 tracking-widest ml-1">Select Date</label>
+                        <div className="relative flex items-center bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
+                          <input 
+                            type="date" 
+                            className="bg-transparent text-xs font-bold outline-none w-full text-[#1C3152]"
+                            value={draftParams.date}
+                            onChange={(e) => setDraftParams(prev => ({ ...prev, date: e.target.value }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1.5">
+                          <label className="text-[8px] uppercase font-black text-gray-400 tracking-widest ml-1">Start</label>
+                          <div className="relative flex items-center bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
+                            <input 
+                              type="time" 
+                              className="bg-transparent text-xs font-bold outline-none w-full text-[#1C3152]"
+                              value={draftParams.startTime}
+                              onChange={(e) => setDraftParams(prev => ({ ...prev, startTime: e.target.value }))}
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-[8px] uppercase font-black text-gray-400 tracking-widest ml-1">End</label>
+                          <div className="relative flex items-center bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
+                            <input 
+                              type="time" 
+                              className="bg-transparent text-xs font-bold outline-none w-full text-[#1C3152]"
+                              value={draftParams.endTime}
+                              onChange={(e) => setDraftParams(prev => ({ ...prev, endTime: e.target.value }))}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <button 
+                        onClick={() => setIsTimeModalOpen(false)}
+                        className="w-full py-2.5 bg-[#1C3152] text-white rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-all"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
