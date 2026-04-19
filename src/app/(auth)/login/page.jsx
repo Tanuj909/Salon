@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { loginUser } from "@/features/auth/services/authService";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -9,6 +9,8 @@ import TermsAndCondition from "@/components/TermsAndCondition";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const { refreshUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
@@ -24,7 +26,7 @@ export default function LoginPage() {
     try {
       await loginUser(form);
       await refreshUser();
-      router.push("/profile");
+      router.push(redirect || "/profile");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     } finally {

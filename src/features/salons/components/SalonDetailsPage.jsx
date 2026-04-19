@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import SalonStaff from "./SalonStaff";
 import SalonServices from "./SalonServices";
@@ -53,6 +53,7 @@ const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frid
 
 export default function SalonDetailsPage({ salon, services, staff, reviews, timings, id }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { user } = useAuth();
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -62,7 +63,7 @@ export default function SalonDetailsPage({ salon, services, staff, reviews, timi
 
   const handleBookService = (service) => {
     if (!user) {
-      router.push("/login");
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
     setPreSelectedService(service);
@@ -71,7 +72,7 @@ export default function SalonDetailsPage({ salon, services, staff, reviews, timi
   
   const handleBookStaff = (staff) => {
     if (!user) {
-      router.push("/login");
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
     setPreSelectedStaff(staff);
@@ -80,7 +81,7 @@ export default function SalonDetailsPage({ salon, services, staff, reviews, timi
 
   const handleBookButtonClick = () => {
     if (!user) {
-      router.push("/login");
+      router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
       return;
     }
     setIsBookingOpen(true);

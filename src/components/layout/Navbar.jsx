@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthContext } from '@/features/auth/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import NotificationBell from "@/components/layout/NotificationBell";
 import { useMyBusiness } from '@/features/business/hooks/useMyBusiness';
 import MessageModal from '@/features/business/components/MessageModal';
@@ -16,6 +16,7 @@ export default function Navbar() {
   const { user, loading, logout } = useAuthContext();
   const { business, loading: businessLoading } = useMyBusiness();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -198,7 +199,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <Link
-                  href="/login"
+                  href={`/login?redirect=${encodeURIComponent(pathname)}`}
                   className={`px-5 md:px-7 py-2.5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all shadow-md active:scale-95 whitespace-nowrap ${isScrolled
                     ? 'navbar-btn-primary-bg navbar-btn-primary-text hover:navbar-btn-primary-hover-bg'
                     : 'navbar-btn-outline-bg navbar-btn-outline-text hover:navbar-btn-primary-bg hover:navbar-btn-primary-text border border-white/30'
@@ -284,7 +285,7 @@ export default function Navbar() {
 
             {!loading && !user && (
               <Link
-                href="/login"
+                href={`/login?redirect=${encodeURIComponent(pathname)}`}
                 className="mt-3 flex items-center justify-center gap-2 py-3.5 navbar-btn-primary-bg hover:navbar-btn-primary-hover-bg navbar-btn-primary-text rounded-2xl font-semibold shadow-lg shadow-[#D98C5F]/30 active:scale-[0.98] transition-all text-base"
                 onClick={() => setIsMenuOpen(false)}
               >

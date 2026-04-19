@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { registerUser, sendOTP } from "@/features/auth/services/authService";
 import { useAuthContext } from "@/features/auth/providers/AuthProvider";
 
 export default function SignupPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const { refreshUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [sendingOtp, setSendingOtp] = useState(false);
@@ -44,7 +46,7 @@ export default function SignupPage() {
       await registerUser(form);
       await refreshUser();
       alert("Registration successful!");
-      router.push("/");
+      router.push(redirect || "/");
     } catch (err) {
       alert(err.response?.data?.message || "Signup failed");
     } finally {
