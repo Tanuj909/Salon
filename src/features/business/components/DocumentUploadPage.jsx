@@ -32,48 +32,54 @@ export default function DocumentUploadPage() {
   const { business, loading: businessLoading } = useMyBusiness();
   const { documents, loading: docsLoading, refreshDocuments } = useDocuments(business?.id);
   const router = useRouter();
-  const fileInputRef = useRef(null);
+  const fileInputRefs = useRef({});
 
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
+  const [uploadingForType, setUploadingForType] = useState(null);
+  const [messages, setMessages] = useState({});
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = (typeId, file) => {
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        setMessage({ type: "error", text: "File size exceeds 5MB limit." });
+        setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: "File size exceeds 5MB limit." } }));
         return;
       }
-      setSelectedFile(file);
-      setMessage({ type: "", text: "" });
+      setMessages(prev => ({ ...prev, [typeId]: { type: "", text: "" } }));
+      // Auto-upload after file selection
+      handleUpload(typeId, file);
     }
   };
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    if (!selectedType || !selectedFile || !business?.id) {
-       setMessage({ type: "error", text: "Please select a document type and a file." });
-       return;
+  const handleUpload = async (typeId, file) => {
+    if (!typeId || !file || !business?.id) {
+      setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: "Please select a file." } }));
+      return;
     }
 
     try {
-      setIsUploading(true);
-      setMessage({ type: "", text: "" });
+      setUploadingForType(typeId);
+      setMessages(prev => ({ ...prev, [typeId]: { type: "", text: "" } }));
       
-      await uploadDocument(business.id, selectedType, selectedFile);
+      await uploadDocument(business.id, typeId, file);
       
-      setMessage({ type: "success", text: `${selectedType.replace(/_/g, " ")} uploaded successfully!` });
-      setSelectedFile(null);
-      setSelectedType("");
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      setMessages(prev => ({ ...prev, [typeId]: { type: "success", text: `${typeId.replace(/_/g, " ")} uploaded successfully!` } }));
+      if (fileInputRefs.current[typeId]) fileInputRefs.current[typeId].value = "";
       refreshDocuments(); // Refresh the list after upload
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setMessages(prev => {
+          const newMessages = { ...prev };
+          if (newMessages[typeId]?.type === "success") {
+            delete newMessages[typeId];
+          }
+          return newMessages;
+        });
+      }, 3000);
     } catch (err) {
       console.error("Upload failed:", err);
-      setMessage({ type: "error", text: err.response?.data?.message || "Failed to upload document. Please try again." });
+      setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: err.response?.data?.message || "Failed to upload document. Please try again." } }));
     } finally {
-      setIsUploading(false);
+      setUploadingForType(null);
     }
   };
 
@@ -108,249 +114,234 @@ export default function DocumentUploadPage() {
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500;600&display=swap');
       `}</style>
 
-      <div className="max-w-[1000px] mx-auto px-4 sm:px-6">
-        <button
-          onClick={() => router.push("/")}
-          className="flex items-center gap-2 text-[#1C3152]/60 hover:text-[#1C3152] mb-8 transition-colors font-medium group"
-        >
-          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-          <span>Back to Home</span>
-        </button>
+      <div className="w-full px-4 sm:px-6">
+        <div className="max-w-[1400px] mx-auto">
+          <button
+            onClick={() => router.push("/")}
+            className="flex items-center gap-2 text-[#1C3152]/60 hover:text-[#1C3152] mb-8 transition-colors font-medium group"
+          >
+            <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+            <span>Back to Home</span>
+          </button>
 
-        <div className="bg-white rounded-3xl shadow-2xl border rec-card-border overflow-hidden">
-          <div className="flex flex-col md:flex-row">
-            {/* Sidebar Info */}
-            <div className="md:w-1/3 p-8 sm:p-10 bg-[#1C3152] text-white relative">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8A951]/10 rounded-full -mr-16 -mt-16 blur-3xl" />
-               
-               <span className="block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-6 relative z-10">Verification</span>
-               <h2 className="font-[Cormorant_Garamond,serif] text-3xl sm:text-4xl font-bold leading-tight mb-6 relative z-10">
-                 Business <em className="italic text-[#C8A951] font-light">Verification</em>
-               </h2>
-               <p className="text-blue-100/70 text-sm leading-relaxed mb-10 relative z-10">
-                 Please upload the required documents to verify your business and unlock all premium features.
-               </p>
-
-               <div className="space-y-6 relative z-10">
-                 <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                      <ShieldCheck size={16} className="text-[#C8A951]" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-[#C8A951] mb-1">Secure Upload</h4>
-                      <p className="text-[11px] text-blue-100/50 leading-normal">Your documents are encrypted and stored securely.</p>
-                    </div>
-                 </div>
-                 <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                      <FileCheck size={16} className="text-[#C8A951]" />
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold uppercase tracking-widest text-[#C8A951] mb-1">Quick Review</h4>
-                      <p className="text-[11px] text-blue-100/50 leading-normal">Our team reviews documents within 48 business hours.</p>
-                    </div>
-                 </div>
-               </div>
+          {/* Top Verification Details Bar */}
+          <div className="bg-[#1C3152] text-white rounded-2xl p-4 mb-8 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-[#C8A951]/10 rounded-full -mr-20 -mt-20 blur-3xl" />
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-3">
+              <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5">
+                <ShieldCheck size={14} className="text-[#C8A951]" />
+                <span className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">Document Verifications</span>
+              </div>
             </div>
+          </div>
 
-            {/* Upload Area */}
-            <div className="md:w-2/3 p-8 sm:p-12">
-              {message.text && (
-                <div className={`mb-8 p-4 rounded-xl border flex gap-3 text-sm animate-fade-in ${
-                  message.type === "success" ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"
-                }`}>
-                  {message.type === "success" ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
-                  {message.text}
+          {/* Main Two Column Layout */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Left Column: Document Upload (70% width on large screens) */}
+            <div className="lg:w-[70%] space-y-6">
+              <div className="bg-white rounded-3xl shadow-2xl border rec-card-border overflow-hidden">
+                <div className="p-5 border-b border-gray-100">
+                  <h2 className="font-[Cormorant_Garamond,serif] text-2xl font-bold rec-section-heading">
+                    Upload <em className="italic rec-section-heading-accent font-light">Documents</em>
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">Select a document type and upload the file. It will be uploaded automatically.</p>
                 </div>
-              )}
-
-              <form onSubmit={handleUpload} className="space-y-8">
-                <div className="space-y-4">
-                  <label className="text-xs font-bold uppercase tracking-[0.2em] rec-section-heading-accent ml-1">Select Document Type</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+                <div className="p-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {DOCUMENT_TYPES.map((type) => {
                       const Icon = type.icon;
+                      const isUploading = uploadingForType === type.id;
+                      const message = messages[type.id];
+                      const existingDoc = documents.find(doc => doc.documentType === type.id);
+                      const isVerified = existingDoc?.verificationStatus === 'APPROVED';
+                      const isRejected = existingDoc?.verificationStatus === 'REJECTED';
+                      const isPending = existingDoc?.verificationStatus === 'PENDING';
+                      
                       return (
-                        <button
+                        <div
                           key={type.id}
-                          type="button"
-                          onClick={() => setSelectedType(type.id)}
-                          className={`p-4 rounded-xl border text-left transition-all flex items-center gap-4 ${
-                            selectedType === type.id
-                              ? "bg-[#1C3152] border-[#C8A951] text-[#C8A951] shadow-lg shadow-[#1C3152]/20"
-                              : "bg-white border-[#1C3152]/10 text-[#1C3152]/60 hover:border-[#C8A951]/50 hover:text-[#1C3152]"
+                          className={`rounded-xl border transition-all ${
+                            isVerified ? 'bg-green-50/30 border-green-200' :
+                            isRejected ? 'bg-red-50/30 border-red-200' :
+                            isPending ? 'bg-yellow-50/30 border-yellow-200' :
+                            'bg-white border-[#1C3152]/10 hover:border-[#C8A951]/50'
                           }`}
                         >
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                             selectedType === type.id ? "bg-[#C8A951]/20" : "bg-gray-50"
-                          }`}>
-                            <Icon size={18} />
+                          <div className="p-3">
+                            <div className="flex items-center gap-2 mb-2">
+                              <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                                isVerified ? 'bg-green-100 text-green-600' :
+                                isRejected ? 'bg-red-100 text-red-500' :
+                                isPending ? 'bg-yellow-100 text-yellow-600' :
+                                'bg-[#1C3152]/5 text-[#1C3152]'
+                              }`}>
+                                <Icon size={14} />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="text-[11px] font-bold text-[#1C3152] uppercase tracking-wide leading-tight">
+                                  {type.label}
+                                </h3>
+                                {existingDoc && (
+                                  <span className={`text-[8px] font-bold uppercase ${
+                                    isVerified ? 'text-green-600' :
+                                    isRejected ? 'text-red-600' :
+                                    'text-yellow-600'
+                                  }`}>
+                                    {existingDoc.verificationStatus}
+                                  </span>
+                                )}
+                              </div>
+                              {isVerified && <CheckCircle2 size={12} className="text-green-500 shrink-0" />}
+                              {isRejected && <AlertCircle size={12} className="text-red-500 shrink-0" />}
+                            </div>
+                            
+                            {message && (
+                              <div className={`mb-2 p-1.5 rounded-lg text-[9px] flex gap-1.5 ${
+                                message.type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
+                              }`}>
+                                {message.type === "success" ? <CheckCircle2 size={10} /> : <AlertCircle size={10} />}
+                                <span className="truncate">{message.text}</span>
+                              </div>
+                            )}
+                            
+                            <div
+                              onClick={() => !isUploading && fileInputRefs.current[type.id]?.click()}
+                              className={`relative border border-dashed rounded-lg p-2 text-center cursor-pointer transition-all ${
+                                isUploading ? "opacity-50 cursor-wait" :
+                                isVerified ? "border-green-300 bg-green-50/50" :
+                                isRejected ? "border-red-300 bg-red-50/50" :
+                                "border-[#1C3152]/10 hover:border-[#C8A951] hover:bg-gray-50"
+                              }`}
+                            >
+                              <input
+                                type="file"
+                                ref={el => fileInputRefs.current[type.id] = el}
+                                onChange={(e) => handleFileChange(type.id, e.target.files[0])}
+                                className="hidden"
+                                accept="image/*,application/pdf"
+                                disabled={isUploading}
+                              />
+                              
+                              {isUploading ? (
+                                <div className="flex flex-col items-center gap-1">
+                                  <Loader2 size={16} className="animate-spin text-[#1C3152]" />
+                                  <p className="text-[8px] text-gray-500">Uploading...</p>
+                                </div>
+                              ) : (
+                                <div className="flex flex-col items-center gap-1">
+                                  <Upload size={14} className={`${isVerified ? 'text-green-500' : isRejected ? 'text-red-400' : 'text-[#C8A951]'}`} />
+                                  <p className="text-[9px] font-medium text-[#1C3152]">
+                                    {isVerified ? 'Replace' : isRejected ? 'Re-upload' : 'Upload'}
+                                  </p>
+                                  <p className="text-[7px] text-gray-400">PDF/IMG, 5MB</p>
+                                </div>
+                              )}
+                            </div>
+                            
+                            {existingDoc && existingDoc.fileName && (
+                              <div className="mt-2 flex items-center justify-between">
+                                <span className="text-[7px] text-gray-400 truncate max-w-[100px]">{existingDoc.fileName}</span>
+                                <a 
+                                  href={existingDoc.fileUrl} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-[7px] font-bold text-[#C8A951] uppercase tracking-wider hover:underline"
+                                >
+                                  View
+                                </a>
+                              </div>
+                            )}
+                            
+                            {isRejected && existingDoc?.rejectionReason && (
+                              <div className="mt-2 p-1.5 rounded-lg bg-red-50/80 border border-red-100">
+                                <p className="text-[7px] font-bold text-red-600 uppercase mb-0.5">Reason</p>
+                                <p className="text-[7px] text-red-700 leading-tight truncate">{existingDoc.rejectionReason}</p>
+                              </div>
+                            )}
                           </div>
-                          <span className="text-xs font-bold tracking-wide uppercase">{type.label}</span>
-                        </button>
+                        </div>
                       );
                     })}
                   </div>
                 </div>
+              </div>
+            </div>
 
-                <div className="space-y-4">
-                  <label className="text-xs font-bold uppercase tracking-[0.2em] rec-section-heading-accent ml-1">Upload File</label>
-                  <div 
-                    onClick={() => fileInputRef.current?.click()}
-                    className={`relative border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all group ${
-                      selectedFile ? "border-green-300 bg-green-50/30" : "border-[#1C3152]/10 hover:border-[#C8A951] hover:bg-gray-50"
-                    }`}
-                  >
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      className="hidden"
-                      accept="image/*,application/pdf"
-                    />
-                    
-                    {selectedFile ? (
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-green-600 mb-2">
-                           <FileCheck size={32} />
-                        </div>
-                        <p className="text-sm font-bold text-[#1C3152]">{selectedFile.name}</p>
-                        <p className="text-[10px] text-gray-400">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                        <button 
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedFile(null);
-                            if (fileInputRef.current) fileInputRef.current.value = "";
-                          }}
-                          className="mt-2 text-red-500 hover:text-red-700 p-1"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center gap-4">
-                        <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center text-[#C8A951] group-hover:scale-110 transition-transform">
-                           <Upload size={32} />
-                        </div>
-                        <div>
-                          <p className="text-sm font-bold text-[#1C3152]">Click or drag file to upload</p>
-                          <p className="text-xs text-gray-400 mt-1">PNG, JPG or PDF (Max. 5MB)</p>
-                        </div>
-                      </div>
-                    )}
+            {/* Right Column: Uploaded Documents List */}
+            <div className="lg:w-[30%] space-y-6">
+              <div className="bg-white rounded-3xl shadow-2xl border rec-card-border overflow-hidden sticky top-28">
+                <div className="p-5 border-b border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <h2 className="font-[Cormorant_Garamond,serif] text-xl font-bold rec-section-heading">
+                      Uploaded <em className="italic rec-section-heading-accent font-light">Files</em>
+                    </h2>
+                    <span className="text-[9px] uppercase tracking-widest font-bold rec-section-subtext">
+                      {documents.length} {documents.length === 1 ? 'File' : 'Files'}
+                    </span>
                   </div>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={isUploading || !selectedFile || !selectedType}
-                  className="w-full h-14 bg-[#1C3152] text-[#C8A951] rounded-xl font-bold tracking-normal sm:tracking-[0.2em] text-[10px] sm:text-sm uppercase transition-all hover:bg-[#2a4570] hover:shadow-xl active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 border border-[#C8A951]/30"
-                >
-                  {isUploading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                  {isUploading ? "Uploading..." : "Submit Verification Document"}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-        
-        {/* Uploaded Documents List */}
-        <div className="mt-12 space-y-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold rec-section-heading font-[Cormorant_Garamond,serif]">
-              Uploaded <em className="italic rec-section-heading-accent font-light">Documents</em>
-            </h3>
-            <span className="text-[10px] uppercase tracking-widest font-bold rec-section-subtext">
-              {documents.length} {documents.length === 1 ? 'Document' : 'Documents'} Total
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {docsLoading ? (
-              Array(2).fill(0).map((_, i) => (
-                <div key={i} className="h-32 rounded-2xl bg-white border rec-card-border animate-pulse" />
-              ))
-            ) : documents.length > 0 ? (
-              documents.map((doc) => (
-                <div key={doc.id} className="bg-white rounded-2xl p-5 border rec-card-border shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#1C3152]/5 flex items-center justify-center text-[#1C3152]">
-                        <FileText size={20} />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-[#1C3152] uppercase tracking-wide">
-                          {doc.documentType.replace(/_/g, " ")}
-                        </h4>
-                        <p className="text-[10px] text-gray-400 font-medium">
-                          Uploaded on {new Date(doc.uploadedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className={`px-2.5 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase border ${
-                      doc.verificationStatus === 'APPROVED' ? 'bg-green-50 text-green-600 border-green-100' :
-                      doc.verificationStatus === 'REJECTED' ? 'bg-red-50 text-red-600 border-red-100' :
-                      'bg-yellow-50 text-yellow-600 border-yellow-100'
-                    }`}>
-                      {doc.verificationStatus}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-50">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">File Name</span>
-                      <span className="text-xs font-semibold text-[#1C3152] truncate max-w-[150px]">{doc.fileName}</span>
-                    </div>
-                    
-                    <a 
-                      href={doc.fileUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-[10px] font-bold text-[#C8A951] uppercase tracking-widest hover:underline"
-                    >
-                      View Document
-                    </a>
-                  </div>
-
-                  {doc.rejectionReason && (
-                    <div className="mt-4 p-3 rounded-xl bg-red-50/50 border border-red-100/50">
-                      <div className="flex gap-2 items-start">
-                        <AlertCircle size={14} className="text-red-500 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-[10px] font-bold text-red-600 uppercase mb-0.5">Rejection Reason</p>
-                          <p className="text-[11px] text-red-700 leading-normal">{doc.rejectionReason}</p>
+                
+                <div className="p-4 max-h-[500px] overflow-y-auto">
+                  {docsLoading ? (
+                    Array(3).fill(0).map((_, i) => (
+                      <div key={i} className="h-20 rounded-xl bg-white border rec-card-border animate-pulse mb-2" />
+                    ))
+                  ) : documents.length > 0 ? (
+                    <div className="space-y-2">
+                      {documents.map((doc) => (
+                        <div key={doc.id} className="bg-white rounded-xl p-2 border rec-card-border shadow-sm hover:shadow-md transition-shadow">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 rounded-lg bg-[#1C3152]/5 flex items-center justify-center text-[#1C3152]">
+                                <FileText size={12} />
+                              </div>
+                              <div>
+                                <h4 className="text-[10px] font-bold text-[#1C3152] uppercase tracking-wide">
+                                  {doc.documentType.replace(/_/g, " ")}
+                                </h4>
+                                <p className="text-[8px] text-gray-400">
+                                  {new Date(doc.uploadedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div className={`px-1.5 py-0.5 rounded-full text-[7px] font-bold tracking-widest uppercase border ${
+                              doc.verificationStatus === 'APPROVED' ? 'bg-green-50 text-green-600 border-green-100' :
+                              doc.verificationStatus === 'REJECTED' ? 'bg-red-50 text-red-600 border-red-100' :
+                              'bg-yellow-50 text-yellow-600 border-yellow-100'
+                            }`}>
+                              {doc.verificationStatus === 'APPROVED' ? '✓' : doc.verificationStatus === 'REJECTED' ? '✗' : '⋯'}
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-1 pt-1 border-t border-gray-50">
+                            <span className="text-[7px] font-medium text-gray-400 truncate max-w-[100px]">{doc.fileName}</span>
+                            <a 
+                              href={doc.fileUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-[8px] font-bold text-[#C8A951] uppercase tracking-wider hover:underline"
+                            >
+                              View
+                            </a>
+                          </div>
                         </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="py-10 text-center">
+                      <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-2 text-gray-300">
+                        <FileText size={16} />
                       </div>
+                      <p className="text-[10px] font-bold text-[#1C3152]/40 uppercase tracking-widest">No files uploaded</p>
+                      <p className="text-[8px] text-gray-400 mt-1">Upload documents from the left panel</p>
                     </div>
                   )}
                 </div>
-              ))
-            ) : (
-              <div className="col-span-full py-12 bg-white rounded-3xl border border-dashed rec-card-border text-center">
-                <div className="w-16 h-16 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4 text-gray-300">
-                  <FileText size={32} />
-                </div>
-                <p className="text-sm font-bold text-[#1C3152]/40 uppercase tracking-widest">No documents uploaded yet</p>
               </div>
-            )}
+            </div>
           </div>
-        </div>
-        
-        <div className="mt-12 p-6 rounded-2xl bg-white border rec-card-border shadow-sm">
-           <div className="flex gap-4 items-start">
-              <div className="p-2 bg-yellow-50 rounded-lg text-yellow-600">
-                <AlertCircle size={20} />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-[#1C3152] mb-1 uppercase tracking-wider">Verification Status</h4>
-                <p className="text-xs text-gray-500 leading-relaxed">
-                  Your current verification status is <span className="font-bold text-[#C8A951] uppercase">{business.verificationStatus || "PENDING"}</span>. 
-                  Please upload all required documents to expedite the process.
-                </p>
-              </div>
-           </div>
         </div>
       </div>
     </div>

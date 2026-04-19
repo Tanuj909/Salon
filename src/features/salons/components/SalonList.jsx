@@ -413,17 +413,17 @@ export default function SalonList() {
 
   return (
     <div className="min-h-screen font-[DM_Sans,sans-serif] pt-20 md:pt-28 pb-20">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-12">
         {/* ── Header Section ── */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 md:gap-6 mb-4 md:mb-8 mt-2 md:mt-0">
           <div className="flex-1 w-full">
             {!showMobileSearch ? (
               <div 
-                className="flex items-center justify-between w-full md:w-fit font-bold leading-none salon-list-title-text font-[Cormorant_Garamond,Georgia,serif] text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] md:mb-1.5 md:block md:cursor-default"
+                className="flex items-center justify-between w-full md:w-fit font-bold leading-none salon-list-title-text font-[Cormorant_Garamond,Georgia,serif] text-[1.1rem] xs:text-[1.25rem] sm:text-[2rem] md:text-[2.5rem] md:mb-1.5 md:block md:cursor-default"
               >
                 <span 
                   onClick={() => setShowMobileSearch(true)} 
-                  className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap overflow-hidden truncate"
+                  className="flex-1 cursor-pointer md:cursor-default whitespace-nowrap"
                 >
                   Discover{" "}
                   <span className={`inline-block transition-opacity duration-500 rec-section-heading-accent ${headingFade ? "opacity-100" : "opacity-0"}`}>
