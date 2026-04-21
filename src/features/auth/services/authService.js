@@ -41,6 +41,16 @@ export const getCurrentUser = async () => {
   return response.data;
 };
 
+export const forgotPassword = async (email) => {
+  const response = await publicApiClient.post(ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
+  return response.data;
+};
+
+export const resetPassword = async ({ email, otp, newPassword }) => {
+  const response = await publicApiClient.post(ENDPOINTS.AUTH.RESET_PASSWORD, { email, otp, newPassword });
+  return response.data;
+};
+
 export const logoutUser = () => {
   TokenService.removeToken();
 };

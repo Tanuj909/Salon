@@ -466,6 +466,7 @@ import Fuse from 'fuse.js';
 import { fuseData } from '../data/fuseData';
 import { enrichSynonyms, fuseOptions } from '../utils/searchUtils';
 import { useUserLocation } from '@/features/salons/hooks/useUserLocation';
+import DateTimePickerModal from './DateTimePickerModal';
 
 const MapPickerModal = dynamic(() => import('@/features/salons/components/MapPickerModal'), {
   ssr: false,
@@ -483,7 +484,6 @@ const HeroSection = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const router = useRouter();
   const searchRef = useRef(null);
-  const timeRef = useRef(null);
 
   const [headingIndex, setHeadingIndex] = useState(0);
   const [headingFade, setHeadingFade] = useState(true);
@@ -523,9 +523,6 @@ const HeroSection = () => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setShowSuggestions(false);
-      }
-      if (timeRef.current && !timeRef.current.contains(event.target)) {
-        setIsTimeModalOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -789,9 +786,9 @@ const HeroSection = () => {
                 </div>
 
                 {/* Time Selection (Modal Trigger) */}
-                <div className="w-full lg:w-[35%] relative" ref={timeRef}>
+                <div className="w-full lg:w-[35%] relative">
                   <div 
-                    onClick={() => setIsTimeModalOpen(!isTimeModalOpen)}
+                    onClick={() => setIsTimeModalOpen(true)}
                     className="flex items-center gap-3 hero-filter-input-bg rounded-full border px-5 py-3 lg:py-2.5 transition-all hover:bg-white cursor-pointer group"
                   >
                     <span className="material-symbols-outlined hero-filter-icon text-xl">calendar_today</span>
@@ -801,60 +798,8 @@ const HeroSection = () => {
                         {date ? `${date} ${startTime ? `@ ${startTime}` : ''}` : "Choose Date & Time"}
                       </span>
                     </div>
-                    <span className={`material-symbols-outlined text-gray-400 text-lg ml-auto transition-transform duration-300 ${isTimeModalOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                    <span className="material-symbols-outlined text-gray-400 text-lg ml-auto">chevron_right</span>
                   </div>
-
-                  {/* Time Modal/Popover */}
-                  {isTimeModalOpen && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 lg:left-0 lg:translate-x-0 mt-3 w-[280px] bg-white rounded-3xl shadow-2xl p-6 z-[130] border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
-                      <div className="space-y-5">
-                        <div className="space-y-2">
-                          <label className="text-[9px] uppercase font-black text-gray-400 tracking-widest ml-1">Select Date</label>
-                          <div className="relative flex items-center bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100 focus-within:border-[#1C3152]/30 transition-all">
-                            <span className="material-symbols-outlined text-gray-400 text-lg mr-3">event</span>
-                            <input 
-                              type="date" 
-                              className="bg-transparent text-sm font-bold outline-none w-full text-[#1C3152]"
-                              value={date}
-                              onChange={(e) => setDate(e.target.value)}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <label className="text-[9px] uppercase font-black text-gray-400 tracking-widest ml-1">Start</label>
-                            <div className="relative flex items-center bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100 focus-within:border-[#1C3152]/30 transition-all">
-                              <input 
-                                type="time" 
-                                className="bg-transparent text-sm font-bold outline-none w-full text-[#1C3152]"
-                                value={startTime}
-                                onChange={(e) => setStartTime(e.target.value)}
-                              />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[9px] uppercase font-black text-gray-400 tracking-widest ml-1">End</label>
-                            <div className="relative flex items-center bg-gray-50 rounded-2xl px-4 py-3 border border-gray-100 focus-within:border-[#1C3152]/30 transition-all">
-                              <input 
-                                type="time" 
-                                className="bg-transparent text-sm font-bold outline-none w-full text-[#1C3152]"
-                                value={endTime}
-                                onChange={(e) => setEndTime(e.target.value)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <button 
-                          onClick={() => setIsTimeModalOpen(false)}
-                          className="w-full py-3 bg-[#1C3152] text-white rounded-2xl font-bold text-xs shadow-lg hover:shadow-[#1C3152]/20 transition-all active:scale-95"
-                        >
-                          Confirm Time
-                        </button>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex items-center gap-2 w-full lg:w-[35%]">
@@ -936,6 +881,19 @@ const HeroSection = () => {
         }}
         // Always default to UAE when picking manually as per user request
         initialPos={null}
+      />
+
+      <DateTimePickerModal
+        isOpen={isTimeModalOpen}
+        onClose={() => setIsTimeModalOpen(false)}
+        date={date}
+        startTime={startTime}
+        endTime={endTime}
+        onApply={(d, st, et) => {
+          setDate(d);
+          setStartTime(st);
+          setEndTime(et);
+        }}
       />
     </>
   );
