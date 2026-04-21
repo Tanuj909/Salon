@@ -100,7 +100,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                     Verified Studio
                                 </Badge>
                             )}
-                            <Badge variant="glass">
+                            <Badge variant="gold">
                                 {salon.isOpen ? "Open Now" : "Closed"}
                             </Badge>
                         </div>
@@ -153,12 +153,14 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                 {/* Inline Categories */}
                                 {salon.categories && salon.categories.length > 0 && (
                                     <div className="flex flex-wrap gap-2 md:gap-3">
-                                        {salon.categories.map((cat, i) => (
-                                            <div key={cat.id || i} className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-[#C49B66]" />
-                                                <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">{cat.name}</span>
-                                            </div>
-                                        ))}
+                                        {salon.categories
+                                            .filter(cat => cat.name.toLowerCase() !== "unisex")
+                                            .map((cat, i) => (
+                                                <div key={cat.id || i} className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#C49B66]" />
+                                                    <span className="text-[8px] sm:text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-white">{cat.name}</span>
+                                                </div>
+                                            ))}
                                     </div>
                                 )}
                             </div>
@@ -169,14 +171,14 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 mt-0">
                             <button
                                 onClick={handleBookButtonClick}
-                                className="w-full sm:w-auto group relative px-8 py-3.5 rounded-full rec-btn-primary text-white text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 border-0 cursor-pointer text-center"
+                                className="w-full sm:w-auto group relative px-10 py-4 rounded-full rec-btn-primary text-[#C49B66] text-[13px] sm:text-[16px] font-black tracking-[0.2em] uppercase overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 border-0 cursor-pointer text-center"
                             >
                                 <span className="relative z-10">Book Appointment</span>
                                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                             </button>
                             <a
                                 href="#services"
-                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/40 text-white text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white text-center"
+                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/40 text-white text-[11px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white text-center"
                             >
                                 <span className="transition-colors duration-300 group-hover:text-black">View Services</span>
                             </a>

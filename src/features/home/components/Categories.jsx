@@ -268,7 +268,7 @@ export default function Categories() {
   // ── Fetch categories ────────────────────────────────────────────────────────
   useEffect(() => {
     fetchCategories()
-      .then((cats) => setCategories((cats || []).filter((c) => c.isActive)))
+      .then((cats) => setCategories((cats || []).filter((c) => c.isActive && c.name.toLowerCase() !== "unisex")))
       .catch(() => setCategories([]))
       .finally(() => setLoadingCats(false));
   }, []);

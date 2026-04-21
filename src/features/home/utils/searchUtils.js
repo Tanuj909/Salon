@@ -58,9 +58,9 @@ export const fuseOptions = {
     { name: "name", weight: 0.7 },
     { name: "synonyms", weight: 0.3 }
   ],
-  threshold: 0.4,
+  threshold: 0.6,
   includeScore: true,
   ignoreLocation: true,
   findAllMatches: true,
-  minMatchCharLength: 2
+  minMatchCharLength: 1
 };

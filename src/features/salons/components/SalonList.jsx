@@ -246,7 +246,8 @@ export default function SalonList() {
 
   React.useEffect(() => {
     fetchActiveCategories().then(data => {
-      const catList = Array.isArray(data) ? data : (data.content || []);
+      const catList = (Array.isArray(data) ? data : (data.content || []))
+        .filter(c => c.name.toLowerCase() !== "unisex");
       setCategories(catList);
     }).catch(console.error);
 
@@ -849,24 +850,33 @@ export default function SalonList() {
       {/* ── Grid ── */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-12">
         {error ? (
-          <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed border-red-200">
-            <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg width={32} height={32} fill="none" stroke="#ef4444" strokeWidth={1.5} viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
+          <div className={`text-center py-24 bg-white/50 rounded-[40px] border border-dashed ${error.toLowerCase().includes("location") ? "footer-divider" : "border-red-200"}`}>
+            <div className={`w-20 h-20 ${error.toLowerCase().includes("location") ? "bg-[#3c1432]/5" : "bg-red-50"} rounded-full flex items-center justify-center mx-auto mb-6`}>
+              {error.toLowerCase().includes("location") ? (
+                <svg width={32} height={32} fill="none" stroke="#cd6133" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              ) : (
+                <svg width={32} height={32} fill="none" stroke="#ef4444" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              )}
             </div>
-            <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">Something went wrong</h3>
+            <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">
+              {error.toLowerCase().includes("location") ? "Location Access Required" : "Something went wrong"}
+            </h3>
             <div className="flex justify-center">
               <p className="footer-link-text font-[DM_Sans] max-w-[400px] mx-auto">{error}</p>
             </div>
             
             <button
-              onClick={retry}
+              onClick={error.toLowerCase().includes("location") ? () => window.location.reload() : retry}
               className="mt-6 px-8 py-3 hero-filter-btn-bg text-white rounded-xl font-bold hover:hero-filter-btn-hover-bg transition-colors font-[DM_Sans]"
             >
-              Try Again
+              {error.toLowerCase().includes("location") ? "Retry Location Access" : "Try Again"}
             </button>
           </div>
         ) : salons.length === 0 ? (
@@ -878,17 +888,9 @@ export default function SalonList() {
               </svg>
             </div>
             <div className="flex flex-col items-center">
-              <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">Location Access Required</h3>
-              <p className="footer-link-text font-[DM_Sans] max-w-[400px] mx-auto mb-6">Please allow location access or search for a location manually to discover premium salons.</p>
+              <h3 className="text-xl font-bold salon-list-title-text mb-2 font-[Cormorant_Garamond]">No Salon found!</h3>
+              <p className="footer-link-text font-[DM_Sans] max-w-[400px] mx-auto mb-6">We couldn't find any salons in your area. Try adjusting your search radius or searching for a different location.</p>
             </div>
-            {error && error.includes("denied") && (
-              <button
-                onClick={() => window.location.reload()}
-                className="px-8 py-3 hero-filter-btn-bg text-white rounded-xl font-bold hover:hero-filter-btn-hover-bg transition-colors font-[DM_Sans]"
-              >
-                Retry Location Access
-              </button>
-            )}
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-24 bg-white/50 rounded-[40px] border border-dashed footer-divider">

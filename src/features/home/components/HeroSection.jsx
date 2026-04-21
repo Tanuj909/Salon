@@ -538,8 +538,21 @@ const HeroSection = () => {
 
     const val = originalVal.toLowerCase().trim();
     if (val) {
-      const results = fuse.search(val).slice(0, 3);
-      setSuggestions(results.map(r => r.item));
+      // 1. Prefix matches first (services that START with the typed text)
+      const prefixMatches = combinedServiceData
+        .filter(s => s.name.toLowerCase().startsWith(val))
+        .slice(0, 5);
+
+      // 2. Fuzzy matches from Fuse (excluding already-matched prefix items)
+      const prefixNames = new Set(prefixMatches.map(s => s.name.toLowerCase()));
+      const fuseResults = fuse.search(val)
+        .filter(r => !prefixNames.has(r.item.name.toLowerCase()))
+        .slice(0, 3)
+        .map(r => r.item);
+
+      // Combine: prefix first, then fuzzy, cap at 5
+      const combined = [...prefixMatches, ...fuseResults].slice(0, 5);
+      setSuggestions(combined);
       setShowSuggestions(true);
     } else {
       setSuggestions([]);
