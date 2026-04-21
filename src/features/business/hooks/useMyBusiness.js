@@ -25,13 +25,12 @@ export const useMyBusiness = () => {
     } catch (err) {
       console.error("Failed to fetch business:", err);
       setBusiness(null);
-      // We don't necessarily want to show an error if the user just doesn't have a business
-      if (err.response?.status !== 404) {
-        setError(err.response?.data?.message || "Failed to fetch business details");
-      }
+      setError(err.response?.data?.message || "Failed to fetch business details");
     } finally {
       setLoading(false);
     }
+
+
   }, [user]);
 
   useEffect(() => {

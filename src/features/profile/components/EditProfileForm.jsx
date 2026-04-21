@@ -100,9 +100,9 @@ const EditProfileForm = ({ user: initialUser }) => {
         const file = e.target.files[0];
         if (!file) return;
 
-        // Size limit: 5MB
-        if (file.size > 5 * 1024 * 1024) {
-            setImageError("Image size must be less than 5MB");
+        // Size limit: 500 KB
+        if (file.size > 500 * 1024) {
+            setImageError("Image size must be less than 500 KB");
             return;
         }
 
@@ -234,8 +234,12 @@ const EditProfileForm = ({ user: initialUser }) => {
                                     )}
                                 </div>
                                 
+                                <p className="mt-3 text-[10px] text-gray-400 font-black uppercase tracking-[0.15em]">
+                                    Max file size: <span className="salon-list-title-accent">500 KB</span>
+                                </p>
+
                                 {imageError && (
-                                    <p className="mt-2 text-xs text-red-500 font-bold bg-red-50 px-3 py-1 rounded-full mb-4">{imageError}</p>
+                                    <p className="mt-3 text-xs text-red-500 font-bold bg-red-50 px-3 py-1 rounded-full">{imageError}</p>
                                 )}
                                 
                                 <h3 className="text-xl font-bold text-gray-900">{formData.fullName || "Your Name"}</h3>

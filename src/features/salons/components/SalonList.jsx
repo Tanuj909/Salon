@@ -28,6 +28,8 @@ const badgeStyles = {
 import { useNearbySalons } from "@/features/salons/hooks/useNearbySalons";
 import { fetchActiveCategories } from "@/features/salons/services/salonService";
 import LocationPicker from "./LocationPicker";
+import DateTimePickerModal from "@/features/home/components/DateTimePickerModal";
+
 
 // ─── Star Icon ────────────────────────────────────────────────────────────────
 const StarIcon = ({ filled }) => (
@@ -178,7 +180,6 @@ export default function SalonList() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const serviceSearchRef = useRef(null);
   const mobileServiceSearchRef = useRef(null);
-  const timeRef = useRef(null);
 
   // ─── Combined Service Data for Search ───
   const combinedServiceData = useMemo(() => {
@@ -265,10 +266,9 @@ export default function SalonList() {
       ) {
         setShowSuggestions(false);
       }
-      if (timeRef.current && !timeRef.current.contains(event.target)) {
-        setIsTimeModalOpen(false);
-      }
     };
+
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -702,12 +702,17 @@ export default function SalonList() {
               </div>
 
               {/* Time Select (Modal Trigger) */}
-              <div className="lg:col-span-3 space-y-1.5 flex flex-col relative" ref={timeRef}>
+              <div className="lg:col-span-3 space-y-1.5 flex flex-col relative">
                 <div className="flex items-center justify-between px-1">
                   <label className="text-[9px] font-bold uppercase tracking-[0.2em] footer-link-text">Appointment Time</label>
                 </div>
                 <div 
-                  onClick={() => setIsTimeModalOpen(!isTimeModalOpen)}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsTimeModalOpen(true);
+                  }}
+
                   className="flex items-center justify-between gap-1 h-11 px-4 rounded-xl border border-[#3c143212] bg-white cursor-pointer hover:border-[#cd6133]/30 transition-all duration-200"
                 >
                   <div className="flex items-center gap-2 overflow-hidden">
@@ -716,59 +721,8 @@ export default function SalonList() {
                       {draftParams.date ? `${draftParams.date} ${draftParams.startTime ? `@ ${draftParams.startTime}` : ''}` : "Choose Date & Time"}
                     </span>
                   </div>
-                  <span className={`material-symbols-outlined text-gray-400 text-sm transition-transform duration-300 ${isTimeModalOpen ? 'rotate-180' : ''}`}>expand_more</span>
+                  <span className="material-symbols-outlined text-gray-400 text-sm">expand_more</span>
                 </div>
-
-                {/* Time Modal/Popover */}
-                {isTimeModalOpen && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 lg:right-0 lg:left-auto lg:translate-x-0 mt-2 w-[260px] bg-white rounded-3xl shadow-2xl p-5 z-[130] border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
-                    <div className="space-y-4">
-                      <div className="space-y-1.5">
-                        <label className="text-[8px] uppercase font-black text-gray-400 tracking-widest ml-1">Select Date</label>
-                        <div className="relative flex items-center bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
-                          <input 
-                            type="date" 
-                            className="bg-transparent text-xs font-bold outline-none w-full text-[#1C3152]"
-                            value={draftParams.date}
-                            onChange={(e) => setDraftParams(prev => ({ ...prev, date: e.target.value }))}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
-                          <label className="text-[8px] uppercase font-black text-gray-400 tracking-widest ml-1">Start</label>
-                          <div className="relative flex items-center bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
-                            <input 
-                              type="time" 
-                              className="bg-transparent text-xs font-bold outline-none w-full text-[#1C3152]"
-                              value={draftParams.startTime}
-                              onChange={(e) => setDraftParams(prev => ({ ...prev, startTime: e.target.value }))}
-                            />
-                          </div>
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-[8px] uppercase font-black text-gray-400 tracking-widest ml-1">End</label>
-                          <div className="relative flex items-center bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100">
-                            <input 
-                              type="time" 
-                              className="bg-transparent text-xs font-bold outline-none w-full text-[#1C3152]"
-                              value={draftParams.endTime}
-                              onChange={(e) => setDraftParams(prev => ({ ...prev, endTime: e.target.value }))}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <button 
-                        onClick={() => setIsTimeModalOpen(false)}
-                        className="w-full py-2.5 bg-[#1C3152] text-white rounded-xl font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-all"
-                      >
-                        Confirm
-                      </button>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
 
@@ -911,6 +865,16 @@ export default function SalonList() {
           </div>
         )}
       </div>
+      <DateTimePickerModal
+        isOpen={isTimeModalOpen}
+        onClose={() => setIsTimeModalOpen(false)}
+        date={draftParams.date}
+        startTime={draftParams.startTime}
+        endTime={draftParams.endTime}
+        onApply={(d, st, et) => {
+          setDraftParams(prev => ({ ...prev, date: d, startTime: st, endTime: et }));
+        }}
+      />
     </div>
   );
-}
+}

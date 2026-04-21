@@ -788,7 +788,10 @@ const HeroSection = () => {
                 {/* Time Selection (Modal Trigger) */}
                 <div className="w-full lg:w-[35%] relative">
                   <div 
-                    onClick={() => setIsTimeModalOpen(true)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsTimeModalOpen(true);
+                    }}
                     className="flex items-center gap-3 hero-filter-input-bg rounded-full border px-5 py-3 lg:py-2.5 transition-all hover:bg-white cursor-pointer group"
                   >
                     <span className="material-symbols-outlined hero-filter-icon text-xl">calendar_today</span>

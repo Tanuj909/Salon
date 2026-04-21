@@ -373,23 +373,27 @@ const ProfileHeader = ({ user }) => {
               </div>
             )}
 
-            {/* Tier and ID - only show if membershipLevel exists */}
-            {(tier || userId) && (
-              <div className="ph-tier-row">
-                {tier && (
-                  <span
-                    className="ph-tier-badge"
-                    style={{ background: tier.gradient, boxShadow: `0 2px 12px ${tier.glow}` }}
-                  >
-                    <Crown size={12} />
-                    {tier.label} Member
-                  </span>
-                )}
-                {userId && (
-                  <span className="ph-id-chip">ID #{userId}</span>
-                )}
-              </div>
-            )}
+            {/* Tier, Role and ID */}
+            <div className="ph-tier-row">
+              {tier ? (
+                <span
+                  className="ph-tier-badge"
+                  style={{ background: tier.gradient, boxShadow: `0 2px 12px ${tier.glow}` }}
+                >
+                  <Crown size={12} />
+                  {tier.label} Member
+                </span>
+              ) : (
+                <span className="ph-tier-badge" style={{ background: 'var(--accent)', boxShadow: `0 2px 12px var(--accent-glow)` }}>
+                  <User size={12} />
+                  {user?.user?.role || "USER"}
+                </span>
+              )}
+              {userId && (
+                <span className="ph-id-chip">ID #{userId}</span>
+              )}
+            </div>
+
 
             {/* Meta info - only show if at least one item exists */}
             {(memberSince || location || totalReviews) && (

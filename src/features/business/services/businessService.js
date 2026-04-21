@@ -19,9 +19,17 @@ export const fetchBusinesses = async (page = 0, size = 10) => {
 };
 
 export const getMyBusiness = async () => {
-  const response = await apiClient.get(ENDPOINTS.BUSINESS.MY_BUSINESS);
-  return response.data;
+  try {
+    const response = await apiClient.get(ENDPOINTS.BUSINESS.MY_BUSINESS);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 404) {
+      return null;
+    }
+    throw error;
+  }
 };
+
 
 export const uploadDocument = async (businessId, documentType, file) => {
   const formData = new FormData();
