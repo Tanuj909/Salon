@@ -88,11 +88,11 @@ const BusinessTimings = ({ timings, compact = false }) => {
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 sm:gap-4 truncate mr-2">
-                                        <span className={`${compact ? 'text-[9px] sm:text-xs' : 'text-sm sm:text-lg'} font-bold tracking-widest uppercase truncate ${isSelected ? "text-white" : "rec-section-heading"}`}>
+                                        <span className={`${compact ? 'text-[11px] sm:text-sm' : 'text-sm sm:text-lg'} font-bold tracking-widest uppercase truncate ${isSelected ? "text-white" : "rec-section-heading"}`}>
                                             {day.charAt(0) + day.slice(1).toLowerCase()}
                                         </span>
                                         {isSelected && (
-                                            <span className={`${compact ? 'text-[7px]' : 'text-[9px]'} bg-white/20 px-3 py-1.5 rounded-full uppercase font-extrabold tracking-widest animate-pulse text-white`}>
+                                            <span className={`${compact ? 'text-[9px] sm:text-[10px]' : 'text-[11px]'} bg-white/20 px-3 py-1.5 rounded-full uppercase font-extrabold tracking-widest animate-pulse text-white`}>
                                                 Today
                                             </span>
                                         )}
@@ -100,12 +100,12 @@ const BusinessTimings = ({ timings, compact = false }) => {
 
                                     <div className="flex items-center gap-4">
                                         {!timing || timing.isClosed ? (
-                                            <span className={`${compact ? 'text-[10px]' : 'text-xs'} font-extrabold uppercase tracking-widest ${isSelected ? "text-[#fef9f3]/70" : "salon-list-title-accent"}`}>
+                                            <span className={`${compact ? 'text-[11px] sm:text-xs' : 'text-xs sm:text-sm'} font-extrabold uppercase tracking-widest ${isSelected ? "text-[#fef9f3]/70" : "salon-list-title-accent"}`}>
                                                 Closed
                                             </span>
                                         ) : (
                                             <div className={`flex items-center ${compact ? 'gap-1.5 sm:gap-4' : 'gap-3 sm:gap-8'} shrink-0`}>
-                                                <span className={`${compact ? 'text-[8px] sm:text-xs' : 'text-sm sm:text-base'} font-bold whitespace-nowrap ${isSelected ? "text-white" : "rec-section-heading"}`}>
+                                                <span className={`${compact ? 'text-[10px] sm:text-sm' : 'text-sm sm:text-base'} font-bold whitespace-nowrap ${isSelected ? "text-white" : "rec-section-heading"}`}>
                                                     {formatTime(timing.openTime)} - {formatTime(timing.closeTime)}
                                                 </span>
                                                 <div className={`${compact ? 'w-6 h-6 sm:w-8 sm:h-8' : 'w-8 h-8 sm:w-10 sm:h-10'} rounded-full flex items-center justify-center shrink-0 ${isSelected ? "bg-white/20" : "rec-badge-top-rated-bg opacity-20"}`}>

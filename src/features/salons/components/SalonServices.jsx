@@ -114,7 +114,7 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                             </span>
                         </div>
                         <div className="rec-section-heading text-2xl font-bold font-[Cormorant_Garamond,serif]">
-                            ₹{service.effectivePrice || service.price}
+                            AED {service.effectivePrice || service.price}
                         </div>
                     </div>
 

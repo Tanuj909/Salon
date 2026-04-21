@@ -844,34 +844,41 @@ const HeroSection = () => {
                   )}
                 </div>
 
-                {/* Choose Manually (Map) */}
-                <div
-                  onClick={() => setIsMapModalOpen(true)}
-                  className="w-full lg:w-[25%] relative flex items-center hero-filter-input-bg rounded-full border px-5 py-3 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30"
-                >
-                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-3 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
-                    <span className="material-symbols-outlined text-lg">map</span>
+                <div className="flex items-center gap-2 w-full lg:w-[35%]">
+                  {/* Choose Manually (Map) */}
+                  <div
+                    onClick={() => setIsMapModalOpen(true)}
+                    className="flex-1 relative flex items-center hero-filter-input-bg rounded-full border px-5 py-3 transition-all hover:bg-white cursor-pointer group hover:border-[#1C3152]/30 overflow-hidden"
+                  >
+                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-white shadow-sm mr-3 hero-filter-icon group-hover:hero-filter-btn-bg group-hover:text-white transition-all">
+                      <span className="material-symbols-outlined text-lg">map</span>
+                    </div>
+                    <div className="flex flex-col text-left overflow-hidden">
+                      <span className="text-[8px] uppercase font-bold text-gray-400 tracking-tighter leading-none mb-1">Location</span>
+                      <span className="text-[11px] font-bold hero-filter-input-text truncate leading-none">
+                        {location?.address || "Choose Manually"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col text-left overflow-hidden">
-                    <span className="text-[8px] uppercase font-bold text-gray-400 tracking-tighter leading-none mb-1">Location</span>
-                    <span className="text-[11px] font-bold hero-filter-input-text truncate leading-none">
-                      {location?.address || "Choose Manually"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Search & Mobile Location Trigger */}
-                <div className="w-full lg:w-[10%] flex items-center gap-2">
+                  
+                  {/* Current Location Icon (Mobile only, outside the box) */}
                   <button
-                    onClick={refreshLocation}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      refreshLocation();
+                    }}
                     title="Detect My Location"
-                    className="lg:hidden w-12 h-12 flex items-center justify-center rounded-full bg-white border border-gray-200 shadow-lg text-gray-500 active:scale-95 transition-all"
+                    className="lg:hidden w-12 h-12 flex items-center justify-center rounded-full bg-white border border-gray-100 shadow-xl text-gray-500 hover:text-[#1C3152] transition-all active:scale-95 shrink-0"
                   >
                     <span className={`material-symbols-outlined text-xl ${locationLoading ? 'animate-spin' : ''}`}>my_location</span>
                   </button>
+                </div>
+
+                {/* Search Trigger */}
+                <div className="w-full lg:w-[10%] flex items-center">
                   <button
                     onClick={handleSearchSubmit}
-                    className="flex-1 lg:w-full h-12 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold transition-all shadow-xl hover:shadow-[#1C3152]/30 flex items-center justify-center"
+                    className="w-full h-12 hero-filter-btn-bg hover:hero-filter-btn-hover-bg text-white rounded-full font-bold transition-all shadow-xl hover:shadow-[#1C3152]/30 flex items-center justify-center"
                   >
                     <span className="material-symbols-outlined text-2xl text-white">search</span>
                   </button>
