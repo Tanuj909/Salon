@@ -43,7 +43,7 @@ function SalonCard({ salon }) {
     salon.imageUrls?.[0] ||
     salon.bannerImageUrl ||
     "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&auto=format&fit=crop&q=60";
-  const rating = salon.averageRating || 4.5;
+  const rating = salon.averageRating || 0;
   const badge = salon.verificationStatus === "VERIFIED" ? "Top Rated" : null;
 
   return (
@@ -268,7 +268,7 @@ export default function Categories() {
   // ── Fetch categories ────────────────────────────────────────────────────────
   useEffect(() => {
     fetchCategories()
-      .then((cats) => setCategories((cats || []).filter((c) => c.isActive && c.name.toLowerCase() !== "unisex")))
+      .then((cats) => setCategories((cats || []).filter((c) => c.isActive)))
       .catch(() => setCategories([]))
       .finally(() => setLoadingCats(false));
   }, []);

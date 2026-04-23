@@ -326,11 +326,13 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                 onClick={() => toggleService(service)}
                                                 className={`w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 group ${isSelected ? "border-[#628EB8] bg-[#628EB8]/5 shadow-sm" : "border-[#E0E0E0] bg-white hover:border-[#628EB8]/30 hover:bg-[#F8FAFC]"}`}
                                             >
-                                                <div className="flex items-center justify-between gap-2">
+                                                <div className="flex items-center justify-between gap-4">
                                                     <div className="flex items-center gap-3 sm:gap-4 shrink overflow-hidden min-w-0">
-                                                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex shrink-0 items-center justify-center transition-all ${isSelected ? "bg-[#628EB8] text-white" : "bg-[#F8FAFC] text-[#1F355E] border border-[#E0E0E0]"}`}>
-                                                            {isSelected ? <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" /> : <Scissors size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                                                        {/* Tick Box UI */}
+                                                        <div className={`w-5 h-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all duration-300 ${isSelected ? "bg-[#628EB8] border-[#628EB8]" : "border-[#E0E0E0] bg-white group-hover:border-[#628EB8]/50"}`}>
+                                                            {isSelected && <CheckCircle size={14} className="text-white" strokeWidth={3} />}
                                                         </div>
+                                                        
                                                         <div className="min-w-0 flex-1">
                                                             <h4 className="font-semibold text-[#1F355E] text-xs sm:text-sm truncate">{service.name}</h4>
                                                             {service.durationMinutes && (
@@ -517,7 +519,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                 <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl sm:text-2xl text-[#1F355E] mb-1 leading-tight">
                                     Final Review
                                 </h3>
-                                <p className="text-[#628EB8] text-xs sm:text-sm">One last look before we confirm your appointment.</p>
+                                {/* <p className="text-[#628EB8] text-xs sm:text-sm">One last look before we confirm your appointment.</p> */}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

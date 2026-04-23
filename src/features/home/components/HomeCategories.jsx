@@ -28,6 +28,12 @@ const CATEGORIES = [
     href: "/salons?category=PETS",
     imgKey: "category_pets_1773428004915.png",
     price: "70"
+  },
+  {
+    name: "Unisex",
+    href: "/salons?category=UNISEX",
+    imgKey: "category_kids_pets_1773427968016.png",
+    price: "40"
   }
 ];
 

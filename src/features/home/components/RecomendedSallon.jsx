@@ -199,11 +199,11 @@ export default function RecomendedSallon() {
                       <div className="flex items-center gap-[5px]">
                         <div className="flex gap-0.5">
                           {[1, 2, 3, 4, 5].map((i) => (
-                            <StarIcon key={i} filled={i <= Math.round(salon.averageRating || 4)} />
+                            <StarIcon key={i} filled={i <= Math.round(salon.averageRating || 0)} />
                           ))}
                         </div>
                         <span className="text-[0.8rem] font-semibold rec-card-title font-[DM_Sans]">
-                          {(salon.averageRating || 4.5).toFixed(1)}
+                          {(salon.averageRating || 0).toFixed(1)}
                         </span>
                       </div>
                       <span className="py-[7px] px-[16px] rounded-full rec-btn-primary text-[0.73rem] font-semibold tracking-[0.04em] font-[DM_Sans]">

@@ -154,7 +154,6 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                                 {salon.categories && salon.categories.length > 0 && (
                                     <div className="flex flex-wrap gap-2 md:gap-3">
                                         {salon.categories
-                                            .filter(cat => cat.name.toLowerCase() !== "unisex")
                                             .map((cat, i) => (
                                                 <div key={cat.id || i} className="flex items-center gap-2 bg-black/30 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
                                                     <span className="w-1.5 h-1.5 rounded-full bg-[#C49B66]" />
@@ -175,12 +174,14 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
                             >
                                 <span className="relative z-10">Book Appointment</span>
                                 <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                                <div className="glow-line" />
                             </button>
                             <a
                                 href="#services"
-                                className="w-full sm:w-auto flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/40 text-white text-[11px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white text-center"
+                                className="w-full sm:w-auto relative flex items-center justify-center group px-8 py-3.5 rounded-full border border-white/40 text-white text-[11px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all duration-500 hover:bg-white text-center overflow-hidden"
                             >
-                                <span className="transition-colors duration-300 group-hover:text-black">View Services</span>
+                                <span className="relative z-10 transition-colors duration-300 group-hover:text-black">View Services</span>
+                                <div className="glow-line" />
                             </a>
                         </div>
                     </Reveal>
@@ -198,6 +199,29 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
         @keyframes scroll {
           0% { transform: translateY(-100%); }
           100% { transform: translateY(300%); }
+        }
+        @keyframes glow-sweep {
+          0% { left: -100%; }
+          40% { left: 100%; }
+          100% { left: 100%; }
+        }
+        .glow-line {
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 60%;
+          height: 100%;
+          background: linear-gradient(
+            to right,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            rgba(255, 255, 255, 0.4),
+            rgba(255, 255, 255, 0.2),
+            transparent
+          );
+          transform: skewX(-25deg);
+          animation: glow-sweep 4s infinite ease-in-out;
+          pointer-events: none;
         }
       `}</style>
         </section>

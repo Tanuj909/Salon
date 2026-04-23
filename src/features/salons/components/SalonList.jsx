@@ -247,8 +247,7 @@ export default function SalonList() {
 
   React.useEffect(() => {
     fetchActiveCategories().then(data => {
-      const catList = (Array.isArray(data) ? data : (data.content || []))
-        .filter(c => c.name.toLowerCase() !== "unisex");
+      const catList = (Array.isArray(data) ? data : (data.content || []));
       setCategories(catList);
     }).catch(console.error);
 

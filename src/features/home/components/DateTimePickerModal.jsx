@@ -140,7 +140,7 @@ export default function DateTimePickerModal({ isOpen, onClose, date, startTime, 
     <>
       {/* Modal Wrapper */}
       <div 
-        className="fixed inset-0 flex items-center justify-center p-4 z-[201] pointer-events-none"
+        className="fixed inset-0 flex items-center justify-center p-4 z-[1100] pointer-events-none"
       >
         {/* Modal Backdrop (moved inside wrapper for better event handling) */}
         <div 
@@ -150,18 +150,18 @@ export default function DateTimePickerModal({ isOpen, onClose, date, startTime, 
 
         {/* Modal Content */}
         <div 
-          className="bg-white w-full max-w-[420px] sm:max-h-[90vh] max-h-[70vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 fade-in duration-300 pointer-events-auto relative z-10"
+          className="bg-white w-full max-w-[420px] sm:max-h-[95vh] max-h-[90vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 fade-in duration-300 pointer-events-auto relative z-10"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
+          <div className="flex items-center justify-between px-6 py-2 border-b border-gray-100">
             <h2 className="text-lg font-bold text-gray-900 font-[DM_Sans]">Date and time</h2>
             <button 
               type="button"
               onClick={onClose} 
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-600"
+              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50 transition-colors text-red-500 hover:text-red-600"
             >
-              <span className="material-symbols-outlined text-2xl">close</span>
+              <span className="material-symbols-outlined text-2xl font-bold">close</span>
             </button>
           </div>
 

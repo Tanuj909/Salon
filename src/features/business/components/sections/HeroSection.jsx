@@ -192,7 +192,7 @@ const HeroSection = () => {
                                 Today's Revenue
                             </div>
                             <div className="font-[Cormorant_Garamond,serif] text-xl font-bold rec-section-heading leading-none">
-                                ₹35,000
+                                AED 2,500
                             </div>
                         </motion.div>
 
