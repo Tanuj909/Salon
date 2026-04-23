@@ -77,7 +77,7 @@ export default function NotificationBell({ isScrolled }) {
 
       {/* ── Dropdown ── */}
       {open && (
-        <div className="absolute right-0 sm:right-0 md:right-0 top-12 w-[calc(100vw-2rem)] sm:w-80 md:w-80 max-w-sm bg-white rounded-2xl shadow-xl border border-gray-100 z-[1001] overflow-hidden transform md:translate-x-0 translate-x-[calc(50%-1.5rem)] xs:translate-x-[calc(50%-1.5rem)] right-1/2 sm:translate-x-0 sm:right-0 xl:translate-x-0">
+        <div className="fixed md:absolute left-1/2 -translate-x-1/2 md:left-auto md:right-0 md:translate-x-0 top-20 md:top-12 w-[calc(100vw-2rem)] md:w-80 max-w-sm bg-white rounded-2xl shadow-2xl border border-gray-100 z-[1001] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="fixed inset-0 sm:hidden z-[-1]" onClick={() => setOpen(false)} />
           <div className="relative z-10 w-full h-full bg-white">
           {/* Header */}

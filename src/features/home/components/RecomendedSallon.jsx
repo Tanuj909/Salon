@@ -203,7 +203,7 @@ export default function RecomendedSallon() {
                           ))}
                         </div>
                         <span className="text-[0.8rem] font-semibold rec-card-title font-[DM_Sans]">
-                          {(salon.averageRating || 0).toFixed(1)}
+                          {(salon.averageRating || 0.0).toFixed(1)}
                         </span>
                       </div>
                       <span className="py-[7px] px-[16px] rounded-full rec-btn-primary text-[0.73rem] font-semibold tracking-[0.04em] font-[DM_Sans]">
