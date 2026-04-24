@@ -27,22 +27,43 @@ export const LocationProvider = ({ children }) => {
     setError(null);
   }, []);
 
-  const refreshLocation = useCallback(() => {
+  const refreshLocation = useCallback((isManualTrigger = false) => {
     setLoading(true);
     setError(null);
     setIsTimeout(false);
 
+    const setUAEFallback = () => {
+      const uaeLoc = {
+        latitude: 25.7971,
+        longitude: 56.0220,
+        address: "United Arab Emirates",
+        isManual: false,
+        timestamp: Date.now()
+      };
+      setLocation(uaeLoc);
+      if (typeof window !== "undefined") {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(uaeLoc));
+      }
+      setLoading(false);
+    };
+
     if (!navigator.geolocation) {
       setError("Geolocation not supported");
-      setLoading(false);
+      if (isManualTrigger === true) {
+        alert("Geolocation is not supported by your browser.");
+      }
+      setUAEFallback();
       return;
     }
 
     const timeoutId = setTimeout(() => {
       setIsTimeout(true);
-      setLoading(false);
       setError("Location search timed out");
-    }, 10000);
+      if (isManualTrigger === true) {
+        alert("Location search timed out. Please try again.");
+      }
+      setUAEFallback();
+    }, 15000);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -61,10 +82,17 @@ export const LocationProvider = ({ children }) => {
       },
       (err) => {
         clearTimeout(timeoutId);
-        setError("Location permission denied");
-        setLoading(false);
+        setError("Location permission denied or failed");
+        if (isManualTrigger === true) {
+          if (err.code === err.PERMISSION_DENIED) {
+            alert("Location access is denied. Please enable it in your browser settings or click the lock icon in the address bar to allow location.");
+          } else {
+            alert("Failed to detect location. Please try again.");
+          }
+        }
+        setUAEFallback();
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
     );
   }, []);
 

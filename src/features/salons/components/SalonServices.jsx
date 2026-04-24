@@ -113,7 +113,7 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                                 All Inclusive
                             </span>
                         </div>
-                        <div className="rec-section-heading text-2xl font-bold font-[Cormorant_Garamond,serif]">
+                        <div className="rec-section-heading text-2xl font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
                             AED {service.effectivePrice || service.price}
                         </div>
                     </div>

@@ -103,7 +103,7 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { label: 'Rating', value: (profile.averageRating || 0).toFixed(1) },
-                  { label: 'Experience', value: (profile.experienceYears || 0) + 'y' },
+                  { label: 'Reviews', value: profile.totalReviews || 0 },
                   { label: 'Bookings', value: profile.totalBookings || 0 }
                 ].map((stat, i) => (
                   <div key={i} className="bg-white rounded-2xl p-4 text-center border hero-filter-input-bg shadow-sm hover:hero-filter-btn-bg transition-colors group">
@@ -113,15 +113,17 @@ function StaffProfileModal({ profile, loading, error, onClose }) {
                 ))}
               </div>
 
-              <div className="badge-verified-bg border hero-filter-input-bg p-5 sm:p-8 rounded-2xl sm:rounded-[32px] flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-0 text-center sm:text-left">
-                <div className="flex flex-col">
-                  <span className="text-[8px] uppercase tracking-widest badge-verified-text font-bold mb-1.5 opacity-60">Availability</span>
-                  <p className="text-lg font-bold salon-list-title-text">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
+              {profile.workStartTime && profile.workEndTime && (
+                <div className="badge-verified-bg border hero-filter-input-bg p-5 sm:p-8 rounded-2xl sm:rounded-[32px] flex flex-col sm:flex-row items-center sm:items-center justify-between gap-4 sm:gap-0 text-center sm:text-left">
+                  <div className="flex flex-col">
+                    <span className="text-[8px] uppercase tracking-widest badge-verified-text font-bold mb-1.5 opacity-60">Availability</span>
+                    <p className="text-lg font-bold salon-list-title-text">{formatTime(profile.workStartTime)} — {formatTime(profile.workEndTime)}</p>
+                  </div>
+                  <div className={`px-4 py-1.5 rounded-full text-[8px] font-bold uppercase tracking-widest text-white shadow-lg ${profile.isAvailable ? 'hero-filter-btn-bg' : 'bg-red-500'}`}>
+                    {profile.isAvailable ? 'Active' : 'Busy'}
+                  </div>
                 </div>
-                <div className={`px-4 py-1.5 rounded-full text-[8px] font-bold uppercase tracking-widest text-white shadow-lg ${profile.isAvailable ? 'hero-filter-btn-bg' : 'bg-red-500'}`}>
-                  {profile.isAvailable ? 'Active' : 'Busy'}
-                </div>
-              </div>
+              )}
             </div>
           </div>
         )}
@@ -139,7 +141,7 @@ function StaffCard({ member, index, onBook }) {
         <div className="relative mb-5 mt-2 w-full flex justify-center">
           <div className="w-28 h-28 rounded-full overflow-hidden border-[3px] hero-filter-input-bg shadow-md relative z-10 bg-[#f7ede2] group-hover:border-accent/40 transition-colors duration-500">
             <img
-              src={member.userProfileImageUrl || member.image || `https://ui-avatars.com/api/?name=${name}&background=1C3152&color=ffffff`}
+              src={member.userProfileImageUrl || `https://ui-avatars.com/api/?name=${name}&background=1C3152&color=ffffff`}
               alt={name}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               style={{ objectPosition: "top" }}
@@ -150,15 +152,20 @@ function StaffCard({ member, index, onBook }) {
         <h3 className="text-lg salon-list-title-text font-bold mb-1 group-hover:salon-list-title-accent transition-colors truncate w-full px-2">{name}</h3>
         <p className="text-[8px] uppercase tracking-[0.2em] salon-card-text opacity-50 font-extrabold mb-5 truncate w-full px-2">{member.designation}</p>
 
-        <div className="flex items-center gap-4 mb-5 w-full justify-center border-t hero-filter-input-bg pt-5">
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-bold salon-list-title-text">{member.averageRating || member.rating || "5.0"}</span>
+        <div className="flex items-center justify-between gap-2 mb-5 w-full border-t hero-filter-input-bg pt-5 px-1">
+          <div className="flex flex-col items-center flex-1">
+            <span className="text-[13px] font-bold salon-list-title-text">{(member.averageRating || 0).toFixed(1)}</span>
             <span className="text-[7px] uppercase tracking-widest salon-card-text opacity-40 font-bold">Grade</span>
           </div>
           <div className="w-px h-6 hero-filter-input-bg" />
-          <div className="flex flex-col items-center">
-            <span className="text-sm font-bold salon-list-title-text">{member.experienceYears || "4"}+</span>
-            <span className="text-[7px] uppercase tracking-widest salon-card-text opacity-40 font-bold">Exp</span>
+          <div className="flex flex-col items-center flex-1">
+            <span className="text-[13px] font-bold salon-list-title-text">{member.totalReviews || 0}</span>
+            <span className="text-[7px] uppercase tracking-widest salon-card-text opacity-40 font-bold">Reviews</span>
+          </div>
+          <div className="w-px h-6 hero-filter-input-bg" />
+          <div className="flex flex-col items-center flex-1">
+            <span className="text-[13px] font-bold salon-list-title-text">{member.totalBookings || 0}</span>
+            <span className="text-[7px] uppercase tracking-widest salon-card-text opacity-40 font-bold">Bookings</span>
           </div>
         </div>
 

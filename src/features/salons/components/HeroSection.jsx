@@ -202,7 +202,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
         }
         @keyframes glow-sweep {
           0% { left: -100%; }
-          40% { left: 100%; }
+          50% { left: 100%; }
           100% { left: 100%; }
         }
         .glow-line {
@@ -220,7 +220,7 @@ const HeroSection = ({ salonImg, salon, handleBookButtonClick }) => {
             transparent
           );
           transform: skewX(-25deg);
-          animation: glow-sweep 4s infinite ease-in-out;
+          animation: glow-sweep 3s infinite ease-in-out;
           pointer-events: none;
         }
       `}</style>

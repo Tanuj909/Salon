@@ -826,7 +826,7 @@ const HeroSection = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      refreshLocation();
+                      refreshLocation(true);
                     }}
                     title="Detect My Location"
                     className="lg:hidden w-12 h-12 flex items-center justify-center rounded-full bg-white border border-gray-100 shadow-xl text-gray-500 hover:text-[#1C3152] transition-all active:scale-95 shrink-0"
@@ -848,7 +848,7 @@ const HeroSection = () => {
 
               {/* Current Location Icon (Desktop only - Shifted to corner) */}
               <button
-                onClick={refreshLocation}
+                onClick={() => refreshLocation(true)}
                 title="Detect My Location"
                 className="hidden lg:flex absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 items-center justify-center rounded-full bg-white border border-gray-100 shadow-md text-gray-400 hover:text-[#1C3152] hover:shadow-lg transition-all active:scale-95 z-[10]"
               >

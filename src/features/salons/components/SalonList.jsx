@@ -394,7 +394,15 @@ export default function SalonList() {
                         setDraftParams(prev => ({ ...prev, ...newLoc }));
                         updateParams({ ...draftParams, ...newLoc });
                         saveManualLocation(newLoc.lat, newLoc.lng, newLoc.address);
-                      }
+                      },
+                      (err) => {
+                        if (err.code === err.PERMISSION_DENIED) {
+                          alert("Location access is denied. Please enable it in your browser settings or click the lock icon in the address bar to allow location.");
+                        } else {
+                          alert("Failed to detect location. Please try again.");
+                        }
+                      },
+                      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
                     );
                   }}
                 />
@@ -678,7 +686,15 @@ export default function SalonList() {
                           address: "Detected Location"
                         }));
                         saveManualLocation(pos.coords.latitude, pos.coords.longitude, "Detected Location");
-                      }
+                      },
+                      (err) => {
+                        if (err.code === err.PERMISSION_DENIED) {
+                          alert("Location access is denied. Please enable it in your browser settings or click the lock icon in the address bar to allow location.");
+                        } else {
+                          alert("Failed to detect location. Please try again.");
+                        }
+                      },
+                      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
                     );
                   }}
                 />

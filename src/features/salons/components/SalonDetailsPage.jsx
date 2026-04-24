@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useUserLocation } from "@/features/salons/hooks/useUserLocation";
 import SalonStaff from "./SalonStaff";
 import SalonServices from "./SalonServices";
 import BookAppointmentModal from "./BookAppointmentModal";
@@ -55,6 +56,7 @@ export default function SalonDetailsPage({ salon, services, staff, reviews, timi
   const router = useRouter();
   const pathname = usePathname();
   const { user } = useAuth();
+  const { location } = useUserLocation();
   const [lightboxSrc, setLightboxSrc] = useState(null);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [preSelectedService, setPreSelectedService] = useState(null);
@@ -185,7 +187,7 @@ export default function SalonDetailsPage({ salon, services, staff, reviews, timi
                     <h4 className="rec-section-heading-accent text-[9px] sm:text-[10px] uppercase tracking-[0.3em] sm:tracking-[0.4em] font-bold mb-1.5">Connect</h4>
                     <p className="rec-section-heading text-sm sm:text-base font-bold mb-4">{salon.phoneNumber}</p>
                     <a
-                      href={`https://www.google.com/maps/dir/?api=1&destination=${salon.latitude},${salon.longitude}`}
+                      href={`https://www.google.com/maps/dir/?api=1${location?.latitude && location?.longitude ? `&origin=${location.latitude},${location.longitude}` : ''}&destination=${salon.latitude},${salon.longitude}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="rec-btn-primary px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all shadow-md border-0 cursor-pointer text-center w-full sm:w-auto"
