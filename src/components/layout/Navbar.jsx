@@ -165,6 +165,16 @@ export default function Navbar() {
                         <span className="material-symbols-outlined text-lg">account_circle</span>
                         Profile
                       </Link>
+                      {['ADMIN', 'SUPER_ADMIN', 'STAFF', 'RECEPTIONIST'].includes(user?.role) && (
+                        <Link
+                          href="https://fastbookingservice.com/admin"
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <span className="material-symbols-outlined text-lg">admin_panel_settings</span>
+                          Console
+                        </Link>
+                      )}
                       {business && (
                         <Link
                           href="/partner/documents"

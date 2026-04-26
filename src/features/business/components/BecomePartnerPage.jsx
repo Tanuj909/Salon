@@ -314,15 +314,15 @@ export default function BecomePartnerPage() {
               <div className="md:w-1/3 p-8 sm:p-12 bg-[#1C3152] border-b md:border-b-0 md:border-r border-[#C8A951]/20 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8A951]/5 rounded-full -mr-16 -mt-16 blur-3xl" />
                 
-                <span className="block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-8 relative z-10">Partnership</span>
-                <h2 className="font-[Cormorant_Garamond,serif] text-3xl sm:text-5xl text-white font-bold leading-[1.1] mb-8 relative z-10 tracking-tight">
+                <span className="hidden sm:block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-8 relative z-10">Partnership</span>
+                <h2 className="font-[Cormorant_Garamond,serif] text-3xl sm:text-5xl text-white font-bold leading-[1.1] mb-4 sm:mb-8 relative z-10 tracking-tight">
                   Grow Your <em className="italic text-[#C8A951] font-light">Business</em> With Fast Booking
                 </h2>
-                <p className="text-blue-100/70 text-sm leading-relaxed font-medium mb-12 relative z-10">
+                <p className="hidden sm:block text-blue-100/70 text-sm leading-relaxed font-medium mb-12 relative z-10">
                   Join an exclusive community of premium salons. Elevate your brand, reach more clients, and manage your bookings with ease.
                 </p>
  
-                <div className="space-y-8 relative z-10">
+                <div className="hidden sm:block space-y-8 relative z-10">
                   <div className="flex items-center gap-5">
                     <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shadow-inner">
                       <CheckCircle2 size={20} className="text-[#C8A951]" />
@@ -530,17 +530,18 @@ export default function BecomePartnerPage() {
  
                       {(form.latitude || form.longitude) && (
                         <div className="p-5 rounded-2xl bg-[#1C3152]/5 border border-[#C8A951]/20 flex items-center justify-between shadow-inner">
-                          <div className="flex gap-6">
-                            <div>
-                              <span className="text-[10px] uppercase rec-section-subtext font-bold block mb-1">Latitude</span>
-                              <span className="text-sm font-bold rec-section-heading">{parseFloat(form.latitude).toFixed(4)}</span>
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-[#1C3152]/10 flex items-center justify-center text-[#C8A951]">
+                              <MapPin size={20} />
                             </div>
                             <div>
-                              <span className="text-[10px] uppercase rec-section-subtext font-bold block mb-1">Longitude</span>
-                              <span className="text-sm font-bold rec-section-heading">{parseFloat(form.longitude).toFixed(4)}</span>
+                              <span className="text-[10px] uppercase rec-section-subtext font-bold block mb-1 tracking-widest">Selected Location</span>
+                              <span className="text-sm font-bold rec-section-heading line-clamp-2">
+                                {form.address ? `${form.address}${form.city ? `, ${form.city}` : ''}` : "Location set successfully"}
+                              </span>
                             </div>
                           </div>
-                          <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center border border-green-100">
+                          <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center border border-green-100 flex-shrink-0">
                              <CheckCircle2 size={18} className="text-green-600" />
                           </div>
                         </div>
