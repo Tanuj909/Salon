@@ -10,6 +10,7 @@ export const LocationProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isTimeout, setIsTimeout] = useState(false);
+  const [showMapTrigger, setShowMapTrigger] = useState(0);
 
   const saveManualLocation = useCallback((lat, lng, addr = "Selected Location") => {
     const loc = { 
@@ -49,6 +50,7 @@ export const LocationProvider = ({ children }) => {
 
     if (!navigator.geolocation) {
       setError("Geolocation not supported");
+      setShowMapTrigger(prev => prev + 1);
       if (isManualTrigger === true) {
         alert("Geolocation is not supported by your browser.");
       }
@@ -59,15 +61,28 @@ export const LocationProvider = ({ children }) => {
     const timeoutId = setTimeout(() => {
       setIsTimeout(true);
       setError("Location search timed out");
+      setShowMapTrigger(prev => prev + 1);
       if (isManualTrigger === true) {
         alert("Location search timed out. Please try again.");
       }
       setUAEFallback();
-    }, 15000);
+    }, 20000);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         clearTimeout(timeoutId);
+        
+        // Check if location is accurate enough (e.g., within 1500 meters)
+        if (position.coords.accuracy > 1500) {
+          setError("Location is not accurate enough");
+          setShowMapTrigger(prev => prev + 1);
+          if (isManualTrigger === true) {
+            alert("Location is not accurate enough. Please select your location on the map.");
+          }
+          setUAEFallback();
+          return;
+        }
+
         const loc = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -83,6 +98,7 @@ export const LocationProvider = ({ children }) => {
       (err) => {
         clearTimeout(timeoutId);
         setError("Location permission denied or failed");
+        setShowMapTrigger(prev => prev + 1);
         if (isManualTrigger === true) {
           if (err.code === err.PERMISSION_DENIED) {
             alert("Location access is denied. Please enable it in your browser settings or click the lock icon in the address bar to allow location.");
@@ -92,7 +108,7 @@ export const LocationProvider = ({ children }) => {
         }
         setUAEFallback();
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
     );
   }, []);
 
@@ -119,7 +135,7 @@ export const LocationProvider = ({ children }) => {
   }, [refreshLocation]);
 
   return (
-    <LocationContext.Provider value={{ location, error, loading, isTimeout, saveManualLocation, refreshLocation }}>
+    <LocationContext.Provider value={{ location, error, loading, isTimeout, saveManualLocation, refreshLocation, showMapTrigger }}>
       {children}
     </LocationContext.Provider>
   );

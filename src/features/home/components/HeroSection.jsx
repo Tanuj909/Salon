@@ -494,8 +494,14 @@ const HeroSection = () => {
   const [loadingServices, setLoadingServices] = useState(true);
 
   // ─── Location Integration ───
-  const { location, saveManualLocation, loading: locationLoading, refreshLocation } = useUserLocation();
+  const { location, saveManualLocation, loading: locationLoading, refreshLocation, showMapTrigger } = useUserLocation();
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (showMapTrigger > 0) {
+      setIsMapModalOpen(true);
+    }
+  }, [showMapTrigger]);
 
   // ─── Combined Service Data for Search ───
   const combinedServiceData = useMemo(() => {
@@ -882,8 +888,7 @@ const HeroSection = () => {
             window.location.reload();
           }
         }}
-        // Always default to UAE when picking manually as per user request
-        initialPos={null}
+        initialPos={location && location.latitude && location.longitude ? { lat: location.latitude, lng: location.longitude } : null}
       />
 
       <DateTimePickerModal
