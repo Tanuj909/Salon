@@ -316,7 +316,7 @@ export default function BecomePartnerPage() {
                 
                 <span className="hidden sm:block text-[10px] tracking-[0.4em] uppercase text-[#C8A951] font-bold mb-8 relative z-10">Partnership</span>
                 <h2 className="font-[Cormorant_Garamond,serif] text-3xl sm:text-5xl text-white font-bold leading-[1.1] mb-4 sm:mb-8 relative z-10 tracking-tight">
-                  Grow Your <em className="italic text-[#C8A951] font-light">Business</em> With Fast Booking
+                  Grow Your <em className="italic text-[#C8A951] font-light">Business</em> With Fast Booking Service
                 </h2>
                 <p className="hidden sm:block text-blue-100/70 text-sm leading-relaxed font-medium mb-12 relative z-10">
                   Join an exclusive community of premium salons. Elevate your brand, reach more clients, and manage your bookings with ease.

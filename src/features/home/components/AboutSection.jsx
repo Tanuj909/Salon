@@ -51,7 +51,7 @@ const AboutSection = () => {
               <h3 className="rec-section-heading-accent font-bold tracking-[0.15em] uppercase text-[0.65rem] md:text-xs lg:text-sm mb-2 lg:mb-4">The Platform</h3>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 lg:mb-6 leading-tight rec-section-heading font-[Cormorant_Garamond,serif]">Modern & Hassle-Free Booking</h2>
               <p className="text-sm md:text-base lg:text-lg rec-section-subtext mb-3 lg:mb-6 leading-relaxed">
-                Fast Booking is a modern and user-friendly platform designed to make salon appointment booking fast, easy, and hassle-free across the UAE. Whether you are looking for a barber, beauty salon, spa, massage center, or nail art studio, Fast Booking helps you find and book the best services near you in just a few clicks.
+                Fast Booking Service is a modern and user-friendly platform designed to make salon appointment booking fast, easy, and hassle-free across the UAE. Whether you are looking for a barber, beauty salon, spa, massage center, or nail art studio, Fast Booking Service helps you find and book the best services near you in just a few clicks.
               </p>
               <p className="text-sm md:text-base lg:text-lg rec-section-subtext leading-relaxed">
                 We understand the value of your time. That’s why our platform focuses on instant booking, real-time availability, and quick confirmation, so you can skip long waiting times and walk into your appointment exactly when it’s scheduled.
@@ -65,7 +65,7 @@ const AboutSection = () => {
               <h3 className="rec-section-heading-accent font-bold tracking-[0.15em] uppercase text-[0.65rem] md:text-xs lg:text-sm mb-2 lg:mb-4">What We Do</h3>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold mb-3 lg:mb-6 leading-tight rec-section-heading font-[Cormorant_Garamond,serif]">Connecting Customers with Excellence</h2>
               <p className="text-sm md:text-base lg:text-lg rec-section-subtext mb-4 lg:mb-8 leading-relaxed">
-                Fast Booking acts as a technology platform that connects customers with trusted salons and service providers.
+                Fast Booking Service acts as a technology platform that connects customers with trusted salons and service providers.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
@@ -210,7 +210,7 @@ const AboutSection = () => {
             <h4 className="text-base md:text-lg font-bold text-red-900 mb-2 font-[Cormorant_Garamond,serif] uppercase tracking-wider">Important Disclaimer</h4>
             <div className="space-y-2">
                <p className="text-xs md:text-base text-red-800/80 leading-relaxed font-medium">
-                  Fast Booking is an independent booking platform and does not provide salon or beauty services directly.
+                  Fast Booking Service is an independent booking platform and does not provide salon or beauty services directly.
                </p>
                <p className="text-xs md:text-base text-red-800/80 leading-relaxed">
                   All services are offered by third-party salons and service providers, who are solely responsible for service quality, pricing, and customer experience.

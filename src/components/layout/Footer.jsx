@@ -36,14 +36,14 @@ const Footer = () => {
       className="w-14 md:w-16 lg:w-[72px] h-auto object-contain shrink-0" 
     />
     <span className="text-2xl lg:text-3xl font-extrabold tracking-[0.05em] footer-main-text leading-tight break-words">
-      Fast Booking
+      Fast Booking Service
     </span>
   </Link>
 </div>
 
             {/* Tagline */}
             <p className="text-[0.8rem] md:text-[0.86rem] leading-[1.7] mb-6 max-w-[280px] footer-link-text" style={{ fontFamily: "'Georgia', serif" }}>
-Fast Booking is a simple platform to quickly find and book salons, spas, barbers, and beauty services across the UAE in just a few clicks.            </p>
+Fast Booking Service is a simple platform to quickly find and book salons, spas, barbers, and beauty services across the UAE in just a few clicks.            </p>
 
             {/* Social buttons */}
             <div className="flex gap-4 md:gap-3 mt-1 justify-center md:justify-start">
@@ -146,7 +146,7 @@ Fast Booking is a simple platform to quickly find and book salons, spas, barbers
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4 pt-7 border-t footer-divider">
           <p className="text-[0.78rem] w-full md:w-auto footer-link-text" style={{ fontFamily: "'Georgia', serif" }}>
-            © Fast Booking. All rights reserved.
+            © Fast Booking Service. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-4 md:gap-6 w-full md:w-auto">
             {/* <a href="#" className="footer-link-text footer-main-text hover:footer-link-hover-text text-[0.78rem] no-underline transition-colors duration-200"

@@ -1,8 +1,8 @@
 import AboutSection from "@/features/home/components/AboutSection";
 
 export const metadata = {
-  title: "About Us | Fast Booking",
-  description: "Learn more about Fast Booking, our story, expertise, and the elevated experiences we bring to our clients.",
+  title: "About Us | Fast Booking Service",
+  description: "Learn more about Fast Booking Service, our story, expertise, and the elevated experiences we bring to our clients.",
 };
 
 export default function AboutPage() {

@@ -38,7 +38,7 @@ export default function TermsAndCondition({ onClose }) {
         <div className="p-6 overflow-y-auto flex-1 text-sm text-gray-700 space-y-6 custom-scrollbar leading-relaxed">
           <section>
             <h3 className="font-bold text-[#1C3152] text-base mb-2">1. Platform Role</h3>
-            <p>Fast Booking is an online platform that allows users to book appointments with salons and service providers. We act only as a facilitator and do not provide any salon services directly.</p>
+            <p>Fast Booking Service is an online platform that allows users to book appointments with salons and service providers. We act only as a facilitator and do not provide any salon services directly.</p>
           </section>
 
           <section>
@@ -66,7 +66,7 @@ export default function TermsAndCondition({ onClose }) {
           <section>
             <h3 className="font-bold text-[#1C3152] text-base mb-2">4. Payments & Transactions</h3>
             <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
-              <li>Fast Booking does not take responsibility for any payment made directly to the salon.</li>
+              <li>Fast Booking Service does not take responsibility for any payment made directly to the salon.</li>
               <li>Any dispute related to money, refund, or charges must be resolved directly between the customer and the service provider.</li>
             </ul>
           </section>
@@ -75,7 +75,7 @@ export default function TermsAndCondition({ onClose }) {
             <h3 className="font-bold text-[#1C3152] text-base mb-2">5. Cancellations & Refunds</h3>
             <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
               <li>Cancellation and refund policies are decided by individual salons.</li>
-              <li>Fast Booking is not responsible for any refund claims or disputes.</li>
+              <li>Fast Booking Service is not responsible for any refund claims or disputes.</li>
             </ul>
           </section>
 
@@ -83,7 +83,7 @@ export default function TermsAndCondition({ onClose }) {
             <h3 className="font-bold text-[#1C3152] text-base mb-2">6. Disputes</h3>
             <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
               <li>Any dispute between customer and service provider must be resolved between them.</li>
-              <li>Fast Booking will not be involved in legal or financial disputes.</li>
+              <li>Fast Booking Service will not be involved in legal or financial disputes.</li>
             </ul>
           </section>
 
