@@ -263,7 +263,7 @@ const EditProfileForm = ({ user: initialUser }) => {
                                     <div className="flex justify-between items-end">
                                         <div>
                                             <p className="text-2xl font-bold mb-1">{formData.fullName || "VALUED GUEST"}</p>
-                                            <p className="text-xs opacity-60">Member since 2024</p>
+                                            {/* <p className="text-xs opacity-60">Member since 2024</p> */}
                                         </div>
                                         <div className="text-right">
                                             <p className="text-xs salon-list-title-accent font-bold italic">FAST BOOKING SERVICE</p>
