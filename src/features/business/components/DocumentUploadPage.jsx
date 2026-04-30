@@ -234,7 +234,7 @@ export default function DocumentUploadPage() {
                                   <p className="text-[9px] font-medium text-[#1C3152]">
                                     {isVerified ? 'Replace' : isRejected ? 'Re-upload' : 'Upload'}
                                   </p>
-                                  <p className="text-[7px] text-gray-400">PDF/IMG, 5MB</p>
+                                  <p className="text-[7px] text-gray-400">IMG, 5MB</p>
                                 </div>
                               )}
                             </div>
