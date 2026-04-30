@@ -42,7 +42,7 @@ export default function LoginClient() {
           <Link href="/" className="inline-flex items-center justify-center mb-6 sm:mb-8">
             <img 
               src="/logo/fastbooking.png" 
-              alt="Fast Booking Logo" 
+              alt="Fast Booking Service Logo" 
               className="w-20 sm:w-28 h-auto object-contain" 
             />
           </Link>

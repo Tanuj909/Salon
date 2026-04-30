@@ -395,8 +395,8 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                     className={`flex-shrink-0 flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all min-w-[100px] ${isSelected ? "border-[#628EB8] bg-[#628EB8]/5 shadow-sm" : "border-[#E0E0E0] bg-white hover:border-[#628EB8]/20"}`}
                                                 >
                                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${isSelected ? "ring-2 ring-[#628EB8] ring-offset-2" : ""}`}>
-                                                        {member.profileImageUrl ? (
-                                                            <img src={member.profileImageUrl} alt={member.userFullName || member.fullName} className="w-full h-full object-cover" />
+                                                        {(member.userProfileImageUrl || member.profileImageUrl) ? (
+                                                            <img src={member.userProfileImageUrl || member.profileImageUrl} alt={member.userFullName || member.fullName} className="w-full h-full object-cover" />
                                                         ) : (
                                                             <div className="w-full h-full bg-[#F8FAFC] flex items-center justify-center text-[#1F355E] font-bold text-sm">
                                                                 {(member.userFullName || member.fullName)?.substring(0, 2).toUpperCase()}
@@ -548,8 +548,8 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                             <User size={10} /> Specialist
                                         </span>
                                         <div className="flex items-center gap-3">
-                                            {selectedStaff?.profileImageUrl ? (
-                                                <img src={selectedStaff.profileImageUrl} alt="" className="w-8 h-8 rounded-full object-cover border border-[#628EB8]/20" />
+                                            {(selectedStaff?.userProfileImageUrl || selectedStaff?.profileImageUrl) ? (
+                                                <img src={selectedStaff.userProfileImageUrl || selectedStaff.profileImageUrl} alt="" className="w-8 h-8 rounded-full object-cover border border-[#628EB8]/20" />
                                             ) : (
                                                 <div className="w-8 h-8 rounded-full bg-[#1F355E] text-white flex items-center justify-center text-[10px] font-bold">
                                                     {selectedStaff ? (selectedStaff.userFullName || selectedStaff.fullName)?.substring(0, 2).toUpperCase() : "AA"}

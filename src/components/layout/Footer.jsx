@@ -32,7 +32,7 @@ const Footer = () => {
   >
     <img 
       src="/logo/fastbooking.png" 
-      alt="Fast Booking Logo" 
+      alt="Fast Booking Service Logo" 
       className="w-14 md:w-16 lg:w-[72px] h-auto object-contain shrink-0" 
     />
     <span className="text-2xl lg:text-3xl font-extrabold tracking-[0.05em] footer-main-text leading-tight break-words">

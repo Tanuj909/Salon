@@ -181,7 +181,7 @@ const AboutSection = () => {
         <div className="mt-16 md:mt-32">
           <div className="text-center mb-10 md:mb-16">
             <h3 className="rec-section-heading-accent font-bold tracking-[0.15em] uppercase text-[0.65rem] md:text-xs mb-2">Why Us</h3>
-            <h2 className="text-2xl md:text-4xl font-extrabold rec-section-heading font-[Cormorant_Garamond,serif]">Why Choose Fast Booking</h2>
+            <h2 className="text-2xl md:text-4xl font-extrabold rec-section-heading font-[Cormorant_Garamond,serif]">Why Choose Fast Booking Service</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[

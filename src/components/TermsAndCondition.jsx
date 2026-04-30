@@ -107,7 +107,7 @@ export default function TermsAndCondition({ onClose }) {
 
           <section>
             <h3 className="font-bold text-[#1C3152] text-base mb-2">9. Limitation of Liability</h3>
-            <p className="mb-2">Fast Booking shall not be liable for:</p>
+            <p className="mb-2">Fast Booking Service shall not be liable for:</p>
             <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
               <li>Any indirect or direct damages</li>
               <li>Loss of money, reputation, or business</li>

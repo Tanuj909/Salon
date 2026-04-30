@@ -6,7 +6,7 @@ const DownloadAppSection = () => {
         <section className="py-16 px-4 sm:px-6 text-center border-t border-[#3c1432]/5">
             <div className="max-w-3xl mx-auto">
                 <h2 className="text-3xl md:text-5xl font-bold rec-section-heading font-[Cormorant_Garamond,serif] mb-4 tracking-tight leading-tight">
-                    Download the <span className="italic rec-section-heading-accent font-light">Fast Booking</span> App
+                    Download the <span className="italic rec-section-heading-accent font-light">Fast Booking Service</span> App
                 </h2>
                 
                 <div className="mb-10">
