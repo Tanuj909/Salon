@@ -54,7 +54,7 @@ export default function Navbar() {
               />
               <div className="flex flex-col leading-tight items-start px-2 py-1 md:px-3 lg:px-4 md:py-1.5 lg:py-2 rounded-xl lg:rounded-2xl navbar-link-bg border border-white/80 shadow-sm group-hover:bg-white/90 transition-all">
                 <span className="text-sm sm:text-lg lg:text-xl font-black navbar-logo-text tracking-tighter whitespace-nowrap leading-[1.1] pb-0.5">
-                  Fast Booking Service
+                  Fast Booking 
                 </span>
                 <span className="text-[8px] sm:text-[10px] lg:text-[12px] font-bold uppercase tracking-[0.2em] navbar-logo-subtext -mt-0.5">
                   Service

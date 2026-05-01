@@ -11,6 +11,19 @@ export const viewport = {
   maximumScale: 1,
 };
 
+export const metadata = {
+  title: {
+    default: "Fast Booking Service",
+    template: "%s | Fast Booking Service",
+  },
+  description: "Salon and Wellness Booking Platform",
+  icons: {
+    icon: "/logo/fastbooking.png", // Path to your logo in the public folder
+    shortcut: "/logo/fastbooking.png",
+    apple: "/logo/fastbooking.png",
+  },
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
