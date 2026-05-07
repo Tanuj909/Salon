@@ -30,6 +30,9 @@ export default function BecomePartnerPage() {
   const { submitBusiness, loading, error, success } =
     useRegisterBusiness();
 
+  const isAdmin = ["ADMIN", "SUPER_ADMIN"].includes(user?.role);
+  const isSuperAdmin = user?.role === "SUPER_ADMIN";
+
   const [form, setForm] = useState({
     name: "",
     description: "",
@@ -253,6 +256,8 @@ export default function BecomePartnerPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (isAdmin) return;
+
     if (!form.latitude || !form.longitude) {
       setLocationError("Please provide location before submitting.");
       return;
@@ -359,6 +364,20 @@ export default function BecomePartnerPage() {
                     {locationError}
                   </div>
                 )}
+
+                {isAdmin && (
+                  <div className="mb-8 p-4 bg-[#1C3152]/10 text-[#1C3152] rounded-xl border border-[#1C3152]/20 flex items-center gap-3 text-sm animate-fade-in">
+                    <AlertCircle size={20} className="text-[#C8A951]" />
+                    <div className="flex flex-col">
+                      <span className="font-bold uppercase tracking-wider text-[10px]">
+                        {isSuperAdmin ? "Super_Admin View Mode" : "Admin View Mode"}
+                      </span>
+                      <span className="font-medium opacity-80">
+                        Form submission and editing is restricted for {isSuperAdmin ? "super administrative" : "administrative"} roles.
+                      </span>
+                    </div>
+                  </div>
+                )}
  
                 <form onSubmit={handleSubmit} className="space-y-8">
                   {/* Basic Information */}
@@ -374,7 +393,8 @@ export default function BecomePartnerPage() {
                           value={form.name}
                           onChange={handleChange}
                           required
-                          className="w-full h-12 px-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm"
+                          disabled={isAdmin}
+                          className="w-full h-12 px-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                         />
                       </div>
                       <div className="space-y-2">
@@ -385,7 +405,8 @@ export default function BecomePartnerPage() {
                           value={form.registrationNumber}
                           onChange={handleChange}
                           required
-                          className="w-full h-12 px-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm"
+                          disabled={isAdmin}
+                          className="w-full h-12 px-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                         />
                       </div>
                     </div>
@@ -398,8 +419,9 @@ export default function BecomePartnerPage() {
                         value={form.description}
                         onChange={handleChange}
                         required
+                        disabled={isAdmin}
                         rows="4"
-                        className="w-full p-5 rounded-2xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 resize-none shadow-sm"
+                        className="w-full p-5 rounded-2xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 resize-none shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                       />
                     </div>
                   </div>
@@ -419,7 +441,8 @@ export default function BecomePartnerPage() {
                             value={form.email}
                             onChange={handleChange}
                             required
-                            className="w-full h-12 pl-12 pr-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm"
+                            disabled={isAdmin}
+                            className="w-full h-12 pl-12 pr-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
@@ -433,7 +456,8 @@ export default function BecomePartnerPage() {
                             value={form.phoneNumber}
                             onChange={handleChange}
                             required
-                            className="w-full h-12 pl-12 pr-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm"
+                            disabled={isAdmin}
+                            className="w-full h-12 pl-12 pr-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
@@ -454,7 +478,8 @@ export default function BecomePartnerPage() {
                             value={form.address}
                             onChange={handleChange}
                             required
-                            className="w-full h-12 pl-12 pr-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm"
+                            disabled={isAdmin}
+                            className="w-full h-12 pl-12 pr-5 rounded-xl bg-white border rec-card-border focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 transition-all outline-none font-semibold text-base rec-section-heading placeholder:text-[#1C3152]/30 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
@@ -468,7 +493,8 @@ export default function BecomePartnerPage() {
                             value={form.city}
                             onChange={handleChange}
                             required
-                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30"
+                            disabled={isAdmin}
+                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30 disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                         <div className="space-y-1.5">
@@ -479,7 +505,8 @@ export default function BecomePartnerPage() {
                             value={form.state}
                             onChange={handleChange}
                             required
-                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30"
+                            disabled={isAdmin}
+                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30 disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                         <div className="space-y-1.5">
@@ -490,7 +517,8 @@ export default function BecomePartnerPage() {
                             value={form.postalCode}
                             onChange={handleChange}
                             required
-                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30"
+                            disabled={isAdmin}
+                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30 disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                         <div className="space-y-1.5">
@@ -501,7 +529,8 @@ export default function BecomePartnerPage() {
                             value={form.country}
                             onChange={handleChange}
                             required
-                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30"
+                            disabled={isAdmin}
+                            className="w-full h-11 px-4 rounded-lg bg-white border rec-card-border outline-none font-bold text-xs focus:border-[#C8A951] focus:ring-4 focus:ring-[#C8A951]/10 rec-section-heading placeholder:text-[#1C3152]/30 disabled:opacity-70 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
@@ -510,7 +539,7 @@ export default function BecomePartnerPage() {
                         <button
                           type="button"
                           onClick={handleGetLocation}
-                          disabled={locationLoading}
+                          disabled={locationLoading || isAdmin}
                           className="px-6 py-3 bg-white border border-[#C8A951] text-[#C8A951] rounded-xl flex items-center gap-2 text-xs font-bold hover:bg-[#C8A951] hover:text-[#1C1C1C] transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                         >
                           {locationLoading ? <Loader2 size={14} className="animate-spin" /> : <Navigation size={14} />}
@@ -520,7 +549,7 @@ export default function BecomePartnerPage() {
                         <button
                           type="button"
                           onClick={() => setIsMapOpen(true)}
-                          disabled={locationLoading}
+                          disabled={locationLoading || isAdmin}
                           className="px-6 py-3 bg-white border border-[#C8A951] text-[#C8A951] rounded-xl flex items-center gap-2 text-xs font-bold hover:bg-[#C8A951] hover:text-[#1C1C1C] transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest"
                         >
                           <MapIcon size={14} />
@@ -563,11 +592,11 @@ export default function BecomePartnerPage() {
                           <button
                             key={cat.id}
                             type="button"
-                            onClick={() => handleCategoryToggle(cat.id)}
+                            disabled={isAdmin}
                             className={`px-6 py-2.5 rounded-xl text-[10px] font-bold tracking-[0.1em] uppercase transition-all border ${form.categoryIds.includes(cat.id)
                               ? "bg-[#1C3152] text-[#C8A951] border-[#C8A951] shadow-lg shadow-[#1C3152]/20"
-                              : "bg-white text-[#1C3152]/60 border rec-card-border hover:border-[#C8A951] hover:text-[#1C3152] shadow-sm"
-                              }`}
+                              : "bg-white text-[#1C3152]/60 border rec-card-border hover:border-[#C8A951] hover:text-[#1C1C12] shadow-sm"
+                              } disabled:opacity-70 disabled:cursor-not-allowed`}
                           >
                             {cat.name}
                           </button>
@@ -578,14 +607,14 @@ export default function BecomePartnerPage() {
  
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || isAdmin}
                     className="group relative w-full h-14 sm:h-16 bg-[#1C3152] text-[#C8A951] rounded-xl font-bold overflow-hidden transition-all hover:shadow-2xl hover:shadow-[#1C3152]/30 active:scale-[0.98] disabled:opacity-70 mt-8 sm:mt-12 border border-[#C8A951]/30"
                   >
                     <div className="absolute inset-0 bg-[#2a4570] translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                     <div className="relative z-10 flex items-center justify-center gap-4">
-                      {loading ? <Loader2 size={20} className="animate-spin" /> : <Briefcase size={20} />}
+                      {loading ? <Loader2 size={20} className="animate-spin" /> : (isAdmin ? <AlertCircle size={20} /> : <Briefcase size={20} />)}
                       <span className="text-xs sm:text-sm tracking-[0.3em] uppercase font-bold">
-                        {loading ? "Registering Business..." : "Send Application"}
+                        {loading ? "Registering Business..." : (isAdmin ? (isSuperAdmin ? "Super_Admin View Only" : "Admin View Only") : "Send Application")}
                       </span>
                     </div>
                   </button>
