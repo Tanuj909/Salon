@@ -823,7 +823,7 @@ const HeroSection = () => {
                     <div className="flex flex-col text-left overflow-hidden">
                       <span className="text-[8px] uppercase font-bold text-gray-400 tracking-tighter leading-none mb-1">Location</span>
                       <span className="text-[11px] font-bold hero-filter-input-text truncate leading-none">
-                        {location?.address || "Choose Manually"}
+                        {locationLoading ? "Detecting..." : (location?.address || "Choose Manually")}
                       </span>
                     </div>
                   </div>

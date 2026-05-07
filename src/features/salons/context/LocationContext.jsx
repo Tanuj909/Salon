@@ -83,17 +83,41 @@ export const LocationProvider = ({ children }) => {
           return;
         }
 
+        const { latitude, longitude } = position.coords;
         const loc = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+          latitude,
+          longitude,
           timestamp: Date.now(),
           isManual: false
         };
-        setLocation(loc);
-        if (typeof window !== "undefined") {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(loc));
-        }
-        setLoading(false);
+
+        // Attempt to fetch address name
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`, {
+          headers: { 
+            'Accept-Language': 'en',
+            'User-Agent': 'SalonHub-LocationProvider/1.0'
+          }
+        })
+        .then(res => res.ok ? res.json() : Promise.reject('Network response was not ok'))
+        .then(data => {
+          const address = data.display_name || "Current Location";
+          const finalLoc = { ...loc, address };
+          setLocation(finalLoc);
+          if (typeof window !== "undefined") {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(finalLoc));
+          }
+        })
+        .catch(err => {
+          console.warn("Reverse geocoding failed:", err);
+          const finalLoc = { ...loc, address: "Current Location" };
+          setLocation(finalLoc);
+          if (typeof window !== "undefined") {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(finalLoc));
+          }
+        })
+        .finally(() => {
+          setLoading(false);
+        });
       },
       (err) => {
         clearTimeout(timeoutId);
@@ -121,8 +145,11 @@ export const LocationProvider = ({ children }) => {
           const parsed = JSON.parse(stored);
           if (parsed && parsed.latitude && parsed.longitude) {
             setLocation(parsed);
-            setLoading(false);
-            return;
+            // If it's a manual selection and has an address, we keep it and don't auto-refresh
+            if (parsed.isManual && parsed.address) {
+              setLoading(false);
+              return;
+            }
           }
         } catch (e) {
           console.error("Failed to parse stored location", e);
@@ -130,7 +157,8 @@ export const LocationProvider = ({ children }) => {
       }
     }
 
-    // 2. Initial Geolocation (re-uses logic or just triggers refreshLocation)
+    // 2. Initial Geolocation or Refresh
+    // We call refreshLocation if no stored location, or if the stored location is automatic.
     refreshLocation();
   }, [refreshLocation]);
 
