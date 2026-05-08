@@ -47,6 +47,47 @@ function ScissorsIcon() {
     );
 }
 
+// ─── Service Image Mapper ──────────────────────────────────────────────────────
+const SERVICE_IMAGE_MAP = [
+    { keywords: ["beard", "trim"],          image: "/services/beardtrim.png" },
+    { keywords: ["shav"],                   image: "/services/shaving.png" },
+    { keywords: ["haircut", "hair cut", "cutting", "hair cutting"], image: "/services/haircut.png" },
+    { keywords: ["hair color", "colour", "coloring", "colouring", "dye"], image: "/services/haircoloring.png" },
+    { keywords: ["hair spa", "hairspa"],     image: "/services/hairspa.png" },
+    { keywords: ["straighten", "straight", "rebond", "keratin", "smoothen"], image: "/services/hairstraighting.png" },
+    { keywords: ["hair styl", "hairstyl", "blow dry", "blowdry", "blow-dry"], image: "/services/hairstyling.png" },
+    { keywords: ["hair treat", "hairtreat", "botox", "protein"], image: "/services/hairtreatment.jpg" },
+    { keywords: ["hair wash", "hairwash", "shampoo"], image: "/services/hairwash.png" },
+    { keywords: ["head massage", "scalp"],  image: "/services/headmassage.png" },
+    { keywords: ["facial", "face", "cleanup", "clean up", "clean-up"], image: "/services/facial.png" },
+    { keywords: ["bleach"],                  image: "/services/bleach.png" },
+    { keywords: ["detan", "de-tan", "de tan"], image: "/services/detan.png" },
+    { keywords: ["manicur"],                 image: "/services/manicure.png" },
+    { keywords: ["pedicur"],                 image: "/services/pedicure.png" },
+    { keywords: ["nail art", "nailart"],     image: "/services/nailart.png" },
+    { keywords: ["nail ext", "nailext", "acrylic nail", "gel nail"], image: "/services/nailextension.png" },
+    { keywords: ["massage", "body mass"],    image: "/services/massage.png" },
+    { keywords: ["threading", "thread", "eyebrow", "brow"], image: "/services/threading.png" },
+    { keywords: ["wax"],                     image: "/services/waxing.png" },
+    { keywords: ["makeup", "make up", "make-up", "bridal", "brdal"], image: "/services/hairstyling.png" },
+    { keywords: ["spa"],                     image: "/services/hairspa.png" },
+    { keywords: ["hair"],                    image: "/services/haircut.png" },
+    { keywords: ["nail"],                    image: "/services/nailart.png" },
+];
+
+const DEFAULT_SERVICE_IMAGE = "/services/haircut.png";
+
+function getServiceImage(serviceName) {
+    if (!serviceName) return DEFAULT_SERVICE_IMAGE;
+    const name = serviceName.toLowerCase();
+    for (const entry of SERVICE_IMAGE_MAP) {
+        if (entry.keywords.some((kw) => name.includes(kw))) {
+            return entry.image;
+        }
+    }
+    return DEFAULT_SERVICE_IMAGE;
+}
+
 // ─── Service Card ──────────────────────────────────────────────────────────────
 function ServiceCard({ service, index, onBookNow, salon }) {
     const hasDiscount = service.discountedPrice && service.discountedPrice < service.price;
@@ -93,14 +134,24 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                 {/* Body */}
                 <div className="p-[1.25rem_1.25rem_1.4rem] flex flex-col flex-1">
 
-                    {/* Service Label + Title */}
-                    <div className="pb-4 mb-4">
-                        <p className="rec-section-heading-accent text-[10px] tracking-[0.18em] uppercase font-bold mb-[5px]">Service</p>
-                        <h2 className="rec-section-heading text-[24px] font-bold m-0 tracking-[-0.3px] leading-tight line-clamp-2 font-[Cormorant_Garamond,serif]">
-                            {nameParts.map((part, i) => (
-                                part.startsWith('(') ? <span key={i} className="rec-section-heading-accent">{part}</span> : part
-                            ))}
-                        </h2>
+                    {/* Service Label + Title + Image */}
+                    <div className="pb-4 mb-4 flex items-center gap-4">
+                        <div className="flex-1 min-w-0">
+                            <p className="rec-section-heading-accent text-[10px] tracking-[0.18em] uppercase font-bold mb-[5px]">Service</p>
+                            <h2 className="rec-section-heading text-[24px] font-bold m-0 tracking-[-0.3px] leading-tight line-clamp-2 font-[Cormorant_Garamond,serif]">
+                                {nameParts.map((part, i) => (
+                                    part.startsWith('(') ? <span key={i} className="rec-section-heading-accent">{part}</span> : part
+                                ))}
+                            </h2>
+                        </div>
+                        <div className="w-[72px] h-[72px] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-white/10">
+                            <img
+                                src={getServiceImage(service.name)}
+                                alt={service.name}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy"
+                            />
+                        </div>
                     </div>
 
                     {/* Price Section */}
