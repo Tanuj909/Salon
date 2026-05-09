@@ -712,7 +712,7 @@ const HeroSection = () => {
         <div className="relative z-[10] w-full max-w-7xl mx-auto flex flex-col items-center text-center mt-6 md:mt-16 lg:mt-8">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-gray-100 border border-gray-200 rounded-full px-4 py-1.5 mb-6 animate-fade-up [animation-delay:100ms]">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#B76E4B] animate-pulse" />
+            <div className="w-4 h-4 rounded-full bg-[#087810] animate-pulse" />
             <span className="text-[10px] md:text-xs tracking-[0.15em] uppercase text-gray-600 font-medium">
               Premium Salon Experiences
             </span>
