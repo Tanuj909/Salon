@@ -758,3 +758,16 @@
 .cat-circle-ring {
     box-shadow: 0 0 0 1px rgba(28, 49, 82, 0.10);
 }
+
+/* ==========================================================================
+   SERVICE IMAGE PREVIEW ANIMATIONS
+   ========================================================================== */
+@keyframes servicePreviewFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes servicePreviewScaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+}

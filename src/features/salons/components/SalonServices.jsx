@@ -49,6 +49,7 @@ function ScissorsIcon() {
 
 // ─── Service Image Mapper ──────────────────────────────────────────────────────
 const SERVICE_IMAGE_MAP = [
+    // ── Salon / Beauty Services ──
     { keywords: ["beard", "trim"],          image: "/services/beardtrim.png" },
     { keywords: ["shav"],                   image: "/services/shaving.png" },
     { keywords: ["haircut", "hair cut", "cutting", "hair cutting"], image: "/services/haircut.png" },
@@ -70,22 +71,34 @@ const SERVICE_IMAGE_MAP = [
     { keywords: ["threading", "thread", "eyebrow", "brow"], image: "/services/threading.png" },
     { keywords: ["wax"],                     image: "/services/waxing.png" },
     { keywords: ["makeup", "make up", "make-up", "bridal", "brdal"], image: "/services/hairstyling.png" },
+
+    // ── Pet Services ──
+    { keywords: ["pet groom", "dog groom", "cat groom", "pet haircut", "pet cut", "fur trim", "fur cut"], image: "/services/pet_grooming.jfif" },
+    { keywords: ["pet bath", "pet spa", "dog bath", "cat bath", "dog spa", "cat spa", "pet wash", "dog wash"], image: "/services/pet_bath_Spa.jfif" },
+    { keywords: ["pet board", "pet daycare", "dog board", "dog daycare", "cat board", "pet hostel", "pet sitting", "dog sitting"], image: "/services/pet_boarding_daycare.jfif" },
+    { keywords: ["pet train", "dog train", "puppy train", "obedience", "pet behav"], image: "/services/pet_training.jfif" },
+    { keywords: ["vet", "veterinar", "pet health", "pet check", "pet vaccin", "pet medical", "deworming", "tick", "flea"], image: "/services/vet_health_services.jfif" },
+    { keywords: ["nail hygiene", "pet nail", "dog nail", "cat nail", "paw care", "nail care"], image: "/services/nail_hygiene_care.jfif" },
+
+    // ── Generic fallbacks (keep last) ──
     { keywords: ["spa"],                     image: "/services/hairspa.png" },
     { keywords: ["hair"],                    image: "/services/haircut.png" },
     { keywords: ["nail"],                    image: "/services/nailart.png" },
 ];
 
-const DEFAULT_SERVICE_IMAGE = "/services/haircut.png";
-
+/**
+ * Returns the matching service image path, or null if no match is found.
+ * When null is returned the image section will be hidden on the card.
+ */
 function getServiceImage(serviceName) {
-    if (!serviceName) return DEFAULT_SERVICE_IMAGE;
+    if (!serviceName) return null;
     const name = serviceName.toLowerCase();
     for (const entry of SERVICE_IMAGE_MAP) {
         if (entry.keywords.some((kw) => name.includes(kw))) {
             return entry.image;
         }
     }
-    return DEFAULT_SERVICE_IMAGE;
+    return null;
 }
 
 // ─── Service Card ──────────────────────────────────────────────────────────────
@@ -95,10 +108,37 @@ function ServiceCard({ service, index, onBookNow, salon }) {
     const salonName = salon?.name || "Glamour Studio";
     const salonCategory = salon?.category?.name || "Premium Salon";
     const nameParts = service.name.split(/(\(.*\))/);
+    const serviceImage = getServiceImage(service.name);
+    const [showPreview, setShowPreview] = useState(false);
 
     return (
         <Reveal delay={index * 80}>
-            <div className="group w-full max-w-[340px] mx-auto service-card-bg rounded-[18px] border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full flex flex-col">
+            <div className="group w-full max-w-[340px] mx-auto service-card-bg rounded-[18px] border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full flex flex-col relative">
+
+                {/* Image Preview Overlay */}
+                {showPreview && serviceImage && (
+                    <div
+                        className="absolute inset-0 z-20 flex items-center justify-center rounded-[18px]"
+                        style={{ backgroundColor: "rgba(0,0,0,0.85)", animation: "servicePreviewFadeIn 0.2s ease-out" }}
+                        onClick={() => setShowPreview(false)}
+                    >
+                        <button
+                            onClick={(e) => { e.stopPropagation(); setShowPreview(false); }}
+                            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center cursor-pointer transition-all duration-200 hover:bg-white/30 hover:scale-110 active:scale-95 z-30"
+                            aria-label="Close preview"
+                        >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                        <img
+                            src={serviceImage}
+                            alt={service.name}
+                            className="max-w-[85%] max-h-[85%] object-contain rounded-2xl shadow-2xl"
+                            style={{ animation: "servicePreviewScaleIn 0.25s ease-out" }}
+                        />
+                    </div>
+                )}
 
                 {/* Header */}
                 <div className="service-card-header-bg p-4 sm:p-[0.9rem_1.25rem] shrink-0">
@@ -144,14 +184,20 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                                 ))}
                             </h2>
                         </div>
-                        <div className="w-[72px] h-[72px] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-white/10">
-                            <img
-                                src={getServiceImage(service.name)}
-                                alt={service.name}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                loading="lazy"
-                            />
-                        </div>
+                        {serviceImage && (
+                            <div
+                                className="w-[72px] h-[72px] rounded-2xl overflow-hidden shrink-0 shadow-lg border border-white/10 cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+                                onClick={() => setShowPreview(true)}
+                                title="Click to preview"
+                            >
+                                <img
+                                    src={serviceImage}
+                                    alt={service.name}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    loading="lazy"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     {/* Price Section */}
