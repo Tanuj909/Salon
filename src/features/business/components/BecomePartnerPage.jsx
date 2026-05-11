@@ -60,6 +60,12 @@ export default function BecomePartnerPage() {
   const [categoriesLoading, setCategoriesLoading] = useState(false);
 
   useEffect(() => {
+    if (success) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [success]);
+
+  useEffect(() => {
     const getCategories = async () => {
       try {
         setCategoriesLoading(true);
@@ -593,6 +599,7 @@ export default function BecomePartnerPage() {
                             key={cat.id}
                             type="button"
                             disabled={isAdmin}
+                            onClick={() => handleCategoryToggle(cat.id)}
                             className={`px-6 py-2.5 rounded-xl text-[10px] font-bold tracking-[0.1em] uppercase transition-all border ${form.categoryIds.includes(cat.id)
                               ? "bg-[#1C3152] text-[#C8A951] border-[#C8A951] shadow-lg shadow-[#1C3152]/20"
                               : "bg-white text-[#1C3152]/60 border rec-card-border hover:border-[#C8A951] hover:text-[#1C1C12] shadow-sm"
