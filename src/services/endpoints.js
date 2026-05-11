@@ -71,6 +71,7 @@ export const ENDPOINTS = {
 
   SLOTS: {
     BY_STAFF: (staffId, startDate, endDate) => `/slots/staff/${staffId}?startDate=${startDate}&endDate=${endDate}`,
+    BY_BUSINESS: (businessId, startDate, endDate) => `/slots/business/${businessId}?startDate=${startDate}&endDate=${endDate}`,
   },
 
   BUSINESS: {

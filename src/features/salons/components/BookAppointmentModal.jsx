@@ -25,8 +25,8 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const staff = useMemo(() => {
         if (!allStaff) return [];
         return allStaff.filter(
-            (member) => !member.designation?.toLowerCase().includes("receptionist") && 
-                       !member.designation?.toLowerCase().includes("front desk")
+            (member) => !member.designation?.toLowerCase().includes("receptionist") &&
+                !member.designation?.toLowerCase().includes("front desk")
         );
     }, [allStaff]);
     const { timings, loading: timingsLoading } = useSalonTimings({ id: salonId });
@@ -56,7 +56,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const [startTime, setStartTime] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("UPI");
     const [customerNotes, setCustomerNotes] = useState("");
-    
+
     // Step logic: If we have a pre-selected service, jump to step 2. Otherwise start at 1.
     const [step, setStep] = useState(preSelectedService ? 2 : 1); // 1: Services, 2: Staff & Time, 3: Review
     const [activeDate, setActiveDate] = useState(todayStr);
@@ -71,13 +71,14 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     // Update staff if prop changes
     useEffect(() => {
         if (preSelectedStaff) {
-             setSelectedStaff(preSelectedStaff);
+            setSelectedStaff(preSelectedStaff);
         }
     }, [preSelectedStaff]);
 
     // Slots fetching
     const { slots: staffSlots, loading: slotsLoading, error: slotsError } = useStaffSlots({
         staffId: selectedStaff?.id,
+        businessId: !selectedStaff ? salonId : null,
         startDate: todayStr,
         endDate: endDateStr
     });
@@ -95,7 +96,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
             if (!preSelectedService) setSelectedServices([]);
             reset();
         }
-    }, [isOpen, todayStr, reset, preSelectedService, preSelectedStaff]); 
+    }, [isOpen, todayStr, reset, preSelectedService, preSelectedStaff]);
 
     // Close on escape
     useEffect(() => {
@@ -155,7 +156,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     }, [activeDate, timings]);
 
     const availableTimeSlots = useMemo(() => {
-        if (!selectedStaff || !staffSlots) return [];
+        if (!staffSlots) return [];
         // Group slots by date
         const grouped = staffSlots.reduce((acc, slot) => {
             if (!acc[slot.date]) acc[slot.date] = [];
@@ -183,7 +184,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
         return dates;
     }, []);
 
-    const canProceedStep2 = selectedStaff && bookingDate && startTime;
+    const canProceedStep2 = (selectedStaff || !selectedStaff) && bookingDate && startTime;
     const canSubmit = canProceedStep1 && canProceedStep2;
 
     const handleSubmit = async () => {
@@ -332,7 +333,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                         <div className={`w-5 h-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all duration-300 ${isSelected ? "bg-[#628EB8] border-[#628EB8]" : "border-[#E0E0E0] bg-white group-hover:border-[#628EB8]/50"}`}>
                                                             {isSelected && <CheckCircle size={14} className="text-white" strokeWidth={3} />}
                                                         </div>
-                                                        
+
                                                         <div className="min-w-0 flex-1">
                                                             <h4 className="font-semibold text-[#1F355E] text-xs sm:text-sm truncate">{service.name}</h4>
                                                             {service.durationMinutes && (
@@ -417,8 +418,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                             </div>
 
                             {/* Date Selection Pills */}
-                            {selectedStaff && (
-                                <div>
+                            <div>
                                     <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-xl text-[#1F355E] mb-1 flex items-center gap-2">
                                         <Calendar size={18} className="text-[#628EB8]" />
                                         Select Date
@@ -439,7 +439,6 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                         ))}
                                     </div>
                                 </div>
-                            )}
 
                             {/* Time Selection */}
                             <div>
@@ -447,9 +446,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <Clock size={18} className="text-[#628EB8]" />
                                     Available Times {(timingsLoading || slotsLoading) && <Loader2 className="w-3 h-3 text-[#1F355E] animate-spin inline ml-2" />}
                                 </h3>
-                                {!selectedStaff ? (
-                                    <p className="text-sm text-[#628EB8] mt-3">Please select a stylist to view availability.</p>
-                                ) : slotsLoading ? (
+                                {slotsLoading ? (
                                     <div className="flex items-center gap-3 py-4">
                                         <Loader2 className="w-5 h-5 text-[#1F355E] animate-spin" />
                                         <span className="text-[#628EB8] text-sm">Loading available slots...</span>
@@ -464,7 +461,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
                                         {availableTimeSlots.map((slot) => {
                                             const isSelected = startTime === slot.time && bookingDate === activeDate;
-                                            
+
                                             // Check if slot is in the past for today
                                             const now = new Date();
                                             const isToday = activeDate === todayStr;
@@ -630,7 +627,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                             <span className="text-sm font-black uppercase tracking-widest">Total Amount</span>
                                             <span className="text-2xl font-black font-[Cormorant_Garamond]">AED {totals.total}</span>
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-100">
                                             <CheckCircle size={14} className="text-green-600" />
                                             <p className="text-[10px] text-green-700 font-semibold uppercase tracking-wider">Secure Booking Guaranteed</p>

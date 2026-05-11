@@ -103,11 +103,8 @@ function getServiceImage(serviceName) {
 
 // ─── Service Card ──────────────────────────────────────────────────────────────
 function ServiceCard({ service, index, onBookNow, salon }) {
-    const hasDiscount = service.discountedPrice && service.discountedPrice < service.price;
-    const displayPrice = service.effectivePrice || service.discountedPrice || service.price;
     const salonName = salon?.name || "Glamour Studio";
     const salonCategory = salon?.category?.name || "Premium Salon";
-    const nameParts = service.name.split(/(\(.*\))/);
     const serviceImage = getServiceImage(service.name);
     const [showPreview, setShowPreview] = useState(false);
 
@@ -163,11 +160,6 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                         {service.isPopular && (
                             <span className="service-card-badge-popular text-[10px] px-[9px] py-[3px] rounded-full font-medium whitespace-nowrap">★ Popular</span>
                         )}
-                        {hasDiscount && (
-                            <span className="service-card-badge-discount text-[10px] px-[9px] py-[3px] rounded-full font-medium whitespace-nowrap">
-                                {Math.round(((service.price - service.discountedPrice) / service.price) * 100)}% OFF
-                            </span>
-                        )}
                     </div>
                 </div>
 
@@ -179,9 +171,7 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                         <div className="flex-1 min-w-0">
                             <p className="rec-section-heading-accent text-[10px] tracking-[0.18em] uppercase font-bold mb-[5px]">Service</p>
                             <h2 className="rec-section-heading text-[24px] font-bold m-0 tracking-[-0.3px] leading-tight line-clamp-2 font-[Cormorant_Garamond,serif]">
-                                {nameParts.map((part, i) => (
-                                    part.startsWith('(') ? <span key={i} className="rec-section-heading-accent">{part}</span> : part
-                                ))}
+                                {service.name}
                             </h2>
                         </div>
                         {serviceImage && (
@@ -201,17 +191,22 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                     </div>
 
                     {/* Price Section */}
-                    <div className="flex items-center justify-between gap-4 mb-6">
-                        <div className="flex flex-col">
-                            <span className="text-[14px] font-bold rec-section-heading font-[Cormorant_Garamond,serif] leading-none mb-1">
-                                Price Starting from
+                    <div className="space-y-2 mb-6">
+                        <div className="flex items-center justify-between">
+                            <span className="text-[12px] font-bold rec-section-heading font-[Cormorant_Garamond,serif]">
+                                Start Price
                             </span>
-                            <span className="text-[10px] uppercase tracking-widest rec-section-heading-accent font-bold">
-                                All Inclusive
+                            <span className="text-[16px] font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
+                                AED {service.startPrice || service.price}
                             </span>
                         </div>
-                        <div className="rec-section-heading text-2xl font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
-                            AED {service.effectivePrice || service.price}
+                        <div className="flex items-center justify-between">
+                            <span className="text-[12px] font-bold rec-section-heading font-[Cormorant_Garamond,serif]">
+                                End Price
+                            </span>
+                            <span className="text-[16px] font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
+                                AED {service.endPrice || service.price}
+                            </span>
                         </div>
                     </div>
 

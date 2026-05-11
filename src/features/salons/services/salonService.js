@@ -75,6 +75,13 @@ export const fetchStaffSlots = async (staffId, startDate, endDate) => {
   return response.data;
 };
 
+export const fetchBusinessSlots = async (businessId, startDate, endDate) => {
+  const response = await apiClient.get(
+    ENDPOINTS.SLOTS.BY_BUSINESS(businessId, startDate, endDate)
+  );
+  return response.data;
+};
+
 export const fetchDistinctServiceNames = async () => {
   const response = await publicApiClient.get(
     '/services/distinct/names'

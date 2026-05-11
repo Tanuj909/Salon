@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchStaffSlots } from '../services/salonService';
+import { fetchStaffSlots, fetchBusinessSlots } from '../services/salonService';
 
-export const useStaffSlots = ({ staffId, startDate, endDate }) => {
+export const useStaffSlots = ({ staffId, businessId, startDate, endDate }) => {
     const [slots, setSlots] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const loadSlots = useCallback(async () => {
-        if (!staffId || !startDate || !endDate) {
+        if ((!staffId && !businessId) || !startDate || !endDate) {
             setSlots([]);
             return;
         }
@@ -15,16 +15,21 @@ export const useStaffSlots = ({ staffId, startDate, endDate }) => {
         try {
             setLoading(true);
             setError(null);
-            const data = await fetchStaffSlots(staffId, startDate, endDate);
+            let data;
+            if (staffId) {
+                data = await fetchStaffSlots(staffId, startDate, endDate);
+            } else {
+                data = await fetchBusinessSlots(businessId, startDate, endDate);
+            }
             setSlots(data || []);
         } catch (err) {
-            console.error("Failed to fetch staff slots:", err);
+            console.error("Failed to fetch slots:", err);
             setError(err.response?.data?.message || err.message || "Failed to load available slots");
             setSlots([]);
         } finally {
             setLoading(false);
         }
-    }, [staffId, startDate, endDate]);
+    }, [staffId, businessId, startDate, endDate]);
 
     useEffect(() => {
         loadSlots();
