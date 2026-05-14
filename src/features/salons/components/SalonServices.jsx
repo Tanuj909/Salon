@@ -191,23 +191,13 @@ function ServiceCard({ service, index, onBookNow, salon }) {
                     </div>
 
                     {/* Price Section */}
-                    <div className="space-y-2 mb-6">
-                        <div className="flex items-center justify-between">
-                            <span className="text-[12px] font-bold rec-section-heading font-[Cormorant_Garamond,serif]">
-                                Start Price
-                            </span>
-                            <span className="text-[16px] font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
-                                AED {service.startPrice || service.price}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-[12px] font-bold rec-section-heading font-[Cormorant_Garamond,serif]">
-                                End Price
-                            </span>
-                            <span className="text-[16px] font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
-                                AED {service.endPrice || service.price}
-                            </span>
-                        </div>
+                    <div className="mb-6 flex items-center justify-between">
+                        <span className="text-[12px] font-bold rec-section-heading font-[Cormorant_Garamond,serif] uppercase tracking-wider">
+                            Price
+                        </span>
+                        <span className="text-[16px] font-bold rec-section-heading-accent font-[Cormorant_Garamond,serif]">
+                            AED ({service.startPrice || service.price} - {service.endPrice || service.price})
+                        </span>
                     </div>
 
                     {/* CTA Button & Footer */}
