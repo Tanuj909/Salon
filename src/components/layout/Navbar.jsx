@@ -6,12 +6,16 @@ import { useRouter, usePathname } from 'next/navigation';
 import NotificationBell from "@/components/layout/NotificationBell";
 import { useMyBusiness } from '@/features/business/hooks/useMyBusiness';
 import MessageModal from '@/features/business/components/MessageModal';
+import AgreementsModal from '@/features/business/components/AgreementsModal';
+
 
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMessagesOpen, setIsMessagesOpen] = useState(false);
+  const [isAgreementsOpen, setIsAgreementsOpen] = useState(false);
+
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, loading, logout } = useAuthContext();
   const { business, loading: businessLoading } = useMyBusiness();
@@ -103,6 +107,18 @@ export default function Navbar() {
                   Messages
                 </button>
               )}
+              {business && (
+                <button
+                  onClick={() => setIsAgreementsOpen(true)}
+                  className={`px-4 lg:px-5 py-2 md:py-2.5 rounded-full text-sm font-medium transition-all shadow-sm ${isScrolled
+                    ? 'navbar-link-bg-scrolled navbar-link-text hover:navbar-link-hover-bg hover:navbar-link-hover-text'
+                    : 'navbar-link-bg navbar-link-text hover:navbar-link-hover-bg-alt hover:navbar-link-hover-text'
+                    }`}
+                >
+                  Agreement
+                </button>
+              )}
+
             </div>
           </div>
 
@@ -197,6 +213,19 @@ export default function Navbar() {
                           Messages
                         </button>
                       )}
+                      {business && (
+                        <button
+                          className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left"
+                          onClick={() => {
+                            setIsAgreementsOpen(true);
+                            setIsProfileOpen(false);
+                          }}
+                        >
+                          <span className="material-symbols-outlined text-lg">description</span>
+                          Agreement
+                        </button>
+                      )}
+
                       <button
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left"
                         onClick={handleLogout}
@@ -282,6 +311,20 @@ export default function Navbar() {
               </button>
             )}
 
+            {business && (
+              <button
+                className="flex items-center gap-3 navbar-link-text font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base w-full text-left"
+                onClick={() => {
+                  setIsAgreementsOpen(true);
+                  setIsMenuOpen(false);
+                }}
+              >
+                <span className="material-symbols-outlined text-xl">description</span>
+                Agreement
+              </button>
+            )}
+
+
             <div className="h-px w-full bg-gray-100 my-2" />
 
             <Link
@@ -314,6 +357,15 @@ export default function Navbar() {
           businessId={business.id}
         />
       )}
+
+      {business && (
+        <AgreementsModal
+          isOpen={isAgreementsOpen}
+          onClose={() => setIsAgreementsOpen(false)}
+          businessId={business.id}
+        />
+      )}
+
     </nav>
   );
 }

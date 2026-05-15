@@ -82,4 +82,8 @@ export const ENDPOINTS = {
     GET_DOCUMENTS: (id) => `/businesses/verification/${id}/documents`,
     MESSAGES: (id) => `/businesses/verification/${id}/messages`,
   },
+  AGREEMENTS: {
+    BY_BUSINESS: (id) => `/agreements/business/${id}`,
+    ACCEPT: (id) => `/agreements/${id}/accept`,
+  },
 };

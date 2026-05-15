@@ -4,13 +4,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Send, Paperclip, Loader2, Download, User, ShieldCheck } from 'lucide-react';
 import { useMessages } from '../hooks/useMessages';
+import { useAuthContext } from '@/features/auth/hooks/useAuth';
+
 
 const MessageModal = ({ isOpen, onClose, businessId }) => {
+  const { user } = useAuthContext();
   const { messages, loading, sending, sendMessage, loadMore, hasMore } = useMessages(businessId);
+
   const [inputText, setInputText] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
   const scrollRef = useRef(null);
-  const fileInputRef = useRef(null);
+
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -37,28 +40,16 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
 
   const handleSend = async (e) => {
     e.preventDefault();
-    if (!inputText.trim() && !selectedFile) return;
+    if (!inputText.trim()) return;
 
     try {
-      await sendMessage(inputText, selectedFile);
+      await sendMessage(inputText);
       setInputText("");
-      setSelectedFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (err) {
       alert("Failed to send message. Please try again.");
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) { // 10MB limit
-        alert("File size should be less than 10MB");
-        return;
-      }
-      setSelectedFile(file);
-    }
-  };
 
   const modalContent = (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
@@ -104,61 +95,73 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
             </div>
           ) : (
             <div className="flex flex-col-reverse gap-6">
-              {messages.map((msg, idx) => (
-                <div 
-                  key={msg.id || idx}
-                  className={`flex flex-col ${msg.isFromAdmin ? 'items-start' : 'items-end'}`}
-                >
-                  <div className={`flex items-end gap-2 max-w-[85%] ${msg.isFromAdmin ? 'flex-row' : 'flex-row-reverse'}`}>
-                    {/* Avatar */}
-                    <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold ${
-                      msg.isFromAdmin ? 'bg-gray-200 text-gray-600' : 'bg-[#D98C5F] text-white'
-                    }`}>
-                      {msg.isFromAdmin ? <ShieldCheck size={14} /> : <User size={14} />}
-                    </div>
+              {messages.map((msg, idx) => {
+                const isMe = msg.senderId === user?.id;
+                const isFromAdmin = msg.isFromAdmin;
+                const alignLeft = isFromAdmin || !isMe;
 
-                    {/* Bubble */}
-                    <div className="flex flex-col gap-1">
-                      <div className={`px-4 py-3 rounded-2xl shadow-sm text-sm ${
-                        msg.isFromAdmin 
-                          ? 'bg-white text-gray-800 rounded-bl-sm border border-gray-100' 
-                          : 'bg-[#D98C5F] text-white rounded-br-sm'
-                      }`}>
-                        {msg.message && <p className="whitespace-pre-wrap">{msg.message}</p>}
-                        
-                        {msg.attachmentUrl && (
-                          <div className={`mt-2 p-2 rounded-xl flex items-center gap-3 border ${
-                            msg.isFromAdmin ? 'bg-gray-50 border-gray-200' : 'bg-white/10 border-white/20'
-                          }`}>
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                              msg.isFromAdmin ? 'bg-white' : 'bg-white/20'
-                            }`}>
-                              <Paperclip size={14} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold truncate">Attachment</p>
-                                <p className="text-[10px] opacity-60">Click to download</p>
-                            </div>
-                            <a 
-                              href={msg.attachmentUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className={`p-1.5 rounded-lg transition-colors ${
-                                msg.isFromAdmin ? 'hover:bg-gray-200' : 'hover:bg-white/20'
-                              }`}
-                            >
-                              <Download size={16} />
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                      <span className={`text-[10px] text-gray-400 font-medium ${msg.isFromAdmin ? 'ml-1' : 'mr-1 text-right'}`}>
-                        {msg.sentAt ? new Date(msg.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Just now'}
+                return (
+                  <div 
+                    key={msg.id || idx}
+                    className={`flex flex-col ${alignLeft ? 'items-start' : 'items-end'}`}
+                  >
+                    {!isMe && (
+                      <span className="text-[10px] font-bold text-gray-500 mb-1 ml-10">
+                        {msg.senderName} {isFromAdmin && <span className="bg-blue-100 text-blue-600 px-1 rounded text-[8px] uppercase ml-1">Admin</span>}
                       </span>
+                    )}
+                    <div className={`flex items-end gap-2 max-w-[85%] ${alignLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+                      {/* Avatar */}
+                      <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold ${
+                        alignLeft ? 'bg-gray-200 text-gray-600' : 'bg-[#D98C5F] text-white'
+                      }`}>
+                        {isFromAdmin ? <ShieldCheck size={14} /> : <User size={14} />}
+                      </div>
+
+                      {/* Bubble */}
+                      <div className="flex flex-col gap-1">
+                        <div className={`px-4 py-3 rounded-2xl shadow-sm text-sm ${
+                          alignLeft 
+                            ? 'bg-white text-gray-800 rounded-bl-sm border border-gray-100' 
+                            : 'bg-[#D98C5F] text-white rounded-br-sm'
+                        }`}>
+                          {msg.message && <p className="whitespace-pre-wrap">{msg.message}</p>}
+                          
+                          {msg.attachmentUrl && (
+                            <div className={`mt-2 p-2 rounded-xl flex items-center gap-3 border ${
+                              alignLeft ? 'bg-gray-50 border-gray-200' : 'bg-white/10 border-white/20'
+                            }`}>
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                                alignLeft ? 'bg-white' : 'bg-white/20'
+                              }`}>
+                                <Paperclip size={14} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                  <p className="text-xs font-bold truncate">Attachment</p>
+                                  <p className="text-[10px] opacity-60">Click to download</p>
+                              </div>
+                              <a 
+                                href={msg.attachmentUrl} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className={`p-1.5 rounded-lg transition-colors ${
+                                  alignLeft ? 'hover:bg-gray-200' : 'hover:bg-white/20'
+                                }`}
+                              >
+                                <Download size={16} />
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                        <span className={`text-[10px] text-gray-400 font-medium ${alignLeft ? 'ml-1' : 'mr-1 text-right'}`}>
+                          {msg.sentAt ? new Date(msg.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : 'Just now'}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
+
               
               {hasMore && (
                 <button 
@@ -172,44 +175,16 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
           )}
         </div>
 
-        {/* Selected File Preview */}
-        {selectedFile && (
-          <div className="px-6 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-gray-600 font-medium">
-              <Paperclip size={14} className="text-[#D98C5F]" />
-              <span className="truncate max-w-[200px]">{selectedFile.name}</span>
-            </div>
-            <button 
-              onClick={() => setSelectedFile(null)}
-              className="text-gray-400 hover:text-red-500 transition-colors"
-            >
-              <X size={16} />
-            </button>
-          </div>
-        )}
 
         {/* Input Area */}
         <form onSubmit={handleSend} className="p-4 sm:p-6 bg-white border-t border-gray-100">
           <div className="flex items-end gap-3 bg-[#FAF9F6] p-2 rounded-[2rem] border border-gray-200 focus-within:border-[#D98C5F]/30 transition-all">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="p-2.5 hover:bg-white hover:shadow-sm rounded-full transition-all text-gray-500 hover:text-[#D98C5F]"
-            >
-              <Paperclip size={20} />
-            </button>
-            <input 
-              type="file" 
-              ref={fileInputRef}
-              className="hidden" 
-              onChange={handleFileChange}
-            />
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               placeholder="Type your message..."
               rows={1}
-              className="flex-1 bg-transparent border-none focus:ring-0 py-2.5 text-sm max-h-32 min-h-[40px] resize-none"
+              className="flex-1 bg-transparent border-none focus:ring-0 focus:outline-none outline-none py-2.5 text-sm max-h-32 min-h-[40px] resize-none shadow-none"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
@@ -219,9 +194,9 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
             />
             <button
               type="submit"
-              disabled={sending || (!inputText.trim() && !selectedFile)}
+              disabled={sending || !inputText.trim()}
               className={`p-2.5 rounded-full transition-all flex items-center justify-center shadow-lg active:scale-95 ${
-                sending || (!inputText.trim() && !selectedFile)
+                sending || !inputText.trim()
                   ? 'bg-gray-200 text-white cursor-not-allowed'
                   : 'bg-[#D98C5F] text-white hover:bg-[#c47c51] shadow-[#D98C5F]/20'
               }`}
