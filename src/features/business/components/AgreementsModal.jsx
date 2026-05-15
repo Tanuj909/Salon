@@ -20,14 +20,32 @@ const AgreementsModal = ({ isOpen, onClose, businessId }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setIsMounted(true);
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
+      setIsMounted(true);
     } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
       setIsMounted(false);
-      document.body.style.overflow = 'unset';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      const scrollY = document.body.style.top;
+      if (scrollY) {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
     };
   }, [isOpen]);
 
@@ -70,8 +88,8 @@ const AgreementsModal = ({ isOpen, onClose, businessId }) => {
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className={`bg-white w-full ${previewUrl ? 'max-w-6xl' : 'max-w-3xl'} rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[85vh] sm:h-[80vh] border border-[#D98C5F]/20 transition-all duration-300`}>
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300 touch-none">
+      <div className={`bg-white w-full ${previewUrl ? 'max-w-6xl' : 'max-w-3xl'} rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[85vh] sm:h-[80vh] border border-[#D98C5F]/20 transition-all duration-300 touch-auto`}>
         
         {/* Header */}
         <div className="px-6 py-5 flex items-center justify-between border-b border-gray-100 bg-white">
@@ -94,7 +112,7 @@ const AgreementsModal = ({ isOpen, onClose, businessId }) => {
 
         <div className="flex-1 flex overflow-hidden">
           {/* List Section */}
-          <div className={`flex-1 overflow-y-auto p-6 space-y-4 bg-[#FAF9F6] scrollbar-thin scrollbar-thumb-gray-200 ${previewUrl ? 'hidden md:block md:max-w-sm border-r border-gray-100' : ''}`}>
+          <div className={`flex-1 overflow-y-auto p-6 space-y-4 bg-[#FAF9F6] scrollbar-thin scrollbar-thumb-gray-200 overscroll-contain ${previewUrl ? 'hidden md:block md:max-w-sm border-r border-gray-100' : ''}`}>
             {loading && agreements.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full gap-3">
                 <Loader2 className="animate-spin text-[#D98C5F]" size={32} />
@@ -170,38 +188,51 @@ const AgreementsModal = ({ isOpen, onClose, businessId }) => {
 
                     {/* Acceptance Logic */}
                     <div className="mt-4 pt-4 border-t border-gray-50">
-                      {agreement.isAcpt ? (
+                      {agreement.status === 'REJECTED' && (
                         <div className="flex flex-col gap-1.5">
-                          <div className="flex items-center gap-2 text-green-600">
-                            <CheckCircle2 size={16} />
-                            <span className="text-sm font-bold">Already Accepted</span>
-                          </div>
-                          {agreement.status === 'PENDING' && (
-                            <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-2 rounded-lg">
-                              <Clock size={14} />
-                              <p className="text-[11px] font-bold">Approval still pending!</p>
+                           <div className="flex items-center gap-2 text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+                              <X size={14} className="bg-red-100 rounded-full" />
+                              <p className="text-[11px] font-bold">Agreement Rejected!</p>
                             </div>
-                          )}
-                          {agreement.status === 'APPROVED' && (
-                            <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-2 rounded-lg">
-                              <ShieldCheck size={14} />
-                              <p className="text-[11px] font-bold">Agreement Approved!</p>
-                            </div>
-                          )}
                         </div>
-                      ) : (
-                        <button
-                          onClick={() => handleAccept(agreement)}
-                          disabled={acceptingId === agreement.id}
-                          className="w-full py-2.5 rounded-xl text-sm font-bold transition-all bg-[#D98C5F] text-white hover:bg-[#c47c51] shadow-lg shadow-[#D98C5F]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                        >
-                          {acceptingId === agreement.id ? (
-                            <Loader2 size={18} className="animate-spin" />
+                      )}
+
+                      {agreement.status !== 'REJECTED' && (
+                        <>
+                          {agreement.isAcpt ? (
+                            <div className="flex flex-col gap-1.5">
+                              <div className="flex items-center gap-2 text-green-600">
+                                <CheckCircle2 size={16} />
+                                <span className="text-sm font-bold">Already Accepted</span>
+                              </div>
+                              {agreement.status === 'PENDING' && (
+                                <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-2 rounded-lg">
+                                  <Clock size={14} />
+                                  <p className="text-[11px] font-bold">Approval still pending!</p>
+                                </div>
+                              )}
+                              {agreement.status === 'APPROVED' && (
+                                <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                                  <ShieldCheck size={14} />
+                                  <p className="text-[11px] font-bold">Agreement Approved!</p>
+                                </div>
+                              )}
+                            </div>
                           ) : (
-                            <ShieldCheck size={18} />
+                            <button
+                              onClick={() => handleAccept(agreement)}
+                              disabled={acceptingId === agreement.id}
+                              className="w-full py-2.5 rounded-xl text-sm font-bold transition-all bg-[#D98C5F] text-white hover:bg-[#c47c51] shadow-lg shadow-[#D98C5F]/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            >
+                              {acceptingId === agreement.id ? (
+                                <Loader2 size={18} className="animate-spin" />
+                              ) : (
+                                <ShieldCheck size={18} />
+                              )}
+                              Accept Agreement
+                            </button>
                           )}
-                          Accept Agreement
-                        </button>
+                        </>
                       )}
                     </div>
                   </div>

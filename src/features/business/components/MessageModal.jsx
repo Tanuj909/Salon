@@ -18,14 +18,32 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setIsMounted(true);
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
+      setIsMounted(true);
     } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
       setIsMounted(false);
-      document.body.style.overflow = 'unset';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      const scrollY = document.body.style.top;
+      if (scrollY) {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
     };
   }, [isOpen]);
 
@@ -52,8 +70,8 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
 
 
   const modalContent = (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[85vh] sm:h-[80vh] border border-[#D98C5F]/20">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300 touch-none">
+      <div className="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[85vh] sm:h-[80vh] border border-[#D98C5F]/20 touch-auto">
         {/* Header */}
         <div className="px-6 py-5 flex items-center justify-between border-b border-gray-100 bg-white">
           <div className="flex items-center gap-3">
@@ -76,7 +94,7 @@ const MessageModal = ({ isOpen, onClose, businessId }) => {
         {/* Message List */}
         <div 
           ref={scrollRef}
-          className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#FAF9F6] scrollbar-thin scrollbar-thumb-gray-200"
+          className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#FAF9F6] scrollbar-thin scrollbar-thumb-gray-200 overscroll-contain"
         >
           {loading && messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-3">

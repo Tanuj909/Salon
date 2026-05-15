@@ -126,9 +126,10 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
 
     // Calculate totals
     const totals = useMemo(() => {
-        const total = selectedServices.reduce((sum, s) => sum + (s.effectivePrice || s.price || 0), 0);
+        const totalStart = selectedServices.reduce((sum, s) => sum + (s.startPrice || s.price || 0), 0);
+        const totalEnd = selectedServices.reduce((sum, s) => sum + (s.endPrice || s.price || 0), 0);
         const duration = selectedServices.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
-        return { total, duration };
+        return { totalStart, totalEnd, duration };
     }, [selectedServices]);
 
     const toggleService = (service) => {
@@ -344,8 +345,8 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                         </div>
                                                     </div>
                                                     <div className="text-right shrink-0">
-                                                        <span className="font-[Cormorant_Garamond] text-lg sm:text-xl font-bold text-[#1F355E] block leading-none">
-                                                            AED {service.effectivePrice || service.price}
+                                                        <span className="font-[Cormorant_Garamond] text-base sm:text-lg font-bold text-[#1F355E] block leading-none">
+                                                            AED ({service.startPrice || service.price} - {service.endPrice || service.price})
                                                         </span>
                                                     </div>
                                                 </div>
@@ -613,7 +614,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                         <span className="text-[10px] text-[#628EB8] font-medium">{s.durationMinutes} min</span>
                                                     </div>
                                                 </div>
-                                                <p className="text-sm font-bold text-[#1F355E]">AED {s.effectivePrice || s.price}</p>
+                                                <p className="text-sm font-bold text-[#1F355E]">AED ({s.startPrice || s.price} - {s.endPrice || s.price})</p>
                                             </div>
                                         ))}
                                     </div>
@@ -621,11 +622,11 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <div className="mt-6 pt-6 border-t-2 border-dashed border-[#E0E0E0]">
                                         <div className="flex items-center justify-between mb-2 text-[#628EB8]">
                                             <span className="text-xs font-semibold">Subtotal</span>
-                                            <span className="text-sm font-bold">AED {totals.total}</span>
+                                            <span className="text-sm font-bold">AED ({totals.totalStart} - {totals.totalEnd})</span>
                                         </div>
                                         <div className="flex items-center justify-between mb-4 text-[#1F355E]">
                                             <span className="text-sm font-black uppercase tracking-widest">Total Amount</span>
-                                            <span className="text-2xl font-black font-[Cormorant_Garamond]">AED {totals.total}</span>
+                                            <span className="text-xl sm:text-2xl font-black font-[Cormorant_Garamond]">AED ({totals.totalStart} - {totals.totalEnd})</span>
                                         </div>
 
                                         <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-100">
@@ -658,8 +659,8 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                             <span className="text-[10px] sm:hidden uppercase tracking-[0.2em] text-[#628EB8] font-bold">
                                 Total:
                             </span>
-                            <span className="font-[Cormorant_Garamond] text-xl sm:text-2xl font-bold text-[#1F355E]">
-                                AED {totals.total}
+                            <span className="font-[Cormorant_Garamond] text-lg sm:text-xl font-bold text-[#1F355E]">
+                                AED ({totals.totalStart} - {totals.totalEnd})
                             </span>
                         </div>
                     )}
