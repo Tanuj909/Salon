@@ -34,6 +34,11 @@ export default function DocumentUploadPage() {
   const router = useRouter();
   const fileInputRefs = useRef({});
 
+  const [selectedFiles, setSelectedFiles] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [declarationChecked, setDeclarationChecked] = useState(false);
+  const [isBulkUploading, setIsBulkUploading] = useState(false);
+
   const [uploadingForType, setUploadingForType] = useState(null);
   const [messages, setMessages] = useState({});
 
@@ -43,44 +48,61 @@ export default function DocumentUploadPage() {
         setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: "File size exceeds 5MB limit." } }));
         return;
       }
-      setMessages(prev => ({ ...prev, [typeId]: { type: "", text: "" } }));
-      // Auto-upload after file selection
-      handleUpload(typeId, file);
+      setSelectedFiles(prev => ({ ...prev, [typeId]: file }));
+      setMessages(prev => ({ ...prev, [typeId]: { type: "info", text: `Ready: ${file.name}` } }));
     }
   };
 
-  const handleUpload = async (typeId, file) => {
-    if (!typeId || !file || !business?.id) {
-      setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: "Please select a file." } }));
-      return;
-    }
+  const handleRemoveFile = (typeId) => {
+    setSelectedFiles(prev => {
+      const updated = { ...prev };
+      delete updated[typeId];
+      return updated;
+    });
+    setMessages(prev => {
+      const updated = { ...prev };
+      delete updated[typeId];
+      return updated;
+    });
+    if (fileInputRefs.current[typeId]) fileInputRefs.current[typeId].value = "";
+  };
 
-    try {
-      setUploadingForType(typeId);
-      setMessages(prev => ({ ...prev, [typeId]: { type: "", text: "" } }));
-      
-      await uploadDocument(business.id, typeId, file);
-      
-      setMessages(prev => ({ ...prev, [typeId]: { type: "success", text: `${typeId.replace(/_/g, " ")} uploaded successfully!` } }));
-      if (fileInputRefs.current[typeId]) fileInputRefs.current[typeId].value = "";
-      refreshDocuments(); // Refresh the list after upload
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => {
-        setMessages(prev => {
-          const newMessages = { ...prev };
-          if (newMessages[typeId]?.type === "success") {
-            delete newMessages[typeId];
-          }
-          return newMessages;
+  const handleBulkUpload = async () => {
+    if (!business?.id) return;
+    
+    setIsBulkUploading(true);
+    const typeIds = Object.keys(selectedFiles);
+    
+    // Upload documents sequentially, skipping failed ones
+    for (const typeId of typeIds) {
+      const file = selectedFiles[typeId];
+      try {
+        setUploadingForType(typeId);
+        setMessages(prev => ({ ...prev, [typeId]: { type: "", text: "" } }));
+        
+        await uploadDocument(business.id, typeId, file);
+        
+        setMessages(prev => ({ ...prev, [typeId]: { type: "success", text: `${typeId.replace(/_/g, " ")} uploaded successfully!` } }));
+        
+        // Remove from selected list on success
+        setSelectedFiles(prev => {
+          const updated = { ...prev };
+          delete updated[typeId];
+          return updated;
         });
-      }, 3000);
-    } catch (err) {
-      console.error("Upload failed:", err);
-      setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: err.response?.data?.message || "Failed to upload document. Please try again." } }));
-    } finally {
-      setUploadingForType(null);
+        if (fileInputRefs.current[typeId]) fileInputRefs.current[typeId].value = "";
+      } catch (err) {
+        console.error(`Upload failed for ${typeId}:`, err);
+        setMessages(prev => ({ ...prev, [typeId]: { type: "error", text: err.response?.data?.message || "Upload failed." } }));
+      } finally {
+        setUploadingForType(null);
+      }
     }
+    
+    refreshDocuments();
+    setIsBulkUploading(false);
+    setShowConfirmModal(false);
+    setDeclarationChecked(false);
   };
 
   if (businessLoading) {
@@ -144,7 +166,7 @@ export default function DocumentUploadPage() {
                   <h2 className="font-[Cormorant_Garamond,serif] text-2xl font-bold rec-section-heading">
                     Upload <em className="italic rec-section-heading-accent font-light">Documents</em>
                   </h2>
-                  <p className="text-sm text-gray-500 mt-1">Select a document type and upload the file. It will be uploaded automatically.</p>
+                  <p className="text-sm text-gray-500 mt-1">Select files for different document types, then click Upload at the bottom to submit.</p>
                 </div>
                 
                 <div className="p-5">
@@ -157,6 +179,7 @@ export default function DocumentUploadPage() {
                       const isVerified = existingDoc?.verificationStatus === 'APPROVED';
                       const isRejected = existingDoc?.verificationStatus === 'REJECTED';
                       const isPending = existingDoc?.verificationStatus === 'PENDING';
+                      const isSelectedLocally = !!selectedFiles[type.id];
                       
                       return (
                         <div
@@ -165,6 +188,7 @@ export default function DocumentUploadPage() {
                             isVerified ? 'bg-green-50/30 border-green-200' :
                             isRejected ? 'bg-red-50/30 border-red-200' :
                             isPending ? 'bg-yellow-50/30 border-yellow-200' :
+                            isSelectedLocally ? 'bg-[#C8A951]/5 border-[#C8A951]/60 shadow-sm' :
                             'bg-white border-[#1C3152]/10 hover:border-[#C8A951]/50'
                           }`}
                         >
@@ -174,6 +198,7 @@ export default function DocumentUploadPage() {
                                 isVerified ? 'bg-green-100 text-green-600' :
                                 isRejected ? 'bg-red-100 text-red-500' :
                                 isPending ? 'bg-yellow-100 text-yellow-600' :
+                                isSelectedLocally ? 'bg-[#C8A951]/10 text-[#C8A951]' :
                                 'bg-[#1C3152]/5 text-[#1C3152]'
                               }`}>
                                 <Icon size={14} />
@@ -196,7 +221,23 @@ export default function DocumentUploadPage() {
                               {isRejected && <AlertCircle size={12} className="text-red-500 shrink-0" />}
                             </div>
                             
-                            {message && (
+                            {/* Local selection tag with X to remove */}
+                            {isSelectedLocally && (
+                              <div className="mb-2 p-1.5 rounded-lg text-[9px] bg-[#C8A951]/10 text-[#1C3152] flex items-center justify-between gap-1.5 font-bold animate-[scaleIn_0.2s_ease]">
+                                <span className="truncate">📎 Ready: {selectedFiles[type.id].name}</span>
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleRemoveFile(type.id);
+                                  }}
+                                  className="p-0.5 hover:bg-[#C8A951]/20 rounded text-[#1C3152] transition-colors"
+                                >
+                                  <X size={10} />
+                                </button>
+                              </div>
+                            )}
+
+                            {message && message.type !== "info" && (
                               <div className={`mb-2 p-1.5 rounded-lg text-[9px] flex gap-1.5 ${
                                 message.type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                               }`}>
@@ -211,6 +252,7 @@ export default function DocumentUploadPage() {
                                 isUploading ? "opacity-50 cursor-wait" :
                                 isVerified ? "border-green-300 bg-green-50/50" :
                                 isRejected ? "border-red-300 bg-red-50/50" :
+                                isSelectedLocally ? "border-[#C8A951]/50 bg-[#C8A951]/5 hover:bg-[#C8A951]/10" :
                                 "border-[#1C3152]/10 hover:border-[#C8A951] hover:bg-gray-50"
                               }`}
                             >
@@ -230,9 +272,9 @@ export default function DocumentUploadPage() {
                                 </div>
                               ) : (
                                 <div className="flex flex-col items-center gap-1">
-                                  <Upload size={14} className={`${isVerified ? 'text-green-500' : isRejected ? 'text-red-400' : 'text-[#C8A951]'}`} />
+                                  <Upload size={14} className={`${isSelectedLocally ? 'text-[#C8A951]' : isVerified ? 'text-green-500' : isRejected ? 'text-red-400' : 'text-[#C8A951]'}`} />
                                   <p className="text-[9px] font-medium text-[#1C3152]">
-                                    {isVerified ? 'Replace' : isRejected ? 'Re-upload' : 'Upload'}
+                                    {isSelectedLocally ? 'Change File' : isVerified ? 'Replace' : isRejected ? 'Re-upload' : 'Upload'}
                                   </p>
                                   <p className="text-[7px] text-gray-400">IMG,PDF</p>
                                 </div>
@@ -265,6 +307,25 @@ export default function DocumentUploadPage() {
                     })}
                   </div>
                 </div>
+
+                {/* Local selection summary panel */}
+                {Object.keys(selectedFiles).length > 0 && (
+                  <div className="bg-[#1C3152]/5 border-t border-[#1C3152]/10 p-5 flex flex-col sm:flex-row items-center justify-between gap-4 animate-[slideUp_0.3s_ease]">
+                    <div className="text-left">
+                      <h4 className="text-xs sm:text-sm font-bold text-[#1C3152] uppercase tracking-wider">
+                        {Object.keys(selectedFiles).length} {Object.keys(selectedFiles).length === 1 ? 'document' : 'documents'} selected
+                      </h4>
+                      <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">Ready for upload. Click next to review and submit.</p>
+                    </div>
+                    <button
+                      onClick={() => setShowConfirmModal(true)}
+                      className="w-full sm:w-auto px-6 py-3 bg-[#1C3152] text-[#C8A951] rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-[#2a4570] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                    >
+                      <Upload size={14} />
+                      <span>Upload Selected Files</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -343,6 +404,81 @@ export default function DocumentUploadPage() {
             </div>
           </div>
         </div>
+        
+        {/* Declaration & Upload Confirmation Modal */}
+        {showConfirmModal && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => !isBulkUploading && setShowConfirmModal(false)} />
+            <div className="relative bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl animate-[slideUp_0.3s_ease] border border-[#E0E0E0] z-10">
+              <div className="w-16 h-16 rounded-full bg-[#C8A951]/10 flex items-center justify-center mx-auto mb-5 text-[#C8A951]">
+                <ShieldCheck size={32} />
+              </div>
+              
+              <h3 className="font-[Cormorant_Garamond,serif] text-2xl font-bold text-[#1C3152] mb-2">
+                Confirm Declaration
+              </h3>
+              <p className="text-gray-500 text-xs sm:text-sm mb-6 leading-relaxed">
+                Before uploading, please review and confirm the statement below.
+              </p>
+
+              {/* Declarations Checkbox Box */}
+              <label className="flex items-start gap-3 p-4 rounded-2xl bg-gray-50 border border-gray-100 cursor-pointer hover:bg-gray-100/50 transition-colors text-left select-none mb-6">
+                <input
+                  type="checkbox"
+                  disabled={isBulkUploading}
+                  checked={declarationChecked}
+                  onChange={(e) => setDeclarationChecked(e.target.checked)}
+                  className="mt-1 w-4 h-4 rounded text-[#1C3152] focus:ring-[#1C3152]/30 border-gray-300 transition-all cursor-pointer"
+                />
+                <div className="flex flex-col text-left flex-1">
+                  <span className="text-[11px] sm:text-xs font-bold text-[#1C3152] leading-relaxed">
+                    All the documents provided from my side are true and correct.
+                  </span>
+                  <span className="text-[11px] sm:text-xs font-bold text-[#1C3152] mt-2 leading-relaxed text-right" style={{ direction: 'rtl' }}>
+                    جميع المستندات المقدمة من جانبي صحيحة ودقيقة.
+                  </span>
+                </div>
+              </label>
+
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+                <button
+                  type="button"
+                  disabled={isBulkUploading}
+                  onClick={() => {
+                    setShowConfirmModal(false);
+                    setDeclarationChecked(false);
+                  }}
+                  className="w-full sm:flex-1 py-3 px-4 rounded-xl border border-gray-200 text-gray-500 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleBulkUpload}
+                  disabled={!declarationChecked || isBulkUploading}
+                  className={`w-full sm:flex-1 py-3 px-4 rounded-xl text-white text-[10px] sm:text-[11px] font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md ${
+                    (!declarationChecked || isBulkUploading)
+                      ? "bg-[#1C3152] opacity-40 cursor-not-allowed"
+                      : "bg-[#1C3152] hover:bg-[#2a4570] hover:shadow-lg"
+                  }`}
+                >
+                  {isBulkUploading ? (
+                    <>
+                      <Loader2 size={12} className="animate-spin" />
+                      <span>Uploading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={12} />
+                      <span>Confirm & Upload</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
