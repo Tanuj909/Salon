@@ -54,8 +54,17 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const [selectedStaff, setSelectedStaff] = useState(preSelectedStaff || null);
     const [bookingDate, setBookingDate] = useState("");
     const [startTime, setStartTime] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState("UPI");
+    const [paymentMethod, setPaymentMethod] = useState("");
     const [customerNotes, setCustomerNotes] = useState("");
+    const [validationError, setValidationError] = useState("");
+    const [validationTimeout, setValidationTimeout] = useState(null);
+
+    // Clean up validation timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (validationTimeout) clearTimeout(validationTimeout);
+        };
+    }, [validationTimeout]);
 
     // Step logic: If we have a pre-selected service, jump to step 2. Otherwise start at 1.
     const [step, setStep] = useState(preSelectedService ? 2 : 1); // 1: Services, 2: Staff & Time, 3: Review
@@ -88,15 +97,20 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
         if (!isOpen) {
             setBookingDate("");
             setStartTime("");
-            setPaymentMethod("UPI");
+            setPaymentMethod("");
             setCustomerNotes("");
+            setValidationError("");
+            if (validationTimeout) {
+                clearTimeout(validationTimeout);
+                setValidationTimeout(null);
+            }
             setActiveDate(todayStr);
             setStep(preSelectedService ? 2 : 1);
             if (!preSelectedStaff) setSelectedStaff(null);
             if (!preSelectedService) setSelectedServices([]);
             reset();
         }
-    }, [isOpen, todayStr, reset, preSelectedService, preSelectedStaff]);
+    }, [isOpen, todayStr, reset, preSelectedService, preSelectedStaff, validationTimeout]);
 
     // Close on escape
     useEffect(() => {
@@ -131,6 +145,47 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
         const duration = selectedServices.reduce((sum, s) => sum + (s.durationMinutes || 0), 0);
         return { totalStart, totalEnd, duration };
     }, [selectedServices]);
+
+    // Format individual service price depending on step and chosen staff
+    const getServicePriceString = (service) => {
+        const start = service.startPrice || service.price || 0;
+        const end = service.endPrice || service.price || 0;
+        
+        if (step === 1) {
+            if (start === end) {
+                return `AED ${start}`;
+            }
+            return `AED (${start} - ${end})`;
+        }
+        
+        if (!selectedStaff) {
+            // "Any" staff selected - show start pricing only
+            return `AED ${start}`;
+        } else {
+            // Specific stylist selected - show average pricing
+            const avg = Math.round((start + end) / 2);
+            return `AED ${avg}`;
+        }
+    };
+
+    // Format totals/subtotals depending on step and chosen staff
+    const getTotalsPriceString = () => {
+        if (step === 1) {
+            if (totals.totalStart === totals.totalEnd) {
+                return `AED ${totals.totalStart}`;
+            }
+            return `AED (${totals.totalStart} - ${totals.totalEnd})`;
+        }
+        
+        if (!selectedStaff) {
+            // "Any" staff selected - show start pricing only
+            return `AED ${totals.totalStart}`;
+        } else {
+            // Specific stylist selected - show average pricing
+            const avg = Math.round((totals.totalStart + totals.totalEnd) / 2);
+            return `AED ${avg}`;
+        }
+    };
 
     const toggleService = (service) => {
         setSelectedServices((prev) => {
@@ -189,6 +244,24 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
     const canSubmit = canProceedStep1 && canProceedStep2;
 
     const handleSubmit = async () => {
+        if (paymentMethod !== "CASH") {
+            setValidationError("Choose Payment method!");
+            
+            // Clear any existing timeout
+            if (validationTimeout) clearTimeout(validationTimeout);
+            
+            const timer = setTimeout(() => {
+                setValidationError("");
+            }, 5000);
+            setValidationTimeout(timer);
+            return;
+        }
+        setValidationError("");
+        if (validationTimeout) {
+            clearTimeout(validationTimeout);
+            setValidationTimeout(null);
+        }
+
         if (!canSubmit) return;
 
         const bookingData = {
@@ -218,16 +291,19 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
         return (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
                 <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-                <div className="relative bg-white rounded-3xl max-w-md w-full p-10 text-center shadow-2xl animate-[slideUp_0.4s_ease] border border-[#E0E0E0]">
+                <div className="relative bg-white rounded-3xl max-w-md w-full p-6 sm:p-10 text-center shadow-2xl animate-[slideUp_0.4s_ease] border border-[#E0E0E0]">
                     <div className="w-20 h-20 rounded-full bg-[#10b981]/10 flex items-center justify-center mx-auto mb-6">
                         <CheckCircle className="w-10 h-10 text-[#10b981]" />
                     </div>
-                    <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-3xl font-bold text-[#1F355E] mb-3">
+                    <h3 className="font-[Cormorant_Garamond,Georgia,serif] text-2xl sm:text-3xl font-bold text-[#1F355E] mb-3 whitespace-nowrap">
                         Booking Confirmed!
                     </h3>
-                    <p className="text-gray-500 text-sm mb-2">
+                    <p className="text-gray-500 text-sm mb-4">
                         Your appointment has been successfully booked.
                     </p>
+                    <div className="bg-[#628EB8]/5 border border-[#628EB8]/20 rounded-2xl p-4 my-4 text-[#1F355E] text-xs sm:text-sm font-semibold leading-relaxed">
+                         Please arrive <strong className="font-extrabold text-[#628EB8]">5 minutes early</strong> and show your <strong className="font-extrabold text-[#628EB8]">service code</strong> to the barber.
+                    </div>
                     {bookingResult?.bookingNumber && (
                         <div className="bg-[#F8FAFC] rounded-2xl p-4 my-6 border border-[#E0E0E0]">
                             <span className="text-[10px] uppercase tracking-[0.3em] text-[#628EB8] font-bold block mb-1">Booking Number</span>
@@ -346,7 +422,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                     </div>
                                                     <div className="text-right shrink-0">
                                                         <span className="font-[Cormorant_Garamond] text-base sm:text-lg font-bold text-[#1F355E] block leading-none">
-                                                            AED ({service.startPrice || service.price} - {service.endPrice || service.price})
+                                                            {getServicePriceString(service)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -565,16 +641,36 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                             Payment Method
                                         </span>
                                         <div className="flex gap-2 sm:gap-3 flex-wrap">
-                                            {PAYMENT_METHODS.map((pm) => (
-                                                <button
-                                                    key={pm.value}
-                                                    onClick={() => setPaymentMethod(pm.value)}
-                                                    className={`w-full sm:flex-1 flex items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4 rounded-xl sm:rounded-2xl border-2 transition-all ${paymentMethod === pm.value ? "border-[#1F355E] bg-[#1F355E] text-white shadow-md" : "border-[#E0E0E0] bg-white text-[#1F355E] hover:border-[#628EB8]/30"}`}
-                                                >
-                                                    <span className="text-lg sm:text-xl">{pm.icon}</span>
-                                                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">{pm.label}</span>
-                                                </button>
-                                            ))}
+                                            {PAYMENT_METHODS.map((pm) => {
+                                                const isSelected = paymentMethod === pm.value;
+                                                return (
+                                                    <button
+                                                        key={pm.value}
+                                                        onClick={() => {
+                                                            if (isSelected) {
+                                                                setPaymentMethod("");
+                                                            } else {
+                                                                setPaymentMethod(pm.value);
+                                                                setValidationError("");
+                                                                if (validationTimeout) {
+                                                                    clearTimeout(validationTimeout);
+                                                                    setValidationTimeout(null);
+                                                                }
+                                                            }
+                                                        }}
+                                                        className={`w-full sm:flex-1 flex items-center justify-start gap-4 p-4 rounded-2xl border-2 transition-all group ${isSelected ? "border-[#1F355E] bg-[#1F355E] text-white shadow-md" : "border-[#E0E0E0] bg-white text-[#1F355E] hover:border-[#628EB8]/30"}`}
+                                                    >
+                                                        {/* Tick Box UI (Exactly like Step 1) */}
+                                                        <div className={`w-5 h-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all duration-300 ${isSelected ? "bg-white border-white" : "border-[#E0E0E0] bg-white group-hover:border-[#628EB8]/50"}`}>
+                                                            {isSelected && <CheckCircle size={14} className="text-[#1F355E]" strokeWidth={3} />}
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-lg sm:text-xl">{pm.icon}</span>
+                                                            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">{pm.label}</span>
+                                                        </div>
+                                                    </button>
+                                                );
+                                            })}
                                         </div>
                                     </div>
 
@@ -614,7 +710,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                                         <span className="text-[10px] text-[#628EB8] font-medium">{s.durationMinutes} min</span>
                                                     </div>
                                                 </div>
-                                                <p className="text-sm font-bold text-[#1F355E]">AED ({s.startPrice || s.price} - {s.endPrice || s.price})</p>
+                                                <p className="text-sm font-bold text-[#1F355E]">{getServicePriceString(s)}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -622,11 +718,11 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                     <div className="mt-6 pt-6 border-t-2 border-dashed border-[#E0E0E0]">
                                         <div className="flex items-center justify-between mb-2 text-[#628EB8]">
                                             <span className="text-xs font-semibold">Subtotal</span>
-                                            <span className="text-sm font-bold">AED ({totals.totalStart} - {totals.totalEnd})</span>
+                                            <span className="text-sm font-bold">{getTotalsPriceString()}</span>
                                         </div>
                                         <div className="flex items-center justify-between mb-4 text-[#1F355E]">
                                             <span className="text-sm font-black uppercase tracking-widest">Total Amount</span>
-                                            <span className="text-xl sm:text-2xl font-black font-[Cormorant_Garamond]">AED ({totals.totalStart} - {totals.totalEnd})</span>
+                                            <span className="text-xl sm:text-2xl font-black font-[Cormorant_Garamond]">{getTotalsPriceString()}</span>
                                         </div>
 
                                         <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-100">
@@ -660,7 +756,7 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                 Total:
                             </span>
                             <span className="font-[Cormorant_Garamond] text-lg sm:text-xl font-bold text-[#1F355E]">
-                                AED ({totals.totalStart} - {totals.totalEnd})
+                                {getTotalsPriceString()}
                             </span>
                         </div>
                     )}
@@ -686,20 +782,34 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                                 Continue
                             </button>
                         ) : (
-                            <button
-                                onClick={handleSubmit}
-                                disabled={submitting || !canSubmit}
-                                className="px-5 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-[#1F355E] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
-                            >
-                                {submitting ? (
-                                    <>
-                                        <Loader2 size={14} className="animate-spin" />
-                                        <span>Booking...</span>
-                                    </>
-                                ) : (
-                                    <span>Confirm<span className="hidden sm:inline"> Booking</span></span>
+                            <div className="relative">
+                                {validationError && (
+                                    <div className="absolute bottom-full mb-3 right-0 bg-red-500 text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-lg whitespace-nowrap z-50 animate-[tooltipFadeIn_0.2s_ease-out]">
+                                        {validationError}
+                                        <div className="absolute top-full right-6 w-2 h-2 bg-red-500 rotate-45 -translate-y-1"></div>
+                                    </div>
                                 )}
-                            </button>
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={submitting || !canSubmit}
+                                    className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-xl text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] hover:shadow-lg transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap bg-[#1F355E] ${
+                                        (submitting || !canSubmit)
+                                            ? "opacity-50 cursor-not-allowed"
+                                            : paymentMethod !== "CASH"
+                                                ? "opacity-60 cursor-pointer"
+                                                : "opacity-100 cursor-pointer"
+                                    }`}
+                                >
+                                    {submitting ? (
+                                        <>
+                                            <Loader2 size={14} className="animate-spin" />
+                                            <span>Booking...</span>
+                                        </>
+                                    ) : (
+                                        <span>Confirm<span className="hidden sm:inline"> Booking</span></span>
+                                    )}
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -710,6 +820,14 @@ const BookAppointmentModal = ({ isOpen, onClose, salonId, salonName, preSelected
                 @keyframes slideUp {
                     from { transform: translateY(30px); opacity: 0; }
                     to { transform: translateY(0); opacity: 1; }
+                }
+                @keyframes tooltipFadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                @keyframes scaleIn {
+                    from { transform: scale(0); opacity: 0; }
+                    to { transform: scale(1); opacity: 1; }
                 }
             `}</style>
         </div>

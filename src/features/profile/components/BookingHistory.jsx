@@ -222,15 +222,15 @@ const BookingHistory = ({ businessId }) => {
                         className="bg-white p-4 sm:p-6 rounded-2xl border hero-filter-input-bg shadow-sm hover:shadow-md transition-all group"
                     >
                         {/* Top Row: Booking Number + Status */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                            <div className="flex items-center gap-2 sm:gap-3">
-                                <span className="profile-meta-text opacity-30 text-[0.6rem] sm:text-[0.65rem] font-black uppercase tracking-widest">
-                                    {booking.bookingNumber}
+                        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <div className="flex flex-wrap items-center gap-2">
+                                <span className="bg-[#628EB8]/10 text-[#1F355E] border border-[#628EB8]/20 px-2.5 py-1 rounded-lg text-[9px] sm:text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+                                    Booking Number: <span className="font-extrabold text-[#628EB8]">{booking.bookingNumber}</span>
                                 </span>
                                 {booking.paymentMethod && (
-                                    <span className="flex items-center gap-1 profile-meta-text opacity-30 text-[0.55rem] sm:text-[0.6rem] font-bold uppercase tracking-wider">
-                                        <CreditCard size={10} />
-                                        {booking.paymentMethod}
+                                    <span className="flex items-center gap-1.5 bg-green-50 text-green-700 border border-green-200/50 px-2.5 py-1 rounded-lg text-[9px] sm:text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+                                        <CreditCard size={11} className="shrink-0 text-green-600" />
+                                        Payment Method: <span className="font-extrabold">{booking.paymentMethod === "CASH" ? "CASH" : booking.paymentMethod}</span>
                                     </span>
                                 )}
                             </div>
