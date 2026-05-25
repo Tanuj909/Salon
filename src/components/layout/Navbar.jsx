@@ -7,6 +7,7 @@ import NotificationBell from "@/components/layout/NotificationBell";
 import { useMyBusiness } from '@/features/business/hooks/useMyBusiness';
 import MessageModal from '@/features/business/components/MessageModal';
 import AgreementsModal from '@/features/business/components/AgreementsModal';
+import SupportModal from '@/features/support/components/SupportModal';
 
 
 
@@ -15,6 +16,7 @@ export default function Navbar() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isMessagesOpen, setIsMessagesOpen] = useState(false);
   const [isAgreementsOpen, setIsAgreementsOpen] = useState(false);
+  const [isSupportOpen, setIsSupportOpen] = useState(false);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, loading, logout } = useAuthContext();
@@ -227,6 +229,17 @@ export default function Navbar() {
                       )}
 
                       <button
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left cursor-pointer"
+                        onClick={() => {
+                          setIsSupportOpen(true);
+                          setIsProfileOpen(false);
+                        }}
+                      >
+                        <span className="material-symbols-outlined text-lg">contact_support</span>
+                        Support
+                      </button>
+
+                      <button
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium navbar-link-text hover:bg-[#D98C5F]/10 hover:text-[#D98C5F] transition-colors text-left"
                         onClick={handleLogout}
                       >
@@ -324,6 +337,18 @@ export default function Navbar() {
               </button>
             )}
 
+            {user && (
+              <button
+                className="flex items-center gap-3 navbar-link-text font-medium hover:text-[#D98C5F] transition-all px-4 py-3.5 rounded-2xl hover:bg-[#D98C5F]/10 text-base w-full text-left cursor-pointer"
+                onClick={() => {
+                  setIsSupportOpen(true);
+                  setIsMenuOpen(false);
+                }}
+              >
+                <span className="material-symbols-outlined text-xl">contact_support</span>
+                Support
+              </button>
+            )}
 
             <div className="h-px w-full bg-gray-100 my-2" />
 
@@ -365,6 +390,11 @@ export default function Navbar() {
           businessId={business.id}
         />
       )}
+
+      <SupportModal
+        isOpen={isSupportOpen}
+        onClose={() => setIsSupportOpen(false)}
+      />
 
     </nav>
   );

@@ -4,6 +4,8 @@ import "../styles/globals.css";
 import { AuthProvider } from "@/features/auth/providers/AuthProvider";
 import { LocationProvider } from "@/features/salons/context/LocationContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const viewport = {
   width: 'device-width',
@@ -37,6 +39,7 @@ export default function RootLayout({ children }) {
             <AuthProvider>
               <Navbar />
               {children}
+              <ToastContainer position="top-right" autoClose={5000} style={{ zIndex: 100000 }} />
               <Footer />
             </AuthProvider>
           </LocationProvider>

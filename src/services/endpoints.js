@@ -86,4 +86,8 @@ export const ENDPOINTS = {
     BY_BUSINESS: (id) => `/agreements/business/${id}`,
     ACCEPT: (id) => `/agreements/${id}/accept`,
   },
+  SUPPORT: {
+    SUBMIT: "/contact-us",
+    MY_QUERIES: (page = 0, size = 5) => `/contact-us/my-queries?page=${page}&size=${size}`,
+  },
 };
